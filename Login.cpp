@@ -1,13 +1,7 @@
-#include <iostream>
 #include <fstream>
+#include "proto.h"
 
-struct Account
-{
-    std::string username, password;
-    int role;
-    Account *accNext, *accPrev;
-} *accHead;
-
+Account *accHead;
 int role = -1;
 
 void DelAccount()
@@ -25,7 +19,7 @@ void DelAccount()
 
 void ReadAccount()
 {
-    std::ifstream ifs("account.csv");
+    std::ifstream ifs("CSVFile/account.csv");
     if (!ifs)
         return;
 
@@ -120,16 +114,16 @@ void LoggingIn()
         return;
     }
     role = cur->role;
-    //? std::cout << "\nLogged in successfully!!\n";
+    ? std::cout << "\nLogged in successfully!!\n";
 }
 
 void ChangePass() {}
 
-// int main()
-// {
-//     ReadAccount();
-//     WriteAccount();
-//     LoggingIn();
-//     DelAccount();
-//     return 0;
-// }
+int main()
+{
+    ReadAccount();
+    WriteAccount();
+    LoggingIn();
+    DelAccount();
+    return 0;
+}
