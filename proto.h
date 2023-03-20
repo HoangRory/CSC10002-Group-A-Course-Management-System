@@ -75,7 +75,7 @@ struct Class {
 struct Semester {
     int No; // eg semester 1 thì No = 1
     int yearStartSchool; 
-    int startDate, endDate;
+    string startDate, endDate;
     Semester *next, *prev;
     Semester() {
         next = prev = nullptr;
