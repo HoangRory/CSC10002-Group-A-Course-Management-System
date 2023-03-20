@@ -1,7 +1,20 @@
 #include <fstream>
-#include "proto.h"
+#include <iostream>
+// #include "proto.h"
+
+struct Account
+{
+    std::string username = "", password = "";
+    int role; // role = 1 Student, role = 2 staff or teacher
+    Account *next, *prev;
+    Account()
+    {
+        next = prev = nullptr;
+    }
+};
 
 Account *accHead;
+std::string user = "", pass = "";
 int role = -1;
 
 void DelAccount()
@@ -10,7 +23,7 @@ void DelAccount()
         return;
     while (accHead)
     {
-        Account *tmp = accHead->accNext;
+        Account *tmp = accHead->next;
         delete accHead;
         accHead = tmp;
     }
@@ -31,16 +44,16 @@ void ReadAccount()
         {
             accHead = new Account;
             cur = accHead;
-            cur->accNext = nullptr;
-            cur->accPrev = nullptr;
+            cur->next = nullptr;
+            cur->prev = nullptr;
         }
         else
         {
-            cur->accNext = new Account;
-            Account *prev = cur;
-            cur = cur->accNext;
-            cur->accPrev = prev;
-            cur->accNext = nullptr;
+            cur->next = new Account;
+            Account *tmp = cur;
+            cur = cur->next;
+            cur->prev = tmp;
+            cur->next = nullptr;
         }
 
         getline(ifs, str);
@@ -74,7 +87,7 @@ void WriteAccount()
 {
     if (!accHead)
         return;
-    std::ofstream ofs("account.csv");
+    std::ofstream ofs("CSVFile/account.csv");
     if (!ofs)
         return;
 
@@ -82,14 +95,13 @@ void WriteAccount()
     while (cur)
     {
         ofs << cur->username << ',' << cur->password << ',' << cur->role << '\n';
-        cur = cur->accNext;
+        cur = cur->next;
     }
     ofs.close();
 }
 
 void LoggingIn()
 {
-    std::string user, pass;
     std::cout << "\nUsername: ";
     std::cin >> user;
     std::cout << "Password: ";
@@ -104,7 +116,7 @@ void LoggingIn()
             loggedIn = true;
             break;
         }
-        cur = cur->accNext;
+        cur = cur->next;
     }
 
     if (!loggedIn)
@@ -114,16 +126,56 @@ void LoggingIn()
         return;
     }
     role = cur->role;
-    ? std::cout << "\nLogged in successfully!!\n";
+    std::cout << "\nLogged in successfully!!\n";
 }
 
-void ChangePass() {}
+void ChangePass()
+{
+    std::cout << "Enter your current password: ";
+    std::string tmp = "";
+    std::cin >> tmp;
+    while (tmp != pass)
+    {
+        std::cout << "Wrong Password!!!\nEnter password again: ";
+        std::cin >> tmp;
+    }
+    bool assem = true;
+    std::cout << "Account confirm, enter your new password: ";
+    do
+    {
+        if (assem == false)
+            std::cout << "\nThe 2 passwords u enter are different\nEnter your password: ";
+        std::cin >> tmp;
+        std::string newPass;
+        std::cout << "Re-enter: ";
+        std::cin >> newPass;
+        assem = (tmp == newPass ? true : false);
+    } while (!assem);
+
+    Account *cur = accHead;
+    while (cur && cur->username != user)
+        cur = cur->next;
+    cur->password = tmp;
+    WriteAccount();
+    std::cout << "\nChange password successfully.";
+}
+
+void Main_interface()
+{
+    std::cout << "\nChange your password (Y/N): ";
+    char check;
+    std::cin >> check;
+    if (check == 'Y')
+        ChangePass();
+    else
+        std::cout << "Thanks for ur usage!";
+}
 
 int main()
 {
     ReadAccount();
-    WriteAccount();
     LoggingIn();
+    Main_interface();
     DelAccount();
     return 0;
 }
