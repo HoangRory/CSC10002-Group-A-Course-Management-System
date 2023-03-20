@@ -1,17 +1,5 @@
-#include <fstream>
-#include <iostream>
-// #include "proto.h"
+#include "proto.h"
 
-struct Account
-{
-    std::string username = "", password = "";
-    int role; // role = 1 Student, role = 2 staff or teacher
-    Account *next, *prev;
-    Account()
-    {
-        next = prev = nullptr;
-    }
-};
 
 Account *accHead;
 std::string user = "", pass = "";
