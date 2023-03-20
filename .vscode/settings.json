@@ -1,5 +1,3 @@
 {
-    "files.associations": {
-        "xstring": "cpp"
-    }
+    "C_Cpp.errorSquiggles": "disabled"
 }

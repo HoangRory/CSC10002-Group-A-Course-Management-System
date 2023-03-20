@@ -1,4 +1,3 @@
-
 void DelAccount();
 void ReadAccount();
 void WriteAccount();
