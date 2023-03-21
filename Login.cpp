@@ -20,7 +20,7 @@ void DelAccount()
 
 void ReadAccount()
 {
-    std::ifstream ifs("CSVFile/account.csv");
+    std::ifstream ifs("Data_file/account.csv");
     if (!ifs)
         return;
 

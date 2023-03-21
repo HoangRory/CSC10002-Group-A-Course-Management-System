@@ -45,7 +45,6 @@ struct Student {
     string ClassName = "";
     Course *Course1st = nullptr;
     Student *next = nullptr, *prev = nullptr;
-    Student *prev;
 };
 
 struct Class {
