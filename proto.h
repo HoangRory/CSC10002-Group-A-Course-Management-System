@@ -1,6 +1,6 @@
-#include <fstream>
-#include <string>
 #include <iostream>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -22,7 +22,7 @@ struct ScoreBoard {
 
 //student của một course
 struct StudentCourse {
-    int ID[8];
+    string ID;
     string ClassName = "";
     StudentCourse *next;
     StudentCourse *prev;
@@ -33,11 +33,10 @@ struct StudentCourse {
 };
 
 struct Course {
-    int noSemester; // eg this course is in semester 1 thì noSemester = 1
-    int CourseID; //
-    int Credits = 0, maxStudents = 50, numStudents = 0;
+    string Name = ""; 
+    int CourseID; //eg CSC10002
+    int Credits = 0, maxStudents = 70, numStudents = 0;
     string Room = "";
-    string Name = ""; // eg CSC10002
     string TeacherName = "";
     string Day = ""; //eg MON TUE...
     int Session; // eg S1 then session = 1
@@ -50,15 +49,18 @@ struct Course {
 
 //student của toàn trường, được lưu trong từng lớp
 struct Student {
-    int ID[8];
+    string ID;
+    Account *accStu;
     string ClassName = "";
     Course *Course1st;
+    ScoreBoard ScoreBoard;
     Student *next;
     Student *prev;
     Student() {
+        accStu = nullptr;
+        Course1st = nullptr;
         next = prev = nullptr;
     }
-    ScoreBoard ScoreBoard;
 };
 
 struct Class {
@@ -66,16 +68,16 @@ struct Class {
     Student *StudentClass;
     Class *next, *prev;
     Class() {
+        StudentClass = nullptr;
         next = prev = nullptr;
     }
 };
 
-
-
 struct Semester {
     int No; // eg semester 1 thì No = 1
-    int yearStartSchool; 
-    int startDate, endDate;
+    int Year; // only the start year, when cout put the end year in by adding 1 
+    string startDate, endDate;
+    Course *Course;
     Semester *next, *prev;
     Semester() {
         next = prev = nullptr;
@@ -83,9 +85,13 @@ struct Semester {
 };
 
 struct Year {
-    int yearStart, yearEnd;
+    int yearStart;
     Class *Class;
-    Semester *NoSemester;    
+    Semester *NoSemester;   
+    Year *next;
+    Year () {
+        next = nullptr;
+    } 
 };
 
 
