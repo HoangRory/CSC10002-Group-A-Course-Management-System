@@ -32,7 +32,6 @@ void ReadAccount()
         {
             accHead = new Account;
             cur = accHead;
-            cur->next = nullptr;
             cur->prev = nullptr;
         }
         else
@@ -41,8 +40,8 @@ void ReadAccount()
             Account *tmp = cur;
             cur = cur->next;
             cur->prev = tmp;
-            cur->next = nullptr;
         }
+        cur->next = nullptr;
 
         getline(ifs, str);
         int cnt = 0;
@@ -132,7 +131,7 @@ void ChangePass()
     do
     {
         if (assem == false)
-            std::cout << "\nThe 2 passwords u enter are different\nEnter your password: ";
+            std::cout << "\nThe 2 passwords u enter are different\nEnter your new password: ";
         std::cin >> tmp;
         std::string newPass;
         std::cout << "Re-enter: ";
