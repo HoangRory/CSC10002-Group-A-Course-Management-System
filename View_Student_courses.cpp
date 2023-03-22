@@ -1,7 +1,4 @@
-#include <iostream>
 #include "proto.h"
-
-using namespace std;
 
 Course *courseHead; // in a semester
 Account *accHead; // after student run LoggingIn to login his/her acc
