@@ -1,7 +1,7 @@
 #include "proto.h"
+#include "Login.h"
 
-
-Account *accHead;
+Account *accHead = nullptr;
 std::string user = "", pass = "";
 int role = -1;
 
@@ -20,7 +20,7 @@ void DelAccount()
 
 void ReadAccount()
 {
-    std::ifstream ifs("CSVFile/account.csv");
+    std::ifstream ifs("Data_file/account.csv");
     if (!ifs)
         return;
 
@@ -32,8 +32,6 @@ void ReadAccount()
         {
             accHead = new Account;
             cur = accHead;
-            cur->next = nullptr;
-            cur->prev = nullptr;
         }
         else
         {
@@ -41,30 +39,19 @@ void ReadAccount()
             Account *tmp = cur;
             cur = cur->next;
             cur->prev = tmp;
-            cur->next = nullptr;
         }
 
-        getline(ifs, str);
-        int cnt = 0;
-        std::string tmp;
-        for (int i = 0; i < str.size(); i++)
-        {
-            if (str[i] == ',')
-            {
-                cnt++;
-                if (cnt == 1)
-                    cur->username = tmp;
-                else if (cnt == 2)
-                {
-                    cur->password = tmp;
-                    cur->role = std::stoi(str.substr(i + 1, str.size() - i));
-                }
-                tmp = "";
-            }
-            else
-                tmp += str[i];
-        }
-        //? std::cout << cur->username << " || " << cur->password << " || " << cur->role << '\n';
+        getline(ifs, cur->username, ',');
+        getline(ifs, cur->password, ',');
+        getline(ifs, str, ',');
+        cur->role = stoi(str);
+        getline(ifs, cur->lastName, ',');
+        getline(ifs, cur->firstName, ',');
+        getline(ifs, cur->Gender, ',');
+        getline(ifs, cur->SocialID, ',');
+        getline(ifs, cur->birth, '\n');
+
+        // std::cout << cur->username << " || " << cur->password << " || " << cur->role << cur->lastName << " || " << cur->NationalID << " || " << cur->birth << '\n';
     }
 
     ifs.close();
@@ -75,14 +62,17 @@ void WriteAccount()
 {
     if (!accHead)
         return;
-    std::ofstream ofs("CSVFile/account.csv");
+    std::ofstream ofs("Data_file/account.csv");
     if (!ofs)
         return;
 
     Account *cur = accHead;
     while (cur)
     {
-        ofs << cur->username << ',' << cur->password << ',' << cur->role << '\n';
+        ofs << cur->username << ',' << cur->password << ','
+            << cur->role << ',' << cur->lastName << ','
+            << cur->firstName << ',' << cur->Gender << ','
+            << cur->SocialID << ',' << cur->birth << '\n';
         cur = cur->next;
     }
     ofs.close();
@@ -110,11 +100,18 @@ void LoggingIn()
     if (!loggedIn)
     {
         std::cout << "Wrong username or password\n";
-        LoggingIn();
-        return;
+        char check;
+        std::cout << "Try again? (Y/N) ";
+        std::cin >> check;
+        if (check == 'Y')
+            LoggingIn();
+        else
+            return;
     }
     role = cur->role;
     std::cout << "\nLogged in successfully!!\n";
+    std::cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!\n";
+    Main_interface();
 }
 
 void ChangePass()
@@ -132,7 +129,7 @@ void ChangePass()
     do
     {
         if (assem == false)
-            std::cout << "\nThe 2 passwords u enter are different\nEnter your password: ";
+            std::cout << "\nThe 2 passwords u enter are different\nEnter your new password: ";
         std::cin >> tmp;
         std::string newPass;
         std::cout << "Re-enter: ";
@@ -146,15 +143,18 @@ void ChangePass()
     cur->password = tmp;
     WriteAccount();
     std::cout << "\nChange password successfully.";
+    Main_interface();
 }
 
 void Main_interface()
 {
-    std::cout << "\nChange your password (Y/N): ";
-    char check;
+    std::cout << "Option: \n1. Change your password.\n2. Logout\n3. Quit\nYour choice: ";
+    int check = -1;
     std::cin >> check;
-    if (check == 'Y')
+    if (check == 1)
         ChangePass();
+    else if (check == 2)
+        LoggingIn();
     else
         std::cout << "Thanks for ur usage!";
 }
@@ -163,7 +163,6 @@ int main()
 {
     ReadAccount();
     LoggingIn();
-    Main_interface();
     DelAccount();
     return 0;
 }

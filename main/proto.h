@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -35,9 +36,9 @@ struct Course
     int Credits = 0, maxStudents = 70, numStudents = 0;
     string Room = "";
     string TeacherName = "";
-    string Day = ""; // eg MON TUE...
-    int Session;     // eg S1 then session = 1
-    StudentCourse *StudentCourse;
+    string Day = "";     // eg MON TUE...
+    string Session = ""; // eg S1 then session = 1
+    StudentCourse *studentCourse = nullptr;
     Course *next = nullptr, *prev = nullptr;
 };
 // student của toàn trường, được lưu trong từng lớp
@@ -48,7 +49,6 @@ struct Student
     string ClassName = "";
     Course *Course1st = nullptr;
     Student *next = nullptr, *prev = nullptr;
-    Student *prev;
 };
 
 struct Class
@@ -61,10 +61,10 @@ struct Class
 // hết -1 một môn, -2 kì, -3 năm
 struct Semester
 {
-    int No; // eg semester 1 thì No = 1
-    // int Year; // only the start year, when cout put the end year in by adding 1
+    int No;   // eg semester 1 thì No = 1
+    int Year; // only the start year, when cout put the end year in by adding 1
     string startDate, endDate;
-    Course *Course = nullptr;
+    Course *course = nullptr;
     Semester *next = nullptr, *prev = nullptr;
 };
 
