@@ -1,26 +1,32 @@
 #include "proto.h"
 
 //export the list student in course to file CSV
-int curYear;
+Year curYear;
+Semester curSemester;
+Course curCourse;
+ofstream out;
 
+void openScoreFile() {
+    string path;
+    path = to_string(curYear.yearStart) + "_" + to_string(curYear.yearStart)+ "/" + to_string(curSemester.No) + "/" + curCourse.Name + ".CSV"; 
+    out.open (path);
+}
 
-
-void exportScoreBoard(ScoreBoard ScoreBoard, ofstream &out) {
-    out << ScoreBoard.totalMark << ","
-        << ScoreBoard.finalMark << ","
-        << ScoreBoard.midMark   << ","
-        << ScoreBoard.otherMark << ","
+void exportScoreBoardCourse(ScoreBoardCourse ScoreBoardCourse) {
+    out << ScoreBoardCourse.totalMark << ","
+        << ScoreBoardCourse.finalMark << ","
+        << ScoreBoardCourse.midMark   << ","
+        << ScoreBoardCourse.otherMark << ","
         << endl;
 }
 
-void exportStudent(StudentCourse *stuHead, ofstream &out) {
+void exportStudent(StudentCourse *stuHead) {
     int No = 1;
     while (stuHead) {
-
         out << No++ << ","
             << stuHead->ID << ","
             << stuHead->FullName << ",";
-        exportScoreBoard(stuHead->ScoreBoard, out);
+        exportScoreBoardCourse(stuHead->ScoreBoardCourse);
     }
 }
 
