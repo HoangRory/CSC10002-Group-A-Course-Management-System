@@ -61,17 +61,17 @@ void add1stYearStudents(Class *addStudent) {
         return;
     }
 
-    newStudent->accStu->role = 1;
+    newStudent->accStudent->role = 1;
     cout << "First Name: ";
-    getline(cin, newStudent->accStu->firstName);
+    getline(cin, newStudent->accStudent->firstName);
     cin.ignore();
     cout << "Last Name: ";
-    getline(cin, newStudent->accStu->lastName);
+    getline(cin, newStudent->accStudent->lastName);
     cin.ignore();
     cout << "Gender: (M: male   F: female)";
-    cin >> newStudent->accStu->Gender;
+    cin >> newStudent->accStudent->Gender;
     cin.ignore();
     cout << "Date of Birth: (yy/mm/dd)";
-    getline(cin, newStudent->accStu->DateofBirth);
+    getline(cin, newStudent->accStudent->DateofBirth);
     cin.ignore();
 }
