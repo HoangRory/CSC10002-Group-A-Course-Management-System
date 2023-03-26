@@ -9,6 +9,7 @@ struct Account {
     string firstName = "", lastName = "";
     char Gender; //M is male, F is female
     int SociaID[12];
+    string DateofBirth; // (yy/mm/dd)
     int role; // role = 1 Student, role = 2 staff or teacher
     Account *next, *prev;
     Account () {
