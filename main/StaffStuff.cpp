@@ -1,5 +1,6 @@
 #include "proto.h"
 #include "Task6_13.h"
+#include "Login.cpp"
 
 //! Run after the Login file to collect the ROLE
 Semester *semHead = nullptr;
@@ -89,6 +90,36 @@ void Read_multi_SMT()
         Read_SMT();
 }
 
+//! Need to be more efficient (sync only at the empty studentCourse that has ID but no name)
+void SyncFullName()
+{
+    Semester *sem_cur = semHead;
+    while (sem_cur)
+    {
+        Course *cse = sem_cur->course;
+        while (cse)
+        {
+            StudentCourse *stcse = cse->studentCourse;
+            while (stcse)
+            {
+                Account *acc_cur = accHead;
+                while (acc_cur)
+                {
+                    if (acc_cur->username == stcse->ID)
+                    {
+                        stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
+                        break;
+                    }
+                    acc_cur = acc_cur->next;
+                }
+                stcse = stcse->next;
+            }
+            cse = cse->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+}
+
 void DeleteStudent(StudentCourse *stud_head)
 {
     if (!stud_head)
@@ -168,23 +199,133 @@ void Output()
 
 void AddSemester()
 {
-    semHead->next = new Semester;
-    cur = semHead->next;
-    cout << "No. semester (1,2,3): ";
-    cin >> cur->No;
+    cur = semHead;
     cout << "School year: ";
-    cin >> cur->Year;
+    unsigned int Y;
+    unsigned short N;
+    cin >> Y;
+    cout << "No. semester (1,2,3): ";
+    cin >> N;
+    Semester *prev = nullptr;
+    while (cur)
+    {
+        if (cur->Year == Y && cur->No == N)
+        {
+            std::cout << "Already has this semester, modify it?";
+            // ModifySem();
+            break;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+    cur = new Semester;
+    cur->prev = prev;
+    cur->No = N;
+    cur->Year = Y;
     cout << "Starting date (dd/mm/yyyy): ";
     cin >> cur->startDate;
     cout << "Ending date (dd/mm/yyyy): ";
     cin >> cur->endDate;
 }
 
+void AddCourse(Semester *&sem)
+{
+    cout << "Enter the course ID: ";
+    string id;
+    cin >> id;
+    cur = semHead;
+    while (cur)
+    {
+        Course *cour = cur->course;
+        while (cour)
+        {
+            if (cour->CourseID == id)
+            {
+                cout << "Already have this course, please enter a new course!";
+                AddCourse(sem);
+                return;
+            }
+            cour = cour->next;
+        }
+        cur = cur->next;
+    }
+    sem->course = new Course;
+    Course *new_course = sem->course;
+    new_course->CourseID = id;
+    cout << "Course name: ";
+    cin >> new_course->Name;
+    //! Class name?????
+    cout << "Enter the teacher name: ";
+    cin >> new_course->TeacherName;
+    cout << "Enter the number of credits: ";
+    cin >> new_course->Credits;
+    cout << "Enter the maximum of students: ";
+    cin >> new_course->maxStudents;
+    cout << "Note: The course will be taught only one session per week!!!";
+    cout << "Choose the day of week the course will be taught\n(MON/TUE/WED/THU/FRI/SAT): ";
+    cin >> new_course->Day;
+    cout << "Choose the the session time of the course\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
+    cin >> new_course->Session;
+    AddStudent(new_course->studentCourse, sem);
+}
+
+void AddStudent(Course *&new_course, Semester *sem)
+{
+    string yearPath = to_string(sem->Year) + '_' + to_string(sem->Year + 1);
+    string studList = "Data_file\\" + yearPath + "\\smt" + to_string(sem->No) + "\\";
+
+    string str = new_course->Name;
+    int i = 0;
+    while (i < str.size())
+    {
+        if (i == 0 && str[i] > 90)
+            str[i] -= 32;
+        if (str[i] == ' ')
+            if (str[i + 1] > 90)
+                str[i + 1] -= 32;
+        if (str[i] >= 97 || str[i] == ' ')
+            str.erase(str.begin() + i);
+        else
+            i++;
+    }
+    studList += str + ".csv";
+
+    ifstream ifs(studList);
+    if (!ifs)
+        return;
+    string tmp;
+    StudentCourse *studCourse;
+
+    if (ifs >> tmp)
+    {
+        new_course->studentCourse = new StudentCourse;
+        studCourse = new_course->studentCourse;
+        studCourse->ID = tmp;
+    }
+    while (ifs >> tmp)
+    {
+        studCourse->next = new StudentCourse;
+        studCourse = studCourse->next;
+        studCourse->ID = tmp;
+    }
+    SyncFullName();
+
+    ifs.close();
+}
+
 int main()
 {
+    system("cls");
+    ReadAccount();
     Read_multi_SMT();
-    AddSemester();
-    Output();
+    SyncFullName();
+    // LoggingIn();
+
+    // AddSemester();
+    // Output();
+
+    DelAccount();
     DeleteSMT();
+
     return 0;
 }

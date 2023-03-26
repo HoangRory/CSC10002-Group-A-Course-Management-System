@@ -11,6 +11,7 @@ struct Account
     string firstName = "", lastName = "";
     string Gender; // M is male, F is female
     string SocialID;
+    string birth;
     int role; // 1 student, 2 teacher, 3 staff.
     Account *next = nullptr, *prev = nullptr;
 };

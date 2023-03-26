@@ -159,10 +159,10 @@ void Main_interface()
         std::cout << "Thanks for ur usage!";
 }
 
-int main()
-{
-    ReadAccount();
-    LoggingIn();
-    DelAccount();
-    return 0;
-}
+// int main()
+// {
+//     ReadAccount();
+//     LoggingIn();
+//     DelAccount();
+//     return 0;
+// }
