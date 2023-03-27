@@ -74,4 +74,21 @@ void add1stYearStudents(Class *addStudent) {
     cout << "Date of Birth: (yy/mm/dd)";
     getline(cin, newStudent->accStudent->DateofBirth);
     cin.ignore();
+    cout << "Social ID: ";
+    getline(cin, newStudent->accStudent->SocialID);
+    cin.ignore();
+
+    curClass->StudentClass = newStudent;
+    curClass->StudentClass = curClass->StudentClass->next;
+
+    if (!addStudent->StudentClass) {
+        addStudent->StudentClass = new Student;
+        addStudent->StudentClass = newStudent;
+        addStudent->StudentClass = addStudent->StudentClass->next;
+    } else {
+        Student *curStudent = addStudent->StudentClass;
+        while(curStudent) {
+            
+        }
+    }
 }
