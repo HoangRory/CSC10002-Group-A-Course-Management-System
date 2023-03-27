@@ -82,13 +82,16 @@ void add1stYearStudents(Class *addStudent) {
     curClass->StudentClass = curClass->StudentClass->next;
 
     if (!addStudent->StudentClass) {
-        addStudent->StudentClass = new Student;
         addStudent->StudentClass = newStudent;
-        addStudent->StudentClass = addStudent->StudentClass->next;
     } else {
         Student *curStudent = addStudent->StudentClass;
-        while(curStudent) {
-            
+
+        while (curStudent->next != nullptr) {
+            curStudent = curStudent->next;
         }
+        curStudent->next = newStudent;
+        newStudent->prev = curStudent;
     }
+
+    cout << "Student " << newStudent->accStudent->firstName << " " << newStudent->accStudent->lastName << " has been added to class " << curClass->Name << endl;
 }
