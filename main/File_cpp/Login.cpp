@@ -1,11 +1,7 @@
-#include "proto.h"
-#include "Login.h"
+// #include "Header/proto.h"
+#include "../Header/Login.h"
 
-Account *accHead = nullptr;
-std::string user = "", pass = "";
-int role = -1;
-
-void DelAccount()
+void DelAccount(Account *&accHead)
 {
     if (!accHead)
         return;
@@ -18,7 +14,7 @@ void DelAccount()
     accHead = nullptr;
 }
 
-void ReadAccount()
+void ReadAccount(Account *&accHead)
 {
     std::ifstream ifs("Data_file/account.csv");
     if (!ifs)
@@ -58,7 +54,7 @@ void ReadAccount()
     return;
 }
 
-void WriteAccount()
+void WriteAccount(Account *accHead)
 {
     if (!accHead)
         return;
@@ -78,7 +74,7 @@ void WriteAccount()
     ofs.close();
 }
 
-void LoggingIn()
+void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     std::cout << "\nUsername: ";
     std::cin >> user;
@@ -104,17 +100,17 @@ void LoggingIn()
         std::cout << "Try again? (Y/N) ";
         std::cin >> check;
         if (check == 'Y')
-            LoggingIn();
+            LoggingIn(accHead, user, pass, role);
         else
             return;
     }
     role = cur->role;
     std::cout << "\nLogged in successfully!!\n";
     std::cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!\n";
-    Main_interface();
+    Main_interface(accHead, user, pass, role);
 }
 
-void ChangePass()
+void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
     std::cout << "Enter your current password: ";
     std::string tmp = "";
@@ -141,30 +137,24 @@ void ChangePass()
     while (cur && cur->username != user)
         cur = cur->next;
     cur->password = tmp;
-    WriteAccount();
+    WriteAccount(accHead);
     std::cout << "\nChange password successfully.";
-    Main_interface();
 }
 
-void Main_interface()
+void Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     std::cout << "Option: \n1. Change your password.\n2. Logout\n3. Quit\nYour choice: ";
     int check = -1;
     std::cin >> check;
     if (check == 1)
-        ChangePass();
+        ChangePass(accHead, user, pass);
     else if (check == 2)
-        LoggingIn();
+        LoggingIn(accHead, user, pass, role);
     else
+    {
         std::cout << "Thanks for ur usage!";
+        return;
+    }
+
+    Main_interface(accHead, user, pass, role);
 }
-
-
-
-// int main()
-// {
-//     ReadAccount();
-//     LoggingIn();
-//     DelAccount();
-//     return 0;
-// }
