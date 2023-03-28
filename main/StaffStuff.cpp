@@ -7,16 +7,15 @@ Semester *semHead = nullptr;
 Semester *cur = nullptr;
 
 int yr = 2022;
-string strYear = to_string(yr) + '_' + to_string(yr + 1);
-string smtPath = "Data_file\\" + strYear + "\\smt";
-int smt = 1;
-int num_smt = 2;
+// string smtPath = "Data_file\\" + strYear + "\\smt";
+int num_smt = 3, num_year = 1;
 
-void Read_SMT()
+//todo make it more efficient
+void Read_SMT(int y, int smt)
 {
-    string path = smtPath + to_string(smt) + "\\in4smt.txt";
-    smt++;
-    // cout << path;
+    string in_year = to_string(y) + '_' + to_string(y + 1);
+    string path = "Data_file\\" + in_year + "\\smt" + to_string(smt) + "\\in4smt.txt";
+
     ifstream ifs(path);
     Semester *sem_cur;
     while (!ifs.eof())
@@ -86,11 +85,12 @@ void Read_SMT()
 }
 void Read_multi_SMT()
 {
-    for (int time = 0; time < num_smt; time++)
-        Read_SMT();
+    for (int y = yr; y < yr + num_year; y++)
+        for (int smt = 1; smt < num_smt; smt++)
+            Read_SMT(y, smt);
 }
 
-//! Need to be more efficient (sync only at the empty studentCourse that has ID but no name)
+//todo Need to be more efficient (sync only at the empty studentCourse that has ID but no name)
 void SyncFullName()
 {
     Semester *sem_cur = semHead;
@@ -105,6 +105,8 @@ void SyncFullName()
                 Account *acc_cur = accHead;
                 while (acc_cur)
                 {
+                    if (stcse->FullName != "")
+                        break;
                     if (acc_cur->username == stcse->ID)
                     {
                         stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
@@ -158,7 +160,7 @@ void OutStudent(StudentCourse *stud_head, ofstream &ofs)
         ofs << stud_head->ID << '\n';
         stud_head = stud_head->next;
     }
-    ofs << -1 << '\n';
+    ofs << -1;
     return;
 }
 void OutCourse(Course *course_head, ofstream &ofs)
@@ -167,6 +169,7 @@ void OutCourse(Course *course_head, ofstream &ofs)
         return;
     while (course_head)
     {
+        ofs << '\n';
         ofs << course_head->Name << '\n'
             << course_head->CourseID << ' ' << course_head->Credits << ' '
             << course_head->maxStudents << ' ' << course_head->numStudents
@@ -183,54 +186,78 @@ void Output()
 {
     if (!semHead)
         return;
-    ofstream ofs("TestOnly.txt");
-    if (!ofs)
-        return;
     Semester *sem_cur = semHead;
+
     while (sem_cur)
     {
-        ofs << sem_cur->No << '\n';
-        ofs << sem_cur->startDate << ' ' << sem_cur->endDate << '\n';
+        string out_year = to_string(sem_cur->Year) + '_' + to_string(sem_cur->Year + 1);
+        string outPath = "Data_file\\" + out_year + "\\smt" + to_string(sem_cur->No) + "\\";
+        outPath += "in4smt.txt";
+        // string tmp_sys = "mkdir " + outPath;
+        // const char *cstr_path = tmp_sys.c_str();
+        // system(cstr_path);
+
+        ofstream ofs(outPath);
+        if (!ofs)
+            return;
+        // ofs << sem_cur->No << '\n';
+        ofs << sem_cur->startDate << ' ' << sem_cur->endDate;
         OutCourse(sem_cur->course, ofs);
         sem_cur = sem_cur->next;
+        ofs.close();
     }
-    ofs.close();
 }
 
+//! Alternate to add more semesters
+//! Modify the semester
 void AddSemester()
 {
-    cur = semHead;
-    cout << "School year: ";
+    Semester *sem_head = semHead;
+    Semester *sem_cur = semHead;
+
     unsigned int Y;
     unsigned short N;
+    cout << "School year: ";
     cin >> Y;
     cout << "No. semester (1,2,3): ";
     cin >> N;
     Semester *prev = nullptr;
-    while (cur)
+    while (sem_cur)
     {
-        if (cur->Year == Y && cur->No == N)
+        if (sem_cur->Year == Y && sem_cur->No == N)
         {
             std::cout << "Already has this semester, modify it?";
             // ModifySem();
-            break;
+            return;
         }
-        prev = cur;
-        cur = cur->next;
+        prev = sem_cur;
+        if (!sem_cur->next)
+            break;
+        sem_cur = sem_cur->next;
     }
-    cur = new Semester;
-    cur->prev = prev;
-    cur->No = N;
-    cur->Year = Y;
+    sem_cur->next = new Semester;
+    sem_cur = sem_cur->next;
+    sem_cur->prev = prev;
+    sem_cur->No = N;
+    sem_cur->Year = Y;
     cout << "Starting date (dd/mm/yyyy): ";
-    cin >> cur->startDate;
+    cin >> sem_cur->startDate;
     cout << "Ending date (dd/mm/yyyy): ";
-    cin >> cur->endDate;
+    cin >> sem_cur->endDate;
+
+    string out_year = to_string(Y) + '_' + to_string(Y + 1);
+    string outPath = "Data_file\\" + out_year + "\\smt" + to_string(N);
+    // outPath += "in4smt.txt";
+    string tmp_sys = "mkdir " + outPath;
+    const char *cstr_path = tmp_sys.c_str();
+    system(cstr_path);
+    AddCourse(sem_cur);
 }
 
+//! Has the modify function here!!!
 void AddCourse(Semester *&sem)
 {
-    cout << "Enter the course ID: ";
+    cout << "\nEnter the course ID: ";
     string id;
     cin >> id;
     cur = semHead;
@@ -241,7 +268,7 @@ void AddCourse(Semester *&sem)
         {
             if (cour->CourseID == id)
             {
-                cout << "Already have this course, please enter a new course!";
+                cout << "Already have this course, please enter a new course or modify it!";
                 AddCourse(sem);
                 return;
             }
@@ -252,27 +279,34 @@ void AddCourse(Semester *&sem)
     sem->course = new Course;
     Course *new_course = sem->course;
     new_course->CourseID = id;
-    cout << "Course name: ";
-    cin >> new_course->Name;
+    cout << "\nCourse name: ";
+    cin.ignore();
+    getline(cin, new_course->Name);
     //! Class name?????
-    cout << "Enter the teacher name: ";
-    cin >> new_course->TeacherName;
-    cout << "Enter the number of credits: ";
+    cout << "\nEnter the teacher name: ";
+    // cin.ignore();
+    getline(cin, new_course->TeacherName);
+    cout << "\nEnter the number of credits: ";
     cin >> new_course->Credits;
-    cout << "Enter the maximum of students: ";
+
+    cout << "\nEnter the maximum of students: ";
     cin >> new_course->maxStudents;
-    cout << "Note: The course will be taught only one session per week!!!";
+
+    cout << "\nChoose the room of the course: ";
+    cin >> new_course->Room;
+
+    cout << "\nNote: The course will be taught only one session per week!!!\n";
     cout << "Choose the day of week the course will be taught\n(MON/TUE/WED/THU/FRI/SAT): ";
     cin >> new_course->Day;
-    cout << "Choose the the session time of the course\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
+    cout << "\nChoose the the session time of the course\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
     cin >> new_course->Session;
-    AddStudent(new_course->studentCourse, sem);
+    AddStudent(new_course, sem);
 }
 
 void AddStudent(Course *&new_course, Semester *sem)
 {
-    string yearPath = to_string(sem->Year) + '_' + to_string(sem->Year + 1);
-    string studList = "Data_file\\" + yearPath + "\\smt" + to_string(sem->No) + "\\";
+    // string yearPath = to_string(sem->Year) + '_' + to_string(sem->Year + 1);
+    // string studList = "Data_file\\" + yearPath + "\\smt" + to_string(sem->No) + "\\";
 
     string str = new_course->Name;
     int i = 0;
@@ -288,7 +322,7 @@ void AddStudent(Course *&new_course, Semester *sem)
         else
             i++;
     }
-    studList += str + ".csv";
+    string studList = str + ".csv";
 
     ifstream ifs(studList);
     if (!ifs)
@@ -296,35 +330,315 @@ void AddStudent(Course *&new_course, Semester *sem)
     string tmp;
     StudentCourse *studCourse;
 
+    int cnt = 0;
     if (ifs >> tmp)
     {
         new_course->studentCourse = new StudentCourse;
         studCourse = new_course->studentCourse;
         studCourse->ID = tmp;
+        cnt++;
     }
     while (ifs >> tmp)
     {
         studCourse->next = new StudentCourse;
         studCourse = studCourse->next;
         studCourse->ID = tmp;
+        cnt++;
     }
+    new_course->numStudents = cnt;
     SyncFullName();
 
     ifs.close();
 }
 
+void viewCourse()
+{
+    Semester *sem_cur = semHead;
+    cout << "List of courses: \n";
+    for (int i = 0; i < 100; i++)
+        cout << '-';
+
+    while (sem_cur)
+    {
+        Course *cour = sem_cur->course;
+
+        cout << "\nSemester " << sem_cur->No << " - " << sem_cur->Year << " - " << sem_cur->Year + 1 << '\n';
+
+        while (cour)
+        {
+            cout << '\n';
+            cout << "Course ID: " << cour->CourseID;
+            cout << "\nCourse name: " << cour->Name;
+            cout << "\nTeacher name: " << cour->TeacherName << "\n";
+
+            cour = cour->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+    for (int i = 0; i < 100; i++)
+        cout << '-';
+}
+
+void modifyCourse(string id)
+{
+    Semester *sem_cur = semHead;
+    Course *cour_cur;
+
+    while (sem_cur)
+    {
+        cour_cur = sem_cur->course;
+
+        while (cour_cur)
+        {
+            if (cour_cur->CourseID == id)
+            {
+                cout << "New course name: ";
+                cin.ignore();
+                getline(cin, cour_cur->Name);
+                cout << "\nEnter the new teacher name: ";
+                getline(cin, cour_cur->TeacherName);
+                cout << "\nEnter the new number of credits: ";
+                cin >> cour_cur->Credits;
+
+                cout << "\nEnter the new maximum of students: ";
+                cin >> cour_cur->maxStudents;
+
+                cout << "\nChoose the room of the course: ";
+                cin >> cour_cur->Room;
+
+                cout << "Teaching day\n(MON/TUE/WED/THU/FRI/SAT): ";
+                cin >> cour_cur->Day;
+
+                cout << "\nCourse section\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
+                cin >> cour_cur->Session;
+
+                cout << "Course has been updated\n";
+                return;
+            }
+            cour_cur = cour_cur->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+}
+
+void modifySemester(int year, int sem)
+{
+    Semester *sem_cur = semHead;
+    Course *cour_cur;
+
+    while (sem_cur)
+    {
+        if (sem_cur->Year == year && sem_cur->No == sem)
+        {
+            // cout << "New semester: ";
+            // cin >> sem_cur->No;
+
+            // cout << "New year: ";
+            // cin >> sem_cur->Year;
+
+            cout << "New semester start date: ";
+            cin >> sem_cur->startDate;
+
+            cout << "New semester end date: ";
+            cin >> sem_cur->endDate;
+
+            cout << "Semster has been updated\n";
+            return;
+        }
+        sem_cur = sem_cur->next;
+    }
+}
+
+void addStudent(string id)
+{
+    Semester *sem_cur = semHead;
+    Course *cour_cur;
+    StudentCourse *stud_cur, *stud_prev;
+
+    while (sem_cur)
+    {
+        cour_cur = sem_cur->course;
+
+        while (cour_cur)
+        {
+            if (cour_cur->CourseID == id)
+            {
+                cout << "Enter student ID: ";
+                string ID;
+                cin >> ID;
+                stud_cur = cour_cur->studentCourse;
+                stud_prev = stud_cur;
+
+                while (stud_cur)
+                {
+                    if (stud_cur->ID == ID)
+                    {
+                        cout << "Student already exists\n";
+                        return;
+                    }
+                    stud_prev = stud_cur;
+                    stud_cur = stud_cur->next;
+                }
+                stud_prev->next = new StudentCourse;
+                stud_prev->next->ID = ID;
+                cour_cur->numStudents++;
+                cout << "Student has been added\n";
+                return;
+            }
+            cour_cur = cour_cur->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+}
+void removeStudent(string id)
+{
+    Semester *sem_cur = semHead;
+    Course *cour_cur;
+    StudentCourse *stud_cur, *stud_prev;
+
+    while (sem_cur)
+    {
+        cour_cur = sem_cur->course;
+
+        while (cour_cur)
+        {
+            if (cour_cur->CourseID == id)
+            {
+                cout << "Enter student ID: ";
+                string ID;
+                cin >> ID;
+                stud_cur = cour_cur->studentCourse;
+                stud_prev = stud_cur;
+
+                while (stud_cur)
+                {
+                    if (stud_cur->ID == ID)
+                    {
+                        if (stud_cur == cour_cur->studentCourse)
+                            cour_cur->studentCourse = stud_cur->next;
+                        else
+                            stud_prev->next = stud_cur->next;
+                        cour_cur->numStudents--;
+                        cout << "Student has been removed\n";
+                        return;
+                    }
+                    stud_prev = stud_cur;
+                    stud_cur = stud_cur->next;
+                }
+                cout << "Student does not exist\n";
+                return;
+            }
+            cour_cur = cour_cur->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+}
+void addRemoveStudent(string id)
+{
+    cout << "1. Add student\n2. Remove student\n";
+    int choice;
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        addStudent(id);
+        break;
+    case 2:
+        removeStudent(id);
+        break;
+    }
+}
+void deleteCourse(string id)
+{
+    Semester *sem_cur = semHead;
+    Course *cour_cur, *cour_prev;
+
+    while (sem_cur)
+    {
+        cour_cur = sem_cur->course;
+        cour_prev = cour_cur;
+
+        while (cour_cur)
+        {
+            if (cour_cur->CourseID == id)
+            {
+                cout << cour_cur->Name << " has been deleted\n";
+                if (cour_cur == sem_cur->course)
+                    sem_cur->course = cour_cur->next;
+                else
+                    cour_prev->next = cour_cur->next;
+                delete cour_cur;
+                return;
+            }
+            cour_prev = cour_cur;
+            cour_cur = cour_cur->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+    cout << "\nXXX Cannot find course XXX\n";
+}
+
+void initModify()
+{
+    for (int i = 0; i < 100; i++)
+        cout << '-';
+    cout << "\nOptions:\n";
+    cout << "1. Modify semester\n";
+    cout << "2. Modify course\n";
+    cout << "3. Delete a course\n";
+    cout << "4. Add or remove a student\n";
+    cout << "5. Quit\n";
+
+    int opt;
+    cout << "\n==> Your option: ";
+    cin >> opt;
+    string id;
+    switch (opt)
+    {
+    case 1:
+        int sem, year;
+        cout << "Choose the year: ";
+        cin >> year;
+        cout << "Choose the semester: ";
+        cin >> sem;
+        modifySemester(year, sem);
+        break;
+    case 2:
+        cout << "Choose the course ID: ";
+        cin >> id;
+        modifyCourse(id);
+        break;
+    case 3:
+        cout << "Choose the course ID: ";
+        cin >> id;
+        deleteCourse(id);
+        break;
+    case 4:
+        cout << "Choose the course ID: ";
+        cin >> id;
+        addRemoveStudent(id);
+        break;
+    case 5:
+        cout << "Goodbye!";
+        return;
+    }
+    initModify();
+}
+
 int main()
 {
-    system("cls");
-    ReadAccount();
+    // system("cls");
+    // ReadAccount();
     Read_multi_SMT();
-    SyncFullName();
+    // SyncFullName();
     // LoggingIn();
-
+    Semester *tmp = semHead;
     // AddSemester();
-    // Output();
+    initModify();
+    // viewCourse();
+    Output();
 
-    DelAccount();
+    // DelAccount();
     DeleteSMT();
 
     return 0;
