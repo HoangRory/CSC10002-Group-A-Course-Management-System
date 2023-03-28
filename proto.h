@@ -45,7 +45,6 @@ struct Student {
     string ClassName = "";
     Course *Course1st = nullptr;
     Student *next = nullptr, *prev = nullptr;
-    Student *prev;
 };
 
 struct Class {
@@ -57,7 +56,7 @@ struct Class {
 // hết -1 một môn, -2 kì, -3 năm
 struct Semester {
     int No; // eg semester 1 thì No = 1
-    // int Year; // only the start year, when cout put the end year in by adding 1 
+    int Year; // only the start year, when cout put the end year in by adding 1 
     string startDate, endDate;
     Course *Course = nullptr;
     Semester *next = nullptr, *prev = nullptr;
