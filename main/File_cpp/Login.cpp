@@ -28,6 +28,7 @@ void ReadAccount(Account *&accHead)
         {
             accHead = new Account;
             cur = accHead;
+            cur->prev = nullptr;
         }
         else
         {
@@ -36,6 +37,7 @@ void ReadAccount(Account *&accHead)
             cur = cur->next;
             cur->prev = tmp;
         }
+        cur->next = nullptr;
 
         getline(ifs, cur->username, ',');
         getline(ifs, cur->password, ',');
