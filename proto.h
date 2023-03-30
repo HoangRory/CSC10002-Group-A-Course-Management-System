@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <fstream>
 
 using namespace std;
@@ -36,7 +37,6 @@ struct Course {
     int Session; // eg S1 then session = 1
     StudentCourse *StudentCourse;
     Course *next = nullptr, *prev = nullptr;
-
 };
 //student của toàn trường, được lưu trong từng lớp
 struct Student {

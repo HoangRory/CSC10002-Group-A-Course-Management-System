@@ -1,33 +1,17 @@
-#include "proto.h"
+#include "course.h"
 
 //export the list student in course to file CSV
-Year *Yhead;
 Semester *curSmt; //semester hiện tại, lấy từ việc tạo semester mới
-
 ofstream out;
-ifstream in;
 
 string path;
+
 bool checkFile(string name) {
     fstream f;
     f.open(name);
     if(f.is_open()) return true;
     return false;
 }
-
-Year* findYear(int yearStart);
-Semester* findSemester (int no_smt, Semester *SmtHead);
-Course* findCourse(string nameOrID, Course *CourseHead);
-void createNameFile(int year, int no_smt, string course, string file, string type);
-
-void readScoreStudentCourse(ScoreBoardCourse &SBC);
-void readStudentCourse(StudentCourse *&studentHead);
-void readAllFileCourses();
-
-void exportInforStudent(StudentCourse *stuHead);
-void exportListStudentCourse();
-
-void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);
 
 Year* findYear(int yearStart, Year* YrHead) {
     while (YrHead) {
@@ -46,7 +30,6 @@ Semester* findSemester (int no_smt, Semester *SmtHead) {
 }
 
 Course* findCourse(string nameOrID, Course *CourseHead) {
-    Course *CourseHead = curSmt->Course;
     while (CourseHead) {
         if (CourseHead->CourseID == nameOrID || CourseHead->Name == nameOrID)
             return CourseHead;
@@ -56,58 +39,58 @@ Course* findCourse(string nameOrID, Course *CourseHead) {
 }
 
 
-void createNameFile(int year, int no_smt, string course, string file, string type) {
+string createNameFile(int year, int no_smt, string course, string file, string type) {
     string s_year = to_string(year) + "_" + to_string(year + 1) + "\\";
-    string s_smt = "smt" + to_string(3) + "\\";
-    path = s_year + s_smt + course + "\\" + file + "." + type;
+    string s_smt = "smt" + to_string(no_smt) + "\\";
+    string path = "Data_file\\" + s_year + s_smt + course + "\\" + file + "." + type;
+    return path;
 }
 
-void readScoreStudentCourse(ScoreBoardCourse &SBC) {
+void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in) {
     string s_totalMark, s_finalMark, s_midMark, s_otherMark;
     getline(in,s_totalMark,',');
     getline(in,s_finalMark,',');
     getline(in,s_midMark,',');
-    getline(in,s_otherMark,',');
-    SBC.totalMark = stoi(s_totalMark);
-    SBC.finalMark = stoi(s_totalMark);
-    SBC.midMark = stoi(s_midMark);
-    SBC.otherMark = stoi(s_otherMark); 
+    getline(in,s_otherMark,'\n');
+    SBC.totalMark = stod(s_totalMark);
+    SBC.finalMark = stod(s_totalMark);
+    SBC.midMark = stod(s_midMark);
+    SBC.otherMark = stod(s_otherMark); 
 }
 
-void readStudentCourse(StudentCourse *&studentHead){
+void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
     StudentCourse *cur = studentHead;
     while (!in.eof()) {
-        if (!cur) cur = new StudentCourse;
+        if (!cur) cur = studentHead = new StudentCourse;
         else {
             cur -> next = new StudentCourse;
             cur = cur -> next;
         }
         getline(in,cur->ID,',');
         getline(in,cur->FullName,',');
-        readScoreStudentCourse(cur->ScoreBoardCourse);    
+        readScoreStudentCourse(cur->ScoreBoardCourse, in);    
     }
 }
 
 //import data course
-void readAllFileCourses() {
-    Year *YrHeadr = Yhead;
+void readAllFileCourses(ifstream &in, Year *Yhead) {
     Semester *curSmt;
     Course *curCourse;
-    while (YrHeadr) {
-        curSmt = YrHeadr->NoSemester;
+    while (Yhead) {
+        curSmt = Yhead->NoSemester;
         while(curSmt) {
             curCourse = curSmt->Course;
             while(curCourse) {
-                createNameFile(YrHeadr->yearStart, curSmt->No, curCourse->Name, "Score", "CSV"); 
+                createNameFile(Yhead->yearStart, curSmt->No, curCourse->Name, "Score", "CSV"); 
                 if(!checkFile(path))
                     break;
                 in.open(path);
-                readStudentCourse(curCourse->StudentCourse); 
+                readStudentCourse(curCourse->StudentCourse, in); 
                 curCourse = curCourse->next;
             }
             curSmt = curSmt->next;
         }
-        YrHeadr = YrHeadr->next;
+        Yhead = Yhead->next;
     }
 }
 
@@ -123,29 +106,28 @@ void exportInforStudent(StudentCourse *stuHead) {
     }
 }
 
-
-//task 16
+//task 19
 //func export the list student of a course
-void exportListStudentCourse() {
+void exportListStudentCourse(Course *CourseHead, ofstream &out ) {
     system("cls"); //xóa màn hình
     string nameOrID;
-    cout << "Danh sach khoa hoc trong hoc ki hien tai" << endl;
+    cout << "List of courses in the current semester." << endl;
     //hàm xuất các khóa học hiện tại
-    cout << "Moi nhap ten hoac ID khoa hoc can xuat danh sach hoc sinh." << endl;
+    cout << "Enter the name or the course ID to enter the score." << endl;
     cin  >> nameOrID;
-    Course *curCourse = findCourse(nameOrID, curSmt->Course);
+    Course *curCourse = findCourse(nameOrID, CourseHead);
     if (!curCourse) {
-        cout << "Ten hoac ID khoa hoc ban nhap khong chinh xac hoac khoa hoc khong thuoc ky nay." << endl;
-        cout << "Chon 1 de nhap lai." << endl;
-        cout << "Nhan bat ki phim nao khac de thoat chuong trinh." << endl;
+        cout << "The course name or course ID you entered does not exist for this semester." << endl;
+        cout << "Choose 1 to re-enter." << endl;
+        cout << "Or press any key to exit the program." << endl;
         char choose;
         cin  >> choose;
         if (choose == '1') {
-            exportListStudentCourse();
+            exportListStudentCourse(CourseHead, out);
         }            
     }
     
-    createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "studentCourse", "CSV");
+    path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "studentCourse", "CSV");
     if (!checkFile(path)) 
         system(("mkdir " + path).c_str());
     out.open(path);
@@ -153,10 +135,89 @@ void exportListStudentCourse() {
     out.close();   
 }// hàm này chỉ xuất chứ chưa xóa linked list
 
-//task 17
-void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse) {
-    out << ScoreBoardCourse.totalMark << ","
-        << ScoreBoardCourse.finalMark << ","
-        << ScoreBoardCourse.midMark   << ","
-        << ScoreBoardCourse.otherMark ;
+
+
+//task 20 call func task 19 và func dưới đây
+void importScoreBoardCourse(StudentCourse *stuHead,  ifstream &in, Course *CourseHead) {
+    system("cls"); //xóa màn hình
+    string nameOrID;
+    cout << "List of courses in the current semester." << endl;
+    //hàm xuất các khóa học hiện tại
+    cout << "Enter the name or the course ID to enter the score." << endl;
+    cin  >> nameOrID;
+    Course *curCourse = findCourse(nameOrID, CourseHead);
+    if (!curCourse) {
+        cout << "The course name or course ID you entered does not exist for this semester." << endl;
+        cout << "Choose 1 to re-enter." << endl;
+        cout << "Or press any key to exit the program." << endl;
+        char choose;
+        cin  >> choose;
+        if (choose == '1') {
+            importScoreBoardCourse(stuHead, in, CourseHead);
+        }            
+    }
+
+    path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "Score", "CSV");
+    if (!checkFile(path)) {
+        cout << "This file is not exist";
+        return;
+    }
+    in.open (path);
+    readStudentCourse(curCourse->StudentCourse);
+    in.close();
+}
+
+
+//task 21
+void viewScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse) {
+    cout << ScoreBoardCourse.totalMark << "\t"
+        << ScoreBoardCourse.finalMark << "\t"
+        << ScoreBoardCourse.midMark   << "\t"
+        << ScoreBoardCourse.otherMark << "\n";
+}
+void viewScoreBoardCourse(StudentCourse *stuHead) {
+    while (stuHead) {
+        cout << stuHead->ID << "\t"
+             << stuHead->FullName << "\t";
+        viewScoreCourseStudent(stuHead->ScoreBoardCourse);
+    }
+}
+
+//task 22
+Student* findStudentbyID(string IDStudent, Year *Yhead) {
+    Class *curClass;
+    Student *curStudent;
+    while ( Yhead ) {
+        curClass = Yhead -> Class;
+        while ( curClass ) {
+            curStudent = curClass->StudentClass;
+            while ( curStudent ) {
+                if ( curStudent->ID == IDStudent)
+                    return curStudent;
+                curStudent = curStudent->next;
+            }
+            curClass = curClass->next;            
+        }
+        Yhead = Yhead->next;
+    }
+}
+void UpdateStudentResult(string IDStudent, string CourseName, Year *Yhead) {
+    Student *checkStudent = findStudentbyID(IDStudent, Yhead);
+} 
+
+int main () {
+    // StudentCourse *StudentCourse = nullptr;
+    // int y= 2022;
+    // int smt = 1;
+    // string path = createNameFile(y, smt,"KNM", "Score", "CSV") ; 
+    //     if(!checkFile(path))
+    //         return 0;
+    //     in.open(path);
+    //     readStudentCourse(StudentCourse);
+    // while (StudentCourse) {
+    //     cout << StudentCourse->ID << endl;
+    //     StudentCourse = StudentCourse->next;
+    // }
+    // cout << path;
+    return 0;
 }
