@@ -29,3 +29,4 @@ void addRemoveStudent(Semester *semHead, string id);
 void deleteCourse(Semester *semHead, string id);
 
 void initModify(Semester *&semHead);
+void RunModify(Semester *&semHead, int opt);
