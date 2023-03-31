@@ -1,28 +1,41 @@
 #include "proto.h"
 
-Class *classHead;
 Course *courseHead;
-//string class_name = "", course_name = "";
 
-void ViewStudentsClass(string class_name)
+void ViewStudentsClass(Year *yearHead)
 {   
-    while (classHead)
+    string class_name;
+    cout << "Input the class's name: "; // eg 20APCS1
+    cin >> class_name;
+    while (yearHead)
     {
-        if (classHead->Name == class_name)
+        if (to_string(yearHead->yearStart % 100) == class_name.substr(0, 2))
+            break;
+        yearHead = yearHead->next;
+    }
+    if (!yearHead)
+    {
+        cout << "Not found!" << endl;
+        return;
+    }
+    while (yearHead->Class)
+    {
+        if (yearHead->Class->Name == class_name)
         {
-            while (classHead->StudentClass)
+            while (yearHead->Class->StudentClass)
             {
-                cout << classHead->StudentClass->accStudent->username << "\t" << classHead->StudentClass->accStudent->firstName << " " << classHead->StudentClass->accStudent->lastName << endl;
-                classHead->StudentClass = classHead->StudentClass->next;
+                cout << yearHead->Class->StudentClass->ID << "\t" << yearHead->Class->StudentClass->accStudent->firstName << " " << classHead->StudentClass->accStudent->lastName << endl;
+                yearHead->Class->StudentClass = yearHead->Class->StudentClass->next;
             }
             break;
         }
-        classHead = classHead->next;
+        yearHead->Class = yearHead->Class->next;
     }
-    if (!classHead)
+    if (!yearHead->Class)
         cout << "Not found!" << endl;
 }
 
+//này chưa hoàn chỉnh
 void ViewStudentCourse(string course_name)
 {
     while (courseHead)
