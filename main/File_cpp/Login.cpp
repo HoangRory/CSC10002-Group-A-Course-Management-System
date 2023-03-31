@@ -1,4 +1,3 @@
-// #include "Header/proto.h"
 #include "../Header/Login.h"
 
 void DelAccount(Account *&accHead)

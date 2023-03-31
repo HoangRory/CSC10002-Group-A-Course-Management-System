@@ -1,9 +1,11 @@
-// #include "Header/proto.h"
 #include "../Header/Semester.h"
 
 // todo: Can choose to remain some information
 void modifyCourse(Semester *semHead, string id)
 {
+    system("cls");
+    cout << "\n";
+    cout << "Modifying course " << id << "\n\n";
     Semester *sem_cur = semHead;
     Course *cour_cur;
 
@@ -15,27 +17,30 @@ void modifyCourse(Semester *semHead, string id)
         {
             if (cour_cur->CourseID == id)
             {
-                cout << "New course name: ";
+                cout << "Enter the new course name: ";
                 cin.ignore();
                 getline(cin, cour_cur->Name);
-                cout << "\nEnter the new teacher name: ";
+
+                cout << "Enter the new teacher name: ";
                 getline(cin, cour_cur->TeacherName);
-                cout << "\nEnter the new number of credits: ";
+
+                cout << "Enter the new number of credits: ";
                 cin >> cour_cur->Credits;
 
                 cout << "\nEnter the new maximum of students: ";
                 cin >> cour_cur->maxStudents;
 
-                cout << "\nChoose the room of the course: ";
+                cout << "Choose the room of the course: ";
                 cin >> cour_cur->Room;
 
                 cout << "Teaching day\n(MON/TUE/WED/THU/FRI/SAT): ";
                 cin >> cour_cur->Day;
 
-                cout << "\nCourse section\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
+                cout << "Course section\nS1-(07:30)\tS2-(09:30)\nS3-(13:30)\tS4-(15:30)\n==> ";
                 cin >> cour_cur->Session;
 
-                cout << "Course has been updated\n";
+                cout << "\nCourse has been updated\n";
+                Sleep(1000);
                 return;
             }
             cour_cur = cour_cur->next;
@@ -46,6 +51,10 @@ void modifyCourse(Semester *semHead, string id)
 
 void modifySemester(Semester *semHead, int year, int sem)
 {
+    system("cls");
+    cout << "\n";
+    viewCourse(semHead);
+
     Semester *sem_cur = semHead;
     Course *cour_cur;
 
@@ -60,6 +69,7 @@ void modifySemester(Semester *semHead, int year, int sem)
             cin >> sem_cur->endDate;
 
             cout << "Semster has been updated\n";
+            Sleep(1000);
             return;
         }
         sem_cur = sem_cur->next;
@@ -94,4 +104,5 @@ void deleteCourse(Semester *semHead, string id)
         sem_cur = sem_cur->next;
     }
     cout << "\nXXX Cannot find course XXX\n";
+    Sleep(1000);
 }

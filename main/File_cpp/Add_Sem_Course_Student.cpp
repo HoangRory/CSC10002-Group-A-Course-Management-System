@@ -1,26 +1,28 @@
-// #include "Header/proto.h"
 #include "../Header/Semester.h"
 
 // todo Alternate to add more semesters at once
-//! Modify semester!!!
+//! Adding semester 1 include in adding a year
 void AddSemester(Semester *semHead)
 {
     Semester *sem_head = semHead;
     Semester *sem_cur = semHead;
 
-    unsigned int Y;
-    unsigned short N;
+    int Y, N;
     cout << "School year: ";
     cin >> Y;
     cout << "No. semester (1,2,3): ";
     cin >> N;
     Semester *prev = nullptr;
+
     while (sem_cur)
     {
         if (sem_cur->Year == Y && sem_cur->No == N)
         {
-            std::cout << "Already has this semester, modify it?";
-            // ModifySem();
+            std::cout << "*** Already has this semester, modify it? (Y/N) ***";
+            char check;
+            cin >> check;
+            if (check == 'Y' || check == 'y')
+                modifySemester(semHead, Y, N);
             return;
         }
         prev = sem_cur;
@@ -28,6 +30,11 @@ void AddSemester(Semester *semHead)
             break;
         sem_cur = sem_cur->next;
     }
+
+    if (N == 1){
+        //! Add in a new year
+    }
+
     sem_cur->next = new Semester;
     sem_cur = sem_cur->next;
     sem_cur->prev = prev;
@@ -40,7 +47,6 @@ void AddSemester(Semester *semHead)
 
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
     string outPath = "Data_file\\" + out_year + "\\smt" + to_string(N);
-    // outPath += "in4smt.txt";
     string tmp_sys = "mkdir " + outPath;
     const char *cstr_path = tmp_sys.c_str();
     system(cstr_path);

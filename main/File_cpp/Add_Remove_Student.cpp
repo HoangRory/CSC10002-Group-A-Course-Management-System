@@ -1,4 +1,3 @@
-// #include "Header/proto.h"
 #include "../Header/Semester.h"
 
 void addStudent(Semester *semHead, string id)

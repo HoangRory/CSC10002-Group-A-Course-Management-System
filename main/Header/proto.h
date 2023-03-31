@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
+#include <windows.h>
 
 using namespace std;
 

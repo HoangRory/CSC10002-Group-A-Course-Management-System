@@ -1,4 +1,3 @@
-// #include "Header/proto.h"
 #include "../Header/Semester.h"
 
 // todo make it more efficient
