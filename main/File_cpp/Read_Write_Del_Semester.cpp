@@ -53,26 +53,26 @@ void Read_SMT(Semester *&semHead, int y, int smt)
             getline(ifs, tmp_C->TeacherName);
             ifs >> tmp_C->Day >> tmp_C->Session;
 
-            StudentCourse *tmp_S;
-            string ID;
-            while (ifs >> ID)
-            {
-                if (ID == "-1")
-                    break;
-                if (!tmp_C->studentCourse)
-                {
-                    tmp_C->studentCourse = new StudentCourse;
-                    tmp_S = tmp_C->studentCourse;
-                }
-                else
-                {
-                    tmp_S->next = new StudentCourse;
-                    StudentCourse *temp = tmp_S;
-                    tmp_S = tmp_S->next;
-                    tmp_S->prev = temp;
-                }
-                tmp_S->ID = ID;
-            }
+            // StudentCourse *tmp_S;
+            // string ID;
+            // while (ifs >> ID)
+            // {
+            //     if (ID == "-1")
+            //         break;
+            //     if (!tmp_C->studentCourse)
+            //     {
+            //         tmp_C->studentCourse = new StudentCourse;
+            //         tmp_S = tmp_C->studentCourse;
+            //     }
+            //     else
+            //     {
+            //         tmp_S->next = new StudentCourse;
+            //         StudentCourse *temp = tmp_S;
+            //         tmp_S = tmp_S->next;
+            //         tmp_S->prev = temp;
+            //     }
+            //     tmp_S->ID = ID;
+            // }
         }
     }
     path = "";

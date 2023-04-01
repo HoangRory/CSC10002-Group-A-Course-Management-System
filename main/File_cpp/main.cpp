@@ -1,7 +1,7 @@
 // #include "Header/proto.h"
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
-
+#include "../Header/course.h"
 int main()
 {
     Semester *semHead = nullptr;
@@ -16,11 +16,12 @@ int main()
     // ReadAccount();
     ReadAccount(accHead);
     Read_multi_SMT(semHead, yr, num_year, num_smt);
+    // readAllFileCourses(semHead);
     LoggingIn(accHead, user, pass, role);
     // AddSemester(semHead);
     // initModify(semHead);
     // Output(semHead);
-    SyncFullName(semHead, accHead);
+    // SyncFullName(semHead, accHead);
     viewCourse(semHead);
 
     DeleteSMT(semHead);

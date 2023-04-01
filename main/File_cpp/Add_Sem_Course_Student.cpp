@@ -39,7 +39,7 @@ void AddSemester(Semester *semHead)
     cin >> sem_cur->endDate;
 
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
-    string outPath = "Data_file\\" + out_year + "\\smt" + to_string(N);
+    string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(N);
     // outPath += "in4smt.txt";
     string tmp_sys = "mkdir " + outPath;
     const char *cstr_path = tmp_sys.c_str();

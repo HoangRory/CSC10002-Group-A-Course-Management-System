@@ -200,7 +200,7 @@ void updateSCB (string ID, StudentCourse *stuCourseHead) {
         updateSCB(ID,stuCourseHead);
 }
 
-void UpdateStudentResult( Year *Yhead) {
+void UpdateStudentResult(Year *Yhead) {
     //chọn 1 để nhập số bao danh học sinh cần sửa sau đó nhập khóa học
     //chọn 2 để chọn khóa học có học sinh cần sửa điểm, sau đó chọn học sinh
     int flag = 0;
@@ -286,6 +286,7 @@ void UpdateStudentResult( Year *Yhead) {
     }
 } 
 
+//task 23
 
 
 // int main () {

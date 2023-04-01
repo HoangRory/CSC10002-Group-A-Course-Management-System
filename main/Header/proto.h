@@ -44,12 +44,17 @@ struct Course
     Course *next = nullptr, *prev = nullptr;
 };
 // student của toàn trường, được lưu trong từng lớp
+struct CourseStudent 
+{
+    Course *course = nullptr;
+    CourseStudent *next = nullptr;
+};
 struct Student
 {
     Account *accStudent = nullptr;
     string ID;
     string ClassName = "";
-    Course *Course1st = nullptr;
+    CourseStudent *course = nullptr;
     Student *next = nullptr, *prev = nullptr;
 };
 

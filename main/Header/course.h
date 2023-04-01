@@ -8,7 +8,7 @@ string createNameFile(int year, int no_smt, string course, string file, string t
 
 void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
-void readAllFileCourses(ifstream &in, Year *Yhead);
+void readAllFileCourses(Semester *smtHead);
 
 void exportInforStudent(StudentCourse *stuHead, ofstream &out);
 void exportListStudentCourse(Semester *curSmt, ofstream &out);

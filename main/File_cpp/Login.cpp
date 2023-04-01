@@ -16,7 +16,7 @@ void DelAccount(Account *&accHead)
 
 void ReadAccount(Account *&accHead)
 {
-    std::ifstream ifs("Data_file/account.csv");
+    std::ifstream ifs("../Data_file/account.csv");
     if (!ifs)
         return;
 
@@ -60,7 +60,7 @@ void WriteAccount(Account *accHead)
 {
     if (!accHead)
         return;
-    std::ofstream ofs("Data_file/account.csv");
+    std::ofstream ofs("../Data_file/account.csv");
     if (!ofs)
         return;
 

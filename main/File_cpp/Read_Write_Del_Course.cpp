@@ -1,5 +1,5 @@
 #include "../Header/course.h"
-
+#include "../Header/Semester.h"
 bool checkFile(string name) {
     fstream f;
     f.open(name);
@@ -15,12 +15,12 @@ Year* findYear(int yearStart, Year* YrHead) {
     return YrHead;
 }
 
-Semester* findSemester (int no_smt, Semester *SmtHead) {
-    while (SmtHead) {
-        if(SmtHead->No = no_smt)
-            return SmtHead;
+Semester* findSemester (int no_smt, Semester *SemHead) {
+    while (SemHead) {
+        if(SemHead->No = no_smt)
+            return SemHead;
     }
-    return SmtHead;
+    return SemHead;
 }
 
 Course* findCourse(string nameOrID, Course *CourseHead) {
@@ -34,9 +34,9 @@ Course* findCourse(string nameOrID, Course *CourseHead) {
 
 
 string createNameFile(int year, int no_smt, string course, string file, string type) {
-    string s_year = to_string(year) + "_" + to_string(year + 1) + "\\";
-    string s_smt = "smt" + to_string(no_smt) + "\\";
-    string path = "Data_file\\" + s_year + s_smt + course + "\\" + file + "." + type;
+    string s_year = to_string(year) + "_" + to_string(year + 1) + "/";
+    string s_smt = "smt" + to_string(no_smt) + "/";
+    string path = "../Data_file/" + s_year + s_smt + course + file + "." + type;
     return path;
 }
 
@@ -58,6 +58,7 @@ void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
         if (!cur) cur = studentHead = new StudentCourse;
         else {
             cur -> next = new StudentCourse;
+            cur -> next -> prev = cur;
             cur = cur -> next;
         }
         getline(in,cur->ID,',');
@@ -66,8 +67,9 @@ void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
     }
 }
 
-//import data course
-void readAllFileCourses(ifstream &in, Year *Yhead) {
+// import data course
+void readAllFileCourses(Year *Yhead) {
+    ifstream in;
     Semester *curSmt;
     Course *curCourse;
     while (Yhead) {
@@ -87,3 +89,47 @@ void readAllFileCourses(ifstream &in, Year *Yhead) {
         Yhead = Yhead->next;
     }
 }
+void deleteAllCourse(Year *Yhead) {
+    Semester *curSmt;
+    Course *curCourse;
+    StudentCourse *stuHead;
+    while (Yhead) {
+        curSmt = Yhead->NoSemester;
+        while(curSmt) {
+            curCourse = curSmt->course;
+            while(curCourse) {
+                stuHead = curCourse->studentCourse;
+                while (stuHead ) {
+                    stuHead = stuHead->next;
+                    delete stuHead->prev;
+                    stuHead->prev = nullptr;
+                }                
+                curCourse = curCourse->next;
+                delete curCourse->prev;
+                curCourse->prev = nullptr;
+            }
+            curSmt = curSmt->next;
+            delete curSmt->prev;
+            curSmt->prev = nullptr;
+        }
+        delete Yhead;
+        //chưa sửa
+    }
+}
+
+// int main() {
+//     Year *yr = new Year;
+//     yr->yearStart = 2022;
+//     yr->NoSemester = new Semester;
+//     yr->NoSemester->No = 1;
+//     yr->NoSemester->course = new Course;
+//     yr->NoSemester->course->Name = "CSC10001";
+//     readAllFileCourses(yr);
+//     StudentCourse *stuHead = yr->NoSemester->course->studentCourse;
+//     while (stuHead) {
+//         cout << stuHead->ID << endl;
+//         stuHead = stuHead->next;
+//     }
+//     deleteAllCourse(yr);
+//     return 0;
+// }
