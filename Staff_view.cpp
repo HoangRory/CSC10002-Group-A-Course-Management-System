@@ -1,11 +1,9 @@
 #include "proto.h"
 
-Course *courseHead;
-
-void ViewStudentsClass(Year *yearHead)
+void ViewStudentsClass(Year *yearHead) 
 {   
     string class_name;
-    cout << "Input the class's name: "; // eg 20APCS1
+    cout << "Enter the class's name: "; // eg 20APCS1
     cin >> class_name;
     while (yearHead)
     {
@@ -24,7 +22,7 @@ void ViewStudentsClass(Year *yearHead)
         {
             while (yearHead->Class->StudentClass)
             {
-                cout << yearHead->Class->StudentClass->ID << "\t" << yearHead->Class->StudentClass->accStudent->firstName << " " << classHead->StudentClass->accStudent->lastName << endl;
+                cout << yearHead->Class->StudentClass->ID << "\t" << yearHead->Class->StudentClass->accStudent->firstName << " " << yearHead->Class->StudentClass->accStudent->lastName << endl;
                 yearHead->Class->StudentClass = yearHead->Class->StudentClass->next;
             }
             break;
@@ -35,22 +33,32 @@ void ViewStudentsClass(Year *yearHead)
         cout << "Not found!" << endl;
 }
 
-//này chưa hoàn chỉnh
-void ViewStudentCourse(string course_name)
+void ViewStudentCourse(Year *yearHead)
 {
-    while (courseHead)
+    string course_name;
+    cout << "Enter the class name: ";
+    getline(cin, course_name);
+    while (yearHead)
     {
-        if (courseHead->Name == course_name)
+        while (yearHead->NoSemester)
         {
-            while (courseHead->StudentCourse)
+            while (yearHead->NoSemester->course)
             {
-                cout << courseHead->StudentCourse->ID << "\t" << courseHead->StudentCourse->FullName << endl;
-                courseHead->StudentCourse = courseHead->StudentCourse->next;
+                if (yearHead->NoSemester->course->Name == course_name)
+                {
+                    while (yearHead->NoSemester->course->StudentCourse)
+                    {
+                        cout << courseHead->StudentCourse->ID << "\t" << courseHead->StudentCourse->FullName << endl;
+                        yearHead->NoSemester->course->StudentCourse = yearHead->NoSemester->course->StudentCourse->next;
+                    }
+                    return;
+                }
+                yearHead->NoSemester->course = yearHead->NoSemester->course->next;
             }
-            break;
+            yearHead->NoSemester = yearHead->NoSemester->next;
         }
-        courseHead = courseHead->next;
+        yearHead = yearHead->next;
     }
-    if (!courseHead)
+    if (!yearHead)
         cout << "Not found!" << endl;
 }
