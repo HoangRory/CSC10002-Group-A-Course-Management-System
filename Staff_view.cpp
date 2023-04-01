@@ -1,4 +1,4 @@
-#include "proto.h"
+#include "../Header/proto.h"
 
 void ViewStudentsClass(Year *yearHead) 
 {   
@@ -61,4 +61,45 @@ void ViewStudentCourse(Year *yearHead)
     }
     if (!yearHead)
         cout << "Not found!" << endl;
+}
+
+void ViewCourse(Year *yearHead)
+{
+    string school_year;
+    cout << "Enter the school year (eg 2022-2023): ";
+    getline(cin, school_year);
+    while (yearHead)
+    {
+        if (yearHead->yearStart == stoi(school_year.substr(0, 4)))
+            break;
+        yearHead = yearHead->next;
+    }
+    if (!yearHead)
+    {
+        cout << "Can't find the school year. Try again!" << endl;
+        return;
+    }
+
+    int no_smt;
+    cout << "Enter the semester: ";
+    cin >> no_smt;
+    while (yearHead->NoSemester)
+    {
+        if (yearHead->NoSemester->No == no_smt)
+            break;
+        yearHead->NoSemester = yearHead->NoSemester->next;
+    }
+    if (!yearHead->NoSemester)
+    {
+        cout << "Can't find the semester. Try again!" << endl;
+        return;
+    }
+
+    if(yearHead->NoSemester->course) cout << "\nHere is the list of courses in the semester " << no_smt << " of the " << school_year << " school year:" << endl;
+    else cout << "\nThere is no course in the semester " << no_smt << " of the " << school_year << " school year." << endl;
+    while (yearHead->NoSemester->course)
+    {
+        cout << yearHead->NoSemester->course->CourseID << " - " << yearHead->NoSemester->course->Name << endl;
+        yearHead->NoSemester->course = yearHead->NoSemester->course->next;
+    }
 }
