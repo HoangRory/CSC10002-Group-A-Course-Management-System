@@ -1,14 +1,16 @@
+#pragma once
 #include "proto.h"
-Year* findYear(int yearStart);
+bool checkFile(string name);
+Year* findYear(int yearStart, Year* YrHead);
 Semester* findSemester (int no_smt, Semester *SmtHead);
 Course* findCourse(string nameOrID, Course *CourseHead);
 string createNameFile(int year, int no_smt, string course, string file, string type);
 
-void readScoreStudentCourse(ScoreBoardCourse &SBC);
-void readStudentCourse(StudentCourse *&studentHead);
-void readAllFileCourses();
+void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
+void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
+void readAllFileCourses(ifstream &in, Year *Yhead);
 
-void exportInforStudent(StudentCourse *stuHead);
-void exportListStudentCourse();
+void exportInforStudent(StudentCourse *stuHead, ofstream &out);
+void exportListStudentCourse(Semester *curSmt, ofstream &out);
 
 void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);

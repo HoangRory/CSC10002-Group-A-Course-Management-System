@@ -16,7 +16,7 @@ int main()
     // ReadAccount();
     ReadAccount(accHead);
     Read_multi_SMT(semHead, yr, num_year, num_smt);
-    // LoggingIn(accHead, user, pass, role);
+    LoggingIn(accHead, user, pass, role);
     // AddSemester(semHead);
     // initModify(semHead);
     // Output(semHead);

@@ -84,6 +84,7 @@ void Read_multi_SMT(Semester *&semHead, int yr, int num_year, int num_smt)
             Read_SMT(semHead, y, smt);
 }
 
+
 void DeleteStudent(StudentCourse *&stud_head)
 {
     if (!stud_head)
