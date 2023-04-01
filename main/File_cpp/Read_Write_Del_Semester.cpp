@@ -154,9 +154,9 @@ void Output(Semester *semHead)
         string out_year = to_string(sem_cur->Year) + '_' + to_string(sem_cur->Year + 1);
         string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(sem_cur->No) + "\\";
         outPath += "in4smt.txt";
-        // string tmp_sys = "mkdir " + outPath;
-        // const char *cstr_path = tmp_sys.c_str();
-        // system(cstr_path);
+        string tmp_sys = "mkdir " + outPath;
+        const char *cstr_path = tmp_sys.c_str();
+        system(cstr_path);
 
         ofstream ofs(outPath);
         if (!ofs)

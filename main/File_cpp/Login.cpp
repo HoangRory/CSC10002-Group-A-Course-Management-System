@@ -15,7 +15,7 @@ void DelAccount(Account *&accHead)
 
 void ReadAccount(Account *&accHead)
 {
-    std::ifstream ifs("Data_file/account.csv");
+    std::ifstream ifs("../Data_file/account.csv");
     if (!ifs)
         return;
 
@@ -59,7 +59,7 @@ void WriteAccount(Account *accHead)
 {
     if (!accHead)
         return;
-    std::ofstream ofs("Data_file/account.csv");
+    std::ofstream ofs("../Data_file/account.csv");
     if (!ofs)
         return;
 
@@ -159,3 +159,14 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
 
     Main_interface(accHead, user, pass, role);
 }
+
+// int main()
+// {
+//     Account *head = nullptr;
+//     ReadAccount(head);
+//     std::string user, pass;
+//     int role;
+//     LoggingIn(head, user, pass, role);
+//     DelAccount(head);
+//     return 0;
+// }
