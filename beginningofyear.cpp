@@ -4,9 +4,20 @@
 void createSchoolYear(Year *&curYear, int yearStart) {
     Year *newYear = new Year;
     newYear->yearStart = yearStart;
-    // add the new year to the beginning of the linked list of years
+
+    // Add the new year to the beginning of the linked list of years
     newYear->next = curYear;
-    curYear = newYear; //cur point to the head (current year)
+    curYear = newYear;
+
+    // Create a new folder for the year
+ // Create a new directory with the name of yearStart
+    string folderName = to_string(yearStart) + "_" + to_string(yearStart + 1);
+    const int dir_err = mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    if (dir_err == -1) {
+        cerr << "Error creating directory: " << strerror(errno) << endl;
+    } else {
+        cout << "Directory created successfully!" << endl;
+    }
 }
 
 void createClasses(Class *&Classes, string preClasses) {
