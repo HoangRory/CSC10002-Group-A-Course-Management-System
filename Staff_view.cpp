@@ -1,5 +1,6 @@
 #include "../Header/proto.h"
 
+//task 16: view students in a class 
 void ViewStudentsClass(Year *yearHead) 
 {   
     string class_name;
@@ -7,7 +8,7 @@ void ViewStudentsClass(Year *yearHead)
     cin >> class_name;
     while (yearHead)
     {
-        if (to_string(yearHead->yearStart % 100) == class_name.substr(0, 2))
+        if (to_string(yearHead->yearStart % 100) == class_name.substr(0, 2)) //check the school year of the class => move the yearHead to that school year
             break;
         yearHead = yearHead->next;
     }
@@ -18,14 +19,18 @@ void ViewStudentsClass(Year *yearHead)
     }
     while (yearHead->Class)
     {
-        if (yearHead->Class->Name == class_name)
+        if (yearHead->Class->Name == class_name) //find the class and print students in that class
         {
+            if(yearHead->Class->StudentClass) cout << "\nList of students in " << class_name << ":" << endl;
+            else cout << "\nThere is no student in " << class_name << endl;
             while (yearHead->Class->StudentClass)
             {
-                cout << yearHead->Class->StudentClass->ID << "\t" << yearHead->Class->StudentClass->accStudent->firstName << " " << yearHead->Class->StudentClass->accStudent->lastName << endl;
+                cout << yearHead->Class->StudentClass->ID << "\t" 
+                    << yearHead->Class->StudentClass->accStudent->firstName << " " 
+                    << yearHead->Class->StudentClass->accStudent->lastName << endl;
                 yearHead->Class->StudentClass = yearHead->Class->StudentClass->next;
             }
-            break;
+            return;
         }
         yearHead->Class = yearHead->Class->next;
     }
@@ -33,11 +38,13 @@ void ViewStudentsClass(Year *yearHead)
         cout << "Not found!" << endl;
 }
 
+//task 18: view students in a course 
 void ViewStudentCourse(Year *yearHead)
 {
     string course_name;
-    cout << "Enter the class name: ";
+    cout << "Enter the course's name: ";
     getline(cin, course_name);
+    //find the course in 3 while-loop: year->semester->course
     while (yearHead)
     {
         while (yearHead->NoSemester)
@@ -46,10 +53,13 @@ void ViewStudentCourse(Year *yearHead)
             {
                 if (yearHead->NoSemester->course->Name == course_name)
                 {
-                    while (yearHead->NoSemester->course->StudentCourse)
+                    if (yearHead->NoSemester->course->studentCourse) cout << "\nList of students in course " << course_name << ":" << endl;
+                    else cout << "\nThere is no student in course " << course_name << endl;
+                    while (yearHead->NoSemester->course->studentCourse)
                     {
-                        cout << courseHead->StudentCourse->ID << "\t" << courseHead->StudentCourse->FullName << endl;
-                        yearHead->NoSemester->course->StudentCourse = yearHead->NoSemester->course->StudentCourse->next;
+                        cout << yearHead->NoSemester->course->studentCourse->ID << "\t" 
+                            << yearHead->NoSemester->course->studentCourse->FullName << endl;
+                        yearHead->NoSemester->course->studentCourse = yearHead->NoSemester->course->studentCourse->next;
                     }
                     return;
                 }
@@ -63,6 +73,7 @@ void ViewStudentCourse(Year *yearHead)
         cout << "Not found!" << endl;
 }
 
+//task 17: view the list of courses in a semester of a school year
 void ViewCourse(Year *yearHead)
 {
     string school_year;
@@ -99,7 +110,10 @@ void ViewCourse(Year *yearHead)
     else cout << "\nThere is no course in the semester " << no_smt << " of the " << school_year << " school year." << endl;
     while (yearHead->NoSemester->course)
     {
-        cout << yearHead->NoSemester->course->CourseID << " - " << yearHead->NoSemester->course->Name << endl;
+        cout << yearHead->NoSemester->course->CourseID 
+            << " - " << yearHead->NoSemester->course->Name  
+            << " - Teacher: " << yearHead->NoSemester->course->TeacherName 
+            << " - Room: " << yearHead->NoSemester->course->Room << endl;
         yearHead->NoSemester->course = yearHead->NoSemester->course->next;
     }
 }
