@@ -73,7 +73,7 @@ void ViewStudentCourse(Year *yearHead)
         cout << "Not found!" << endl;
 }
 
-//task 17: view the list of courses in a semester of a school year
+//task 17: view the list of courses in a semester of a school year, different with view course in task 9
 void ViewCourse(Year *yearHead)
 {
     string school_year;
@@ -116,4 +116,26 @@ void ViewCourse(Year *yearHead)
             << " - Room: " << yearHead->NoSemester->course->Room << endl;
         yearHead->NoSemester->course = yearHead->NoSemester->course->next;
     }
+}
+
+//task 15: view all classes which are existed
+void ViewClass(Year* yearHead)
+{
+    Year *yr_cur = yearHead;
+    cout << "List of classes:\n";
+    for (int i = 0; i < 100; i++)
+        cout << '-';
+    while (yr_cur)
+    {
+        Class *cls_cur = yr_cur->Class;
+        cout << "\nSchool year " << yr_cur->yearStart << "-" << yr_cur->yearStart + 1 << ":" << endl; // seperate the list into many parts by the school year
+        while (cls_cur)
+        {
+            cout << cls_cur->Name << endl;
+            cls_cur = cls_cur->next;
+        }
+        yr_cur = yr_cur->next;
+    }
+    for (int i = 0; i < 100; i++)
+        cout << '-';
 }
