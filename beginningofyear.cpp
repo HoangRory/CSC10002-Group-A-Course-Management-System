@@ -17,7 +17,7 @@ void createClasses(Class *&Classes, string preClasses) {
     Classes = newClass; //classes point to the head of the linked list
 }
 
-bool findClass(Class *curClass, string ClassID) {
+bool checkClass(Class *curClass, string ClassID) {
     while(curClass) {
         if (curClass->Name == ClassID) return true;
         else curClass = curClass->next;
@@ -77,7 +77,7 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
     cout << "Enter Class name: ";
     getline(cin, ClassID);
 
-    if (!findClass(curClass, ClassID)) {
+    if (!checkClass(curClass, ClassID)) {
         cout << "Class not found." << endl;
         return;
     } //check class id
