@@ -1,5 +1,6 @@
 #include "../Header/course.h"
 #include <iomanip>
+
 //export the list student in course to file CSV
  //semester hiện tại, lấy từ việc tạo semester mới
 
@@ -477,41 +478,41 @@ void viewScoreboardClass(Class *Class)
     delete []SCB;
 }
 
-int main() {
-    Year *yr = new Year;
-    yr->yearStart = 2022;
+// int main() {
+//     Year *yr = new Year;
+//     yr->yearStart = 2022;
 
-    yr->NoSemester = new Semester;
-    yr->NoSemester->No = 2;
+//     yr->NoSemester = new Semester;
+//     yr->NoSemester->No = 2;
 
-    yr->NoSemester->course = new Course;
-    yr->NoSemester->course->Name = "CSC10002";
-    yr->NoSemester->course->TeacherName = "Dinh Ba Tien";
-    readAllFileCourses(yr);
-    StudentCourse *stuHead = yr->NoSemester->course->studentCourse;
-    while (stuHead) {
-        cout << stuHead->ID << endl;
-        stuHead = stuHead->next;
-    }
+//     yr->NoSemester->course = new Course;
+//     yr->NoSemester->course->Name = "CSC10002";
+//     yr->NoSemester->course->TeacherName = "Dinh Ba Tien";
+//     readAllFileCourses(yr);
+//     StudentCourse *stuHead = yr->NoSemester->course->studentCourse;
+//     while (stuHead) {
+//         cout << stuHead->ID << endl;
+//         stuHead = stuHead->next;
+//     }
 
-    yr->Class = new Class;
-    yr->Class->StudentClass = new Student;
-    yr->Class->StudentClass->ID = "22127123";
-    yr->Class->StudentClass->course = new CourseStudent;
-    yr->Class->StudentClass->course->course = yr->NoSemester->course;
-    yr->Class->StudentClass->accStudent = new Account;
-    yr->Class->StudentClass->accStudent->firstName = "Hoang";
-    yr->Class->StudentClass->accStudent->lastName = "Le Ho Phi";
-    // 22127124,Nguyen Van A
-    yr->Class->StudentClass->next = new Student;
-    yr->Class->StudentClass->next->ID = "22127124";
-    yr->Class->StudentClass->next->course = new CourseStudent;
-    yr->Class->StudentClass->next->course->course = yr->NoSemester->course;
-    yr->Class->StudentClass->next->accStudent = new Account;
-    yr->Class->StudentClass->next->accStudent->firstName = "A";
-    yr->Class->StudentClass->next->accStudent->lastName = "Nguyen Van";
+//     yr->Class = new Class;
+//     yr->Class->StudentClass = new Student;
+//     yr->Class->StudentClass->ID = "22127123";
+//     yr->Class->StudentClass->course = new CourseStudent;
+//     yr->Class->StudentClass->course->course = yr->NoSemester->course;
+//     yr->Class->StudentClass->accStudent = new Account;
+//     yr->Class->StudentClass->accStudent->firstName = "Hoang";
+//     yr->Class->StudentClass->accStudent->lastName = "Le Ho Phi";
+//     // 22127124,Nguyen Van A
+//     yr->Class->StudentClass->next = new Student;
+//     yr->Class->StudentClass->next->ID = "22127124";
+//     yr->Class->StudentClass->next->course = new CourseStudent;
+//     yr->Class->StudentClass->next->course->course = yr->NoSemester->course;
+//     yr->Class->StudentClass->next->accStudent = new Account;
+//     yr->Class->StudentClass->next->accStudent->firstName = "A";
+//     yr->Class->StudentClass->next->accStudent->lastName = "Nguyen Van";
 
-    viewScoreboardClass(yr->Class);
-    deleteAllCourse(yr);
-    return 0;
-}
+//     viewScoreboardClass(yr->Class);
+//     deleteAllCourse(yr);
+//     return 0;
+// }
