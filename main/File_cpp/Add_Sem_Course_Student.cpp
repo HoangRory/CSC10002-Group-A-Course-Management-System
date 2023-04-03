@@ -2,7 +2,7 @@
 
 // todo Alternate to add more semesters at once
 //! Adding semester 1 include in adding a year
-void AddSemester(Semester *semHead)
+Semester *AddSemester(Semester *semHead)
 {
     Semester *sem_head = semHead;
     Semester *sem_cur = semHead;
@@ -31,7 +31,8 @@ void AddSemester(Semester *semHead)
         sem_cur = sem_cur->next;
     }
 
-    if (N == 1){
+    if (N == 1)
+    {
         //! Add in a new year
     }
 
@@ -50,60 +51,73 @@ void AddSemester(Semester *semHead)
     string tmp_sys = "mkdir " + outPath;
     const char *cstr_path = tmp_sys.c_str();
     system(cstr_path);
-    AddCourse(semHead, sem_cur);
+    // AddCourse(semHead, sem_cur);
+
+    // return sem_cur;
 }
 
 //! Write a course modification function here!!!
-void AddCourse(Semester *semHead, Semester *&sem)
+Course *AddCourse(Semester *semCurrent)
 {
     cout << "\nEnter the course ID: ";
     string id;
     cin >> id;
-    Semester *cur = semHead;
-    while (cur)
+    Course *courseCurrent = semCurrent, *prev = nullptr;
+    while (courseCurrent)
     {
-        Course *cour = cur->course;
-        while (cour)
+        if (courseCurrent->CourseID == id)
         {
-            if (cour->CourseID == id)
+            cout << "*** Already has this course, modify it? (Y/N) ***";
+            char check;
+            cin >> check;
+            while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
             {
-                cout << "Already have this course, please enter a new course or modify it!";
-                AddCourse(semHead, sem);
-                return;
+                cout << "Please enter Y or N: ";
+                cin >> check;
             }
-            cour = cour->next;
+            if (check == 'Y' || check == 'y')
+                modifyCourse(semCurrent, id);
+            return;
         }
-        cur = cur->next;
+        prev = courseCurrent;
+        courseCurrent = courseCurrent->next;
     }
-    sem->course = new Course;
-    Course *new_course = sem->course;
-    new_course->CourseID = id;
+    prev->next = new Course;
+    courseCurrent = prev->next;
+    courseCurrent->prev = prev;
+
+    courseCurrent->CourseID = id;
+
     cout << "\nCourse name: ";
     cin.ignore();
-    getline(cin, new_course->Name);
+    getline(cin, courseCurrent->Name);
+
     //! Class name?????
     cout << "\nEnter the teacher name: ";
     // cin.ignore();
-    getline(cin, new_course->TeacherName);
+    getline(cin, courseCurrent->TeacherName);
     cout << "\nEnter the number of credits: ";
-    cin >> new_course->Credits;
+    cin >> courseCurrent->Credits;
 
     cout << "\nEnter the maximum of students: ";
-    cin >> new_course->maxStudents;
+    cin >> courseCurrent->maxStudents;
 
     cout << "\nChoose the room of the course: ";
-    cin >> new_course->Room;
+    cin >> courseCurrent->Room;
 
     cout << "\nNote: The course will be taught only one session per week!!!\n";
     cout << "Choose the day of week the course will be taught\n(MON/TUE/WED/THU/FRI/SAT): ";
-    cin >> new_course->Day;
+    cin >> courseCurrent->Day;
+
     cout << "\nChoose the the session time of the course\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
-    cin >> new_course->Session;
-    AddStudent(new_course, sem);
+    cin >> courseCurrent->Session;
+
+    return courseCurrent;
 }
-void AddStudent(Course *&new_course, Semester *sem)
+
+void ImportStudentFromFile(Course *courseCurrent)
 {
-    string str = new_course->Name;
+    string str = courseCurrent->Name;
     int i = 0;
     while (i < str.size())
     {
@@ -128,18 +142,150 @@ void AddStudent(Course *&new_course, Semester *sem)
     int cnt = 0;
     if (ifs >> tmp)
     {
-        new_course->studentCourse = new StudentCourse;
-        studCourse = new_course->studentCourse;
+        courseCurrent->studentCourse = new StudentCourse;
+        studCourse = courseCurrent->studentCourse;
         studCourse->ID = tmp;
         cnt++;
     }
-    while (ifs >> tmp)
+    while (ifs >> tmp && tmp != '\n')
     {
         studCourse->next = new StudentCourse;
+        StudentCourse *tmpStud = studCourse;
         studCourse = studCourse->next;
+        studCourse->prev = tmpStud;
         studCourse->ID = tmp;
         cnt++;
     }
-    new_course->numStudents = cnt;
+    courseCurrent->numStudents = cnt;
     ifs.close();
+}
+
+void AddStudentByHand(Course *courseCurrent)
+{
+    cout << "Enter the student ID one by one! (Enter -1 to stop)\n\n";
+
+    string id;
+    StudentCourse *studCourse;
+    int cnt = 0;
+    if (cin >> id && id != "-1")
+    {
+        courseCurrent->studentCourse = new StudentCourse;
+        studCourse = courseCurrent->studentCourse;
+        studCourse->ID = id;
+        cnt++;
+    }
+    while (cin >> id && id != "-1")
+    {
+        studCourse->next = new StudentCourse;
+        StudentCourse *tmpStud = studCourse;
+
+        studCourse = studCourse->next;
+        studCourse->prev = tmpStud;
+
+        studCourse->ID = id;
+        cnt++;
+    }
+    courseCurrent->numStudents = cnt;
+
+    cout << "\nFinishing adding new student!\n";
+}
+
+void AddingCourse(Semester *semCurrent)
+{
+    Course *courseCurrent = AddCourse(semCurrent);
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    system("cls");
+    SetConsoleTextAttribute(h, RED);
+    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+
+    cout << "Choose a method to import students: \n";
+    SetConsoleTextAttribute(h, YELLOW);
+
+    cout << "From a file\n";
+    SetConsoleTextAttribute(h, WHITE);
+    cout << "By typing one by one\n";
+
+    int choice = 1;
+    bool stop = false;
+    while (!stop)
+    {
+        if (_kbhit())
+        {
+            switch (_getch())
+            {
+            case VK_UP:
+                if (choice > 1)
+                    choice--;
+                break;
+            case VK_DOWN:
+                if (choice < 2)
+                    choice++;
+                break;
+            case ENTER:
+                stop = true;
+                break;
+            }
+
+            if (stop)
+                break;
+
+            system("cls");
+            SetConsoleTextAttribute(h, RED);
+            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            SetConsoleTextAttribute(h, WHITE);
+            cout << "Choose a method to import students: \n";
+
+            switch (choice)
+            {
+            case 1:
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "From a file\n";
+
+                SetConsoleTextAttribute(h, WHITE);
+                cout << "By typing one by one\n";
+                break;
+
+            case 2:
+                cout << "From a file\n";
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "By typing one by one\n";
+                SetConsoleTextAttribute(h, WHITE);
+                break;
+            }
+        }
+    }
+    switch (choice)
+    {
+    case 1:
+        cout << "You chose to import student from a file!\n";
+        ImportStudent(courseCurrent);
+        break;
+    case 2:
+        cout << "You're adding student by hand!\n";
+        AddStudentByHand(courseCurrent);
+        break;
+    }
+
+    cout << "\nDo you want to add a new course to this semester? (Y/N)";
+    char ch;
+    cin >> ch;
+    while (ch != 'Y' || ch != 'y' || ch != 'N' || ch != 'n')
+    {
+        cout << "Invalid respond, enter again!";
+        cin >> ch;
+    }
+
+    if (ch == 'Y' || ch == 'y')
+        AddingCourse(semCurrent);
+    return;
+}
+
+//! when merge, change to yearHead
+void Interface_New_Sem(Semester *&semHead)
+{
+    Semester *semCurrent = AddSemester(semHead);
+    AddingCourse(semCurrent);
+    //? Add another semester???
 }

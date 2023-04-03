@@ -6,6 +6,14 @@
 #include <windows.h>
 #include <conio.h>
 
+#define RED 4
+#define YELLOW 6
+#define WHITE 7
+
+#define VK_UP 72
+#define VK_DOWN 80
+#define ENTER 13
+
 using namespace std;
 
 struct Account

@@ -28,9 +28,9 @@ void initModify(Semester *&semHead)
     cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
 
     cout << s << "\n";
-    SetConsoleTextAttribute(h, 6);
+    SetConsoleTextAttribute(h, YELLOW);
     cout << s1 << "<<--\n";
-    SetConsoleTextAttribute(h, 7);
+    SetConsoleTextAttribute(h, WHITE);
     cout << s2 << "\n";
     cout << s3 << "\n";
     cout << s4 << "\n";
@@ -46,12 +46,12 @@ void initModify(Semester *&semHead)
             switch (_getch())
             {
             //? Up arrow
-            case 72:
+            case VK_UP:
                 if (opt > 1)
                     opt--;
                 break;
             //? Down arrow
-            case 80:
+            case VK_DOWN:
                 if (opt < 5)
                     opt++;
                 break;
@@ -61,7 +61,7 @@ void initModify(Semester *&semHead)
                 cout << "Quiting!";
                 break;
             //? Enter
-            case 13:
+            case ENTER:
                 stop = true;
                 cout << "You have chosen to ";
                 switch (opt)
@@ -89,16 +89,18 @@ void initModify(Semester *&semHead)
             }
             if (stop)
                 break;
+            SetConsoleTextAttribute(h, RED);
             cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            SetConsoleTextAttribute(h, WHITE);
             switch (opt)
             {
             case 1:
                 cout << s << "\n";
 
-                SetConsoleTextAttribute(h, 6);
+                SetConsoleTextAttribute(h, YELLOW);
                 cout << s1 << "<<--\n";
 
-                SetConsoleTextAttribute(h, 7);
+                SetConsoleTextAttribute(h, WHITE);
                 cout << s2 << "\n";
                 cout << s3 << "\n";
                 cout << s4 << "\n";
@@ -108,10 +110,10 @@ void initModify(Semester *&semHead)
                 cout << s << "\n";
                 cout << s1 << "\n";
 
-                SetConsoleTextAttribute(h, 6);
+                SetConsoleTextAttribute(h, YELLOW);
                 cout << s2 << "<<--\n";
 
-                SetConsoleTextAttribute(h, 7);
+                SetConsoleTextAttribute(h, WHITE);
                 cout << s3 << "\n";
                 cout << s4 << "\n";
                 cout << s5 << "\n";
@@ -121,10 +123,10 @@ void initModify(Semester *&semHead)
                 cout << s1 << "\n";
                 cout << s2 << "\n";
 
-                SetConsoleTextAttribute(h, 6);
+                SetConsoleTextAttribute(h, YELLOW);
                 cout << s3 << "<<--\n";
 
-                SetConsoleTextAttribute(h, 7);
+                SetConsoleTextAttribute(h, WHITE);
                 cout << s4 << "\n";
                 cout << s5 << "\n";
                 break;
@@ -134,10 +136,10 @@ void initModify(Semester *&semHead)
                 cout << s2 << "\n";
                 cout << s3 << "\n";
 
-                SetConsoleTextAttribute(h, 6);
+                SetConsoleTextAttribute(h, YELLOW);
                 cout << s4 << "<<--\n";
 
-                SetConsoleTextAttribute(h, 7);
+                SetConsoleTextAttribute(h, WHITE);
                 cout << s5 << "\n";
                 break;
             case 5:
@@ -147,10 +149,10 @@ void initModify(Semester *&semHead)
                 cout << s3 << "\n";
                 cout << s4 << "\n";
 
-                SetConsoleTextAttribute(h, 6);
+                SetConsoleTextAttribute(h, YELLOW);
                 cout << s5 << "<<--\n";
 
-                SetConsoleTextAttribute(h, 7);
+                SetConsoleTextAttribute(h, WHITE);
                 break;
             }
         }

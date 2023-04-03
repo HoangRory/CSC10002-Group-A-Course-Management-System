@@ -144,20 +144,151 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
 
 void Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
 {
-    std::cout << "Option: \n1. Change your password.\n2. Logout\n3. Quit\nYour choice: ";
-    int check = -1;
-    std::cin >> check;
-    if (check == 1)
-        ChangePass(accHead, user, pass);
-    else if (check == 2)
-        LoggingIn(accHead, user, pass, role);
-    else
+    bool stop = false;
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, WHITE);
+    system("cls");
+    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+
+    cout << "Option:\n";
+    SetConsoleTextAttribute(h, YELLOW);
+    cout << "Change your password\n";
+    SetConsoleTextAttribute(h, WHITE);
+    cout << "Logout\nQuit\n";
+
+    int opt = 1;
+
+    while (!stop)
     {
+        if (_kbhit())
+        {
+            switch (_getch())
+            {
+            case VK_UP:
+                if (opt > 1)
+                    opt--;
+                break;
+            case VK_DOWN:
+                if (opt < 3)
+                    opt++;
+                break;
+            case ENTER:
+                stop = true;
+                break;
+            }
+            if (stop)
+                break;
+
+            system("cls");
+            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            switch (opt)
+            {
+            case 1:
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "Change your password\n";
+
+                SetConsoleTextAttribute(h, WHITE);
+                cout << "Logout\nQuit\n";
+                break;
+            case 2:
+                cout << "Change your password\n";
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "Logout\n";
+
+                SetConsoleTextAttribute(h, WHITE);
+                cout << "Quit\n";
+                break;
+            case 3:
+                cout << "Change your password\n";
+                cout << "Logout\n";
+                SetConsoleTextAttribute(h, YELLOW);
+
+                cout << "Quit\n";
+                SetConsoleTextAttribute(h, WHITE);
+                break;
+            }
+        }
+    }
+
+    switch (opt)
+    {
+    case 1:
+        ChangePass(accHead, user, pass);
+        break;
+    case 2:
+        cout << "Returning to login page";
+        for (int i = 0; i < 8; i++)
+        {
+            cout << ".";
+            Sleep(1000);
+        }
+        system("cls");
+        LoggingIn(accHead, user, pass, role);
+        break;
+    case 3:
         std::cout << "Thanks for ur usage!";
         return;
     }
-
     Main_interface(accHead, user, pass, role);
+}
+
+void AccountAlteration(Account, *accHead, std::string &user, std::string &pass, int &role)
+{
+    HANDEL h = GetStdHandle(STD_OUTPUT_HANDLE);
+    bool stop = false;
+    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+    SetConsoleTextAttribute(h, YELLOW);
+    cout << "Manage your account or Logout\n";
+    SetConsoleTextAttribute(h, WHITE);
+    cout << "Contiune to use the program\n";
+    while (!stop)
+    {
+        if (_kbhit())
+        {
+            switch (_getch())
+            {
+            case VK_UP:
+                if (opt > 1)
+                    opt--;
+                break;
+            case VK_DOWN:
+                if (opt < 2)
+                    opt++;
+                break;
+            case ENTER:
+                stop = true;
+                break;
+            }
+            if (stop)
+                break;
+            system("cls");
+            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            switch (opt)
+            {
+            case 1:
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "Manage your account or Logout\n";
+                SetConsoleTextAttribute(h, WHITE);
+                cout << "Contiune to use the program\n";
+                break;
+            case 2:
+                SetConsoleTextAttribute(h, WHITE);
+                cout << "Manage your account or Logout\n";
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "Contiune to use the program\n";
+                break;
+            }
+        }
+    }
+    switch (opt)
+    {
+    case 1:
+        Main_interface(accHead, user, pass, role);
+        break;
+    case 2:
+        return;
+        break;
+    }
 }
 
 // int main()

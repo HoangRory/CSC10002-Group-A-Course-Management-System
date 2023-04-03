@@ -18,6 +18,7 @@ int main()
     // cout << "Logged in!\n";
     // cout << "Add semester: \n";
     viewCourse(semHead);
+    system("pause");
     // AddSemester(semHead);
     // cout << "Do you want to modify the semester? (Y/N): ";
     // char ch;

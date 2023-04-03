@@ -45,7 +45,7 @@ void viewCourse(Semester *semHead)
          << setw(15) << " Course ID   | "
          << setw(25) << "    Course name        | "
          << setw(21) << "Teacher name   | " << '\n';
-
+         
     for (int i = 0; i < 88; i++)
         cout << '=';
     cout << "\n";

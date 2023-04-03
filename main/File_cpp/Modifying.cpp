@@ -1,8 +1,38 @@
-#include "../Header/Semester.h"
+#include "Header/Semester.h"
 
-// todo: Can choose to remain some information
-void modifyCourse(Semester *semHead, string id)
+//! Merge: change to yearHead
+void modifySemester(Semester *semHead, int year, int sem)
 {
+    cout << "\n";
+
+    Semester *sem_cur = semHead;
+    Course *cour_cur;
+
+    while (sem_cur)
+    {
+        if (sem_cur->Year == year && sem_cur->No == sem)
+        {
+            cout << "Semester's new start date: ";
+            cin >> sem_cur->startDate;
+
+            cout << "Semester's end date: ";
+            cin >> sem_cur->endDate;
+
+            cout << "Semster has been updated\n";
+            Sleep(1000);
+            return;
+        }
+        sem_cur = sem_cur->next;
+    }
+}
+// todo: Can choose to remain some information
+void modifyCourse(Semester *semHead)
+{
+    viewCourse(semHead);
+    string course_id;
+
+    cin >> course_id;
+
     cout << "\n";
     cout << "\nModifying course " << id << "\n\n";
     Semester *sem_cur = semHead;
@@ -46,31 +76,17 @@ void modifyCourse(Semester *semHead, string id)
         }
         sem_cur = sem_cur->next;
     }
-}
-
-void modifySemester(Semester *semHead, int year, int sem)
-{
-    cout << "\n";
-
-    Semester *sem_cur = semHead;
-    Course *cour_cur;
-
-    while (sem_cur)
+    cout << "Course not found!\nRety? (Y/N)";
+    char ch;
+        cin >> ch;
+    while (ch != 'Y' || ch != 'y' || ch != 'N' || ch != 'n')
     {
-        if (sem_cur->Year == year && sem_cur->No == sem)
-        {
-            cout << "Semester's new start date: ";
-            cin >> sem_cur->startDate;
-
-            cout << "Semester's end date: ";
-            cin >> sem_cur->endDate;
-
-            cout << "Semster has been updated\n";
-            Sleep(1000);
-            return;
-        }
-        sem_cur = sem_cur->next;
+        cout << "Invalid respond, enter again!";
+        cin >> ch;
     }
+
+    if (ch == 'Y' || ch == 'y')
+        modifyCourse(semHead);
 }
 
 void deleteCourse(Semester *semHead, string id)
@@ -104,7 +120,7 @@ void deleteCourse(Semester *semHead, string id)
     Sleep(1000);
 }
 
-void addStudent(Semester *semHead, string id)
+void addStudent(Semester *semHead, string course_id = "")
 {
     Semester *sem_cur = semHead;
     Course *cour_cur;
@@ -190,19 +206,71 @@ void removeStudent(Semester *semHead, string id)
     }
 }
 
-void addRemoveStudent(Semester *semHead, string id)
+void addRemoveStudent(Semester *semCurrent)
 {
-    cout << "1. Add student\n2. Remove student\n";
-    int choice;
-    cout << "==> Enter your choice: ";
-    cin >> choice;
+    bool stop = false;
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleTextAttribute(h, RED);
+    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+
+    SetConsoleTextAttribute(h, YELLOW);
+    cout << "Add student to a course\n";
+    SetConsoleTextAttribute(h, WHITE);
+    cout << "Remove student from a course\n";
+    int choice = 1;
+
+    while (!stop)
+    {
+        if (_kbhhit())
+        {
+            switch (_getch())
+            {
+            case VK_UP:
+                if (choice > 1)
+                    choice--;
+                break;
+            case VK_DOWN:
+                if (choice < 2)
+                    choice++;
+                break;
+            case ENTER:
+                stop = true;
+                break;
+            }
+            if (stop)
+                break;
+            system("cls");
+
+            SetConsoleTextAttribute(h, RED);
+            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            SetConsoleTextAttribute(h, WHITE);
+            switch (choice)
+            {
+            case 1:
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "Add student to a course\n";
+                SetConsoleTextAttribute(h, WHITE);
+                cout << "Remove student from a course\n";
+                break;
+            case 2:
+                cout << "Add student to a course\n";
+                SetConsoleTextAttribute(h, YELLOW);
+                cout << "Remove student from a course\n";
+                SetConsoleTextAttribute(h, WHITE);
+                break;
+            }
+        }
+    }
+    cout << "You chose to " << (choice == 1 ? "add" : "remove") << " student from a course.\n";
     switch (choice)
     {
     case 1:
-        addStudent(semHead, id);
+        addStudent(semCurrent);
         break;
     case 2:
-        removeStudent(semHead, id);
+        removeStudent(semCurrent);
         break;
     }
+    return;
 }
