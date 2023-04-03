@@ -4,9 +4,9 @@ bool checkFile(string name);
 Year* findYear(int yearStart, Year* YrHead);
 Semester* findSemester (int no_smt, Semester *SmtHead);
 Course* findCourse(string nameOrID, Course *CourseHead);
-ScoreBoardCourse find_SBC(string ID, StudentCourse *stuCourseHead);
 
 string createNameFile(int year, int no_smt, string course, string file, string type);
+// ScoreBoardCourse* find_SBC(string ID, StudentCourse *stuCourseHead); 
 
 void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
@@ -20,7 +20,7 @@ void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);
 //task 22
 Student* findStudentbyID(string IDStudent, Year *Yhead);
 Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead);
-ScoreBoardCourse find_SBC(string ID, StudentCourse *stuCourseHead); 
+StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead);
 void viewScoreBoardCourse(ScoreBoardCourse SCB);
 void enterMark(double &Mark);
 bool updateMark(ScoreBoardCourse &SCB, string Selection);

@@ -150,14 +150,15 @@ Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead)
     return nullptr;
 }
 
-ScoreBoardCourse find_SBC(string ID, StudentCourse *stuCourseHead) 
+StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead) 
 {
     while(stuCourseHead) 
     {
         if (stuCourseHead->ID == ID) 
-            return stuCourseHead->ScoreBoardCourse;
+            return stuCourseHead;
         stuCourseHead = stuCourseHead->next;
     }
+    return nullptr;
 }
 
 void viewScoreBoardCourse(ScoreBoardCourse SCB) 
@@ -170,6 +171,7 @@ void viewScoreBoardCourse(ScoreBoardCourse SCB)
 
 void enterMark(double &Mark) 
 {
+    // Mark = 2;
     cin >> Mark;
     while (Mark < 0 || Mark > 10) 
     {
@@ -203,19 +205,19 @@ bool updateMark(ScoreBoardCourse &SCB, string Selection) {
 void updateSCB (string ID, StudentCourse *stuCourseHead) 
 {
     system ("cls");
-    ScoreBoardCourse checkSCB = find_SBC(ID, stuCourseHead);
+    StudentCourse *stuUpdate = find_SBC(ID, stuCourseHead);
     cout << "| " << setw(15) << left << "1.MidMark ";
     cout << "| " << setw(15) << left << "2.FinalMark";
     cout << "| " << setw(15) << left << "3.TotalMark ";
     cout << "| " << setw(15) << left << "4.OtherMark" << endl;
-    viewScoreBoardCourse(checkSCB);
+    viewScoreBoardCourse(stuUpdate->ScoreBoardCourse);
     cout << "Select the mark you want to update. (eg: Enter 1 or MidMark to update MidMark)"
          << "Or enter X to end to update.";
     string Selection = "";
     getline(cin,Selection);
     if(Selection == "X") return;
-    if(updateMark(checkSCB, Selection)) 
-    {
+
+    if(updateMark(stuUpdate->ScoreBoardCourse, Selection)){
         cout << "Do you want to update more?"
                 << "Selecion: Y (Yes) to continue or press any key to end to update.";
     } else {
@@ -223,7 +225,8 @@ void updateSCB (string ID, StudentCourse *stuCourseHead)
              << "Selecion: Y (Yes) to re-enter or press any key to end to update.";
     }
     cin >> Selection;
-    if (Selection == "Y") 
+    cin.ignore();
+    if (Selection != "Y") return;
     updateSCB(ID,stuCourseHead);
 }
 int view_chooseOption(string *arrOption, int nOption) {
@@ -284,7 +287,7 @@ void UpdateStudentResult(Year *Yhead)
     arrOption[2] = "3. To end to update.";
 
     int option = view_chooseOption(arrOption,nOption);
-
+    // int option = 0;
     delete []arrOption;
 
     system ("cls");
@@ -298,11 +301,10 @@ void UpdateStudentResult(Year *Yhead)
         string *arrOption = new string [nOption];
         arrOption[0] = "-To re-enter again.";
         arrOption[1] = "-To end to update";
-        //để khi nhập sai có thể báo ra
+        // để khi nhập sai có thể báo ra
 
         cout << "Please enter ID: ";
         getline(cin, IDStudent);
-        cin.ignore();
         Student *checkStudent = findStudentbyID(IDStudent, Yhead);
         while (!checkStudent) 
         {
@@ -321,7 +323,6 @@ void UpdateStudentResult(Year *Yhead)
         //in ra các khóa của học sinh đó (trong kì đó), cho user nhập tên hoặc ID của khóa học để ra bản điểm để chỉnh sửa
         cout << "Please enter name course or ID course:"; 
         getline(cin, CourseName);
-        cin.ignore();
         
         Course *checkCourse = findCoursebyName_ID(CourseName,Yhead);
         while (!checkCourse) 
@@ -337,6 +338,7 @@ void UpdateStudentResult(Year *Yhead)
             }
             Course *checkCourse = findCoursebyName_ID(CourseName,Yhead);
         }
+        delete []arrOption;
         updateSCB(IDStudent, checkCourse->studentCourse);
         return;
     }
@@ -346,10 +348,13 @@ void UpdateStudentResult(Year *Yhead)
     if (1 == option) 
     {
         system ("cls");
+        nOption = 2;
+        string *arrOption = new string [nOption];
+        arrOption[0] = "-To re-enter again.";
+        arrOption[1] = "-To end to update";
         //in ra các khóa của học sinh đó (trong kì đó), cho user nhập tên hoặc ID của khóa học để ra bản điểm để chỉnh sửa
         cout << "Please enter name course or ID course:"; 
         getline(cin, CourseName);
-        cin.ignore();
         Course *checkCourse = findCoursebyName_ID(CourseName,Yhead);
         while (!checkCourse) 
         {
@@ -368,7 +373,6 @@ void UpdateStudentResult(Year *Yhead)
         system ("cls");
         cout << "Please enter ID: ";
         getline(cin, IDStudent);
-        cin.ignore();
         Student *checkStudent = findStudentbyID(IDStudent, Yhead);
         while (!checkStudent) 
         {
@@ -383,6 +387,7 @@ void UpdateStudentResult(Year *Yhead)
             getline(cin, IDStudent);
             Student *checkStudent = findStudentbyID(IDStudent, Yhead);
         }
+        delete []arrOption;
         updateSCB(IDStudent, checkCourse->studentCourse);
         return;
     }
@@ -447,7 +452,7 @@ int CaculateAmountCourseOfClass(CourseStudent *courseHead)
 }
 
 void importSCB_ofStudent(double *&SCB, CourseStudent *courseHead, Student *studentHead) {
-    ScoreBoardCourse scb_of_course;
+    StudentCourse *tmp;
     CourseStudent *courseCheck;
     int i = 0;
     while (courseHead) 
@@ -455,8 +460,8 @@ void importSCB_ofStudent(double *&SCB, CourseStudent *courseHead, Student *stude
         courseCheck = checkExistence_OfCourse(courseHead,studentHead->course);
         if (courseCheck) 
         {
-            scb_of_course = find_SBC(studentHead->ID, courseHead->course->studentCourse);
-                SCB[i++] = scb_of_course.finalMark;
+            tmp = find_SBC(studentHead->ID, courseHead->course->studentCourse);
+                SCB[i++] = tmp->ScoreBoardCourse.finalMark;
         } else 
             SCB[i++] = -1; // -1 là hs này không học môn đó
         courseHead = courseHead->next;
@@ -558,10 +563,10 @@ int main() {
     yr->NoSemester->course->TeacherName = "Dinh Ba Tien";
     readAllFileCourses(yr);
     StudentCourse *stuHead = yr->NoSemester->course->studentCourse;
-    while (stuHead) {
-        cout << stuHead->ID << endl;
-        stuHead = stuHead->next;
-    }
+    // while (stuHead) {
+    //     cout << stuHead->ID << endl;
+    //     stuHead = stuHead->next;
+    // }
 
     yr->Class = new Class;
     yr->Class->StudentClass = new Student;
@@ -580,9 +585,9 @@ int main() {
     yr->Class->StudentClass->next->accStudent->firstName = "A";
     yr->Class->StudentClass->next->accStudent->lastName = "Nguyen Van";
 
+    UpdateStudentResult(yr);
     viewScoreboardClass(yr->Class);
-    UpdateStudentResult(yr);
-    UpdateStudentResult(yr);
+    // UpdateStudentResult(yr);
     delete yr->Class->StudentClass->next->accStudent;
     delete yr->Class->StudentClass->accStudent;
     delete yr->Class->StudentClass->next->course;
