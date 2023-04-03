@@ -57,6 +57,7 @@ struct Class
     string Name; // eg 22CLC02
     Student *StudentClass;
     Class *next = nullptr, *prev = nullptr;
+    int setOfClass = 0; //phân chia từng lớp
 };
 
 // hết -1 một môn, -2 kì, -3 năm

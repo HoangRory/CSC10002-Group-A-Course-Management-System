@@ -1,31 +1,36 @@
-#include "proto.h"
-#include "beginningofyear.h"
+#include "../Header/newYearClass.h"
 
 void createSchoolYear(Year *&curYear, int yearStart) {
     Year *newYear = new Year;
     newYear->yearStart = yearStart;
 
     // Add the new year to the beginning of the linked list of years
-    newYear->next = curYear;
-    curYear = newYear;
+    newYear->next = curYear; 
+    curYear = newYear; //cur point to the head (current year)
 
     // Create a new folder for the year
- // Create a new directory with the name of yearStart
-    string folderName = to_string(yearStart) + "_" + to_string(yearStart + 1);
-    const int dir_err = mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    if (dir_err == -1) {
-        cerr << "Error creating directory: " << strerror(errno) << endl;
-    } else {
-        cout << "Directory created successfully!" << endl;
-    }
+    // Create a new directory with the name of yearStart
+
+    string out_year = to_string(yearStart) + '_' + to_string(yearStart + 1);
+    string outPath = "Data_file\\" + out_year;
+    // outPath += "in4smt.txt";
+    string tmp_sys = "mkdir " + outPath;
+    const char *cstr_path = tmp_sys.c_str();
+    system(cstr_path);
 }
 
-void createClasses(Class *&Classes, string preClasses) {
+void createClasses(Class *&Classes, int &setOfClass, string preClasses, ofstream &outFile) {
     Class *newClass = new Class;
     newClass->Name = preClasses;
+    newClass->setOfClass = setOfClass;
+
     // add the new class to the beginning of the linked list of classes
     newClass->next = Classes; 
     Classes = newClass; //classes point to the head of the linked list
+
+    //write the new class to the output file
+    outFile << newClass->setOfClass << endl;
+    outFile << newClass->Name << endl;
 }
 
 bool checkClass(Class *curClass, string ClassID) {
@@ -47,38 +52,6 @@ bool checkStudent(Year *schoolYear, string StudentID) {
     }
 
     return false;
-}
-
-void inputStudent(Class *classPtr) { //input information of a student (add one by one)
-    string studentID;
-    string firstName;
-    string lastName;
-    string gender;
-    string dateofBirth;
-    string socialID;
-
-    cout << "- Student information -\n";
-    cout << "Student ID: ";
-    getline(cin, studentID);
-    //cin.ignore();
-    cout << "First Name: ";
-    getline(cin, firstName);
-    //cin.ignore();
-    cout << "Last Name: ";
-    getline(cin, lastName);
-    //cin.ignore();
-    cout << "Gender: (M: male   F: female)";
-    cin >> gender;
-    //cin.ignore();
-    cout << "Date of Birth: (yy/mm/dd)";
-    getline(cin, dateofBirth);
-    //cin.ignore();
-    cout << "Social ID: ";
-    getline(cin, socialID);
-    //cin.ignore();
-
-    add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
-
 }
 
 void add1stYearStudents(Class *addStudent, string studentID, string firstName, string lastName, string gender, string dateofBirth, string socialID) {
@@ -127,6 +100,38 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
     cout << "Student " << newStudent->accStudent->firstName << " " << newStudent->accStudent->lastName << " has been added to class " << curClass->Name << endl;
 }
 
+void inputStudent(Class *classPtr) { //input information of a student (add one by one)
+    string studentID;
+    string firstName;
+    string lastName;
+    string gender;
+    string dateofBirth;
+    string socialID;
+
+    cout << "- Student information -\n";
+    cout << "Student ID: ";
+    getline(cin, studentID);
+    //cin.ignore();
+    cout << "First Name: ";
+    getline(cin, firstName);
+    //cin.ignore();
+    cout << "Last Name: ";
+    getline(cin, lastName);
+    //cin.ignore();
+    cout << "Gender: (M: male   F: female)";
+    cin >> gender;
+    //cin.ignore();
+    cout << "Date of Birth: (dd/mm/yyyy)";
+    getline(cin, dateofBirth);
+    //cin.ignore();
+    cout << "Social ID: ";
+    getline(cin, socialID);
+    //cin.ignore();
+
+    add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
+
+}
+
 void importStudent(Class *classPtr, string studentList) {
     //check if the file exits
     ifstream file(studentList.c_str());
@@ -153,7 +158,7 @@ void importStudent(Class *classPtr, string studentList) {
             i++;
         }
 
-        //check ì the line have the correct num of fields
+        //check if the line have the correct num of fields
         if (i != 5) {
             cout << "Invalid line format in CSV file. Please import another.\n";
         }
@@ -170,4 +175,27 @@ void importStudent(Class *classPtr, string studentList) {
         add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
     }
     cout << "Imported " << lineCount << " students to class " << classPtr->Name << ". \n";
+}
+
+
+void addStudent1_CSV() {
+    int choice;
+    cout << "Add new 1st year students to 1st-year classes.\n";
+    cout << "1. Add one by one.\n2. Import CSV file.\n0. Exit.\nEnter your choice: ";
+    cin >> choice;
+    if (choice == 0) return;
+    else {
+        Class *classPtr;
+        cout << "Enter class name: ";
+        getline(cin, classPtr->Name);
+        if (choice == 1){
+            inputStudent(classPtr);
+        }
+        else {
+            string studentList;
+            cout << "Enter the path to the file: ";
+            getline(cin, studentList);
+            importStudent(classPtr, studentList);
+        }
+    }
 }
