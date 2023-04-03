@@ -77,6 +77,7 @@ void WriteAccount(Account *accHead)
 
 void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
 {
+    system("cls");
     std::cout << "\nUsername: ";
     std::cin >> user;
     std::cout << "Password: ";
@@ -97,23 +98,22 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
     if (!loggedIn)
     {
         std::cout << "Wrong username or password\n";
-        char check;
-        std::cout << "Try again? (Y/N) ";
-        std::cin >> check;
-        if (check == 'Y')
-            LoggingIn(accHead, user, pass, role);
-        else
-            return;
+        std::cout << "Try again?\n\n\n";
+        system("pause");
+        LoggingIn(accHead, user, pass, role);
+        return;
     }
     role = cur->role;
     std::cout << "\nLogged in successfully!!\n";
     std::cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!\n";
-    Main_interface(accHead, user, pass, role);
+    return;
+    // Main_interface(accHead, user, pass, role);
+    // AccountAlteration(accHead, user, pass, role);
 }
 
 void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
-    std::cout << "Enter your current password: ";
+    std::cout << "\nEnter your current password: ";
     std::string tmp = "";
     std::cin >> tmp;
     while (tmp != pass)
@@ -122,6 +122,8 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
         std::cin >> tmp;
     }
     bool assem = true;
+    system("cls");
+    cout << "\n";
     std::cout << "Account confirm, enter your new password: ";
     do
     {
@@ -140,118 +142,47 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     cur->password = tmp;
     WriteAccount(accHead);
     std::cout << "\nChange password successfully.";
+    return;
 }
 
 void Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     bool stop = false;
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, WHITE);
-    system("cls");
-    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
 
-    cout << "Option:\n";
-    SetConsoleTextAttribute(h, YELLOW);
-    cout << "Change your password\n";
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
     SetConsoleTextAttribute(h, WHITE);
-    cout << "Logout\nQuit\n";
 
     int opt = 1;
+    string *ListOption = new string[4];
+    ListOption[0] = "Options:\n";
+    ListOption[1] = "- Change your password\n";
+    ListOption[2] = "- Logout              \n";
+    ListOption[3] = "- Quit                \n";
 
+    for (int i = 0; i < 4; i++)
+    {
+        if (i == opt)
+        {
+            SetConsoleTextAttribute(h, YELLOW);
+            cout << ListOption[i];
+            SetConsoleTextAttribute(h, WHITE);
+        }
+        else
+            cout << ListOption[i];
+    }
     while (!stop)
     {
         if (_kbhit())
         {
             switch (_getch())
             {
-            case VK_UP:
-                if (opt > 1)
+            case UP:
+                if (opt > 0)
                     opt--;
                 break;
-            case VK_DOWN:
-                if (opt < 3)
-                    opt++;
-                break;
-            case ENTER:
-                stop = true;
-                break;
-            }
-            if (stop)
-                break;
-
-            system("cls");
-            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-            switch (opt)
-            {
-            case 1:
-                SetConsoleTextAttribute(h, YELLOW);
-                cout << "Change your password\n";
-
-                SetConsoleTextAttribute(h, WHITE);
-                cout << "Logout\nQuit\n";
-                break;
-            case 2:
-                cout << "Change your password\n";
-                SetConsoleTextAttribute(h, YELLOW);
-                cout << "Logout\n";
-
-                SetConsoleTextAttribute(h, WHITE);
-                cout << "Quit\n";
-                break;
-            case 3:
-                cout << "Change your password\n";
-                cout << "Logout\n";
-                SetConsoleTextAttribute(h, YELLOW);
-
-                cout << "Quit\n";
-                SetConsoleTextAttribute(h, WHITE);
-                break;
-            }
-        }
-    }
-
-    switch (opt)
-    {
-    case 1:
-        ChangePass(accHead, user, pass);
-        break;
-    case 2:
-        cout << "Returning to login page";
-        for (int i = 0; i < 8; i++)
-        {
-            cout << ".";
-            Sleep(1000);
-        }
-        system("cls");
-        LoggingIn(accHead, user, pass, role);
-        break;
-    case 3:
-        std::cout << "Thanks for ur usage!";
-        return;
-    }
-    Main_interface(accHead, user, pass, role);
-}
-
-void AccountAlteration(Account, *accHead, std::string &user, std::string &pass, int &role)
-{
-    HANDEL h = GetStdHandle(STD_OUTPUT_HANDLE);
-    bool stop = false;
-    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-    SetConsoleTextAttribute(h, YELLOW);
-    cout << "Manage your account or Logout\n";
-    SetConsoleTextAttribute(h, WHITE);
-    cout << "Contiune to use the program\n";
-    while (!stop)
-    {
-        if (_kbhit())
-        {
-            switch (_getch())
-            {
-            case VK_UP:
-                if (opt > 1)
-                    opt--;
-                break;
-            case VK_DOWN:
+            case DOWN:
                 if (opt < 2)
                     opt++;
                 break;
@@ -261,25 +192,113 @@ void AccountAlteration(Account, *accHead, std::string &user, std::string &pass, 
             }
             if (stop)
                 break;
+
             system("cls");
-            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-            switch (opt)
+            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+
+            cout << "Account Options:\n";
+            for (int i = 0; i < 3; i++)
             {
-            case 1:
-                SetConsoleTextAttribute(h, YELLOW);
-                cout << "Manage your account or Logout\n";
-                SetConsoleTextAttribute(h, WHITE);
-                cout << "Contiune to use the program\n";
-                break;
-            case 2:
-                SetConsoleTextAttribute(h, WHITE);
-                cout << "Manage your account or Logout\n";
-                SetConsoleTextAttribute(h, YELLOW);
-                cout << "Contiune to use the program\n";
-                break;
+                if (i == opt)
+                {
+                    SetConsoleTextAttribute(h, YELLOW);
+                    cout << ListOption[i];
+                    SetConsoleTextAttribute(h, WHITE);
+                }
+                else
+                    cout << ListOption[i];
             }
         }
     }
+    delete[] ListOption;
+
+    switch (opt)
+    {
+    case 0:
+        ChangePass(accHead, user, pass);
+        break;
+    case 1:
+        cout << "Returning to login page";
+        for (int i = 0; i < 8; i++)
+        {
+            cout << ".";
+            Sleep(200);
+        }
+        system("cls");
+        LoggingIn(accHead, user, pass, role);
+        break;
+    case 2:
+        std::cout << "Thanks for ur usage!\n\n";
+        return;
+    }
+    Main_interface(accHead, user, pass, role);
+}
+
+void AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
+{
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    bool stop = false;
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+
+    int opt = 1;
+    string *ListOption = new string[3];
+    ListOption[0] = "Account Alteration\n";
+    ListOption[1] = "- Manage your account or Logout\n";
+    ListOption[2] = "- Continue to use the program  \n";
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (i == opt)
+        {
+            SetConsoleTextAttribute(h, YELLOW);
+            cout << ListOption[i];
+            SetConsoleTextAttribute(h, WHITE);
+        }
+        else
+            cout << ListOption[i];
+    }
+    while (!stop)
+    {
+        if (_kbhit())
+        {
+            switch (_getch())
+            {
+            case UP:
+                if (opt > 1)
+                    opt--;
+                break;
+            case DOWN:
+                if (opt < 3)
+                    opt++;
+                break;
+            case ENTER:
+                stop = true;
+                break;
+            }
+            if (stop)
+                break;
+            system("cls");
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+            SetConsoleTextAttribute(h, WHITE);
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (i == opt)
+                {
+                    SetConsoleTextAttribute(h, YELLOW);
+                    cout << ListOption[i];
+                    SetConsoleTextAttribute(h, WHITE);
+                }
+                else
+                    cout << ListOption[i];
+            }
+        }
+    }
+    delete[] ListOption;
+
     switch (opt)
     {
     case 1:
@@ -287,17 +306,13 @@ void AccountAlteration(Account, *accHead, std::string &user, std::string &pass, 
         break;
     case 2:
         return;
-        break;
+        // break;
     }
 }
 
-// int main()
-// {
-//     Account *head = nullptr;
-//     ReadAccount(head);
-//     std::string user, pass;
-//     int role;
-//     LoggingIn(head, user, pass, role);
-//     DelAccount(head);
-//     return 0;
-// }
+void LoggingMain(Account *&accHead, string &user, string &pass, int &role)
+{
+    ReadAccount(accHead);
+    LoggingIn(accHead, user, pass, role);
+    AccountAlteration(accHead, user, pass, role);
+}

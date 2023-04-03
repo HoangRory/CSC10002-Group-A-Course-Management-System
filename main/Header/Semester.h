@@ -1,33 +1,39 @@
 #pragma once
-
 #include "proto.h"
 
+//? Add new semester, new course and import student
+Semester *AddSemester(Semester *semHead);
+Course *AddCourse(Semester *semCurrent);
+void ImportStudentFromFile(Course *courseCurrent);
+void AddStudentByHand(Course *courseCurrent);
+void AddingCourse(Semester *semCurrent);
+void Interface_New_Sem(Semester *&semHead);
+
+//? Initialize Modification
+void ShowConsoleCursor(bool showFlag);
+void initModify(Semester *&semHead);
+void RunModify(Semester *&semHead, int opt);
+
+//? Modifying
+void modifySemester(Semester *semHead, int year, int sem);
+void modifyCourse(Semester *semHead, int year);
+void deleteCourse(Semester *semHead, int year);
+void addStudent(Course* courCurrent, string course_id);
+void removeStudent(Course* courCurrent, string course_id);
+void addRemoveStudent(Semester *semHead, int year);
+
+//? Read Semester from file
 void Read_SMT(Semester *&semHead, int y, int smt);
 void Read_multi_SMT(Semester *&semHead, int yr, int num_year, int num_smt);
-void SyncFullName(Semester *semHead, Account *accHead);
 
 void DeleteStudent(StudentCourse *&stud_head);
 void DeleteCourse(Course *&course_head);
 void DeleteSMT(Semester *&semHead);
 
-void OutStudent(StudentCourse *stud_head, ofstream &ofs);
 void OutCourse(Course *course_head, ofstream &ofs);
 void Output(Semester *semHead);
 
-void AddSemester(Semester *semHead);
-void AddCourse(Semester *semHead, Semester *&sem);
-void AddStudent(Course *&new_course, Semester *sem);
-
+//? View Course, Sync name from Account linked list
+void SyncFullName(Semester *semHead, Account *accHead);
 void viewCourse(Semester *semHead);
-void modifyCourse(Semester *semHead, string id);
-void modifySemester(Semester *semHead, int year, int sem);
-
-void addStudent(Semester *semHead, string id);
-void removeStudent(Semester *semHead, string id);
-void addRemoveStudent(Semester *semHead, string id);
-
-void deleteCourse(Semester *semHead, string id);
-
-void initModify(Semester *&semHead);
-void RunModify(Semester *&semHead, int opt);
-void ShowConsoleCursor(bool showFlag);
+void NewSemesterMain(Semester *semHead, int yr, int num_year, num_smt, Account *accHead);

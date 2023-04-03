@@ -112,18 +112,7 @@ void DeleteSMT(Semester *&semHead)
     semHead = nullptr;
 }
 
-void OutStudent(StudentCourse *stud_head, ofstream &ofs)
-{
-    if (!stud_head)
-        return;
-    while (stud_head)
-    {
-        ofs << stud_head->ID << '\n';
-        stud_head = stud_head->next;
-    }
-    ofs << -1;
-    return;
-}
+
 void OutCourse(Course *course_head, ofstream &ofs)
 {
     if (!course_head)
@@ -139,7 +128,6 @@ void OutCourse(Course *course_head, ofstream &ofs)
             << '\n'
             << course_head->Day << '\n'
             << course_head->Session << '\n';
-        OutStudent(course_head->studentCourse, ofs);
         course_head = course_head->next;
     }
 }

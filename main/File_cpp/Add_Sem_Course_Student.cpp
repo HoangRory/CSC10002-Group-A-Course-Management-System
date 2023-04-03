@@ -23,7 +23,7 @@ Semester *AddSemester(Semester *semHead)
             cin >> check;
             if (check == 'Y' || check == 'y')
                 modifySemester(semHead, Y, N);
-            return;
+            return nullptr;
         }
         prev = sem_cur;
         if (!sem_cur->next)
@@ -53,7 +53,7 @@ Semester *AddSemester(Semester *semHead)
     system(cstr_path);
     // AddCourse(semHead, sem_cur);
 
-    // return sem_cur;
+    return sem_cur;
 }
 
 //! Write a course modification function here!!!
@@ -62,7 +62,7 @@ Course *AddCourse(Semester *semCurrent)
     cout << "\nEnter the course ID: ";
     string id;
     cin >> id;
-    Course *courseCurrent = semCurrent, *prev = nullptr;
+    Course *courseCurrent = semCurrent->course, *prev = nullptr;
     while (courseCurrent)
     {
         if (courseCurrent->CourseID == id)
@@ -76,8 +76,8 @@ Course *AddCourse(Semester *semCurrent)
                 cin >> check;
             }
             if (check == 'Y' || check == 'y')
-                modifyCourse(semCurrent, id);
-            return;
+                modifyCourse(semCurrent);
+            return nullptr;
         }
         prev = courseCurrent;
         courseCurrent = courseCurrent->next;
@@ -114,7 +114,6 @@ Course *AddCourse(Semester *semCurrent)
 
     return courseCurrent;
 }
-
 void ImportStudentFromFile(Course *courseCurrent)
 {
     string str = courseCurrent->Name;
@@ -146,20 +145,21 @@ void ImportStudentFromFile(Course *courseCurrent)
         studCourse = courseCurrent->studentCourse;
         studCourse->ID = tmp;
         cnt++;
-    }
-    while (ifs >> tmp && tmp != '\n')
-    {
-        studCourse->next = new StudentCourse;
-        StudentCourse *tmpStud = studCourse;
-        studCourse = studCourse->next;
-        studCourse->prev = tmpStud;
-        studCourse->ID = tmp;
-        cnt++;
+        while (ifs >> tmp)
+        {
+            if (tmp == "\n")
+                break;
+            studCourse->next = new StudentCourse;
+            StudentCourse *tmpStud = studCourse;
+            studCourse = studCourse->next;
+            studCourse->prev = tmpStud;
+            studCourse->ID = tmp;
+            cnt++;
+        }
     }
     courseCurrent->numStudents = cnt;
     ifs.close();
 }
-
 void AddStudentByHand(Course *courseCurrent)
 {
     cout << "Enter the student ID one by one! (Enter -1 to stop)\n\n";
@@ -167,29 +167,32 @@ void AddStudentByHand(Course *courseCurrent)
     string id;
     StudentCourse *studCourse;
     int cnt = 0;
-    if (cin >> id && id != "-1")
+    if (cin >> id)
     {
+        if (id == "-1")
+            return;
         courseCurrent->studentCourse = new StudentCourse;
         studCourse = courseCurrent->studentCourse;
         studCourse->ID = id;
         cnt++;
-    }
-    while (cin >> id && id != "-1")
-    {
-        studCourse->next = new StudentCourse;
-        StudentCourse *tmpStud = studCourse;
+        while (cin >> id)
+        {
+            if (id == "-1")
+                break;
+            studCourse->next = new StudentCourse;
+            StudentCourse *tmpStud = studCourse;
 
-        studCourse = studCourse->next;
-        studCourse->prev = tmpStud;
+            studCourse = studCourse->next;
+            studCourse->prev = tmpStud;
 
-        studCourse->ID = id;
-        cnt++;
+            studCourse->ID = id;
+            cnt++;
+        }
     }
     courseCurrent->numStudents = cnt;
 
     cout << "\nFinishing adding new student!\n";
 }
-
 void AddingCourse(Semester *semCurrent)
 {
     Course *courseCurrent = AddCourse(semCurrent);
@@ -260,7 +263,7 @@ void AddingCourse(Semester *semCurrent)
     {
     case 1:
         cout << "You chose to import student from a file!\n";
-        ImportStudent(courseCurrent);
+        ImportStudentFromFile(courseCurrent);
         break;
     case 2:
         cout << "You're adding student by hand!\n";
