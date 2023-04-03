@@ -10,12 +10,24 @@ string createNameFile(int year, int no_smt, string course, string file, string t
 
 void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
-void readAllFileCourses(Year *YHead);
+void readAllFileCourses(Year *Yhead);
 
 void exportInforStudent(StudentCourse *stuHead, ofstream &out);
 void exportListStudentCourse(Semester *curSmt, ofstream &out);
 
 void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);
+
+//task 22
+Student* findStudentbyID(string IDStudent, Year *Yhead);
+Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead);
+ScoreBoardCourse find_SBC(string ID, StudentCourse *stuCourseHead); 
+void viewScoreBoardCourse(ScoreBoardCourse SCB);
+void enterMark(double &Mark);
+bool updateMark(ScoreBoardCourse &SCB, string Selection);
+void updateSCB (string ID, StudentCourse *stuCourseHead);
+int view_chooseOption(string *arrOption, int nOption);
+void UpdateStudentResult(Year *Yhead) ;
+
 
 //task 23
 CourseStudent* checkExistence_OfCourse(CourseStudent *courseCheck, CourseStudent *courseHead);
