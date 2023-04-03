@@ -430,9 +430,9 @@ void viewAllFinalMark_ofStudent(double *SCB, int Col)
     for( int i = 0; i < Col; i++) 
     {
         if(SCB[i] < 0)
-            cout << setw(35) << left << "| X";
+            cout << setw(30) << left << "| X";
         else 
-            cout << "| " << setw(35) << left  << setprecision(1) << fixed  << SCB[i];
+            cout << "| " << setw(30) << left  << setprecision(1) << fixed  << SCB[i];
     }                             
 }
 
@@ -444,12 +444,15 @@ void viewScoreboardClass(Class *Class)
     int Row = CaculateAmountStudentOfClass(studentHead);
     double **SCB;
     createSCB_ofClass(SCB,courseHead,studentHead,Col,Row);
-
+    for(int i = 0; i < 79 ; i++) {
+        cout <<"_";
+    }
+    cout << endl;
     cout << setw(12) << left << "| ID";
     cout << setw(27) << left << "| Full Name";
     while (courseHead)
     {
-        cout <<"| " << setw(35) << left <<courseHead->course->Name;
+        cout <<"| " << setw(30) << left <<courseHead->course->Name;
         courseHead = courseHead->next;
     }
     cout << setw(7) << left << "| GPA"; 
@@ -458,6 +461,10 @@ void viewScoreboardClass(Class *Class)
     int i = 0;
     while (studentHead) 
     {
+        for(int i = 0; i < 79 ; i++) {
+        cout <<"-+";
+        }
+        cout << endl;
         cout << "| " << setw(10) << left  << studentHead->ID;
         cout << "| " << setw(25) << left << studentHead->accStudent->lastName + " " + studentHead->accStudent->firstName;
         viewAllFinalMark_ofStudent(SCB[i], Col);
