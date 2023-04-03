@@ -1,0 +1,135 @@
+#include "../Header/newYearClass.h"
+
+void importYear(Year *&yearHead, int &numofYear) {
+    //string in_year = to_string(yearStart);
+
+    string path = "Data_file\\years.txt";
+    cout << path << endl;
+    ifstream ifs(path);
+    if(!ifs) {
+        cout << "Cannot open file years.txt" << endl;
+        return;
+    }
+
+    Year *curYear;
+    while (!ifs.eof()) {
+        if (!yearHead){
+            yearHead = new Year;
+            curYear = yearHead;
+        } else {
+            Year *tmp = new Year;
+            curYear->next = tmp;
+            curYear = tmp;
+        }
+
+        numofYear++;
+        ifs >> curYear->yearStart;
+        importClass(curYear, curYear->yearStart);
+    }
+}
+
+void addClass(Year *curYear, string ClassName) {
+    if (!curYear->Class) {
+        curYear->Class = new Class;
+        curYear->Class->Name = ClassName;
+    }
+    else {
+        Class* curClass = curYear->Class;
+        while (curClass->next) {
+            curClass = curClass->next;
+        }
+        curClass->next = new Class;
+        curClass->next->Name = ClassName;
+    }
+}
+
+void importClass(Year *curYear, int yearStart) {
+    //create the path to the directory
+    string in_year = to_string(yearStart) + '_' + to_string(yearStart + 1);
+    string path = "Data_file" + path_separator + in_year + path_separator + "class.txt";
+    cout << path;
+
+    ifstream ifs(path);
+    if (!ifs) {
+        cout << "Cannot open directory for year " << yearStart << endl;
+        return;
+    }
+
+    //open class file
+    string classFilePath = path;
+    ifstream classFile(classFilePath);
+    if (!classFile.is_open()) {
+        cout << "Cannot open class file for year " << yearStart << endl;
+        return;
+    }
+
+    string line;
+    getline(classFile, line); //read the first "class" line
+
+    //read each class from the file, add to the linked list
+    Class *curClass = nullptr;
+    Student *curStudent = nullptr;
+    while (getline(classFile, line)) {
+        if (line.empty() || all_of(line.begin(), line.end(), [](unsigned char c) { return std::isspace(c); })) break; //end of file
+        
+        if (line == "-1") {
+            //end of cur class, move to next class
+            getline(classFile, line); //read the class line for the next class
+            if (line.empty() || all_of(line.begin(), line.end(), [](unsigned char c) { return std::isspace(c); })) break; //end of file
+
+            curClass = new Class;
+            curClass->Name = line;
+            addClass(curYear, curClass->Name);
+            curClass = curYear->Class; // add new class to linked list
+            curStudent = nullptr;
+        } else {
+            if(!curClass) {
+                cerr << "Error: class not found" << endl;
+                return;
+            }
+            if (!curStudent) {
+                curClass->StudentClass = new Student;
+                curStudent = curClass->StudentClass;
+            } else {
+                curStudent->next = new Student;
+                curStudent->next->prev = curStudent;
+                curStudent = curStudent->next;
+            }
+            curStudent->ID = line;
+        }
+    }
+
+    cout << "Class imported successfully" << endl;
+}
+
+int main() {
+    Year* yearHead = nullptr;
+    int numofYear = 0;
+
+    importYear(yearHead, numofYear);
+
+    // Print out the list of years and classes
+    Year* curYear = yearHead;
+    cout << "List of years and classes:" << endl;
+
+    while (curYear) {
+        cout << "Year " << curYear->yearStart << ":" << endl;
+
+        Class* curClass = curYear->Class;
+        while (curClass) {
+            cout << "\t" << curClass->Name << ":" << endl;
+
+            Student* curStudent = curClass->StudentClass;
+            while (curStudent) {
+                cout << "\t\t" << curStudent->ID << endl;
+                curStudent = curStudent->next;
+            }
+
+            curClass = curClass->next;
+        }
+
+        curYear = curYear->next;
+    }
+
+    return 0;
+}

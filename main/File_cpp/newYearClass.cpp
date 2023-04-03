@@ -1,4 +1,4 @@
-#include "../Header/newYearClass.h"
+/* #include "Header/newYearClass.h"
 
 void createSchoolYear(Year *&curYear, int yearStart) {
     Year *newYear = new Year;
@@ -42,12 +42,10 @@ bool checkClass(Class *curClass, string ClassID) {
     return false;
 }
 
-bool checkStudent(Year *schoolYear, string StudentID) {
-    for(Class* curClass = schoolYear->Class; curClass; curClass = curClass->next) {
-        for (Student *curStudent = schoolYear->Class->StudentClass; curStudent; curStudent = curStudent->next) {
-            if (curStudent->ID == StudentID) {
-                return true;
-            }
+bool checkStudent(Class *curClass, string StudentID) {
+    for(Student* curStudent = curClass->StudentClass; curStudent; curStudent = curStudent->next) {
+        if (curStudent->ID == StudentID) {
+            return true;
         }
     }
 
@@ -66,14 +64,15 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
         return;
     } //check class id
 
-    Student *newStudent = new Student;
-    //No, Student ID, First name, Last name, Gender, Date of Birth, and Social ID.
-    newStudent->ID = studentID;
-
-    if (!checkStudent) {
+    if (!checkStudent(curClass, studentID)) {
         cout << "This student has already been added. Please retry." << endl;
         return;
     }
+
+    Student *newStudent = new Student;
+    //No, Student ID, First name, Last name, Gender, Date of Birth, and Social ID.
+    newStudent->ID = studentID;
+    newStudent->accStudent = new Account;
 
     newStudent->accStudent->role = 1; //set role for student
     newStudent->accStudent->firstName = firstName;
@@ -82,13 +81,10 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
     newStudent->accStudent->birth = dateofBirth;
     newStudent->accStudent->SocialID = socialID;
 
-    curClass->StudentClass = newStudent;
-    curClass->StudentClass = curClass->StudentClass->next;
-
-    if (!addStudent->StudentClass) {
-        addStudent->StudentClass = newStudent;
+    if (!curClass->StudentClass) {
+        curClass->StudentClass = newStudent;
     } else {
-        Student *curStudent = addStudent->StudentClass;
+        Student *curStudent = curClass->StudentClass;
 
         while (curStudent->next != nullptr) {
             curStudent = curStudent->next;
@@ -118,10 +114,10 @@ void inputStudent(Class *classPtr) { //input information of a student (add one b
     cout << "Last Name: ";
     getline(cin, lastName);
     //cin.ignore();
-    cout << "Gender: (M: male   F: female)";
+    cout << "Gender: (M: male   F: female): ";
     cin >> gender;
-    //cin.ignore();
-    cout << "Date of Birth: (dd/mm/yyyy)";
+    cin.ignore();
+    cout << "Date of Birth (dd/mm/yyyy):";
     getline(cin, dateofBirth);
     //cin.ignore();
     cout << "Social ID: ";
@@ -156,6 +152,7 @@ void importStudent(Class *classPtr, string studentList) {
             fields[i] = token;
             line.erase(0, position + delimiter.length());
             i++;
+            lineCount++;
         }
 
         //check if the line have the correct num of fields
@@ -183,11 +180,14 @@ void addStudent1_CSV() {
     cout << "Add new 1st year students to 1st-year classes.\n";
     cout << "1. Add one by one.\n2. Import CSV file.\n0. Exit.\nEnter your choice: ";
     cin >> choice;
-    if (choice == 0) return;
+    cin.ignore();
+
+    if (choice == 0) {
+        cout << "End of program\n";
+        return;
+    }
     else {
         Class *classPtr;
-        cout << "Enter class name: ";
-        getline(cin, classPtr->Name);
         if (choice == 1){
             inputStudent(classPtr);
         }
@@ -198,4 +198,4 @@ void addStudent1_CSV() {
             importStudent(classPtr, studentList);
         }
     }
-}
+} */
