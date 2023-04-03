@@ -111,6 +111,8 @@ void AddStudent(Course *&new_course, Semester *sem)
         else
             i++;
     }
+
+//xin
     string studList = "../Data_file/New_Enrolled_Student/" + str + ".csv";
 
     ifstream ifs(studList);

@@ -114,18 +114,18 @@ void DeleteSMT(Semester *&semHead)
     semHead = nullptr;
 }
 
-void OutStudent(StudentCourse *stud_head, ofstream &ofs)
-{
-    if (!stud_head)
-        return;
-    while (stud_head)
-    {
-        ofs << stud_head->ID << '\n';
-        stud_head = stud_head->next;
-    }
-    ofs << -1;
-    return;
-}
+// void OutStudent(StudentCourse *stud_head, ofstream &ofs)
+// {
+//     if (!stud_head)
+//         return;
+//     while (stud_head)
+//     {
+//         ofs << stud_head->ID << '\n';
+//         stud_head = stud_head->next;
+//     }
+//     ofs << -1;
+//     return;
+// }
 void OutCourse(Course *course_head, ofstream &ofs)
 {
     if (!course_head)
@@ -141,7 +141,7 @@ void OutCourse(Course *course_head, ofstream &ofs)
             << '\n'
             << course_head->Day << '\n'
             << course_head->Session << '\n';
-        OutStudent(course_head->studentCourse, ofs);
+        // OutStudent(course_head->studentCourse, ofs);
         course_head = course_head->next;
     }
 }
@@ -150,7 +150,7 @@ void Output(Semester *semHead)
     if (!semHead)
         return;
     Semester *sem_cur = semHead;
-
+    
     while (sem_cur)
     {
         string out_year = to_string(sem_cur->Year) + '_' + to_string(sem_cur->Year + 1);
@@ -170,5 +170,6 @@ void Output(Semester *semHead)
         ofs.close();
     }
 }
+
 
 //? Path in the output and read Semester function
