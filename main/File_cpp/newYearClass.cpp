@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream:main/File_cpp/newYearClass.cpp
 /* #include "Header/newYearClass.h"
+=======
+#include "main/Header/newYearClass.h"
+>>>>>>> Stashed changes:newYearClass.cpp
 
 void createSchoolYear(Year *&curYear, int yearStart) {
     Year *newYear = new Year;
@@ -19,18 +23,19 @@ void createSchoolYear(Year *&curYear, int yearStart) {
     system(cstr_path);
 }
 
-void createClasses(Class *&Classes, int &setOfClass, string preClasses, ofstream &outFile) {
+//int &setOfClass bỏ 
+void createClasses(Class *&Classes,/*  int &setOfClass, */ string preClasses/* , ofstream &outFile */) {
     Class *newClass = new Class;
     newClass->Name = preClasses;
-    newClass->setOfClass = setOfClass;
+    //newClass->setOfClass = setOfClass;
 
     // add the new class to the beginning of the linked list of classes
     newClass->next = Classes; 
     Classes = newClass; //classes point to the head of the linked list
 
-    //write the new class to the output file
-    outFile << newClass->setOfClass << endl;
-    outFile << newClass->Name << endl;
+/*     //write the new class to the output file
+    outFile << "-1" << endl;
+    outFile << newClass->Name << endl; */
 }
 
 bool checkClass(Class *curClass, string ClassID) {
@@ -96,7 +101,7 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
     cout << "Student " << newStudent->accStudent->firstName << " " << newStudent->accStudent->lastName << " has been added to class " << curClass->Name << endl;
 }
 
-void inputStudent(Class *classPtr) { //input information of a student (add one by one)
+void inputStudent(Class *&classPtr) { //input information of a student (add one by one)
     string studentID;
     string firstName;
     string lastName;
@@ -123,9 +128,8 @@ void inputStudent(Class *classPtr) { //input information of a student (add one b
     cout << "Social ID: ";
     getline(cin, socialID);
     //cin.ignore();
-
+    
     add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
-
 }
 
 void importStudent(Class *classPtr, string studentList) {

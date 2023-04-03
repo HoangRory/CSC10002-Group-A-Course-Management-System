@@ -17,9 +17,9 @@
 void createClasses(Class *&Classes, int &setOfClass, string preClasses, ofstream &outFile);
 
 bool checkClass(Class *curClass, string ClassID);
-bool checkStudent(Year *schoolYear, string StudentID);
+bool checkStudent(Class *curClass, string StudentID);
 
-void inputStudent(Class *classPtr); //add student one by one
+void inputStudent(Class *&classPtr); //add student one by one
 void importStudent(Class *classPtr, string studentList); //import csv file
 
 void add1stYearStudents(Class *addStudent, string studentID, string firstName, string lastName, string gender, string dateofBirth, string socialID);
