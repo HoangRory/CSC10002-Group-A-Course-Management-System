@@ -4,7 +4,6 @@ void importYear(Year *&yearHead, int &numofYear) {
     //string in_year = to_string(yearStart);
 
     string path = "Data_file\\years.txt";
-    cout << path << endl;
     ifstream ifs(path);
     if(!ifs) {
         cout << "Cannot open file years.txt" << endl;
@@ -47,7 +46,6 @@ void importClass(Year *curYear, int yearStart) {
     //create the path to the directory
     string in_year = to_string(yearStart) + '_' + to_string(yearStart + 1);
     string path = "Data_file" + path_separator + in_year + path_separator + "class.txt";
-    cout << path;
 
     ifstream ifs(path);
     if (!ifs) {
@@ -65,10 +63,16 @@ void importClass(Year *curYear, int yearStart) {
 
     string line;
     getline(classFile, line); //read the first "class" line
+    if (line.empty() || all_of(line.begin(), line.end(), [](unsigned char c) { return std::isspace(c); })) return; //end of file
 
     //read each class from the file, add to the linked list
-    Class *curClass = nullptr;
-    Student *curStudent = nullptr;
+    Class *curClass = new Class;
+    curClass->Name = line;
+    addClass(curYear, curClass->Name);
+    curClass = curYear->Class; // add new class to linked list
+
+    Student *headStudent = nullptr;
+    
     while (getline(classFile, line)) {
         if (line.empty() || all_of(line.begin(), line.end(), [](unsigned char c) { return std::isspace(c); })) break; //end of file
         
@@ -80,24 +84,38 @@ void importClass(Year *curYear, int yearStart) {
             curClass = new Class;
             curClass->Name = line;
             addClass(curYear, curClass->Name);
-            curClass = curYear->Class; // add new class to linked list
-            curStudent = nullptr;
+
+            curClass = curYear->Class->next;
+            headStudent = nullptr;
         } else {
             if(!curClass) {
                 cerr << "Error: class not found" << endl;
                 return;
             }
-            if (!curStudent) {
+            //Student *curStudent = nullptr;
+            if (!headStudent) {
                 curClass->StudentClass = new Student;
-                curStudent = curClass->StudentClass;
+                headStudent = curClass->StudentClass;
+                headStudent->ID = line;
             } else {
-                curStudent->next = new Student;
-                curStudent->next->prev = curStudent;
-                curStudent = curStudent->next;
+                Student *curStudent = new Student;
+                curStudent->ID = line;
+                curStudent->prev = headStudent;
+                headStudent->next = curStudent;
+                headStudent = curStudent;
             }
-            curStudent->ID = line;
         }
     }
+
+    curClass = curYear->Class;
+    while (curClass) {
+        Student *curStudent = curClass->StudentClass;
+        while (curStudent && curStudent->next) {
+            curStudent = curStudent->next;
+        }
+        if (curStudent) curStudent->next = nullptr;
+        curClass = curClass->next;
+    } 
 
     cout << "Class imported successfully" << endl;
 }
