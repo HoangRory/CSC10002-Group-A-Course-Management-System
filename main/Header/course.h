@@ -6,7 +6,8 @@ Semester* findSemester (int no_smt, Semester *SmtHead);
 Course* findCourse(string nameOrID, Course *CourseHead);
 
 string createNameFile(int year, int no_smt, string course, string file, string type);
-// ScoreBoardCourse* find_SBC(string ID, StudentCourse *stuCourseHead); 
+
+void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead);
 
 void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
@@ -17,11 +18,15 @@ void exportListStudentCourse(Semester *curSmt, ofstream &out);
 
 void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);
 
+//task 21
+void viewScoreCourseStudent(ScoreBoardCourse SBC);
+Course* findCoursebyChoose(Course *courseHead, int index);
+void viewScoreBoardCourse(Course *courseHead); 
+
 //task 22
 Student* findStudentbyID(string IDStudent, Year *Yhead);
 Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead);
 StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead);
-void viewScoreBoardCourse(ScoreBoardCourse SCB);
 void enterMark(double &Mark);
 bool updateMark(ScoreBoardCourse &SCB, string Selection);
 void updateSCB (string ID, StudentCourse *stuCourseHead);
@@ -34,8 +39,8 @@ CourseStudent* checkExistence_OfCourse(CourseStudent *courseCheck, CourseStudent
 CourseStudent* CourseOfAClass (Student *studentHead);
 int CaculateAmountStudentOfClass(Student *studentHead);
 int CaculateAmountCourseOfClass(CourseStudent *courseHead);
-void importSCB_ofStudent(double *&SCB, CourseStudent *courseHead, Student *studentHead);
-double CaculateGPA_1_Student(double *&SCB, int n); 
+void importSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student *studentHead);
+double CaculateGPA_1_Student(double *&SBC, int n); 
 void createSCB_ofClass(double **&SCB, CourseStudent *courseHead, Student *studentHead, int Col, int Row );
 void viewAllFinalMark_ofStudent(double *SCB, int Col);
 void viewScoreboardClass(Class *Class);
