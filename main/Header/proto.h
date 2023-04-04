@@ -81,7 +81,7 @@ struct Student
 struct Class
 {
     string Name; // eg 22CLC02
-    Student *StudentClass;
+    Student *StudentClass = nullptr;
     Class *next = nullptr, *prev = nullptr;
 };
 
