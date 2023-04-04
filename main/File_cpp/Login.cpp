@@ -1,4 +1,5 @@
 #include "../Header/Login.h"
+#include "../Header/Semester.h"
 
 void DelAccount(Account *&accHead)
 {
@@ -78,10 +79,21 @@ void WriteAccount(Account *accHead)
 void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     system("cls");
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleTextAttribute(h, BLUE);
+    cout << "WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n\n";
+    SetConsoleTextAttribute(h, LIGHT_AQUA);
+    cout << "PLEASE ENTER YOUR USERNAME AND PASSWORD TO LOGIN\n\n";
+
+    SetConsoleTextAttribute(h, LIGHT_GREEN);
     std::cout << "\nUsername: ";
     std::cin >> user;
+
+    SetConsoleTextAttribute(h, LIGHT_RED);
     std::cout << "Password: ";
     std::cin >> pass;
+    SetConsoleTextAttribute(h, WHITE);
 
     Account *cur = accHead;
     bool loggedIn = false;
@@ -150,17 +162,14 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
     bool stop = false;
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    SetConsoleTextAttribute(h, GREEN);
-    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
-
     int opt = 1;
     string *ListOption = new string[4];
-    ListOption[0] = "Options:\n";
+    ListOption[0] = "\nAccount Options:\n";
     ListOption[1] = "- Change your password\n";
     ListOption[2] = "- Logout              \n";
     ListOption[3] = "- Quit                \n";
 
+    ShowConsoleCursor(false);
     for (int i = 0; i < 4; i++)
     {
         if (i == opt)
@@ -172,6 +181,10 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
         else
             cout << ListOption[i];
     }
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+
     while (!stop)
     {
         if (_kbhit())
@@ -183,7 +196,7 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
                     opt--;
                 break;
             case DOWN:
-                if (opt < 2)
+                if (opt < 3)
                     opt++;
                 break;
             case ENTER:
@@ -194,10 +207,8 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
                 break;
 
             system("cls");
-            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
 
-            cout << "Account Options:\n";
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (i == opt)
                 {
@@ -208,16 +219,20 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
                 else
                     cout << ListOption[i];
             }
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+            SetConsoleTextAttribute(h, WHITE);
         }
     }
     delete[] ListOption;
+    ShowConsoleCursor(true);
 
     switch (opt)
     {
-    case 0:
+    case 1:
         ChangePass(accHead, user, pass);
         break;
-    case 1:
+    case 2:
         cout << "Returning to login page";
         for (int i = 0; i < 8; i++)
         {
@@ -227,24 +242,23 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
         system("cls");
         LoggingIn(accHead, user, pass, role);
         break;
-    case 2:
+    case 3:
         std::cout << "Thanks for ur usage!\n\n";
         return;
     }
-    Main_interface(accHead, user, pass, role);
+    // Main_interface(accHead, user, pass, role);
+    AccountAlteration(accHead, user, pass, role);
+    return;
 }
 
 void AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     bool stop = false;
-    SetConsoleTextAttribute(h, GREEN);
-    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
 
     int opt = 1;
     string *ListOption = new string[3];
-    ListOption[0] = "Account Alteration\n";
+    ListOption[0] = "\nAccount Alteration\n";
     ListOption[1] = "- Manage your account or Logout\n";
     ListOption[2] = "- Continue to use the program  \n";
 
@@ -259,6 +273,12 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
         else
             cout << ListOption[i];
     }
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+
+    ShowConsoleCursor(false);
+
     while (!stop)
     {
         if (_kbhit())
@@ -270,7 +290,7 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
                     opt--;
                 break;
             case DOWN:
-                if (opt < 3)
+                if (opt < 2)
                     opt++;
                 break;
             case ENTER:
@@ -280,9 +300,6 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
             if (stop)
                 break;
             system("cls");
-            SetConsoleTextAttribute(h, GREEN);
-            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
 
             for (int i = 0; i < 3; i++)
             {
@@ -295,19 +312,25 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
                 else
                     cout << ListOption[i];
             }
+
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+            SetConsoleTextAttribute(h, WHITE);
         }
     }
     delete[] ListOption;
+    ShowConsoleCursor(true);
 
     switch (opt)
     {
     case 1:
         Main_interface(accHead, user, pass, role);
-        break;
+        return;
     case 2:
         return;
         // break;
     }
+    return;
 }
 
 void LoggingMain(Account *&accHead, string &user, string &pass, int &role)
@@ -315,4 +338,5 @@ void LoggingMain(Account *&accHead, string &user, string &pass, int &role)
     ReadAccount(accHead);
     LoggingIn(accHead, user, pass, role);
     AccountAlteration(accHead, user, pass, role);
+    return;
 }

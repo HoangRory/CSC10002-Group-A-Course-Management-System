@@ -18,7 +18,7 @@ void modifySemester(Semester *semHead, int year, int sem)
             cout << "Semester's end date: ";
             cin >> sem_cur->endDate;
 
-            cout << "Semster has been updated\n";
+            cout << "Semster has been updated\n\n";
             Sleep(1000);
             return;
         }
@@ -98,7 +98,9 @@ void modifyCourse(Semester *semHead, int year)
 
 void deleteCourse(Semester *semHead, int year)
 {
-    viewCourse(semHead);
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    system("cls");
+    cout << "\n";
     Semester *sem_cur = semHead;
     Course *cour_cur, *cour_prev;
 
@@ -111,34 +113,48 @@ void deleteCourse(Semester *semHead, int year)
         }
         sem_cur = sem_cur->next;
     }
+    if (!sem_cur)
+    {
+        cout << "Semester not found!\n";
+        Sleep(1000);
+        return;
+    }
 
+    viewCourse(sem_cur);
     string course_id;
+    SetConsoleTextAttribute(h, RED);
     cout << "Enter the course ID that need to be deleted: ";
+    SetConsoleTextAttribute(h, WHITE);
     cin >> course_id;
 
     while (cour_cur)
     {
         if (cour_cur->CourseID == course_id)
         {
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n";
             cout << cour_cur->Name << " has been deleted\n";
+            SetConsoleTextAttribute(h, WHITE);
             if (cour_cur == sem_cur->course)
                 sem_cur->course = cour_cur->next;
             else
                 cour_prev->next = cour_cur->next;
             delete cour_cur;
+            system("cls");
+            viewCourse(sem_cur);
             return;
         }
         cour_prev = cour_cur;
         cour_cur = cour_cur->next;
     }
 
-    cout << "Course not found!\nRety? (Y/N)";
+    cout << "Course not found!\nRety? (Y/N) ";
     char ch;
     cin >> ch;
 
-    while (ch != 'Y' || ch != 'y' || ch != 'N' || ch != 'n')
+    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
     {
-        cout << "Invalid respond, enter again!";
+        cout << "Invalid respond, enter again: ";
         cin >> ch;
     }
 
@@ -223,16 +239,13 @@ void addRemoveStudent(Semester *semHead, int year)
     bool stop = false;
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    SetConsoleTextAttribute(h, GREEN);
-    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-
     int choice = 1;
     string *menu = new string[3];
     menu[0] = "Choose to ADD or to REMOVE student from a course\n";
     menu[1] = "- Add student to a course                       \n";
     menu[2] = "- Remove student from a course                  \n";
 
-    for (int i = 1; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         if (i == choice)
         {
@@ -243,6 +256,10 @@ void addRemoveStudent(Semester *semHead, int year)
         else
             cout << menu[i];
     }
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+    ShowConsoleCursor(false);
 
     while (!stop)
     {
@@ -284,6 +301,7 @@ void addRemoveStudent(Semester *semHead, int year)
         }
     }
     delete[] menu;
+    ShowConsoleCursor(true);
 
     cout << "You chose to " << (choice == 1 ? "ADD" : "REMOVE") << " student from a course.\n";
 

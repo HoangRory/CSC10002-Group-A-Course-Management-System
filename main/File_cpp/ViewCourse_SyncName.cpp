@@ -75,23 +75,22 @@ void viewCourse(Semester *semHead)
     cout << "\n";
 }
 
-void StaffMain(Semester *semHead)
+void StaffMain(Semester *&semHead)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, 240);
+    cout << "Welcome to Staff mode!\n";
+    SetConsoleTextAttribute(h, WHITE);
     string *menu = new string[6];
-    menu[0] = "Staff privilege\n";
-    menu[1] = "- View course\n";
-    menu[2] = "- Add new semester\n";
-    menu[3] = "- Modify\n";
+    menu[0] = "\nStaff privilege      \n";
+    menu[1] = "- View course          \n";
+    menu[2] = "- Add new semester     \n";
+    menu[3] = "- Modify               \n";
     menu[4] = "- Save changes and quit\n";
-    menu[5] = "- Exit\n";
+    menu[5] = "- Exit                 \n";
 
     int choice = 1;
     bool stop = false;
-
-    SetConsoleTextAttribute(h, GREEN);
-    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
 
     for (int i = 0; i < 6; i++)
     {
@@ -104,6 +103,11 @@ void StaffMain(Semester *semHead)
         else
             cout << menu[i];
     }
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+
+    ShowConsoleCursor(false);
     while (!stop)
     {
         if (_kbhit())
@@ -126,7 +130,6 @@ void StaffMain(Semester *semHead)
                 break;
 
             system("cls");
-            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
             for (int i = 0; i < 6; i++)
             {
                 if (i == choice)
@@ -138,9 +141,13 @@ void StaffMain(Semester *semHead)
                 else
                     cout << menu[i];
             }
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+            SetConsoleTextAttribute(h, WHITE);
         }
     }
     delete[] menu;
+    ShowConsoleCursor(true);
 
     switch (choice)
     {
@@ -160,7 +167,7 @@ void StaffMain(Semester *semHead)
     case 3:
         system("cls");
         cout << "\n";
-        Interface_Modify(semHead);
+        initModify(semHead);
         // Recursion back to the StaffMain function
         StaffMain(semHead);
         return;
@@ -190,20 +197,22 @@ void StaffMain(Semester *semHead)
     }
 }
 
-void NewSemesterMain(Semester *semHead, int yr, int num_year, int num_smt, Account *accHead, int role)
+void NewSemesterMain(Semester *&semHead, int yr, int num_year, int num_smt, Account *accHead, int role)
 {
     system("cls");
     cout << "\n";
-    Read_multi_SMT(semHead, yr, num_year, num_smt, accHead);
-    viewCourse(semHead);
+    Read_multi_SMT(semHead, yr, num_year, num_smt);
     SyncFullName(semHead, accHead);
+    viewCourse(semHead);
     switch (role)
     {
     case 1:
         //? StudentMain
+        cout << "You've entered the student main menu\n";
         break;
     case 2:
         //? TeacherMain
+        cout << "You've entered the teacher main menu\n";
         break;
     case 3:
         //? StaffMain

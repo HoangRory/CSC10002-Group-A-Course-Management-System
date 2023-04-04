@@ -18,12 +18,21 @@ Semester *AddSemester(Semester *semHead)
     {
         if (sem_cur->Year == Y && sem_cur->No == N)
         {
-            std::cout << "*** Already has this semester, modify it? (Y/N) ***";
+            std::cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
             char check;
             cin >> check;
+
+            while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
+            {
+                std::cout << "Invalid input! Enter again: ";
+                cin >> check;
+            }
             if (check == 'Y' || check == 'y')
+            {
                 modifySemester(semHead, Y, N);
-            return nullptr;
+                return nullptr;
+            }
+            return AddSemester(semHead);
         }
         prev = sem_cur;
         if (!sem_cur->next)
@@ -36,9 +45,10 @@ Semester *AddSemester(Semester *semHead)
         //! Add in a new year
     }
 
-    sem_cur->next = new Semester;
-    sem_cur = sem_cur->next;
+    prev->next = new Semester;
+    sem_cur = prev->next;
     sem_cur->prev = prev;
+
     sem_cur->No = N;
     sem_cur->Year = Y;
     cout << "Starting date (dd/mm/yyyy): ";
@@ -47,11 +57,11 @@ Semester *AddSemester(Semester *semHead)
     cin >> sem_cur->endDate;
 
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
-    string outPath = "Data_file\\" + out_year + "\\smt" + to_string(N);
+    string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(N);
     string tmp_sys = "mkdir " + outPath;
+
     const char *cstr_path = tmp_sys.c_str();
     system(cstr_path);
-    // AddCourse(semHead, sem_cur);
 
     return sem_cur;
 }
@@ -62,29 +72,39 @@ Course *AddCourse(Semester *semCurrent)
     cout << "\nEnter the course ID: ";
     string id;
     cin >> id;
-    Course *courseCurrent = semCurrent->course, *prev = nullptr;
-    while (courseCurrent)
+    Course *courseCurrent, *prev = nullptr;
+    if (!semCurrent->course)
     {
-        if (courseCurrent->CourseID == id)
-        {
-            cout << "*** Already has this course, modify it? (Y/N) ***";
-            char check;
-            cin >> check;
-            while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
-            {
-                cout << "Please enter Y or N: ";
-                cin >> check;
-            }
-            if (check == 'Y' || check == 'y')
-                modifyCourse(semCurrent);
-            return nullptr;
-        }
-        prev = courseCurrent;
-        courseCurrent = courseCurrent->next;
+        semCurrent->course = new Course;
+        courseCurrent = semCurrent->course;
     }
-    prev->next = new Course;
-    courseCurrent = prev->next;
-    courseCurrent->prev = prev;
+    else
+    {
+        courseCurrent = semCurrent->course;
+        while (courseCurrent->next)
+        {
+            if (courseCurrent->CourseID == id)
+            {
+                cout << "*** Already has this course, modify it? (Y/N) ***";
+                char check;
+                cin >> check;
+                while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
+                {
+                    cout << "Please enter Y or N: ";
+                    cin >> check;
+                }
+                if (check == 'Y' || check == 'y')
+                    modifyCourse(semCurrent, semCurrent->Year);
+                return nullptr;
+            }
+            courseCurrent = courseCurrent->next;
+        }
+
+        prev = courseCurrent;
+        courseCurrent->next = new Course;
+        courseCurrent = courseCurrent->next;
+        courseCurrent->prev = prev;
+    }
 
     courseCurrent->CourseID = id;
 
@@ -109,7 +129,7 @@ Course *AddCourse(Semester *semCurrent)
     cout << "Choose the day of week the course will be taught\n(MON/TUE/WED/THU/FRI/SAT): ";
     cin >> courseCurrent->Day;
 
-    cout << "\nChoose the the session time of the course\nS1-(07:30)\tS2-(09:30)\tS3-(13:30)\tS4-(15:30) : ";
+    cout << "\nChoose the the session time of the course\nS1-(07:30)\tS2-(09:30)\nS3-(13:30)\tS4-(15:30) : ";
     cin >> courseCurrent->Session;
 
     return courseCurrent;
@@ -191,38 +211,50 @@ void AddStudentByHand(Course *courseCurrent)
     }
     courseCurrent->numStudents = cnt;
 
-    cout << "\nFinishing adding new student!\n";
+    cout << "\nDone adding new student!\n";
 }
 void AddingCourse(Semester *semCurrent)
 {
+    if (!semCurrent)
+        return;
     Course *courseCurrent = AddCourse(semCurrent);
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    system("cls");
-    SetConsoleTextAttribute(h, RED);
-    cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-    SetConsoleTextAttribute(h, WHITE);
-
-    cout << "Choose a method to import students: \n";
-    SetConsoleTextAttribute(h, YELLOW);
-
-    cout << "From a file\n";
-    SetConsoleTextAttribute(h, WHITE);
-    cout << "By typing one by one\n";
-
     int choice = 1;
     bool stop = false;
+    string menu[3];
+    menu[0] = "\nMethod to import student to the course:\n";
+    menu[1] = "- Import student from file\n";
+    menu[2] = "- Add student by hand     \n";
+    system("cls");
+    for (int i = 0; i < 3; i++)
+    {
+        if (i == choice)
+        {
+            SetConsoleTextAttribute(h, YELLOW);
+            cout << menu[i];
+            SetConsoleTextAttribute(h, WHITE);
+        }
+        else
+            cout << menu[i];
+    }
+
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+    SetConsoleTextAttribute(h, WHITE);
+
+    ShowConsoleCursor(false);
     while (!stop)
     {
         if (_kbhit())
         {
             switch (_getch())
             {
-            case VK_UP:
+            case UP:
                 if (choice > 1)
                     choice--;
                 break;
-            case VK_DOWN:
+            case DOWN:
                 if (choice < 2)
                     choice++;
                 break;
@@ -235,30 +267,24 @@ void AddingCourse(Semester *semCurrent)
                 break;
 
             system("cls");
-            SetConsoleTextAttribute(h, RED);
-            cout << "\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-            SetConsoleTextAttribute(h, WHITE);
-            cout << "Choose a method to import students: \n";
 
-            switch (choice)
+            for (int i = 0; i < 3; i++)
             {
-            case 1:
-                SetConsoleTextAttribute(h, YELLOW);
-                cout << "From a file\n";
-
-                SetConsoleTextAttribute(h, WHITE);
-                cout << "By typing one by one\n";
-                break;
-
-            case 2:
-                cout << "From a file\n";
-                SetConsoleTextAttribute(h, YELLOW);
-                cout << "By typing one by one\n";
-                SetConsoleTextAttribute(h, WHITE);
-                break;
+                if (i == choice)
+                {
+                    SetConsoleTextAttribute(h, YELLOW);
+                    cout << menu[i];
+                    SetConsoleTextAttribute(h, WHITE);
+                }
+                else
+                    cout << menu[i];
             }
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            SetConsoleTextAttribute(h, WHITE);
         }
     }
+    ShowConsoleCursor(true);
     switch (choice)
     {
     case 1:
@@ -271,12 +297,12 @@ void AddingCourse(Semester *semCurrent)
         break;
     }
 
-    cout << "\nDo you want to add a new course to this semester? (Y/N)";
+    cout << "\nDo you want to add a new course to this semester? (Y/N) ";
     char ch;
     cin >> ch;
-    while (ch != 'Y' || ch != 'y' || ch != 'N' || ch != 'n')
+    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
     {
-        cout << "Invalid respond, enter again!";
+        cout << "Invalid respond, enter again: ";
         cin >> ch;
     }
 

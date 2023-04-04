@@ -51,27 +51,6 @@ void Read_SMT(Semester *&semHead, int y, int smt)
             ifs.ignore();
             getline(ifs, tmp_C->TeacherName);
             ifs >> tmp_C->Day >> tmp_C->Session;
-
-            StudentCourse *tmp_S;
-            string ID;
-            while (ifs >> ID)
-            {
-                if (ID == "-1")
-                    break;
-                if (!tmp_C->studentCourse)
-                {
-                    tmp_C->studentCourse = new StudentCourse;
-                    tmp_S = tmp_C->studentCourse;
-                }
-                else
-                {
-                    tmp_S->next = new StudentCourse;
-                    StudentCourse *temp = tmp_S;
-                    tmp_S = tmp_S->next;
-                    tmp_S->prev = temp;
-                }
-                tmp_S->ID = ID;
-            }
         }
     }
     path = "";
@@ -127,7 +106,7 @@ void OutCourse(Course *course_head, ofstream &ofs)
             << course_head->TeacherName
             << '\n'
             << course_head->Day << '\n'
-            << course_head->Session << '\n';
+            << course_head->Session;
         course_head = course_head->next;
     }
 }
@@ -140,11 +119,10 @@ void Output(Semester *semHead)
     while (sem_cur)
     {
         string out_year = to_string(sem_cur->Year) + '_' + to_string(sem_cur->Year + 1);
-        string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(sem_cur->No) + "\\";
-        outPath += "in4smt.txt";
-        string tmp_sys = "mkdir " + outPath;
-        const char *cstr_path = tmp_sys.c_str();
-        system(cstr_path);
+        string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(sem_cur->No) + "\\in4smt.txt";
+        // string tmp_sys = "mkdir " + outPath;
+        // const char *cstr_path = tmp_sys.c_str();
+        // system(cstr_path);
 
         ofstream ofs(outPath);
         if (!ofs)

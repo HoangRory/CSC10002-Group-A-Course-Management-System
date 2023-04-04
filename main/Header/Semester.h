@@ -18,8 +18,8 @@ void RunModify(Semester *&semHead, int opt);
 void modifySemester(Semester *semHead, int year, int sem);
 void modifyCourse(Semester *semHead, int year);
 void deleteCourse(Semester *semHead, int year);
-void addStudent(Course* courCurrent, string course_id);
-void removeStudent(Course* courCurrent, string course_id);
+void addStudent(Course *courCurrent, string course_id);
+void removeStudent(Course *courCurrent, string course_id);
 void addRemoveStudent(Semester *semHead, int year);
 
 //? Read Semester from file
@@ -36,4 +36,5 @@ void Output(Semester *semHead);
 //? View Course, Sync name from Account linked list
 void SyncFullName(Semester *semHead, Account *accHead);
 void viewCourse(Semester *semHead);
-void NewSemesterMain(Semester *semHead, int yr, int num_year, num_smt, Account *accHead);
+void StaffMain(Semester *&semHead);
+void NewSemesterMain(Semester *&semHead, int yr, int num_year, int num_smt, Account *accHead, int role);

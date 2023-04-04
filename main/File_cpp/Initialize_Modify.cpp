@@ -18,14 +18,12 @@ void initModify(Semester *&semHead)
     int opt = 1;
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     string *ListOption = new string[6];
-    ListOption[0] = "Options: ";
+    ListOption[0] = "\nOptions to modify:\n";
     ListOption[1] = "- Modify semester                      \n";
     ListOption[2] = "- Modify course                        \n";
     ListOption[3] = "- Delete a course                      \n";
     ListOption[4] = "- Add or remove a student from a course\n";
     ListOption[5] = "- Return                               \n";
-
-    cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
 
     for (int i = 0; i < 6; i++)
     {
@@ -38,7 +36,11 @@ void initModify(Semester *&semHead)
         else
             cout << ListOption[i];
     }
+    SetConsoleTextAttribute(h, GREEN);
+    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    SetConsoleTextAttribute(h, WHITE);
 
+    ShowConsoleCursor(false);
     while (!stop)
     {
         if (_kbhit())
@@ -61,24 +63,25 @@ void initModify(Semester *&semHead)
             if (stop)
                 break;
 
-            SetConsoleTextAttribute(h, GREEN);
-            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
-
             for (int i = 0; i < 6; i++)
             {
                 if (i == opt)
                 {
                     SetConsoleTextAttribute(h, YELLOW);
-                    cout << ListOption[i] << "<--\n";
+                    cout << ListOption[i];
                     SetConsoleTextAttribute(h, WHITE);
                 }
                 else
-                    cout << ListOption[i] << "\n";
+                    cout << ListOption[i];
             }
+
+            SetConsoleTextAttribute(h, GREEN);
+            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+            SetConsoleTextAttribute(h, WHITE);
         }
     }
     delete[] ListOption;
+    ShowConsoleCursor(true);
 
     RunModify(semHead, opt);
     return;
@@ -97,7 +100,7 @@ void RunModify(Semester *&semHead, int opt)
         cout << "==> Please choose the semester (1, 2, 3): ";
         cin >> sem;
         cout << "\n";
-        modifySemester(semHead, sem, year);
+        modifySemester(semHead, year, sem);
         break;
     case 2:
         viewCourse(semHead);
@@ -107,7 +110,7 @@ void RunModify(Semester *&semHead, int opt)
         modifyCourse(semHead, year);
         break;
     case 3:
-        viewCourse(semHead);
+        // viewCourse(semHead);
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "\n";
@@ -122,15 +125,18 @@ void RunModify(Semester *&semHead, int opt)
         addRemoveStudent(semHead, year);
         break;
     case 5:
-        cout << "\n";
+        cout << "\n\n";
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_RED);
         cout << "Modification completed, remember to save the changes!\n";
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
         return;
     }
 
-    cout << "Modification completed!\n";
-    viewCourse(semHead);
-    Sleep(1000);
-    cout << "Do you want to continue modifying? (Y/N): ";
+    // cout << "Modification completed!\n";
+    // viewCourse(semHead);
+    // Sleep(1000);
+    
+    cout << "\nDo you want to continue modifying? (Y/N): ";
     char c;
     cin >> c;
     while (c != 'y' && c != 'Y' && c != 'n' && c != 'N')
@@ -138,6 +144,7 @@ void RunModify(Semester *&semHead, int opt)
         cout << "Invalid input! Please enter again: ";
         cin >> c;
     }
+
     if (c == 'y' || c == 'Y')
     {
         initModify(semHead);
@@ -146,8 +153,7 @@ void RunModify(Semester *&semHead, int opt)
 
     else
     {
-        cout << "\n";
-        cout << "Modification completed, remember to save the changes!\n";
+        cout << "\nModification completed, remember to save the changes!\n";
         return;
     }
 }
