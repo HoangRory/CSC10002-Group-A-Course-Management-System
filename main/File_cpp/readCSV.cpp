@@ -85,7 +85,12 @@ void importClass(Year *curYear, int yearStart) {
             curClass->Name = line;
             addClass(curYear, curClass->Name);
 
-            curClass = curYear->Class->next;
+            Class *tmp = curYear->Class;
+            while (tmp->next) {
+                tmp = tmp->next;
+            }      
+
+            curClass = tmp;
             headStudent = nullptr;
         } else {
             if(!curClass) {
