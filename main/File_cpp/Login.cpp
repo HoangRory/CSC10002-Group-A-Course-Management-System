@@ -81,7 +81,7 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
     system("cls");
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    SetConsoleTextAttribute(h, BLUE);
+    SetConsoleTextAttribute(h, LIGHT_AQUA);
     cout << "WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n\n";
     SetConsoleTextAttribute(h, LIGHT_AQUA);
     cout << "PLEASE ENTER YOUR USERNAME AND PASSWORD TO LOGIN\n\n";
@@ -109,8 +109,10 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
 
     if (!loggedIn)
     {
-        std::cout << "Wrong username or password\n";
-        std::cout << "Try again?\n\n\n";
+        SetConsoleTextAttribute(h, LIGHT_RED);
+        std::cout << "\nWrong username or password\n";
+        std::cout << "Try again!!!\n\n\n";
+        SetConsoleTextAttribute(h, WHITE);
         system("pause");
         LoggingIn(accHead, user, pass, role);
         return;
@@ -125,12 +127,16 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
 
 void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     std::cout << "\nEnter your current password: ";
-    std::string tmp = "";
+    std::string tmp;
     std::cin >> tmp;
+
     while (tmp != pass)
     {
+        SetConsoleTextAttribute(h, RED);
         std::cout << "Wrong Password!!!\nEnter password again: ";
+        SetConsoleTextAttribute(h, WHITE);
         std::cin >> tmp;
     }
     bool assem = true;
@@ -153,7 +159,9 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
         cur = cur->next;
     cur->password = tmp;
     WriteAccount(accHead);
+    SetConsoleTextAttribute(h, GREEN);
     std::cout << "\nChange password successfully.";
+    SetConsoleTextAttribute(h, WHITE);
     return;
 }
 

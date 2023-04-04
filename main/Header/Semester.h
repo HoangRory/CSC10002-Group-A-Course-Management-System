@@ -2,7 +2,7 @@
 #include "proto.h"
 
 //? Add new semester, new course and import student
-Semester *AddSemester(Semester *semHead);
+Semester *AddSemester(Semester *&semHead);
 Course *AddCourse(Semester *semCurrent);
 void ImportStudentFromFile(Course *courseCurrent);
 void AddStudentByHand(Course *courseCurrent);
@@ -17,6 +17,7 @@ void RunModify(Semester *&semHead, int opt);
 //? Modifying
 void modifySemester(Semester *semHead, int year, int sem);
 void modifyCourse(Semester *semHead, int year);
+void ChangeCourseInfo(Course *cour_cur);
 void deleteCourse(Semester *semHead, int year);
 void addStudent(Course *courCurrent, string course_id);
 void removeStudent(Course *courCurrent, string course_id);

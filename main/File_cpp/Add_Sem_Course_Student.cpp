@@ -62,6 +62,7 @@ Semester *AddSemester(Semester *semHead)
 
     const char *cstr_path = tmp_sys.c_str();
     system(cstr_path);
+    system("cls");
 
     return sem_cur;
 }
@@ -85,7 +86,7 @@ Course *AddCourse(Semester *semCurrent)
         {
             if (courseCurrent->CourseID == id)
             {
-                cout << "*** Already has this course, modify it? (Y/N) ***";
+                cout << "*** Already has this course, modify it? (Y/N) ***\n==> ";
                 char check;
                 cin >> check;
                 while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
@@ -150,7 +151,7 @@ void ImportStudentFromFile(Course *courseCurrent)
         else
             i++;
     }
-    string studList = "../Data_file/New_Enrolled_Student/" + str + ".csv";
+    string studList = "../Data_file/New_Enrolled_Student/" + str + ".txt";
 
     ifstream ifs(studList);
     if (!ifs)
@@ -280,7 +281,7 @@ void AddingCourse(Semester *semCurrent)
                     cout << menu[i];
             }
             SetConsoleTextAttribute(h, GREEN);
-            cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
             SetConsoleTextAttribute(h, WHITE);
         }
     }

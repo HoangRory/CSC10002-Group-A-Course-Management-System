@@ -119,7 +119,7 @@ void StaffMain(Semester *&semHead)
                     choice--;
                 break;
             case DOWN:
-                if (choice < 4)
+                if (choice < 5)
                     choice++;
                 break;
             case ENTER:

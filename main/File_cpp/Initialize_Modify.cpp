@@ -94,7 +94,7 @@ void RunModify(Semester *&semHead, int opt)
     switch (opt)
     {
     case 1:
-        viewCourse(semHead);
+        // viewCourse(semHead);
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "==> Please choose the semester (1, 2, 3): ";
@@ -103,7 +103,7 @@ void RunModify(Semester *&semHead, int opt)
         modifySemester(semHead, year, sem);
         break;
     case 2:
-        viewCourse(semHead);
+        // viewCourse(semHead);
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "\n";
