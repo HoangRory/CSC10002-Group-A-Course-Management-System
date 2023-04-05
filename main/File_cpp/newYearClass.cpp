@@ -1,73 +1,117 @@
-/* #include "Header/newYearClass.h"
+#include "../Header/newYearClass.h"
 
-void createSchoolYear(Year *&curYear, int yearStart) {
+//1. Create a school year (2020-2021, for example)
+void createSchoolYear(Year *&headYear, int yearStart) {
+    Year *curYear = headYear;
+    while (curYear) {
+        if (curYear->yearStart == yearStart) {
+            cout << "Year " << yearStart << " already exists." << endl;
+            return;
+        }
+        curYear = curYear->next;
+    }
+
     Year *newYear = new Year;
     newYear->yearStart = yearStart;
 
-    // Add the new year to the beginning of the linked list of years
-    newYear->next = curYear; 
-    curYear = newYear; //cur point to the head (current year)
-
-    // Create a new folder for the year
-    // Create a new directory with the name of yearStart
-
-    string out_year = to_string(yearStart) + '_' + to_string(yearStart + 1);
-    string outPath = "Data_file\\" + out_year;
-    // outPath += "in4smt.txt";
-    string tmp_sys = "mkdir " + outPath;
-    const char *cstr_path = tmp_sys.c_str();
-    system(cstr_path);
+    if (!headYear) headYear = newYear;
+    else {
+        Year *lastYear = headYear;
+        while (lastYear->next) lastYear = lastYear->next;
+        lastYear->next = newYear;
+    }
+    cout << "Year " << yearStart << " has been added successfully." << endl;
 }
 
-void createClasses(Class *&Classes, int &setOfClass, string preClasses, ofstream &outFile) {
-    Class *newClass = new Class;
-    newClass->Name = preClasses;
-    newClass->setOfClass = setOfClass;
-
-    // add the new class to the beginning of the linked list of classes
-    newClass->next = Classes; 
-    Classes = newClass; //classes point to the head of the linked list
-
-    //write the new class to the output file
-    outFile << newClass->setOfClass << endl;
-    outFile << newClass->Name << endl;
-}
-
-bool checkClass(Class *curClass, string ClassID) {
+//2. Create several classes for 1st-year students. For example: class 20APCS1, class 20APCS2, class 20CLC1..., class 20CLC11, class 20VP...
+bool checkClass(Year *curYear, string className) {
+    Class *curClass = curYear->Class;
     while(curClass) {
-        if (curClass->Name == ClassID) return true;
-        else curClass = curClass->next;
+        if (curClass->Name == className) return true;
+        curClass = curClass->next;
     }
-
     return false;
 }
 
+void createClasses(Year *&curYear, string className) {
+    if (checkClass(curYear, className)) {
+        cout << "Class " << className << " already exists." << endl;
+        return;
+    }
+
+    Class *newClass = new Class;
+    newClass->Name = className;
+    newClass->StudentClass = nullptr;
+    
+    if (!curYear->Class) curYear->Class = newClass;
+    else {
+        Class *prevClass = curYear->Class;
+        while (prevClass->next) prevClass = prevClass->next;
+        prevClass->next = newClass;
+    }
+    cout << "Class " << className << " has been added successfully!" << endl;
+}
+
+//3. Add new 1st year students to 1st-year classes.
+//check if that student already exists.
 bool checkStudent(Class *curClass, string StudentID) {
-    for(Student* curStudent = curClass->StudentClass; curStudent; curStudent = curStudent->next) {
-        if (curStudent->ID == StudentID) {
-            return true;
-        }
+    Student *curStudent = curClass->StudentClass;
+    while(curStudent->next) {
+        if (curStudent->ID == StudentID) return true;
+        curStudent = curStudent->next;
     }
-
     return false;
 }
 
-void add1stYearStudents(Class *addStudent, string studentID, string firstName, string lastName, string gender, string dateofBirth, string socialID) {
-    string ClassID;
+//access to the class
+void addStudenttoClass(Year *curYear) {
+    string className;
+    cout << "Enter class name: ";
+    getline(cin, className);
 
-    Class *curClass = addStudent;
-    cout << "Enter Class name: ";
-    getline(cin, ClassID);
-
-    if (!checkClass(curClass, ClassID)) {
+    if (!checkClass(curYear, className)) {
         cout << "Class not found." << endl;
         return;
-    } //check class id
+    } // check class id
 
-    if (!checkStudent(curClass, studentID)) {
-        cout << "This student has already been added. Please retry." << endl;
-        return;
+    Class *curClass = curYear->Class;
+    while (curClass->next) {
+        if (curClass->Name == className) break;
+        curClass = curClass->next;
     }
+    AddStudent_method(curClass);
+
+}
+
+//choose add student method
+void AddStudent_method(Class *curClass) {
+    int choice = 0;
+    cout << "ADD STUDENT" << endl;
+    for (int i = 0; i < 88; i++) {
+        cout << "=";
+    }
+    cout << endl;
+    cout << "1. Add one by one.\n2. Import CSV file.\nEnter your choice: ";
+    cin >> choice;
+    cin.ignore();
+    switch (choice) {
+    case 1:
+        inputStudent(curClass);
+        break;
+    
+    case 2:
+        importStudent(curClass);
+        break;
+
+    default:
+        cout << "Invalid choice." << endl;
+        break;
+    }
+}
+
+//add student one by one
+void add1stYearStudents(Class *addStudent, string studentID, string firstName, string lastName, string gender, string dateofBirth, string socialID) {
+    Student *curStudent = addStudent->StudentClass;
 
     Student *newStudent = new Student;
     //No, Student ID, First name, Last name, Gender, Date of Birth, and Social ID.
@@ -81,22 +125,21 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
     newStudent->accStudent->birth = dateofBirth;
     newStudent->accStudent->SocialID = socialID;
 
-    if (!curClass->StudentClass) {
-        curClass->StudentClass = newStudent;
+    if (!curStudent) {
+        addStudent->StudentClass = newStudent;
     } else {
-        Student *curStudent = curClass->StudentClass;
-
-        while (curStudent->next != nullptr) {
+        while (curStudent->next) {
             curStudent = curStudent->next;
         }
         curStudent->next = newStudent;
         newStudent->prev = curStudent;
     }
 
-    cout << "Student " << newStudent->accStudent->firstName << " " << newStudent->accStudent->lastName << " has been added to class " << curClass->Name << endl;
+    cout << "Student " << newStudent->accStudent->firstName << " " << newStudent->accStudent->lastName << " has been added to class " << addStudent->Name << endl;
 }
 
-void inputStudent(Class *classPtr) { //input information of a student (add one by one)
+//import student information
+void inputStudent(Class *classPtr) {
     string studentID;
     string firstName;
     string lastName;
@@ -105,8 +148,14 @@ void inputStudent(Class *classPtr) { //input information of a student (add one b
     string socialID;
 
     cout << "- Student information -\n";
+    for (int i = 0; i < 88; i++) {
+        cout << "=";
+    }
+    cout << endl;
+
     cout << "Student ID: ";
     getline(cin, studentID);
+
     //cin.ignore();
     cout << "First Name: ";
     getline(cin, firstName);
@@ -114,7 +163,7 @@ void inputStudent(Class *classPtr) { //input information of a student (add one b
     cout << "Last Name: ";
     getline(cin, lastName);
     //cin.ignore();
-    cout << "Gender: (M: male   F: female): ";
+    cout << "Gender (M: male   F: female): ";
     cin >> gender;
     cin.ignore();
     cout << "Date of Birth (dd/mm/yyyy):";
@@ -124,14 +173,21 @@ void inputStudent(Class *classPtr) { //input information of a student (add one b
     getline(cin, socialID);
     //cin.ignore();
 
-    add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
-
+    if (checkStudent(classPtr, studentID)) {
+        cout << "This student has already been added. Please retry." << endl;
+    } else {
+        add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
+    }
 }
 
-void importStudent(Class *classPtr, string studentList) {
+void importStudent(Class *classPtr) {
+    string CSV_path = "";
+    cout << "Enter file path: ";
+    getline(cin, CSV_path);
+
     //check if the file exits
-    ifstream file(studentList.c_str());
-    if (!file.is_open()) {
+    ifstream studentList(CSV_path.c_str());
+    if (!studentList.is_open()) {
         cout << "File does not exit." << endl;
         return;
     }
@@ -140,7 +196,7 @@ void importStudent(Class *classPtr, string studentList) {
     string line;
     string delimiter = ",";
     int lineCount = 0;
-    while (getline(file, line)) {
+    while (getline(studentList, line)) {
         //split the line by commas
         size_t position = 0;
         stringstream ss(line);
@@ -169,33 +225,11 @@ void importStudent(Class *classPtr, string studentList) {
         string socialID = fields[5];
 
         //add the student to class
-        add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
+        if (checkStudent(classPtr, studentID)) {
+            cout << "This student has already been added. Please retry." << endl;
+        } else {
+            add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
+        }
     }
     cout << "Imported " << lineCount << " students to class " << classPtr->Name << ". \n";
 }
-
-
-void addStudent1_CSV() {
-    int choice;
-    cout << "Add new 1st year students to 1st-year classes.\n";
-    cout << "1. Add one by one.\n2. Import CSV file.\n0. Exit.\nEnter your choice: ";
-    cin >> choice;
-    cin.ignore();
-
-    if (choice == 0) {
-        cout << "End of program\n";
-        return;
-    }
-    else {
-        Class *classPtr;
-        if (choice == 1){
-            inputStudent(classPtr);
-        }
-        else {
-            string studentList;
-            cout << "Enter the path to the file: ";
-            getline(cin, studentList);
-            importStudent(classPtr, studentList);
-        }
-    }
-} */

@@ -45,7 +45,7 @@ void addClass(Year *curYear, string ClassName) {
 void importClass(Year *curYear, int yearStart) {
     //create the path to the directory
     string in_year = to_string(yearStart) + '_' + to_string(yearStart + 1);
-    string path = "Data_file" + path_separator + in_year + path_separator + "class.txt";
+    string path = "Data_file" + separator + in_year + separator + "class.txt";
 
     ifstream ifs(path);
     if (!ifs) {
@@ -123,36 +123,4 @@ void importClass(Year *curYear, int yearStart) {
     } 
 
     cout << "Class imported successfully" << endl;
-}
-
-int main() {
-    Year* yearHead = nullptr;
-    int numofYear = 0;
-
-    importYear(yearHead, numofYear);
-
-    // Print out the list of years and classes
-    Year* curYear = yearHead;
-    cout << "List of years and classes:" << endl;
-
-    while (curYear) {
-        cout << "Year " << curYear->yearStart << ":" << endl;
-
-        Class* curClass = curYear->Class;
-        while (curClass) {
-            cout << "\t" << curClass->Name << ":" << endl;
-
-            Student* curStudent = curClass->StudentClass;
-            while (curStudent) {
-                cout << "\t\t" << curStudent->ID << endl;
-                curStudent = curStudent->next;
-            }
-
-            curClass = curClass->next;
-        }
-
-        curYear = curYear->next;
-    }
-
-    return 0;
 }

@@ -1,27 +1,23 @@
-/* #include "Header/newYearClass.h
+#include "../Header/newYearClass.h"
+const string separator = "\\";
+
 int main() {
-    int choice;
-    Year *curYear = nullptr;
-    Class *Classes = nullptr;
-    int setOfClass = -1;
-    ofstream outFile("Data_file/classes.txt");
+    Year *headYear = nullptr;
+    int numofYear = 0;
 
-    // Create a new school year
-    createSchoolYear(curYear, 2023);
+    // import existing years and classes
+    importYear(headYear, numofYear);
 
-    // Add new classes
-    createClasses(Classes, setOfClass, "22CLC01", outFile);
-    createClasses(Classes, setOfClass, "22CLC02", outFile);
+    // create a new school year
+    createSchoolYear(headYear, 2024);
 
-    // Add students
-    cout << "Do you want to add new 1st year students to 1st-year classes?" << endl;
-    cout << "1. Yes\n2. No" << endl;
-    cin >> choice;
-    cin.ignore();
+    // create a new class in the new school year
+    Year *curYear = headYear;
+    while (curYear && curYear->yearStart != 2024) curYear = curYear->next;
+    createClasses(curYear, "23APCS1");
 
-    if (choice == 1) {
-        addStudent1_CSV();
-    }
+    // add students to the new class
+    addStudenttoClass(curYear);
 
     return 0;
-} */
+}
