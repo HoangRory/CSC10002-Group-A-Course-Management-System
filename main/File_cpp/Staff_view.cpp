@@ -1,4 +1,4 @@
-#include "../Header/proto.h"
+#include "../Header/View.h"
 
 //task 16: view students in a class 
 void ViewStudentsClass(Year *yearHead) 
