@@ -24,8 +24,8 @@ void removeStudent(Course *courCurrent, string course_id);
 void addRemoveStudent(Semester *semHead, int year);
 
 //? Read Semester from file
-void Read_SMT(Semester *&semHead, int y, int smt);
-void Read_multi_SMT(Semester *&semHead, int yr, int num_year, int num_smt);
+Semester *Read_Sem(int year, int smt);
+Semester *Read_All_Semester(int year);
 
 void DeleteStudent(StudentCourse *&stud_head);
 void DeleteCourse(Course *&course_head);
@@ -35,7 +35,8 @@ void OutCourse(Course *course_head, ofstream &ofs);
 void Output(Semester *semHead);
 
 //? View Course, Sync name from Account linked list
-void SyncFullName(Semester *semHead, Account *accHead);
-void viewCourse(Semester *semHead);
+void SyncFullName(Year *yearHead, Account *accHead);
+void viewCourse(Year *yearHead);
+void ViewCourseInYear(Semester *semHead);
 void StaffMain(Semester *&semHead);
-void NewSemesterMain(Semester *&semHead, int yr, int num_year, int num_smt, Account *accHead, int role);
+void NewYearMain(Year *&yearHead, Account *accHead, int role);

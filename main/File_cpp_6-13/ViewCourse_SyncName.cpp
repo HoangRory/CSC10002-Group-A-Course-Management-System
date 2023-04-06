@@ -1,52 +1,171 @@
 #include "../Header/Semester.h"
 
 // todo Alternate to sync more efficiently
-void SyncFullName(Semester *semHead, Account *accHead)
+// void SyncFullName(Semester *semHead, Account *accHead)
+// {
+//     Semester *sem_cur = semHead;
+//     while (sem_cur)
+//     {
+//         Course *cse = sem_cur->course;
+//         while (cse)
+//         {
+//             StudentCourse *stcse = cse->studentCourse;
+//             while (stcse)
+//             {
+//                 Account *acc_cur = accHead;
+//                 while (acc_cur)
+//                 {
+//                     if (stcse->FullName != "")
+//                         break;
+//                     if (acc_cur->username == stcse->ID)
+//                     {
+//                         stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
+//                         break;
+//                     }
+//                     acc_cur = acc_cur->next;
+//                 }
+//                 stcse = stcse->next;
+//             }
+//             cse = cse->next;
+//         }
+//         sem_cur = sem_cur->next;
+//     }
+// }
+
+void SyncFullName(Year *yearHead, Account *accHead)
 {
-    Semester *sem_cur = semHead;
-    while (sem_cur)
+    Year *year_cur = yearHead;
+    while (year_cur)
     {
-        Course *cse = sem_cur->course;
-        while (cse)
+        Semester *sem_cur = yearcur->semester;
+        while (sem_cur)
         {
-            StudentCourse *stcse = cse->studentCourse;
-            while (stcse)
+            Course *cse = sem_cur->course;
+            while (cse)
             {
-                Account *acc_cur = accHead;
-                while (acc_cur)
+                StudentCourse *stcse = cse->studentCourse;
+                while (stcse)
                 {
-                    if (stcse->FullName != "")
-                        break;
-                    if (acc_cur->username == stcse->ID)
+                    Account *acc_cur = accHead;
+                    while (acc_cur)
                     {
-                        stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
-                        break;
+                        if (stcse->FullName != "")
+                            break;
+                        if (acc_cur->username == stcse->ID)
+                        {
+                            stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
+                            break;
+                        }
+                        acc_cur = acc_cur->next;
                     }
-                    acc_cur = acc_cur->next;
+                    stcse = stcse->next;
                 }
-                stcse = stcse->next;
+                cse = cse->next;
             }
-            cse = cse->next;
+            sem_cur = sem_cur->next;
         }
-        sem_cur = sem_cur->next;
+        year_cur = year_cur->next;
     }
 }
 
-void viewCourse(Semester *semHead)
+void ViewCourse(Year *yearHead)
 {
+    Year *year_cur = yearHead;
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    int cnt = 0;
+    while (year_cur)
+    {
+        cnt++;
+        year_cur = year_cur->next;
+    }
+    string *menu = new string[cnt + 2];
+    menu[0] = "List of year\n";
+    menu[cnt + 1] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    year_cur = yearHead;
+    for (int i = 1; i <= cnt; i++)
+    {
+        menu[i] = "+ " + to_string(year_cur->Year) + " - " + to_string(year_cur->Year + 1) + "\n";
+        year_cur = year_cur->next;
+    }
+    int opt = 1;
+    bool stop = false;
+    cout << "Choose the year you want to view the course: \n";
+    for (int i = 0; i < cnt + 2; i++)
+    {
+        if (i == opt)
+        {
+            SetConsoleTextAttribute(h, LIGHT_GREEN);
+            cout << menu[i];
+            SetConsoleTextAttribute(h, WHITE);
+        }
+        else
+            cout << menu[i];
+    }
+
+    while (!stop)
+        if (_kbhit())
+        {
+            switch (_getch())
+            {
+            case UP:
+                if (opt > 1)
+                    opt--;
+                break;
+            case DOWN:
+                if (opt < cnt + 1)
+                    opt++;
+                break;
+            case ENTER:
+                stop = true;
+                break;
+            }
+            system("cls");
+            if (stop)
+                break;
+            cout << "Choose the year you want to view the course: \n";
+            for (int i = 0; i < cnt + 2; i++)
+            {
+                if (i == opt)
+                {
+                    SetConsoleTextAttribute(h, LIGHT_GREEN);
+                    cout << menu[i];
+                    SetConsoleTextAttribute(h, WHITE);
+                }
+                else
+                    cout << menu[i];
+            }
+        }
+    int choice = stoi(menu[opt].substr(2, 4));
+    delete[] menu;
+    year_cur = yearHead;
+    while (year_cur)
+    {
+        if (year_cur->Year == choice)
+            break;
+        year_cur = year_cur->next;
+    }
+    viewCourseInYear(year_cur->semester);
+}
+void viewCourseInYear(Semester *semHead)
+{
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     Semester *sem_cur = semHead;
-    cout << "List of courses: \n";
-    for (int i = 0; i < 88; i++)
+    // cout << "List of courses: \n";
+    for (int i = 0; i < 86; i++)
+        cout << '=';
+    SetConsoleTextAttribute(h, 0xF8);
+    cout << '\n';
+    cout << setw(40) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(36) << '\n';
+    SetConsoleTextAttribute(h, 15);
+    for (int i = 0; i < 86; i++)
         cout << '=';
 
-    cout << '\n'
-         << setw(13) << "|     Year   "
-         << setw(15) << " | Semester | "
-         << setw(15) << " Course ID   | "
-         << setw(25) << "    Course name        | "
-         << setw(21) << "Teacher name   | " << '\n';
+    cout << "\n|  Semester  |"
+         << setw(14) << "Course ID" << setw(6) << '|'
+         << setw(20) << "Course name" << setw(10) << '|'
+         << setw(17) << "Teacher name" << setw(5) << '|' << '\n';
 
-    for (int i = 0; i < 88; i++)
+    for (int i = 0; i < 86; i++)
         cout << '=';
     cout << "\n";
 
@@ -55,16 +174,16 @@ void viewCourse(Semester *semHead)
         Course *cour = sem_cur->course;
         while (cour)
         {
-            cout << "| " << sem_cur->Year << " - " << sem_cur->Year + 1 << "  |";
-            cout << "     " << sem_cur->No << "    |";
+            cout << '|' << setw(6) << sem_cur->No << setw(7) << '|';
 
-            cout << setw(11) << cour->CourseID << "   | ";
+            cout << setw(13) << cour->CourseID << setw(7) << '|';
+            int len = cour->Name.length();
+            cout << setw(len + 5) << cour->Name << setw(30 - len - 5) << '|';
 
-            cout << setw(20) << cour->Name << setw(5) << "| ";
+            len = cour->TeacherName.length();
+            cout << setw(len + 3) << cour->TeacherName << setw(22 - len - 3) << '|' << '\n';
 
-            cout << setw(16) << cour->TeacherName << setw(5) << "|\n";
-
-            for (int i = 0; i < 88; i++)
+            for (int i = 0; i < 86; i++)
                 cout << '=';
             cout << "\n";
 
@@ -197,12 +316,15 @@ void StaffMain(Semester *&semHead)
     }
 }
 
-void NewSemesterMain(Semester *&semHead, int yr, int num_year, int num_smt, Account *accHead, int role)
+void NewYearMain(Year *&yearHead, Account *accHead, int role)
 {
     system("cls");
     cout << "\n";
-    Read_multi_SMT(semHead, yr, num_year, num_smt);
-    SyncFullName(semHead, accHead);
+    //! Read year
+    //! In add the semester in each read year
+    Year *year_cur = yearHead;
+    yearHead->NoSemester = Read_All_Semester(yearHead->yearStart);
+    SyncFullName(yearHead, accHead);
     viewCourse(semHead);
     switch (role)
     {

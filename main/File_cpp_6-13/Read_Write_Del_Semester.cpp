@@ -1,65 +1,64 @@
 #include "../Header/Semester.h"
 
 // todo make it more efficient
-void Read_SMT(Semester *&semHead, int y, int smt)
+Semester* Read_Sem(int year, int smt)
 {
-    string in_year = to_string(y) + '_' + to_string(y + 1);
-    string path = "..\\Data_file\\" + in_year + "\\smt" + to_string(smt) + "\\in4smt.txt";
+    string path = "..\\Data_file\\" + to_string(year) + '_' + to_string(year + 1);
+    path += "\\smt" + to_string(smt) + "\\in4smt.txt";
 
     ifstream ifs(path);
     if (!ifs)
-        return;
+        return nullptr;
+    
+    Semester* newSem = new Semester;
+    newSem->Year = year;
+    newSem->No = smt;
+    ifs >> newSem->startDate >> newSem->endDate;
 
-    Semester *sem_cur;
+    Course* newCourse = nullptr;
     while (!ifs.eof())
     {
-        if (!semHead)
+        if (!newSem->course)
         {
-            semHead = new Semester;
-            sem_cur = semHead;
+            newSem->course = new Course;
+            newCourse = newSem->course;
         }
         else
         {
-            sem_cur->next = new Semester;
-            Semester *tmp = sem_cur;
-            sem_cur = sem_cur->next;
-            sem_cur->prev = tmp;
+            newCourse->next = new Course;
+            newCourse->next->prev = newCourse;
+            newCourse = newCourse->next;
         }
-
-        sem_cur->No = smt;
-        sem_cur->Year = y;
-        ifs >> sem_cur->startDate >> sem_cur->endDate;
-
-        Course *tmp_C;
-        while (!ifs.eof())
-        {
-            if (!sem_cur->course)
-            {
-                sem_cur->course = new Course;
-                tmp_C = sem_cur->course;
-            }
-            else
-            {
-                tmp_C->next = new Course;
-                Course *temp = tmp_C;
-                tmp_C = tmp_C->next;
-                tmp_C->prev = temp;
-            }
-            ifs.ignore();
-            getline(ifs, tmp_C->Name);
-            ifs >> tmp_C->CourseID >> tmp_C->Credits >> tmp_C->maxStudents >> tmp_C->numStudents >> tmp_C->Room;
-            ifs.ignore();
-            getline(ifs, tmp_C->TeacherName);
-            ifs >> tmp_C->Day >> tmp_C->Session;
-        }
+        ifs.ignore();
+        getline(ifs, newCourse->Name);
+        ifs >> newCourse->CourseID >> newCourse->Credits >> newCourse->maxStudents >> newCourse->numStudents >> newCourse->Room;
+        ifs.ignore();
+        getline(ifs, newCourse->TeacherName);
+        ifs >> newCourse->Day >> newCourse->Session;
     }
-    path = "";
+
+    ifs.close();
+    return newSem;    
 }
-void Read_multi_SMT(Semester *&semHead, int yr, int num_year, int num_smt)
+Semester* Read_All_Semester(int year)
 {
-    for (int y = yr; y < yr + num_year; y++)
-        for (int smt = 1; smt <= num_smt; smt++)
-            Read_SMT(semHead, y, smt);
+    Semester* semHead = nullptr;
+    for (int i = 1; i <= 3; i++)
+    {
+        Semester* newSem = Read_Sem(year, i);
+        if (!newSem)
+            continue;
+        if (!semHead)
+        {
+            semHead = newSem;
+            continue;
+        }
+        Semester* tmp = semHead;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = newSem;
+        newSem->prev = tmp;
+    }
 }
 
 void DeleteStudent(StudentCourse *&stud_head)
@@ -90,7 +89,6 @@ void DeleteSMT(Semester *&semHead)
     DeleteSMT(semHead);
     semHead = nullptr;
 }
-
 
 void OutCourse(Course *course_head, ofstream &ofs)
 {
