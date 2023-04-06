@@ -16,7 +16,7 @@
 extern const string separator;
 
 void createSchoolYear(Year *&headYear, int yearStart);
-void createClasses(Year *&curYear, string className);
+void createClasses(Year *curYear, string className);
 
 bool checkClass(Year *curYear, string className);
 bool checkStudent(Class *curClass, string StudentID);

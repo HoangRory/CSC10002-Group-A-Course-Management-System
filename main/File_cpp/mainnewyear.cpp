@@ -17,7 +17,19 @@ int main() {
     createClasses(curYear, "23APCS1");
 
     // add students to the new class
-    addStudenttoClass(curYear);
+    int choice = -1;
+    while (choice != 2) {
+        cout << "Do you want to add student to class?\n1. Yes\n2. No." << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1: 
+                addStudenttoClass(curYear);
+                break;
+            case 2: 
+                cout << "Thank you for using our program. Program ended." << endl;
+        }
+    }
 
     return 0;
 }
