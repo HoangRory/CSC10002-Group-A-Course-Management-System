@@ -64,23 +64,22 @@ void createClasses(Year *curYear, string className)
         cout << "Adding class " << className << "..." << endl;
     } else {
         cout << "Class " << className << " already exists or invalid class name. Please retry." << endl;
-
-        cout << "Do you want to re-enter?\n1. Yes.\n2. No." << endl;
-            int choice =-1;
-            while (choice != 2) {
-                cout << "Enter your choice: ";
-                cin >> choice;
-                switch (choice) {
-                    case 1: 
-                        cout << "Enter class name: ";
-                        cin >> className;
-                        createClasses(curYear, className);
-                        break;
-                    case 2: 
-                        cout << "Program ended." << endl;
-                        return;
-                }
+        int choice =-1;
+        while (choice != 2) {
+            cout << "Do you want to re-enter?\n1. Yes.\n2. No." << endl;
+            cout << "Enter your choice: ";
+            cin >> choice;
+            switch (choice) {
+                case 1: 
+                    cout << "Enter class name: ";
+                    cin >> className;
+                    createClasses(curYear, className);
+                    break;
+                case 2: 
+                    cout << "Program ended." << endl;
+                    return;
             }
+        }
     }
 
     //! Can check the syntax of a class name: kiểu lớp của năm 22 có dạng là 22 + .... giống là 22CLC02 22APCS2 kiểu z
@@ -106,14 +105,15 @@ void createClasses(Year *curYear, string className)
 // check if that student already exists.
 bool checkStudent(Class *curClass, string StudentID)
 {
-    Student *curStudent = curClass->StudentClass;
-    while (curStudent->next) {
-        if (curStudent->ID == StudentID)
+    Student *headStudent = curClass->StudentClass;
+    if (!headStudent) return false;
+    while (headStudent->prev) {
+        if (headStudent->ID == StudentID)
             return true;
-        curStudent = curStudent->next;
+        headStudent = headStudent->prev;
     }
     //? Thiếu check thằng student cuối nè
-    if (curStudent->ID == StudentID)
+    if (headStudent->ID == StudentID)
         return true;
 
     return false;
@@ -166,7 +166,7 @@ void AddStudent_method(Class *curClass)
             break;
         //? Này để thành vòng while để sai nhập lại cho tiện chớ nó văng
         case 0:
-            cout << "Program ended." << endl;
+            cout << "Exit." << endl;
             return;
         }
     }
@@ -175,7 +175,7 @@ void AddStudent_method(Class *curClass)
 // add student one by one
 void add1stYearStudents(Class *addStudent, string studentID, string firstName, string lastName, string gender, string dateofBirth, string socialID)
 {
-    Student *curStudent = addStudent->StudentClass;
+    Student *headStudent = addStudent->StudentClass;
 
     Student *newStudent = new Student;
     // No, Student ID, First name, Last name, Gender, Date of Birth, and Social ID.
@@ -189,15 +189,13 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
     newStudent->accStudent->birth = dateofBirth;
     newStudent->accStudent->SocialID = socialID;
 
-    if (!curStudent)
+    if (!headStudent)
         addStudent->StudentClass = newStudent;
     else
     {
-        while (curStudent->next) {
-            curStudent = curStudent->next;
-        }
-        curStudent->next = newStudent;
-        newStudent->prev = curStudent;
+        newStudent = headStudent->next;
+        newStudent->prev = headStudent;
+        headStudent = newStudent;
     }
 
     cout << "Student " << newStudent->accStudent->firstName << " " << newStudent->accStudent->lastName << " has been added to class " << addStudent->Name << endl;
@@ -240,19 +238,18 @@ void inputStudent(Class *classPtr)
         add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
 }
 
-void importStudent(Class *classPtr)
-{
+void importStudent(Class *classPtr) {
     //? Này mình nên mặc định cho ngta quăng file vô cái thư mục New-Enrolled_Student lun ấy nhờ, tại ngta đâu biết cái path của máy mình
     cout << "Please import the CSV file to folder New_Enrolled_Student." << endl;
     cout << "Please enter file name: ";
     string fileName;
     getline(cin, fileName);
 
-    string path = "New_Enrolled_Student" + separator + fileName + ".csv";
+    string path = "Data_file" + separator + "New_Enrolled_Student" + separator + fileName;
+    cout << path;
     // check if the file exits
     ifstream studentList(path.c_str());
-    if (!studentList.is_open())
-    {
+    if (!studentList.is_open()) {
         cout << "File does not exit." << endl;
         return;
     }
@@ -264,27 +261,31 @@ void importStudent(Class *classPtr)
 
     //? Cái này dùng sstream chi khó zị, mình biết trc đc số lượng thông tin thì mình cứ getline(studentList, line, ',') là đc rùi
     //? Còn thằng cuối cùng của dòng thì mình getline(studentList, line) là oke :))))
-
-    while (getline(studentList, line))
-    {
+/* 
+    Student *newStudent = new Student;*/
+    
+    while (getline(studentList, line)) {
         // split the line by commas
         size_t position = 0;
         stringstream ss(line);
         string token;
         string fields[6];
         int i = 0;
-        while ((position = line.find(delimiter)) != string::npos)
-        {
-            token = line.substr(0, position);
+
+        while (i < 6) {
+            if (i < 5) {
+                position = line.find(delimiter);
+                token = line.substr(0, position);
+                line.erase(0, position + delimiter.length());
+            } else {
+                token = line;
+            }
             fields[i] = token;
-            line.erase(0, position + delimiter.length());
             i++;
-            lineCount++;
         }
 
         // check if the line have the correct num of fields
-        if (i != 5)
-        {
+        if (i != 6) {
             cout << "Invalid line format in CSV file. Please import another.\n";
         }
 
@@ -296,13 +297,11 @@ void importStudent(Class *classPtr)
         string dateofBirth = fields[4];
         string socialID = fields[5];
 
+        lineCount++;
         // add the student to class
-        if (checkStudent(classPtr, studentID))
-        {
+        if (checkStudent(classPtr, studentID)) {
             cout << "This student has already been added. Please retry." << endl;
-        }
-        else
-        {
+        } else {
             add1stYearStudents(classPtr, studentID, firstName, lastName, gender, dateofBirth, socialID);
         }
     }
