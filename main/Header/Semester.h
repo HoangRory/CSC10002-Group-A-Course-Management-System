@@ -29,14 +29,15 @@ Semester *Read_All_Semester(int year);
 
 void DeleteStudent(StudentCourse *&stud_head);
 void DeleteCourse(Course *&course_head);
-void DeleteSMT(Semester *&semHead);
+void DeleteSMT(Year *yearHead);
 
 void OutCourse(Course *course_head, ofstream &ofs);
-void Output(Semester *semHead);
+void Output(Year* yearHead);
 
 //? View Course, Sync name from Account linked list
 void SyncFullName(Year *yearHead, Account *accHead);
-void viewCourse(Year *yearHead);
+void ViewCourse(Year *yearHead);
 void ViewCourseInYear(Semester *semHead);
+void ViewAllCourse(Year *yearHead);
 void StaffMain(Semester *&semHead);
 void NewYearMain(Year *&yearHead, Account *accHead, int role);

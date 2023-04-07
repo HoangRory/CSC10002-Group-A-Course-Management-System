@@ -78,11 +78,13 @@ void ViewCourse(Year *yearHead)
         cnt++;
         year_cur = year_cur->next;
     }
-    string *menu = new string[cnt + 2];
+    string *menu = new string[cnt + 3];
+
     menu[0] = "List of year\n";
-    menu[cnt + 1] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+    menu[0] = "+ All year\n";
+    menu[cnt + 2] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
     year_cur = yearHead;
-    for (int i = 1; i <= cnt; i++)
+    for (int i = 2; i <= cnt + 1; i++)
     {
         menu[i] = "+ " + to_string(year_cur->Year) + " - " + to_string(year_cur->Year + 1) + "\n";
         year_cur = year_cur->next;
@@ -90,7 +92,7 @@ void ViewCourse(Year *yearHead)
     int opt = 1;
     bool stop = false;
     cout << "Choose the year you want to view the course: \n";
-    for (int i = 0; i < cnt + 2; i++)
+    for (int i = 0; i < cnt + 3; i++)
     {
         if (i == opt)
         {
@@ -101,6 +103,7 @@ void ViewCourse(Year *yearHead)
         else
             cout << menu[i];
     }
+    ShowConsoleCursor(false);
 
     while (!stop)
         if (_kbhit())
@@ -112,7 +115,7 @@ void ViewCourse(Year *yearHead)
                     opt--;
                 break;
             case DOWN:
-                if (opt < cnt + 1)
+                if (opt < cnt + 2)
                     opt++;
                 break;
             case ENTER:
@@ -123,7 +126,7 @@ void ViewCourse(Year *yearHead)
             if (stop)
                 break;
             cout << "Choose the year you want to view the course: \n";
-            for (int i = 0; i < cnt + 2; i++)
+            for (int i = 0; i < cnt + 3; i++)
             {
                 if (i == opt)
                 {
@@ -135,6 +138,13 @@ void ViewCourse(Year *yearHead)
                     cout << menu[i];
             }
         }
+    ShowConsoleCursor(true);
+    if (opt == 1)
+    {
+        delete[] menu;
+        ViewAllCourse(yearHead);
+        return;
+    }
     int choice = stoi(menu[opt].substr(2, 4));
     delete[] menu;
     year_cur = yearHead;
@@ -145,8 +155,9 @@ void ViewCourse(Year *yearHead)
         year_cur = year_cur->next;
     }
     viewCourseInYear(year_cur->semester);
+    return;
 }
-void viewCourseInYear(Semester *semHead)
+void ViewCourseInYear(Semester *semHead)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     Semester *sem_cur = semHead;
@@ -191,44 +202,50 @@ void viewCourseInYear(Semester *semHead)
         }
         sem_cur = sem_cur->next;
     }
-    cout << "\n";
 }
 
-void StaffMain(Semester *&semHead)
+void ViewAllCourse(Year *yearHead)
+{
+    Year *year_cur = yearHead;
+    while (year_cur)
+    {
+        viewCourseInYear(year_cur->semester);
+        year_cur = year_cur->next;
+    }
+}
+
+void StaffMain(Year *yearHead)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, 240);
-    cout << "Welcome to Staff mode!\n";
+    cout << "STAFF MODE!\n";
     SetConsoleTextAttribute(h, WHITE);
-    string *menu = new string[6];
-    menu[0] = "\nStaff privilege      \n";
-    menu[1] = "- View course          \n";
-    menu[2] = "- Add new semester     \n";
-    menu[3] = "- Modify               \n";
-    menu[4] = "- Save changes and quit\n";
-    menu[5] = "- Exit                 \n";
 
+    string *menu = new string[8];
+    menu[0] = "\nStaff privilege\n";
+    menu[1] = "- View course\n";
+    menu[2] = "- Add a new year\n";
+    menu[3] = "- Add new semester\n";
+    menu[4] = "- Modify year/semester/course\n";
+    menu[5] = "- Save changes and quit\n";
+    menu[6] = "- Exit\n";
+    menu[7] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
     int choice = 1;
     bool stop = false;
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 8; i++)
     {
         if (i == choice)
         {
-            SetConsoleTextAttribute(h, YELLOW);
+            SetConsoleTextAttribute(h, LIGHT_YELLOW);
             cout << menu[i];
             SetConsoleTextAttribute(h, WHITE);
         }
         else
             cout << menu[i];
     }
-    SetConsoleTextAttribute(h, GREEN);
-    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
-
     ShowConsoleCursor(false);
     while (!stop)
-    {
         if (_kbhit())
         {
             switch (_getch())
@@ -238,7 +255,7 @@ void StaffMain(Semester *&semHead)
                     choice--;
                 break;
             case DOWN:
-                if (choice < 5)
+                if (choice < 6)
                     choice++;
                 break;
             case ENTER:
@@ -249,7 +266,7 @@ void StaffMain(Semester *&semHead)
                 break;
 
             system("cls");
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 8; i++)
             {
                 if (i == choice)
                 {
@@ -260,37 +277,40 @@ void StaffMain(Semester *&semHead)
                 else
                     cout << menu[i];
             }
-            SetConsoleTextAttribute(h, GREEN);
-            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
         }
-    }
     delete[] menu;
     ShowConsoleCursor(true);
 
     switch (choice)
     {
     case 1:
+        //? View course
         system("cls");
         cout << "\n";
         viewCourse(semHead);
         StaffMain(semHead);
         return;
     case 2:
+        //? Add a new year
+        break;
+    case 3:
+        //? Add a new semester
         system("cls");
         cout << "\n";
         Interface_New_Sem(semHead);
         // Recursion back to the StaffMain function
         StaffMain(semHead);
         return;
-    case 3:
+    case 4:
+        //? Modify year/semester/course
         system("cls");
         cout << "\n";
         initModify(semHead);
         // Recursion back to the StaffMain function
         StaffMain(semHead);
         return;
-    case 4:
+    case 5:
+        //? Save changes and quit
         cout << "\n";
         Output(semHead);
 
@@ -304,6 +324,7 @@ void StaffMain(Semester *&semHead)
         return;
 
     case 5:
+        //? Exit
         cout << "\n";
         cout << "Cleaning up the system";
         for (int i = 0; i < 8; i++)
@@ -324,8 +345,7 @@ void NewYearMain(Year *&yearHead, Account *accHead, int role)
     //! In add the semester in each read year
     Year *year_cur = yearHead;
     yearHead->NoSemester = Read_All_Semester(yearHead->yearStart);
-    SyncFullName(yearHead, accHead);
-    viewCourse(semHead);
+    // SyncFullName(yearHead, accHead);
     switch (role)
     {
     case 1:
@@ -338,7 +358,7 @@ void NewYearMain(Year *&yearHead, Account *accHead, int role)
         break;
     case 3:
         //? StaffMain
-        StaffMain(semHead);
+        StaffMain(yearHead);
         break;
     }
 }

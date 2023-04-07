@@ -2,21 +2,28 @@
 
 // todo Alternate to add more semesters at once
 //! Adding semester 1 include in adding a year
-Semester *AddSemester(Semester *semHead)
+Semester *AddSemester(Year *yearHead)
 {
-    Semester *sem_head = semHead;
-    Semester *sem_cur = semHead;
-
     int Y, N;
     cout << "School year: ";
     cin >> Y;
     cout << "No. semester (1,2,3): ";
     cin >> N;
-    Semester *prev = nullptr;
 
+    Year *year_cur = yearHead;
+    while (year_cur && year_cur->Year != Y)
+        year_cur = year_cur->next;
+    if (!year_cur)
+    {
+        cout << "Year not found! Enter again: ";
+        return AddSemester(yearHead);
+    }
+
+    Semester *sem_cur = year_cur->NoSemester;
+    Semester *prev = sem_cur;
     while (sem_cur)
     {
-        if (sem_cur->Year == Y && sem_cur->No == N)
+        if (sem_cur->No == N)
         {
             std::cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
             char check;
@@ -29,10 +36,11 @@ Semester *AddSemester(Semester *semHead)
             }
             if (check == 'Y' || check == 'y')
             {
-                modifySemester(semHead, Y, N);
+                //! Change the modify Sem
+                // modifySemester(semHead, Y, N);
                 return nullptr;
             }
-            return AddSemester(semHead);
+            return AddSemester(yearHead);
         }
         prev = sem_cur;
         if (!sem_cur->next)
@@ -40,14 +48,17 @@ Semester *AddSemester(Semester *semHead)
         sem_cur = sem_cur->next;
     }
 
-    if (N == 1)
+    if (!prev)
     {
-        //! Add in a new year
+        year_cur->NoSemester = new Semester;
+        sem_cur = year_cur->NoSemester;
     }
-
-    prev->next = new Semester;
-    sem_cur = prev->next;
-    sem_cur->prev = prev;
+    else
+    {
+        prev->next = new Semester;
+        sem_cur = prev->next;
+        sem_cur->prev = prev;
+    }
 
     sem_cur->No = N;
     sem_cur->Year = Y;

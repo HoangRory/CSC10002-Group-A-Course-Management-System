@@ -21,7 +21,8 @@ void ReadAccount(Account *&accHead)
         return;
 
     Account *cur;
-    std::string str;
+    string str;
+    getline(ifs, str, '\n');
     while (!ifs.eof())
     {
         if (!accHead)

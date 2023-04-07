@@ -107,3 +107,7 @@ struct Year
 1 file lưa toàn bộ sinh sinh viên trường
 1 file lưu tên các số kì, số lớp và số khóa, tên kì, tên lớp
 */
+/*
+1 file lưa toàn bộ sinh sinh viên trường
+1 file lưu tên các số kì, số lớp và số khóa, tên kì, tên lớp
+*/

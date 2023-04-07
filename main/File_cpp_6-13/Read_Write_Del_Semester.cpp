@@ -1,7 +1,7 @@
 #include "../Header/Semester.h"
 
 // todo make it more efficient
-Semester* Read_Sem(int year, int smt)
+Semester *Read_Sem(int year, int smt)
 {
     string path = "..\\Data_file\\" + to_string(year) + '_' + to_string(year + 1);
     path += "\\smt" + to_string(smt) + "\\in4smt.txt";
@@ -9,13 +9,13 @@ Semester* Read_Sem(int year, int smt)
     ifstream ifs(path);
     if (!ifs)
         return nullptr;
-    
-    Semester* newSem = new Semester;
+
+    Semester *newSem = new Semester;
     newSem->Year = year;
     newSem->No = smt;
     ifs >> newSem->startDate >> newSem->endDate;
 
-    Course* newCourse = nullptr;
+    Course *newCourse = nullptr;
     while (!ifs.eof())
     {
         if (!newSem->course)
@@ -38,14 +38,14 @@ Semester* Read_Sem(int year, int smt)
     }
 
     ifs.close();
-    return newSem;    
+    return newSem;
 }
-Semester* Read_All_Semester(int year)
+Semester *Read_All_Semester(int year)
 {
-    Semester* semHead = nullptr;
+    Semester *semHead = nullptr;
     for (int i = 1; i <= 3; i++)
     {
-        Semester* newSem = Read_Sem(year, i);
+        Semester *newSem = Read_Sem(year, i);
         if (!newSem)
             continue;
         if (!semHead)
@@ -53,7 +53,7 @@ Semester* Read_All_Semester(int year)
             semHead = newSem;
             continue;
         }
-        Semester* tmp = semHead;
+        Semester *tmp = semHead;
         while (tmp->next)
             tmp = tmp->next;
         tmp->next = newSem;
@@ -78,16 +78,19 @@ void DeleteCourse(Course *&course_head)
     delete course_head;
     course_head = nullptr;
 }
-void DeleteSMT(Semester *&semHead)
+void DeleteSMT(Year *yearHead)
 {
-    if (!semHead)
+    if (!yearHead->NoSemester)
         return;
-    DeleteCourse(semHead->course);
-    Semester *tmp = semHead->next;
-    delete semHead;
-    semHead = tmp;
-    DeleteSMT(semHead);
-    semHead = nullptr;
+    Semester *semHead = yearHead->semester;
+    while (semHead)
+    {
+        DeleteCourse(semHead->course);
+        Semester *tmp = semHead->next;
+        delete semHead;
+        semHead = tmp;
+    }
+    yearHead->NoSemester = nullptr;
 }
 
 void OutCourse(Course *course_head, ofstream &ofs)
@@ -108,20 +111,17 @@ void OutCourse(Course *course_head, ofstream &ofs)
         course_head = course_head->next;
     }
 }
-void Output(Semester *semHead)
+void Output(Year* yearHead)
 {
-    if (!semHead)
+    if (!yearHead->NoSemester)
         return;
-    Semester *sem_cur = semHead;
+
+    Semester *sem_cur = yearHead->NoSemester;
+    string out_year = to_string(yearHead->Year) + '_' + to_string(yearHead->Year + 1);
 
     while (sem_cur)
     {
-        string out_year = to_string(sem_cur->Year) + '_' + to_string(sem_cur->Year + 1);
         string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(sem_cur->No) + "\\in4smt.txt";
-        // string tmp_sys = "mkdir " + outPath;
-        // const char *cstr_path = tmp_sys.c_str();
-        // system(cstr_path);
-
         ofstream ofs(outPath);
         if (!ofs)
             return;
