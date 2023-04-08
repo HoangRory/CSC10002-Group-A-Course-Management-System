@@ -10,7 +10,7 @@ Year *Create_NewYear(Year *yearHead)
     int current = yearTMP->yearStart;
     cout << "Current year: " << current << "-" << current + 1 << "\nCreating year: " << current + 1 << "-" << current + 2 << "?\n";
     int yr_choice;
-    cout << "1. Yes\n2. Enter a 'something year :))))'\n";
+    cout << "1. Yes\n2. Enter a new year :))))'\n";
     cin >> yr_choice;
 
     if (yr_choice == 1)
@@ -21,15 +21,53 @@ Year *Create_NewYear(Year *yearHead)
         cin >> year;
     }
 
+    Year *year_cur = yearHead;
+    while (year_cur)
+    {
+        if (year_cur->yearStart == year)
+        {
+            cout << "Year " << year << " already exists.\n";
+            cout << "Do you want to re-enter?(Y/N) ";
+            char choice;
+            cin >> choice;
+            while (choice != 'Y' && choice != 'y' && choice != 'N' && choice != 'n')
+            {
+                cout << "Invalid input. Please re-enter: ";
+                cin >> choice;
+            }
+            if (choice == 'Y' || choice == 'y')
+            {
+                cout << "Enter the year: ";
+                cin >> year;
+            }
+            else
+                return nullptr;
+        }
+        year_cur = year_cur->next;
+    }
+
     Year *newYear = new Year;
     newYear->yearStart = year;
     yearTMP->next = newYear;
 
-    //? return the new year for further inputing 1st year student
+    // todo return the new year for further inputing 1st year student
     return newYear;
 }
 
-void Adding_New_Classes(Year *newYear)
+//? Return true if the class already exists
+bool checkClass(Year *curYear, string className)
+{
+    Class *curClass = curYear->Class;
+    while (curClass)
+    {
+        if (curClass->Name == className)
+            return true;
+        curClass = curClass->next;
+    }
+    return false;
+}
+
+void Create_New_Classes(Year *newYear)
 {
     cout << "Enter -1 to stop adding new classes\n";
     cout << "Adding new classes to year " << newYear->yearStart << "_" << newYear->yearStart + 1 << ":\n";
@@ -40,7 +78,17 @@ void Adding_New_Classes(Year *newYear)
     {
         if (line == "-1")
             break;
-        
+        CapitalClassName(line);
+        if (checkClass(newYear, line))
+        {
+            cout << "Class " << line << " already exists.\nPlease re-enter: ";
+            continue;
+        }
+        if (line.substr(0, 2) != to_string(newYear->yearStart).substr(2, 2))
+        {
+            cout << "Invalid class name. Please re-enter: ";
+            continue;
+        }
         if (!ClassTMP)
         {
             ClassTMP = new Class;
@@ -55,8 +103,158 @@ void Adding_New_Classes(Year *newYear)
         ClassTMP->Name = line;
     }
 }
-void Adding_1st_Student(Year *newYear)
+
+//? Return true if the student already exists
+bool Check_Student(Class *curClass, string studentID)
 {
+    Student *curStudent = curClass->StudentClass;
+    while (curStudent)
+    {
+        if (curStudent->ID == studentID)
+            return true;
+        curStudent = curStudent->next;
+    }
+    return false;
+}
+
+//? Turn the classname to uppercase
+void CapitalClassName(string &name)
+{
+    for (int i = 0; i < name.length(); i++)
+        name[i] = toupper(name[i]);
+}
+
+void addStudentToClass(Year *curYear)
+{
+    string className;
+    cout << "Enter -1 to quit!!!\n\n";
+    cout << "Enter the class that you want to add student: ";
+    cin >> className;
+    if (className == "-1")
+        return;
+    CapitalClassName(className);
+    if (!checkClass(curYear, className))
+    {
+        cout << "Class " << className << " does not exist!!!\n";
+        addStudentToClass(curYear);
+        return;
+    }
+    Class *curClass = curYear->Class;
+    while (curClass)
+    {
+        if (curClass->Name == className)
+            break;
+        curClass = curClass->next;
+    }
+    Method(curClass);
+    return;
+}
+
+void Method(Class *curClass)
+{
+    int choice = -1;
+    cout << "Choosing a method to add student:\n";
+    cout << "1. Adding by hand\n2. Importing from file\n3. Return\n";
+    cout << "==> Enter your choice: ";
+    cin >> choice;
+    // todo convert into conio để khỏi check đúng sai cái này
+    switch (choice)
+    {
+    case 1:
+        inputStudent(curClass);
+        break;
+    case 2:
+        importStudent(curClass);
+        break;
+    }
+}
+
+void inputStudent(Class *curClass)
+{
+    string ID, first, last, gen, birth, socialID;
+    cout << "Adding student by hand one by one\n";
+    cout << "Enter the student information: \n";
+    for (int i = 0; i < 88; i++)
+        cout << "=";
+    cout << "\n";
+    cin.ignore();
+    cout << "- Student ID: ";
+    getline(cin, ID);
+
+    cout << "- First name: ";
+    getline(cin, first);
+
+    cout << "- Last name: ";
+    getline(cin, last);
+
+    cout << "- Gender (M: male, F: female): )";
+    getline(cin, gen);
+
+    cout << "- Date of birth (dd/mm/yyyy): ";
+    getline(cin, birth);
+
+    cout << "- Social ID: ";
+    getline(cin, socialID);
+
+    if (Check_Student(curClass, ID))
+    {
+        cout << "Student has already been added!!!\n";
+        char ch;
+        cout << "Do you want to re-enter?(Y/N) ";
+        cin >> ch;
+        while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
+        {
+            cout << "Invalid input. Please re-enter: ";
+            cin >> ch;
+        }
+        if (ch == 'Y' || ch == 'y')
+            inputStudent(curClass);
+        return;
+    }
+    add1stYearStudents(curClass, ID, first, last, gen, birth, socialID);
+    //? Add here
+}
+void add1stYearStudents(Class* curClass, string ID, string first, string last, string gen, string birth, string socialID)
+{
+    Student * headStudent = curClass->StudentClass;
+    Student* newStud = new Student;
+
+    newStud->ID = ID;
+    newStud->accStudent = new Account;
+
+    //? Set information to student
+    Account* accTmp = newStud->accStudent;
+    accTmp->role = 1; //? Set role for student
+    accTmp->firstName = first;
+    accTmp->lastName = last;
+    accTmp->Gender = gen;
+    accTmp->birth = birth;
+    accTmp->SocialID = socialID;
+
+    if (!headStudent)
+        curClass->StudentClass = newStud;
+    else
+    {
+        while (headStudent->next)
+            headStudent = headStudent->next;
+        headStudent->next = newStud;
+        newStud->prev = headStudent;
+    }
+
+    cout << "Student " << accTmp->firstName << " " << accTmp->lastName 
+         << " has been added to class " << curClass->Name << "\n";
+}
+
+void NewAccount(Account* accHead, string ID, Account* accTmp)
+{
+    Account* acc_cur = accHead;
+    while(acc_cur->next)
+        acc_cur = acc_cur->next;
+    acc_cur->next = accTmp;
+    accTmp->prev = acc_cur;
+    accTmp->username = ID; //? Set the default username to student ID
+    accTmp->password = "11111111" //? Set default password to 8 1
+    return;
 }
 
 int main()

@@ -25,13 +25,13 @@ Semester *AddSemester(Year *yearHead)
     {
         if (sem_cur->No == N)
         {
-            std::cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
+            cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
             char check;
             cin >> check;
 
             while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
             {
-                std::cout << "Invalid input! Enter again: ";
+                cout << "Invalid input! Enter again: ";
                 cin >> check;
             }
             if (check == 'Y' || check == 'y')

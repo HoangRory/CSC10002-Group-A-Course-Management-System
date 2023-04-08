@@ -30,5 +30,6 @@ int main() {
                 cout << "Thank you for using our program. Program ended." << endl;
         }
     }
+
     return 0;
 }
