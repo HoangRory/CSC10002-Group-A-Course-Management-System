@@ -1,12 +1,19 @@
 #include "../Header/newYearClass.h"
 
+void loadingFile(Year *&yearHead, int &numofYear) {
+    cout << "Loading file..." << endl;
+    importYear(yearHead, numofYear);
+    _sleep(3000);
+    cout << "Loading file completed." << endl;
+}
+
 void importYear(Year *&yearHead, int &numofYear) {
     //string in_year = to_string(yearStart);
 
     string path = "Data_file\\years.txt";
     ifstream ifs(path);
     if(!ifs) {
-        cout << "Cannot open file years.txt" << endl;
+        cerr << "Error: Cannot open file years.txt" << endl;
         return;
     }
 
@@ -49,7 +56,7 @@ void importClass(Year *curYear, int yearStart) {
 
     ifstream ifs(path);
     if (!ifs) {
-        cout << "Cannot open directory for year " << yearStart << endl;
+        cerr << "Error: Cannot open directory for year " << yearStart << endl;
         return;
     }
 
@@ -57,7 +64,7 @@ void importClass(Year *curYear, int yearStart) {
     string classFilePath = path;
     ifstream classFile(classFilePath);
     if (!classFile.is_open()) {
-        cout << "Cannot open class file for year " << yearStart << endl;
+        cerr << "Error: Cannot open class file for year " << yearStart << endl;
         return;
     }
 
@@ -122,5 +129,5 @@ void importClass(Year *curYear, int yearStart) {
         curClass = curClass->next;
     } 
 
-    cout << "Class imported successfully" << endl;
+    //cout << "Class imported successfully" << endl;
 }

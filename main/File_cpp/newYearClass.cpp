@@ -1,11 +1,10 @@
 #include "../Header/newYearClass.h"
 
 // 1. Create a school year (2020-2021, for example)
-void createSchoolYear(Year *&headYear, int yearStart)
-{
+//lần đầu gọi hàm thì cho cin yearStart trong hàm main
+void createSchoolYear(Year *&headYear, int yearStart) {
     Year *curYear = headYear;
-    while (curYear)
-    {
+    while (curYear) {
         //! if the year already exists, it stops, so let it an option to enter again
         if (curYear->yearStart == yearStart)
         {
@@ -19,9 +18,9 @@ void createSchoolYear(Year *&headYear, int yearStart)
                     cout << "Enter start year: ";
                     cin >> yearStart;
                     createSchoolYear(headYear, yearStart);
-                    break;
-                case 2: 
-                    cout << "Program ended." << endl;
+                    return;
+                case 2:
+                    cout << "Finish adding to the new school year. Thank you!" << endl;
                     return;
             }
         }
@@ -33,8 +32,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
 
     if (!headYear)
         headYear = newYear;
-    else
-    {
+    else {
         //! Reuse the curYear
         curYear = headYear;
         while (curYear->next)
@@ -42,14 +40,33 @@ void createSchoolYear(Year *&headYear, int yearStart)
         curYear->next = newYear;
     }
     cout << "Year " << yearStart << " has been added successfully." << endl;
+    
+    for (int i = 0; i < 38; i++) {
+        cout << "-";
+    }
+    cout << endl;
+
+    cout << "Do you want to add a new year?\n1. Yes.\n2. No." << endl;
+    cout << "Enter your choice: ";
+    int choice = 0;
+    cin >> choice;
+    switch (choice) {
+        case 1: 
+            cout << "Enter start year: ";
+            cin >> yearStart;
+            createSchoolYear(headYear, yearStart);
+            break;
+        case 2: 
+            cout << "Finish adding to the new school year. Thank you!" << endl;
+            return;
+    }
 }
 
 // 2. Create several classes for 1st-year students. For example: class 20APCS1, class 20APCS2, class 20CLC1..., class 20CLC11, class 20VP...
-bool checkClass(Year *curYear, string className)
-{
+// check if that class already exists.
+bool checkClass(Year *curYear, string className) {
     Class *curClass = curYear->Class;
-    while (curClass)
-    {
+    while (curClass) {
         if (curClass->Name == className)
             return true;
         curClass = curClass->next;
@@ -57,16 +74,13 @@ bool checkClass(Year *curYear, string className)
     return false;
 }
 
-//? khỏi & cx đc
-void createClasses(Year *curYear, string className)
-{
-    if (!checkClass(curYear, className) && to_string(curYear->yearStart%100) == className.substr(0,2)) {
-        cout << "Adding class " << className << "..." << endl;
-    } else {
+//lần đầu gọi hàm thì cho cin className trong hàm main
+void createClasses(Year *curYear, string className) {
+    if (checkClass(curYear, className) && to_string(curYear->yearStart%100) == className.substr(0,2)) {
         cout << "Class " << className << " already exists or invalid class name. Please retry." << endl;
-        int choice =-1;
+        int choice = -1;
         while (choice != 2) {
-            cout << "Do you want to re-enter?\n1. Yes.\n2. No." << endl;
+            cout << "Do you want to enter a new class?\n1. Yes.\n2. No.\n3. Back" << endl;
             cout << "Enter your choice: ";
             cin >> choice;
             switch (choice) {
@@ -76,14 +90,18 @@ void createClasses(Year *curYear, string className)
                     createClasses(curYear, className);
                     break;
                 case 2: 
-                    cout << "Program ended." << endl;
+                    cout << "Finish adding to the new class. Thank you!" << endl;
                     return;
+                case 3:
+                    cout << "======ADDING NEW SCHOOL YEAR======" << endl;
+                    cout << "Enter start year: ";
+                    int yearStart = 0;
+                    cin >> yearStart;
+                    createSchoolYear(curYear, yearStart);
             }
         }
     }
 
-    //! Can check the syntax of a class name: kiểu lớp của năm 22 có dạng là 22 + .... giống là 22CLC02 22APCS2 kiểu z
-    //? to_string(curYear->yearStart%100) so sánh với className.substr(0,2)
     Class *newClass = new Class;
     newClass->Name = className;
     newClass->StudentClass = nullptr;
@@ -193,7 +211,7 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
         addStudent->StudentClass = newStudent;
     else
     {
-        newStudent = headStudent->next;
+        headStudent->next = newStudent;
         newStudent->prev = headStudent;
         headStudent = newStudent;
     }
@@ -202,6 +220,48 @@ void add1stYearStudents(Class *addStudent, string studentID, string firstName, s
 }
 
 // import student information
+
+bool isLeap(int year) {
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
+bool isValidDate(const std::string& dateOfBirth) {
+    if (dateOfBirth.length() != 10) {
+        return false;
+    }
+
+    if (dateOfBirth[2] != '/' || dateOfBirth[5] != '/') {
+        return false;
+    }
+
+    int dd = std::stoi(dateOfBirth.substr(0, 2));
+    int mm = std::stoi(dateOfBirth.substr(3, 2));
+    int yyyy = std::stoi(dateOfBirth.substr(6, 4));
+
+    if (mm < 1 || mm > 12) {
+        return false;
+    }
+
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (isLeap(yyyy)) {
+        daysInMonth[1] = 29;
+    }
+
+    if (dd < 1 || dd > daysInMonth[mm - 1]) {
+        return false;
+    }
+
+    return true;
+}
+
+bool isValidGender(const std::string& gender) {
+    std::string lowerGender = gender;
+    for (size_t i = 0; i < lowerGender.size(); i++) {
+        lowerGender[i] = std::tolower(lowerGender[i]);
+    }
+    return (lowerGender == "male" || lowerGender == "female");
+}
+
 void inputStudent(Class *classPtr)
 {
     string studentID, firstName, lastName, gender, dateofBirth, socialID;
@@ -215,6 +275,11 @@ void inputStudent(Class *classPtr)
     cout << "Student ID: ";
     getline(cin, studentID);
 
+    if(studentID.length() != 8 && studentID.substr(0, 2) != classPtr->Name.substr(0, 2)) {
+        cout << "Invalid Student ID. Please retry." << endl;
+        cout << "Student ID: " << endl;
+        getline(cin, studentID); 
+    }
     // cin.ignore();
     cout << "First Name: ";
     getline(cin, firstName);
@@ -225,9 +290,24 @@ void inputStudent(Class *classPtr)
     cout << "Gender (M: male   F: female): ";
     cin >> gender;
     cin.ignore();
+
+    while(!isValidGender(gender)) {
+        cout << "Invalid Gender. Please retry." << endl;
+        cout << "Gender (M: male   F: female): ";
+        cin >> gender;
+        cin.ignore();
+    }
+
     cout << "Date of Birth (dd/mm/yyyy):";
     getline(cin, dateofBirth);
     // cin.ignore();
+
+    while(!isValidDate(dateofBirth)) {
+        cout << "Invalid Date of Birth. Please retry." << endl;
+        cout << "Date of Birth (dd/mm/yyyy):";
+        getline(cin, dateofBirth);
+    }
+
     cout << "Social ID: ";
     getline(cin, socialID);
     // cin.ignore();
@@ -239,14 +319,13 @@ void inputStudent(Class *classPtr)
 }
 
 void importStudent(Class *classPtr) {
-    //? Này mình nên mặc định cho ngta quăng file vô cái thư mục New-Enrolled_Student lun ấy nhờ, tại ngta đâu biết cái path của máy mình
     cout << "Please import the CSV file to folder New_Enrolled_Student." << endl;
     cout << "Please enter file name: ";
     string fileName;
     getline(cin, fileName);
 
     string path = "Data_file" + separator + "New_Enrolled_Student" + separator + fileName;
-    cout << path;
+    cout << path << endl;
     // check if the file exits
     ifstream studentList(path.c_str());
     if (!studentList.is_open()) {
@@ -259,11 +338,6 @@ void importStudent(Class *classPtr) {
     string delimiter = ",";
     int lineCount = 0;
 
-    //? Cái này dùng sstream chi khó zị, mình biết trc đc số lượng thông tin thì mình cứ getline(studentList, line, ',') là đc rùi
-    //? Còn thằng cuối cùng của dòng thì mình getline(studentList, line) là oke :))))
-/* 
-    Student *newStudent = new Student;*/
-    
     while (getline(studentList, line)) {
         // split the line by commas
         size_t position = 0;

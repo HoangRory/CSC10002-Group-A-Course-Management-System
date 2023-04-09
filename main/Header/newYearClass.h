@@ -15,11 +15,16 @@
 
 extern const string separator;
 
+void loadingFile(Year *&yearHead, int &numofYear);
+
 void createSchoolYear(Year *&headYear, int yearStart);
 void createClasses(Year *curYear, string className);
 
 bool checkClass(Year *curYear, string className);
 bool checkStudent(Class *curClass, string StudentID);
+bool isLeap(int year);
+bool isValidDate(const std::string& dateOfBirth);
+bool isValidGender(const std::string& gender);
 
 void addClass(Year *curYear, string ClassName);
 void addStudenttoClass(Year *curYear);
