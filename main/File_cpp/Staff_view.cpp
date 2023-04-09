@@ -32,16 +32,17 @@ void ViewStudentsClass(Year *yearHead)
                     cout << "=";
                 cout << "\n";
             }
-            else cout << "\nThere is no student in " << class_name << endl;
+            else 
+                cout << "\nThere is no student in " << class_name << endl;
             while (yearHead->Class->StudentClass)
             {
                 cout << "| " << yearHead->Class->StudentClass->ID  << " |" << "\t"; 
                 cout << yearHead->Class->StudentClass->accStudent->firstName << " " 
                     << yearHead->Class->StudentClass->accStudent->lastName << setw(20 - yearHead->Class->StudentClass->accStudent->firstName.length() - yearHead->Class->StudentClass->accStudent->lastName.length()) << "|\n";
-                yearHead->Class->StudentClass = yearHead->Class->StudentClass->next;
                 for (int i = 1; i <= 36; ++i)
                     cout << "=";
                 cout << "\n";
+                yearHead->Class->StudentClass = yearHead->Class->StudentClass->next;
             }
             return;
         }
@@ -66,12 +67,26 @@ void ViewStudentCourse(Year *yearHead)
             {
                 if (yearHead->NoSemester->course->Name == course_name)
                 {
-                    if (yearHead->NoSemester->course->studentCourse) cout << "\nList of students in course " << course_name << ":" << endl;
-                    else cout << "\nThere is no student in course " << course_name << endl;
+                    if (yearHead->NoSemester->course->studentCourse)
+                    { 
+                        cout << "\nList of students in course " << course_name << ":" << endl;
+                        for (int i = 1; i <= 36; ++i)
+                            cout << "=";
+                        cout << "\n";
+                        cout << "|    ID" << setw(5) << "|" << setw(15) << "Full name" << setw(9) << "|" << endl;
+                        for (int i = 1; i <= 36; ++i)
+                            cout << "=";
+                        cout << "\n";
+                    }
+                    else 
+                        cout << "\nThere is no student in course " << course_name << endl;
                     while (yearHead->NoSemester->course->studentCourse)
                     {
-                        cout << yearHead->NoSemester->course->studentCourse->ID << "\t" 
-                            << yearHead->NoSemester->course->studentCourse->FullName << endl;
+                        cout << "| " << yearHead->NoSemester->course->studentCourse->ID  << " |" << "\t"; 
+                        cout << yearHead->NoSemester->course->studentCourse->FullName << setw(21 - yearHead->NoSemester->course->studentCourse->FullName.length()) << "|\n";
+                        for (int i = 1; i <= 36; ++i)
+                            cout << "=";
+                        cout << "\n";
                         yearHead->NoSemester->course->studentCourse = yearHead->NoSemester->course->studentCourse->next;
                     }
                     return;
@@ -152,45 +167,3 @@ void ViewClass(Year* yearHead)
     for (int i = 0; i < 100; i++)
         cout << '-';
 }
-
-// int main()
-// {
-//     Year* yearHead = new Year;
-//     yearHead->yearStart = 2021;
-//     yearHead->next = new Year;
-//     yearHead->next->yearStart = 2022;
-//     // yearHead->next->NoSemester = new Semester;
-//     // yearHead->next->NoSemester->No = 1;
-//     // yearHead->next->NoSemester->next = new Semester;
-//     // yearHead->next->NoSemester->next->No = 2;
-//     // yearHead->next->NoSemester->next->course = new Course;
-//     // yearHead->next->NoSemester->next->course->CourseID = "CSC10002";
-//     // yearHead->next->NoSemester->next->course->Name = "Ky thuat lap trinh";
-//     // yearHead->next->NoSemester->next->course->next = new Course;
-//     // yearHead->next->NoSemester->next->course->next->CourseID = "BAA00101";
-//     // yearHead->next->NoSemester->next->course->next->Name = "Triet hoc Mac Lenin";
-//     // // ViewCourse(yearHead);
-//     // yearHead->next->NoSemester->next->course->studentCourse = new StudentCourse;
-//     // yearHead->next->NoSemester->next->course->studentCourse->ID = "22127026";
-//     // yearHead->next->NoSemester->next->course->studentCourse->FullName = "On Gia Bao";
-//     // yearHead->next->NoSemester->next->course->studentCourse->next = new StudentCourse;
-//     // yearHead->next->NoSemester->next->course->studentCourse->next->ID = "22127275";
-//     // yearHead->next->NoSemester->next->course->studentCourse->next->FullName = "Tran Anh Minh";
-//     // ViewStudentCourse(yearHead);
-
-//     yearHead->next->Class = new Class;
-//     yearHead->next->Class->Name = "22CLC02";
-//     yearHead->next->Class->StudentClass = new Student;
-//     yearHead->next->Class->StudentClass->ID = "22127026";
-//     yearHead->next->Class->StudentClass->accStudent = new Account;
-//     yearHead->next->Class->StudentClass->accStudent->firstName = "On Gia";
-//     yearHead->next->Class->StudentClass->accStudent->lastName = "Bao";
-//     yearHead->next->Class->StudentClass->next = new Student;
-//     yearHead->next->Class->StudentClass->next->ID = "22127275";
-//     yearHead->next->Class->StudentClass->next->accStudent = new Account;
-//     yearHead->next->Class->StudentClass->next->accStudent->firstName = "Le Ho Phi";
-//     yearHead->next->Class->StudentClass->next->accStudent->lastName = "Hoang";
-//     ViewStudentsClass(yearHead);
-    
-//     return 0;
-// }
