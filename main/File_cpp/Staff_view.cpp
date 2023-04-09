@@ -134,14 +134,27 @@ void ViewCourse(Year *yearHead)
         return;
     }
 
-    if(yearHead->NoSemester->course) cout << "\nHere is the list of courses in the semester " << no_smt << " of the " << school_year << " school year:" << endl;
-    else cout << "\nThere is no course in the semester " << no_smt << " of the " << school_year << " school year." << endl;
+    if (yearHead->NoSemester->course) 
+    {
+        cout << "\nList of courses in the semester " << no_smt << " of the " << school_year << " school year:" << endl;
+        for (int i = 1; i <= 70; ++i)
+            cout << "=";
+        cout << "\n";
+        cout << "|    ID" << setw(18) << "|         Name" << setw(33) << "|       Teacher" << setw(13) << "|\n"; 
+        for (int i = 1; i <= 70; ++i)
+            cout << "=";
+        cout << "\n";
+    }
+    else 
+        cout << "\nThere is no course in the semester " << no_smt << " of the " << school_year << " school year." << endl;
     while (yearHead->NoSemester->course)
     {
-        cout << yearHead->NoSemester->course->CourseID 
-            << " - " << yearHead->NoSemester->course->Name  
-            << " - Teacher: " << yearHead->NoSemester->course->TeacherName 
-            << " - Room: " << yearHead->NoSemester->course->Room << endl;
+        cout << "| " << yearHead->NoSemester->course->CourseID << " | ";
+        cout << yearHead->NoSemester->course->Name << setw(32 - yearHead->NoSemester->course->Name.length()) << "| ";  
+        cout << yearHead->NoSemester->course->TeacherName << setw(26 - yearHead->NoSemester->course->TeacherName.length()) << "|\n";
+        for (int i = 1; i <= 70; ++i)
+            cout << "=";
+        cout << "\n";
         yearHead->NoSemester->course = yearHead->NoSemester->course->next;
     }
 }
@@ -166,4 +179,48 @@ void ViewClass(Year* yearHead)
     }
     for (int i = 0; i < 100; i++)
         cout << '-';
+}
+
+int main()
+{
+    Year* yearHead = new Year;
+    yearHead->yearStart = 2021;
+    yearHead->next = new Year;
+    yearHead->next->yearStart = 2022;
+    yearHead->next->NoSemester = new Semester;
+    yearHead->next->NoSemester->No = 1;
+    yearHead->next->NoSemester->next = new Semester;
+    yearHead->next->NoSemester->next->No = 2;
+    yearHead->next->NoSemester->next->course = new Course;
+    yearHead->next->NoSemester->next->course->CourseID = "CSC10002";
+    yearHead->next->NoSemester->next->course->Name = "Nhap mon cong nghe thong tin";
+    yearHead->next->NoSemester->next->course->TeacherName = "Huynh Thuy Bao Tran";
+    yearHead->next->NoSemester->next->course->next = new Course;
+    yearHead->next->NoSemester->next->course->next->CourseID = "BAA00101";
+    yearHead->next->NoSemester->next->course->next->Name = "Triet hoc Mac Lenin";
+    yearHead->next->NoSemester->next->course->next->TeacherName = "Ngo Tuan Phuong";
+    ViewCourse(yearHead);
+    // yearHead->next->NoSemester->next->course->studentCourse = new StudentCourse;
+    // yearHead->next->NoSemester->next->course->studentCourse->ID = "22127026";
+    // yearHead->next->NoSemester->next->course->studentCourse->FullName = "On Gia Bao";
+    // yearHead->next->NoSemester->next->course->studentCourse->next = new StudentCourse;
+    // yearHead->next->NoSemester->next->course->studentCourse->next->ID = "22127275";
+    // yearHead->next->NoSemester->next->course->studentCourse->next->FullName = "Tran Anh Minh";
+    // ViewStudentCourse(yearHead);
+
+    // yearHead->next->Class = new Class;
+    // yearHead->next->Class->Name = "22CLC02";
+    // yearHead->next->Class->StudentClass = new Student;
+    // yearHead->next->Class->StudentClass->ID = "22127026";
+    // yearHead->next->Class->StudentClass->accStudent = new Account;
+    // yearHead->next->Class->StudentClass->accStudent->firstName = "On Gia";
+    // yearHead->next->Class->StudentClass->accStudent->lastName = "Bao";
+    // yearHead->next->Class->StudentClass->next = new Student;
+    // yearHead->next->Class->StudentClass->next->ID = "22127275";
+    // yearHead->next->Class->StudentClass->next->accStudent = new Account;
+    // yearHead->next->Class->StudentClass->next->accStudent->firstName = "Le Ho Phi";
+    // yearHead->next->Class->StudentClass->next->accStudent->lastName = "Hoang";
+    // ViewStudentsClass(yearHead);
+    
+    return 0;
 }
