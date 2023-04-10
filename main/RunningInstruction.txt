@@ -1,17 +1,8 @@
-First chỉ đường dẫn tới thư mục file_cpp (là thư mục chứa các file cpp)
+Run file:
 
-xong chạy trong terminal bằng lệnh
+Path: current main.cpp folder
+compile: g++ *.cpp -o main
 
-"
-g++ *.cpp -o main
-.\main.exe
-"
+Run: ./main (./main.exe)
 
-*.cpp là thay thế cho tất cả các file có đuôi .cpp
-Các đường dẫn include file header hay file input có dùng ../ 
-
-ví dụ
-
-../Header/Semester.h
-
-Là lùi về 1 thư mục là trở về main rùi đi vô folder Header có file .hay
+T có tạo thêm 1 header Utility.h để chỉnh mấy cái hàm ẩn hiện con trỏ, màu chữ với ba cái hàm dùng trong mọi file

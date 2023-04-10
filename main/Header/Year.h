@@ -1,22 +1,44 @@
 #pragma once
-
 #include "proto.h"
 
-//? Read-in the class from each year
-Year *Read_Year_Class(int year);
-Year *Read_Multi_year();
-void DeleteYear(Year *&yearHead);
+// #include <filesystem> //doc folder
+#include <sstream>
+#include <cstring>
+#include <cctype>
+#include <algorithm>
 
-//? Create a new school year
-Year *Create_NewYear(Year *yearHead);
-bool checkClass(Year *curYear, string className);
+#ifdef _WIN32
+#define PATH_SEPARATOR '\\'
+#else
+#define PATH_SEPARATOR '/'
+#endif
+
+extern const string separator;
+
+//* Read year file
+void loadingFile(Year *&yearHead, int &numofYear);
+void importYear(Year *&yearHead, int &numofYear);
+void addClass(Year *curYear, string ClassName);
+void importClass(Year *curYear, int yearStart);
+
+//* New year
+void createSchoolYear(Year *&headYear, int yearStart);
 void Create_New_Classes(Year *newYear);
-bool Check_Student(Class *curClass, string studentID);
-void CapitalClassName(string &name);
-
-void addStudentToClass(Year *curYear);
+void ChooseClassToAdd(Year *curYear);
 void Method(Class *curClass);
 void inputStudent(Class *curClass);
-void add1stYearStudents(Class* curClass, string ID, string first, string last, string gen, string birth, string socialID);
+void importStudent(Class *curClass);
+void add1stYearStudents(Class *curClass, string ID, string first, string last, string gen, string birth, string socialID);
+void NewAccount(Account *accHead, string ID, Account *accTmp);
 
-void NewAccount(Account* accHead, string ID, Account* accTmp);
+//* Validate the input
+bool checkClass(Year *curYear, string className);
+bool Check_Student(Class *curClass, string studentID);
+void CapitalClassName(string &name);
+bool isLeap(int year);
+bool isValidDate(const std::string &dateOfBirth);
+bool isValidGender(const std::string &gender);
+
+//* Interface
+Year* RecoverFile();
+void New_Year_Interface(year* yearHead);

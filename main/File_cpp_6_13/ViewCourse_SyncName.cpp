@@ -1,36 +1,6 @@
 #include "../Header/Semester.h"
 
 // todo Alternate to sync more efficiently
-// void SyncFullName(Semester *semHead, Account *accHead)
-// {
-//     Semester *sem_cur = semHead;
-//     while (sem_cur)
-//     {
-//         Course *cse = sem_cur->course;
-//         while (cse)
-//         {
-//             StudentCourse *stcse = cse->studentCourse;
-//             while (stcse)
-//             {
-//                 Account *acc_cur = accHead;
-//                 while (acc_cur)
-//                 {
-//                     if (stcse->FullName != "")
-//                         break;
-//                     if (acc_cur->username == stcse->ID)
-//                     {
-//                         stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
-//                         break;
-//                     }
-//                     acc_cur = acc_cur->next;
-//                 }
-//                 stcse = stcse->next;
-//             }
-//             cse = cse->next;
-//         }
-//         sem_cur = sem_cur->next;
-//     }
-// }
 
 void SyncFullName(Year *yearHead, Account *accHead)
 {

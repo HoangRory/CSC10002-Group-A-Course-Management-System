@@ -59,6 +59,7 @@ Semester *Read_All_Semester(int year)
         tmp->next = newSem;
         newSem->prev = tmp;
     }
+    return semHead;
 }
 
 void DeleteStudent(StudentCourse *&stud_head)
@@ -111,7 +112,7 @@ void OutCourse(Course *course_head, ofstream &ofs)
         course_head = course_head->next;
     }
 }
-void Output(Year* yearHead)
+void Output(Year *yearHead)
 {
     if (!yearHead->NoSemester)
         return;
