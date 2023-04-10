@@ -1,7 +1,7 @@
 #include "../Header/View.h"
 
 //task 16: view students in a class 
-void ViewStudentsClass(Year *yearHead) 
+void ViewStudentClass(Year *yearHead) 
 {   
     string class_name;
     cout << "Enter the class's name: "; // eg 20APCS1
@@ -164,7 +164,7 @@ void ViewClass(Year* yearHead)
 {
     Year *yr_cur = yearHead;
     cout << "List of classes:\n";
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 50; i++)
         cout << '-';
     while (yr_cur)
     {
@@ -177,50 +177,6 @@ void ViewClass(Year* yearHead)
         }
         yr_cur = yr_cur->next;
     }
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 50; i++)
         cout << '-';
-}
-
-int main()
-{
-    Year* yearHead = new Year;
-    yearHead->yearStart = 2021;
-    yearHead->next = new Year;
-    yearHead->next->yearStart = 2022;
-    yearHead->next->NoSemester = new Semester;
-    yearHead->next->NoSemester->No = 1;
-    yearHead->next->NoSemester->next = new Semester;
-    yearHead->next->NoSemester->next->No = 2;
-    yearHead->next->NoSemester->next->course = new Course;
-    yearHead->next->NoSemester->next->course->CourseID = "CSC10002";
-    yearHead->next->NoSemester->next->course->Name = "Nhap mon cong nghe thong tin";
-    yearHead->next->NoSemester->next->course->TeacherName = "Huynh Thuy Bao Tran";
-    yearHead->next->NoSemester->next->course->next = new Course;
-    yearHead->next->NoSemester->next->course->next->CourseID = "BAA00101";
-    yearHead->next->NoSemester->next->course->next->Name = "Triet hoc Mac Lenin";
-    yearHead->next->NoSemester->next->course->next->TeacherName = "Ngo Tuan Phuong";
-    ViewCourse(yearHead);
-    // yearHead->next->NoSemester->next->course->studentCourse = new StudentCourse;
-    // yearHead->next->NoSemester->next->course->studentCourse->ID = "22127026";
-    // yearHead->next->NoSemester->next->course->studentCourse->FullName = "On Gia Bao";
-    // yearHead->next->NoSemester->next->course->studentCourse->next = new StudentCourse;
-    // yearHead->next->NoSemester->next->course->studentCourse->next->ID = "22127275";
-    // yearHead->next->NoSemester->next->course->studentCourse->next->FullName = "Tran Anh Minh";
-    // ViewStudentCourse(yearHead);
-
-    // yearHead->next->Class = new Class;
-    // yearHead->next->Class->Name = "22CLC02";
-    // yearHead->next->Class->StudentClass = new Student;
-    // yearHead->next->Class->StudentClass->ID = "22127026";
-    // yearHead->next->Class->StudentClass->accStudent = new Account;
-    // yearHead->next->Class->StudentClass->accStudent->firstName = "On Gia";
-    // yearHead->next->Class->StudentClass->accStudent->lastName = "Bao";
-    // yearHead->next->Class->StudentClass->next = new Student;
-    // yearHead->next->Class->StudentClass->next->ID = "22127275";
-    // yearHead->next->Class->StudentClass->next->accStudent = new Account;
-    // yearHead->next->Class->StudentClass->next->accStudent->firstName = "Le Ho Phi";
-    // yearHead->next->Class->StudentClass->next->accStudent->lastName = "Hoang";
-    // ViewStudentsClass(yearHead);
-    
-    return 0;
 }
