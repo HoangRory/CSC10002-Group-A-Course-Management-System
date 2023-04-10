@@ -1,5 +1,16 @@
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
+#include "../Header/Year.h"
+
+void Merge_year_sem(Account *&accHead, Year *&yearHead)
+{
+    yearHead = RecoverFile();
+    string user = "", pass = "";
+    int role;
+    LoggingMain(accHead, user, pass, role);
+    SyncFullName(yearHead, accHead);
+
+}
 
 int main()
 {

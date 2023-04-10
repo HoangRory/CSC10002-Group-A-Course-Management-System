@@ -1,4 +1,6 @@
 #include "../Header/Semester.h"
+#include "../Header/Year.h"
+#include "../Header/Login.h"
 
 // todo Alternate to sync more efficiently
 
@@ -186,10 +188,9 @@ void ViewAllCourse(Year *yearHead)
 
 void StaffMain(Year *yearHead)
 {
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, 240);
+    TextColor(240);
     cout << "STAFF MODE!\n";
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
 
     string *menu = new string[8];
     menu[0] = "\nStaff privilege\n";
@@ -207,9 +208,9 @@ void StaffMain(Year *yearHead)
     {
         if (i == choice)
         {
-            SetConsoleTextAttribute(h, LIGHT_YELLOW);
+            TextColor(LIGHT_YELLOW);
             cout << menu[i];
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
         else
             cout << menu[i];
@@ -240,9 +241,9 @@ void StaffMain(Year *yearHead)
             {
                 if (i == choice)
                 {
-                    SetConsoleTextAttribute(h, YELLOW);
+                    TextColor(LIGHT_YELLOW);
                     cout << menu[i];
-                    SetConsoleTextAttribute(h, WHITE);
+                    TextColor(WHITE);
                 }
                 else
                     cout << menu[i];
@@ -257,32 +258,35 @@ void StaffMain(Year *yearHead)
         //? View course
         system("cls");
         cout << "\n";
-        viewCourse(semHead);
-        StaffMain(semHead);
+        ViewCourse(yearHead);
+        StaffMain(yearHead);
         return;
     case 2:
         //? Add a new year
-        break;
+        Interface_New_Year(yearHead);
+        StaffMain(yearHead);
+        return;
     case 3:
         //? Add a new semester
         system("cls");
         cout << "\n";
-        Interface_New_Sem(semHead);
+        Interface_New_Sem(yearHead);
         // Recursion back to the StaffMain function
-        StaffMain(semHead);
+        StaffMain(yearHead);
         return;
     case 4:
         //? Modify year/semester/course
         system("cls");
         cout << "\n";
-        initModify(semHead);
+        initModify(yearHead);
         // Recursion back to the StaffMain function
-        StaffMain(semHead);
+        StaffMain(yearHead);
         return;
     case 5:
         //? Save changes and quit
         cout << "\n";
-        Output(semHead);
+        Output(yearHead);
+        Outyear(yearHead);
 
         cout << "Cleaning up the system";
         for (int i = 0; i < 8; i++)

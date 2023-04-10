@@ -21,6 +21,9 @@ void importYear(Year *&yearHead, int &numofYear);
 void addClass(Year *curYear, string ClassName);
 void importClass(Year *curYear, int yearStart);
 
+//* Output year
+void Outyear(Year *yearHead);
+
 //* New year
 void createSchoolYear(Year *&headYear, int yearStart);
 void Create_New_Classes(Year *newYear);
@@ -40,5 +43,5 @@ bool isValidDate(const std::string &dateOfBirth);
 bool isValidGender(const std::string &gender);
 
 //* Interface
-Year* RecoverFile();
-void New_Year_Interface(year* yearHead);
+Year *RecoverFile();
+void Interface_New_Year(year *yearHead);

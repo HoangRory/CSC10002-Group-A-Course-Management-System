@@ -1,4 +1,4 @@
-#include "../Header/newYearClass.h"
+#include "../Header/Year.h"
 #include "../Header/Semester.h"
 const string separator = "\\";
 
@@ -15,7 +15,7 @@ Year *RecoverFile()
     return headYear;
 }
 
-void New_Year_Interface(year *yearHead)
+void Interface_New_Year(year *yearHead)
 {
     // create a new school year
     cout << "======ADDING NEW SCHOOL YEAR======" << endl;
@@ -42,9 +42,7 @@ void New_Year_Interface(year *yearHead)
         createClasses(curYear, className);
     }
     else
-    {
         cout << "Thank you for using our program. Program ended." << endl;
-    }
 
     // add students to the new class
     choice = 0;

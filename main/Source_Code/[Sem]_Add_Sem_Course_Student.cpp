@@ -230,7 +230,6 @@ void AddingCourse(Semester *semCurrent)
     if (!semCurrent)
         return;
     Course *courseCurrent = AddCourse(semCurrent);
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
     int choice = 1;
     bool stop = false;
@@ -243,17 +242,17 @@ void AddingCourse(Semester *semCurrent)
     {
         if (i == choice)
         {
-            SetConsoleTextAttribute(h, YELLOW);
+            TextColor(LIGHT_YELLOW);
             cout << menu[i];
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
         else
             cout << menu[i];
     }
 
-    SetConsoleTextAttribute(h, GREEN);
+    TextColor(LIGHT_GREEN);
     cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
 
     ShowConsoleCursor(false);
     while (!stop)
@@ -284,27 +283,28 @@ void AddingCourse(Semester *semCurrent)
             {
                 if (i == choice)
                 {
-                    SetConsoleTextAttribute(h, YELLOW);
+                    TextColor(LIGHT_YELLOW);
                     cout << menu[i];
-                    SetConsoleTextAttribute(h, WHITE);
+                    TextColor(WHITE);
                 }
                 else
                     cout << menu[i];
             }
-            SetConsoleTextAttribute(h, GREEN);
-            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(LIGHT_GREEN);
+            cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+            TextColor(WHITE);
         }
     }
     ShowConsoleCursor(true);
+
     switch (choice)
     {
     case 1:
-        cout << "You chose to import student from a file!\n";
+        cout << "==> You chose to import student from a file!\n";
         ImportStudentFromFile(courseCurrent);
         break;
     case 2:
-        cout << "You're adding student by hand!\n";
+        cout << "==> You're adding student by hand!\n";
         AddStudentByHand(courseCurrent);
         break;
     }
@@ -324,9 +324,20 @@ void AddingCourse(Semester *semCurrent)
 }
 
 //! when merge, change to yearHead
-void Interface_New_Sem(Semester *&semHead)
+void Interface_New_Sem(Year *yearHead)
 {
-    Semester *semCurrent = AddSemester(semHead);
+    Semester *semCurrent = AddSemester(yearHead);
     AddingCourse(semCurrent);
-    //? Add another semester???
+
+    cout << "Do you want to add another semester? (Y/N) ";
+    char ch;
+    cin >> ch;
+    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
+    {
+        cout << "Invalid respond, enter again: ";
+        cin >> ch;
+    }
+    if (ch == 'Y' || ch == 'y')
+        Interface_New_Sem(yearHead);
+    return;
 }

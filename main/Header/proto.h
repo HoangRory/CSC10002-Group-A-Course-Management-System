@@ -6,6 +6,8 @@
 #include <windows.h>
 #include <conio.h>
 
+#include "Utility.h"
+
 #define BLACK 0
 #define BLUE 1
 #define GREEN 2

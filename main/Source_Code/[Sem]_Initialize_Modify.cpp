@@ -1,11 +1,10 @@
 #include "../Header/Semester.h"
 
-void initModify(Semester *&semHead)
+void initModify(Year *yearHead)
 {
     bool stop = false;
     system("cls");
     int opt = 1;
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     string *ListOption = new string[6];
     ListOption[0] = "\nOptions to modify:\n";
     ListOption[1] = "- Modify semester                      \n";
@@ -18,16 +17,17 @@ void initModify(Semester *&semHead)
     {
         if (i == opt)
         {
-            SetConsoleTextAttribute(h, YELLOW);
+            TextColor(LIGHT_YELLOW);
             cout << ListOption[i];
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
         else
             cout << ListOption[i];
     }
     SetConsoleTextAttribute(h, GREEN);
+    TextColor(LIGHT_GREEN);
     cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
 
     ShowConsoleCursor(false);
     while (!stop)
@@ -56,27 +56,27 @@ void initModify(Semester *&semHead)
             {
                 if (i == opt)
                 {
-                    SetConsoleTextAttribute(h, YELLOW);
+                    extColor(LIGHT_YELLOW);
                     cout << ListOption[i];
-                    SetConsoleTextAttribute(h, WHITE);
+                    TextColor(WHITE);
                 }
                 else
                     cout << ListOption[i];
             }
 
-            SetConsoleTextAttribute(h, GREEN);
+            TextColor(LIGHT_GREEN);
             cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
     }
     delete[] ListOption;
     ShowConsoleCursor(true);
 
-    RunModify(semHead, opt);
+    RunModify(yearHead, opt);
     return;
 }
 
-void RunModify(Semester *&semHead, int opt)
+void RunModify(Year *yearHead, int opt)
 {
     string id;
     int sem, year;
@@ -84,47 +84,44 @@ void RunModify(Semester *&semHead, int opt)
     {
     case 1:
         // viewCourse(semHead);
+        //! Showing the list of semester
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "==> Please choose the semester (1, 2, 3): ";
         cin >> sem;
         cout << "\n";
-        modifySemester(semHead, year, sem);
+        modifySemester(yearHead, year, sem);
         break;
     case 2:
-        // viewCourse(semHead);
-        cout << "\n==> Please choose the year (yyyy): ";
+        ViewAllCourse(yearHead);
+        cout << "\n==> Please choose the year that you want to review? (yyyy): ";
         cin >> year;
         cout << "\n";
-        modifyCourse(semHead, year);
+        modifyCourse(yearHead, year);
         break;
     case 3:
         // viewCourse(semHead);
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "\n";
-        deleteCourse(semHead, year);
+        deleteCourse(yearHead, year);
         break;
     case 4:
-        viewCourse(semHead);
+        viewCourse(yearHead);
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "\n";
         //? Showing the list of students
-        addRemoveStudent(semHead, year);
+        addRemoveStudent(yearHead, year);
         break;
     case 5:
         cout << "\n\n";
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_RED);
-        cout << "Modification completed, remember to save the changes!\n";
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+        TextColor(LIGHT_RED);
+        cout << "Modification completed, remember to SAVE the changes!\n";
+        TextColor(WHITE);
         return;
     }
 
-    // cout << "Modification completed!\n";
-    // viewCourse(semHead);
-    // Sleep(1000);
-    
     cout << "\nDo you want to continue modifying? (Y/N): ";
     char c;
     cin >> c;
@@ -136,7 +133,7 @@ void RunModify(Semester *&semHead, int opt)
 
     if (c == 'y' || c == 'Y')
     {
-        initModify(semHead);
+        initModify(yearHead);
         return;
     }
 

@@ -1,4 +1,4 @@
-#include "../Header/year.h"
+#include "../Header/Year.h"
 
 //? 1. Create a school year (2020-2021, for example)
 //* lần đầu gọi hàm thì cho cin yearStart trong hàm main
@@ -306,7 +306,7 @@ void importStudent(Class *curClass)
     string line;
     string delimiter = ",";
     int lineCount = 0;
-    
+
     getline(studentList, line);
     while (getline(studentList, line))
     {
@@ -383,46 +383,6 @@ void add1stYearStudents(Class *curClass, string ID, string first, string last, s
 
     cout << "Student " << accTmp->firstName << " " << accTmp->lastName
          << " has been added to class " << curClass->Name << "\n";
-}
-
-//? Create new account for new student
-void NewAccount(Account *accHead, string ID, Account *accTmp)
-{
-    Account *acc_cur = accHead;
-    while (acc_cur->next)
-        acc_cur = acc_cur->next;
-    acc_cur->next = accTmp;
-    accTmp->prev = acc_cur;
-    accTmp->username = ID;        //? Set the default username to student ID
-    accTmp->password = "11111111" //? Set default password to 8 1
-        return;
-}
-
-//? Delete the year linked list
-void DeleteYear(Year *&yearHead)
-{
-    Year *yearTMP = yearHead;
-    while (yearTMP)
-    {
-        Class *ClassTMP = yearTMP->Class;
-        while (ClassTMP)
-        {
-            Student *StudentTMP = ClassTMP->StudentClass;
-            while (StudentTMP)
-            {
-                Student *StudentTMP2 = StudentTMP;
-                StudentTMP = StudentTMP->next;
-                delete StudentTMP2;
-            }
-            Class *ClassTMP2 = ClassTMP;
-            ClassTMP = ClassTMP->next;
-            delete ClassTMP2;
-        }
-        Year *yearTMP2 = yearTMP;
-        yearTMP = yearTMP->next;
-        delete yearTMP2;
-    }
-    yearHead = nullptr;
 }
 
 // lần đầu gọi hàm thì cho cin className trong hàm main
