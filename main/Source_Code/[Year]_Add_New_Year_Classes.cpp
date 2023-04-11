@@ -8,7 +8,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
     Year *curYear = headYear;
     if (checkYear(headYear, yearStart))
     {
-        cout << "Year " << yearStart << '-' << yearStart + 1 << " already exists.\n";
+        cout << "Year " << yearStart << '-' << yearStart + 1 << " already exists.\n"; // existed to enter again
         cout << "Do you want to retry? (Y/N) ";
         char ch;
         cin >> ch;
@@ -18,7 +18,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
             cin >> ch;
         }
         if (ch == 'Y' || ch == 'y')
-            Interface_New_Year(headYear);
+            Interface_New_Year(headYear); // Loop again
         return;
     }
 
@@ -36,7 +36,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
     }
     string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
     path = "mkdir " + path;
-    system(path.c_str());
+    system(path.c_str()); // Create a folder in the sys
 
     cout << "Year " << yearStart << '-' << yearStart + 1 << " has been added successfully.\n";
 
@@ -44,7 +44,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
         cout << "-";
     cout << endl;
 
-    cout << "Do you want to add another school year? (Y/N) ";
+    cout << "Do you want to add another school year? (Y/N) "; // Add another school year
     char ch;
     cin >> ch;
     while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
@@ -71,13 +71,13 @@ void Create_New_Classes(Year *newYear)
     {
         if (line == "-1")
             break;
-        CapitalClassName(line);
+        CapitalClassName(line); // Capitalize the first letter of each word
         if (checkClass(newYear, line))
         {
             cout << "Class " << line << " already exists.\nPlease re-enter: ";
             continue;
         }
-        if (line.substr(0, 2) != to_string(newYear->yearStart).substr(2, 2))
+        if (line.substr(0, 2) != to_string(newYear->yearStart).substr(2, 2)) // Check if the class name is valid
         {
             cout << "Invalid class name. Please re-enter: ";
             continue;
@@ -154,6 +154,7 @@ void inputStudent(Class *curClass)
     for (int i = 0; i < 88; i++)
         cout << "=";
     cout << "\n";
+    // Get student information
     cin.ignore();
     cout << "- Student ID: ";
     getline(cin, ID);
@@ -166,7 +167,7 @@ void inputStudent(Class *curClass)
 
     cout << "- Gender (M: male, F: female): )";
     getline(cin, gen);
-    while (!isValidGender(gen))
+    while (!isValidGender(gen)) // Validate before continue
     {
         cout << "Invalid Gender. Please retry.\n";
         cout << "Gender (M: male   F: female): ";
@@ -200,7 +201,7 @@ void inputStudent(Class *curClass)
             inputStudent(curClass);
         return;
     }
-    add1stYearStudents(curClass, ID, first, last, gen, birth, socialID);
+    add1stYearStudents(curClass, ID, first, last, gen, birth, socialID); // add to class
     //? Add here
 }
 
@@ -211,7 +212,7 @@ void importStudent(Class *curClass)
     cout << "Please enter file name: ";
     string fileName;
     getline(cin, fileName);
-
+    // Get the file name in4 and access the file
     string path = "..\\Data_file" + separator + "New_Enrolled_Student" + separator + fileName;
     cout << path << endl;
     // check if the file exits

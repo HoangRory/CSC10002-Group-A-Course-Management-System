@@ -12,7 +12,7 @@ Year *RecoverFile()
     Year *yearTMP = headYear;
     while (yearTMP)
     {
-        yearTMP->NoSemester = Read_All_Semester(yearTMP->yearStart);
+        yearTMP->NoSemester = Read_All_Semester(yearTMP->yearStart); // read the semesters in years
         yearTMP = yearTMP->next;
     }
     return headYear;
@@ -22,7 +22,7 @@ void Interface_New_Year(Year *yearHead)
 {
     Year *year_cur = yearHead;
     system("cls");
-    cout << "\n======ADDING NEW SCHOOL YEAR======\n";
+    cout << "\n====== ADDING NEW SCHOOL YEAR ======\n";
     cout << "Year list: \n";
     while (year_cur)
     {
@@ -37,7 +37,7 @@ void Interface_New_Year(Year *yearHead)
     cin >> newyear;
     if (newyear == "-1")
         return;
-    while (!isValidYear(newyear))
+    while (!isValidYear(newyear)) // check if the year is valid
     {
         cout << "Invalid year format, please retry.\n";
         cout << "Enter the year you want to create (yyyy-yyyy): ";

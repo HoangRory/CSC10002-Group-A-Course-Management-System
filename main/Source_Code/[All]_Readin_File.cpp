@@ -11,7 +11,7 @@ void ReadAccount(Account *&accHead)
 
     Account *cur;
     string str;
-    getline(ifs, str, '\n');
+    getline(ifs, str, '\n'); // get the first title line in csv file
     while (!ifs.eof())
     {
         if (!accHead)
@@ -29,6 +29,7 @@ void ReadAccount(Account *&accHead)
         }
         cur->next = nullptr;
 
+        // Read the username, pass, ... and put in the account linked list
         getline(ifs, cur->username, ',');
         getline(ifs, cur->password, ',');
         getline(ifs, str, ',');
@@ -50,11 +51,11 @@ void ReadAccount(Account *&accHead)
 void loadingFile(Year *&yearHead, int &numofYear)
 {
     cout << "Loading file" << endl;
-    importYear(yearHead, numofYear);
+    importYear(yearHead, numofYear); // Read the year's stored file
     for (int i = 0; i < 5; i++)
     {
         Sleep(400);
-        cout << '.';
+        cout << '.'; // The effect :)))
     }
     cout << "\nLoading file completed." << endl;
 }
@@ -71,7 +72,7 @@ void importYear(Year *&yearHead, int &numofYear)
     }
 
     Year *curYear;
-    while (!ifs.eof())
+    while (!ifs.eof()) // Create the year linked list according to the saved years
     {
         if (!yearHead)
         {
@@ -86,8 +87,8 @@ void importYear(Year *&yearHead, int &numofYear)
         }
 
         numofYear++;
-        ifs >> curYear->yearStart;
-        importClass(curYear, curYear->yearStart);
+        ifs >> curYear->yearStart; // Get the year starting year to generate
+        importClass(curYear, curYear->yearStart); // Access the saved classes files
     }
 }
 void addClass(Year *curYear, string ClassName)
@@ -109,7 +110,7 @@ void addClass(Year *curYear, string ClassName)
 }
 void importClass(Year *curYear, int yearStart)
 {
-    // create the path to the directory
+    // access the path to the directory
     string in_year = to_string(yearStart) + '_' + to_string(yearStart + 1);
     string path = "..\\Data_file" + separator + in_year + separator + "class.txt";
 
@@ -213,22 +214,23 @@ void importClass(Year *curYear, int yearStart)
 //? Semester
 Semester *Read_Sem(int year, int smt)
 {
+    // Generate the path
     string path = "..\\Data_file\\" + to_string(year) + '_' + to_string(year + 1);
     path += "\\smt" + to_string(smt) + "\\in4smt.txt";
 
-    ifstream ifs(path);
+    ifstream ifs(path); // Open file
     if (!ifs)
         return nullptr;
 
     Semester *newSem = new Semester;
     newSem->Year = year;
-    newSem->No = smt;
-    ifs >> newSem->startDate >> newSem->endDate;
+    newSem->No = smt; // Get the year and semester
+    ifs >> newSem->startDate >> newSem->endDate; // Get the date
 
     Course *newCourse = nullptr;
     while (!ifs.eof())
     {
-        if (!newSem->course)
+        if (!newSem->course) // Check whether to create a new head or continue create next
         {
             newSem->course = new Course;
             newCourse = newSem->course;
@@ -253,12 +255,12 @@ Semester *Read_Sem(int year, int smt)
 Semester *Read_All_Semester(int year)
 {
     Semester *semHead = nullptr;
-    for (int i = 1; i <= 3; i++)
+    for (int i = 1; i <= 3; i++) // Loop to read the 3 semester in the year, return null if there isn't
     {
         Semester *newSem = Read_Sem(year, i);
-        if (!newSem)
+        if (!newSem) // continue if null
             continue;
-        if (!semHead)
+        if (!semHead) // If there's not, set to head
         {
             semHead = newSem;
             continue;

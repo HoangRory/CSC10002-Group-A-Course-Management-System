@@ -56,7 +56,7 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     std::string tmp;
     std::cin >> tmp;
 
-    while (tmp != pass)
+    while (tmp != pass) // If the password is wrong
     {
         TextColor(LIGHT_RED);
         std::cout << "Wrong Password!!!\nEnter password again: ";
@@ -69,17 +69,17 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     std::cout << "Account confirm, enter your new password: ";
     do
     {
-        if (assem == false)
+        if (assem == false) // If the 2 passwords are different
             std::cout << "\nThe 2 passwords u enter are different\nEnter your new password: ";
         std::cin >> tmp;
         std::string newPass;
         std::cout << "Re-enter: ";
         std::cin >> newPass;
-        assem = (tmp == newPass ? true : false);
+        assem = (tmp == newPass ? true : false); // If the 2 passwords are the same
     } while (!assem);
 
     Account *cur = accHead;
-    while (cur && cur->username != user)
+    while (cur && cur->username != user) // Find the account
         cur = cur->next;
     cur->password = tmp;
     WriteAccount(accHead);
@@ -96,7 +96,7 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
     bool stop = false;
 
     int opt = 1;
-    string *ListOption = new string[4];
+    string *ListOption = new string[4]; // List of options
     ListOption[0] = "\nAccount Options:\n";
     ListOption[1] = "- Change your password\n";
     ListOption[2] = "- Logout              \n";
@@ -184,6 +184,7 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
     return;
 }
 
+//? Account Alteration
 void AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     bool stop = false;

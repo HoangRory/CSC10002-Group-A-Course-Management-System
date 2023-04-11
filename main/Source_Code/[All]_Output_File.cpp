@@ -7,7 +7,7 @@ void OutCourse(Course *course_head, ofstream &ofs)
 {
     if (!course_head)
         return;
-    while (course_head)
+    while (course_head) // Output the information follows name, course ID, credits,... to file
     {
         ofs << '\n';
         ofs << course_head->Name << '\n'
@@ -31,12 +31,13 @@ void Output(Year *yearHead)
 
     while (sem_cur)
     {
+        // Path changes according to the current year-semester
         string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(sem_cur->No) + "\\in4smt.txt";
         ofstream ofs(outPath);
         if (!ofs)
             return;
         // ofs << sem_cur->No << '\n';
-        ofs << sem_cur->startDate << ' ' << sem_cur->endDate;
+        ofs << sem_cur->startDate << ' ' << sem_cur->endDate; // Output the date
         OutCourse(sem_cur->course, ofs);
         sem_cur = sem_cur->next;
         ofs.close();
@@ -53,7 +54,7 @@ void WriteAccount(Account *accHead)
         return;
 
     Account *cur = accHead;
-    while (cur)
+    while (cur) // follows username, pass, role, lastname, firstname, gender, social ID, birthday
     {
         ofs << cur->username << ',' << cur->password << ','
             << cur->role << ',' << cur->lastName << ','
@@ -91,11 +92,13 @@ void Outyear(Year *yearHead)
         outyear << yearTMP->yearStart;
         Class *ClassTMP = yearTMP->Class;
 
+        // Path changes according the the current year
         string path = "..\\Data_file\\" + to_string(yearTMP->yearStart) + '_' + to_string(yearTMP->yearStart + 1) + "\\class.txt";
         ofstream ofs(path);
         if (!ofs)
             return;
 
+        // Scan throught the list class with its students
         while (ClassTMP)
         {
             ofs << ClassTMP->Name;
@@ -107,7 +110,7 @@ void Outyear(Year *yearHead)
             }
             ClassTMP = ClassTMP->next;
             if (ClassTMP)
-                ofs << "\n-1\n";
+                ofs << "\n-1\n"; // Output -1 to divide out between classes
         }
         yearTMP = yearTMP->next;
         if (yearTMP)

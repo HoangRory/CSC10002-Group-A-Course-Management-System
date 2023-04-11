@@ -1,4 +1,5 @@
 #include "../Header/Semester.h"
+#include "../Header/Year.h"
 #include "../Header/Utility.h"
 
 // todo Alternate to add more semesters at once
@@ -6,15 +7,16 @@
 Semester *AddSemester(Year *yearHead)
 {
     int Y, N;
+    // Get the year and semester
     cout << "School year: ";
     cin >> Y;
     cout << "No. semester (1,2,3): ";
     cin >> N;
 
     Year *year_cur = yearHead;
-    while (year_cur && year_cur->yearStart != Y)
+    while (year_cur && year_cur->yearStart != Y) // Move the current to the exact year
         year_cur = year_cur->next;
-    if (!year_cur)
+    if (!year_cur) // Loop again the function if null
     {
         cout << "Year not found! Enter again: ";
         return AddSemester(yearHead);
@@ -24,7 +26,7 @@ Semester *AddSemester(Year *yearHead)
     Semester *prev = sem_cur;
     while (sem_cur)
     {
-        if (sem_cur->No == N)
+        if (sem_cur->No == N) // If already had, ask to modify
         {
             cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
             char check;
@@ -37,8 +39,8 @@ Semester *AddSemester(Year *yearHead)
             }
             if (check == 'Y' || check == 'y')
             {
-                //! Change the modify Sem
-                // modifySemester(semHead, Y, N);
+                // To modify the semester
+                modifySemester(yearHead, Y, N);
                 return nullptr;
             }
             return AddSemester(yearHead);
@@ -49,12 +51,12 @@ Semester *AddSemester(Year *yearHead)
         sem_cur = sem_cur->next;
     }
 
-    if (!prev)
+    if (!prev) // if there is no semester to begin with, create a new head
     {
         year_cur->NoSemester = new Semester;
         sem_cur = year_cur->NoSemester;
     }
-    else
+    else // create a new semester at the last position
     {
         prev->next = new Semester;
         sem_cur = prev->next;
@@ -63,7 +65,8 @@ Semester *AddSemester(Year *yearHead)
 
     sem_cur->No = N;
     sem_cur->Year = Y;
-    cout << "Starting date (dd/mm/yyyy): ";
+    //! Check validity
+    cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
     cin >> sem_cur->startDate;
     cout << "Ending date (dd/mm/yyyy): ";
     cin >> sem_cur->endDate;
@@ -71,7 +74,7 @@ Semester *AddSemester(Year *yearHead)
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
     string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(N);
     string tmp_sys = "mkdir " + outPath;
-
+    // Create a folder to store its information
     const char *cstr_path = tmp_sys.c_str();
     system(cstr_path);
     system("cls");
@@ -82,11 +85,11 @@ Semester *AddSemester(Year *yearHead)
 //! Write a course modification function here!!!
 Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
 {
-    cout << "\nEnter the course ID: ";
+    cout << "\nEnter the course ID: "; // Get the in4
     string id;
     cin >> id;
     Course *courseCurrent, *prev = nullptr;
-    if (!semCurrent->course)
+    if (!semCurrent->course) // Generate the head if there is not
     {
         semCurrent->course = new Course;
         courseCurrent = semCurrent->course;
@@ -98,6 +101,7 @@ Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
         {
             if (courseCurrent->CourseID == id)
             {
+                // ask if they want to change its in4
                 cout << "*** Already has this course, modify it? (Y/N) ***\n==> ";
                 char check;
                 cin >> check;
@@ -107,12 +111,13 @@ Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
                     cin >> check;
                 }
                 if (check == 'Y' || check == 'y')
+                    // Modify the semester
                     modifyCourse(yearHead, semCurrent->Year);
                 return nullptr;
             }
             courseCurrent = courseCurrent->next;
         }
-
+        // create a new node at last pos
         prev = courseCurrent;
         courseCurrent->next = new Course;
         courseCurrent = courseCurrent->next;
@@ -121,6 +126,7 @@ Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
 
     courseCurrent->CourseID = id;
 
+    // Get all the necessary in4
     cout << "\nCourse name: ";
     cin.ignore();
     getline(cin, courseCurrent->Name);
@@ -147,11 +153,13 @@ Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
 
     return courseCurrent;
 }
+
+//? Add student using file
 void ImportStudentFromFile(Course *courseCurrent)
 {
     string str = courseCurrent->Name;
     int i = 0;
-    while (i < str.size())
+    while (i < str.size()) // Shortten the name for the path in system file
     {
         if (i == 0 && str[i] > 90)
             str[i] -= 32;
@@ -165,23 +173,24 @@ void ImportStudentFromFile(Course *courseCurrent)
     }
     string studList = "../Data_file/New_Enrolled_Student/" + str + ".txt";
 
+    // Open the file that has been put is the folder
     ifstream ifs(studList);
     if (!ifs)
         return;
     string tmp;
     StudentCourse *studCourse;
 
-    int cnt = 0;
+    int cnt = 0; // count the number of student
     if (ifs >> tmp)
     {
         courseCurrent->studentCourse = new StudentCourse;
         studCourse = courseCurrent->studentCourse;
         studCourse->ID = tmp;
         cnt++;
-        while (ifs >> tmp)
+        while (ifs >> tmp) // read til the end
         {
             if (tmp == "\n")
-                break;
+                break; 
             studCourse->next = new StudentCourse;
             StudentCourse *tmpStud = studCourse;
             studCourse = studCourse->next;
@@ -193,6 +202,8 @@ void ImportStudentFromFile(Course *courseCurrent)
     courseCurrent->numStudents = cnt;
     ifs.close();
 }
+
+//? Add student by hand inputing one by one
 void AddStudentByHand(Course *courseCurrent)
 {
     cout << "Enter the student ID one by one! (Enter -1 to stop)\n\n";
@@ -203,7 +214,7 @@ void AddStudentByHand(Course *courseCurrent)
     if (cin >> id)
     {
         if (id == "-1")
-            return;
+            return; // end the process
         courseCurrent->studentCourse = new StudentCourse;
         studCourse = courseCurrent->studentCourse;
         studCourse->ID = id;
@@ -226,6 +237,7 @@ void AddStudentByHand(Course *courseCurrent)
 
     cout << "\nDone adding new student!\n";
 }
+//? Generate the option to add student
 void AddingCourse(Semester *semCurrent, Year* yearHead)
 {
     if (!semCurrent)
@@ -234,14 +246,14 @@ void AddingCourse(Semester *semCurrent, Year* yearHead)
 
     int choice = 1;
     bool stop = false;
-    string menu[3];
+    string menu[3]; // All allow actions
     menu[0] = "\nMethod to import student to the course:\n";
     menu[1] = "- Import student from file\n";
     menu[2] = "- Add student by hand     \n";
     system("cls");
     for (int i = 0; i < 3; i++)
     {
-        if (i == choice)
+        if (i == choice) // Change color according to the current cursor
         {
             TextColor(LIGHT_YELLOW);
             cout << menu[i];
@@ -255,10 +267,10 @@ void AddingCourse(Semester *semCurrent, Year* yearHead)
     cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
     TextColor(WHITE);
 
-    ShowConsoleCursor(false);
+    ShowConsoleCursor(false); // Disable the cursor
     while (!stop)
     {
-        if (_kbhit())
+        if (_kbhit()) // get the input from arrow buttons
         {
             switch (_getch())
             {
@@ -298,7 +310,7 @@ void AddingCourse(Semester *semCurrent, Year* yearHead)
     }
     ShowConsoleCursor(true);
 
-    switch (choice)
+    switch (choice) // Access according to the choice
     {
     case 1:
         cout << "==> You chose to import student from a file!\n";
@@ -324,10 +336,10 @@ void AddingCourse(Semester *semCurrent, Year* yearHead)
     return;
 }
 
-//! when merge, change to yearHead
+//? Run to begin the new semester
 void Interface_New_Sem(Year *yearHead)
 {
-    Semester *semCurrent = AddSemester(yearHead);
+    Semester *semCurrent = AddSemester(yearHead); // New semester and return the default for next actions
     AddingCourse(semCurrent, yearHead);
 
     cout << "Do you want to add another semester? (Y/N) ";
