@@ -127,19 +127,21 @@ void ViewCourse(Year *yearHead)
     int no_smt;
     cout << "Enter the semester: ";
     cin >> no_smt;
-    while (yearHead->NoSemester)
+    Semester *cur_sem = yearHead->NoSemester;
+    while (cur_sem)
     {
-        if (yearHead->NoSemester->No == no_smt)
+        if (cur_sem->No == no_smt)
             break;
-        yearHead->NoSemester = yearHead->NoSemester->next;
+        cur_sem = cur_sem->next;
     }
-    if (!yearHead->NoSemester)
+    if (!cur_sem)
     {
         cout << "Can't find the semester. Try again!" << endl;
         return;
     }
 
-    if (yearHead->NoSemester->course) 
+    Course *cur_cour = cur_sem->course;
+    if (cur_cour) 
     {
         cout << "\nList of courses in the semester " << no_smt << " of the " << school_year << " school year:" << endl;
         for (int i = 1; i <= 70; ++i)
@@ -152,15 +154,15 @@ void ViewCourse(Year *yearHead)
     }
     else 
         cout << "\nThere is no course in the semester " << no_smt << " of the " << school_year << " school year." << endl;
-    while (yearHead->NoSemester->course)
+    while (cur_cour)
     {
-        cout << "| " << yearHead->NoSemester->course->CourseID << " | ";
-        cout << yearHead->NoSemester->course->Name << setw(32 - yearHead->NoSemester->course->Name.length()) << "| ";  
-        cout << yearHead->NoSemester->course->TeacherName << setw(26 - yearHead->NoSemester->course->TeacherName.length()) << "|\n";
+        cout << "| " << cur_cour->CourseID << " | ";
+        cout << cur_cour->Name << setw(32 - cur_cour->Name.length()) << "| ";  
+        cout << cur_cour->TeacherName << setw(26 - cur_cour->TeacherName.length()) << "|\n";
         for (int i = 1; i <= 70; ++i)
             cout << "=";
         cout << "\n";
-        yearHead->NoSemester->course = yearHead->NoSemester->course->next;
+        cur_cour = cur_cour->next;
     }
 }
 
