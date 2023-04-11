@@ -12,9 +12,10 @@ void ViewCoursesOfAStudent(Account *accHead, Course *courseHead) //courseHead in
     cout << "\n";
     while (courseHead)
     {
-        while (courseHead->studentCourse)
+        StudentCourse *cur_stu = courseHead->studentCourse;
+        while (cur_stu)
         {
-            if (courseHead->studentCourse->ID == accHead->username)
+            if (cur_stu->ID == accHead->username)
             {
                 cout << "| " << courseHead->CourseID;
                 cout << "       " << courseHead->Name;
@@ -26,7 +27,7 @@ void ViewCoursesOfAStudent(Account *accHead, Course *courseHead) //courseHead in
                 cout << "\n";
                 break;
             }
-            courseHead->studentCourse = courseHead->studentCourse->next;
+            cur_stu = cur_stu->next;
         }
         courseHead = courseHead->next;
     }
@@ -46,18 +47,19 @@ void ViewScoreboard(Account *accHead, Course *courseHead)
     cout << "\n";
     while (courseHead)
     {
-        while (courseHead->studentCourse)
+        StudentCourse *cur_stu = courseHead->studentCourse;
+        while (cur_stu)
         {
-            if (courseHead->studentCourse->ID == accHead->username) //truy cập từng student trong từng course check ID 
+            if (cur_stu->ID == accHead->username) //truy cập từng student trong từng course check ID 
             {
                 cout <<  "| " << courseHead->Name;
-                cout << setw(35 - courseHead->Name.length()) << right << courseHead->studentCourse->ScoreBoardCourse.midMark;
-                cout << setw(23 - to_string(courseHead->studentCourse->ScoreBoardCourse.midMark).length()) << right << courseHead->studentCourse->ScoreBoardCourse.finalMark;
-                cout << setw(15) << right << courseHead->studentCourse->ScoreBoardCourse.otherMark;
-                cout << setw(15) << right << courseHead->studentCourse->ScoreBoardCourse.totalMark << " |";
+                cout << setw(35 - courseHead->Name.length()) << right << cur_stu->ScoreBoardCourse.midMark;
+                cout << setw(23 - to_string(cur_stu->ScoreBoardCourse.midMark).length()) << right << cur_stu->ScoreBoardCourse.finalMark;
+                cout << setw(15) << right << cur_stu->ScoreBoardCourse.otherMark;
+                cout << setw(15) << right << cur_stu->ScoreBoardCourse.totalMark << " |";
                 cout << "\n";
             }
-            courseHead->studentCourse = courseHead->studentCourse->next;
+            cur_stu = cur_stu->next;
         }
         courseHead = courseHead->next;
     }
