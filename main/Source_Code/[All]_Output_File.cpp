@@ -27,7 +27,7 @@ void Output(Year *yearHead)
         return;
 
     Semester *sem_cur = yearHead->NoSemester;
-    string out_year = to_string(yearHead->Year) + '_' + to_string(yearHead->Year + 1);
+    string out_year = to_string(yearHead->yearStart) + '_' + to_string(yearHead->yearStart + 1);
 
     while (sem_cur)
     {
@@ -73,9 +73,9 @@ void NewAccount(Account *accHead, string ID, Account *accTmp)
         acc_cur = acc_cur->next;
     acc_cur->next = accTmp;
     accTmp->prev = acc_cur;
-    accTmp->username = ID;        //? Set the default username to student ID
-    accTmp->password = "11111111" //? Set default password to 8 1
-        return;
+    accTmp->username = ID;         //? Set the default username to student ID
+    accTmp->password = "11111111"; //? Set default password to 8 1
+    return;
 }
 //? Output the year information
 void Outyear(Year *yearHead)
@@ -98,17 +98,16 @@ void Outyear(Year *yearHead)
 
         while (ClassTMP)
         {
-            ofs << ClassTMP->Name << '\n';
+            ofs << ClassTMP->Name;
             Student *StudentTMP = ClassTMP->StudentClass;
             while (StudentTMP)
             {
-                ofs << StudentTMP->ID << '\n';
+                ofs << "\n" << StudentTMP->ID;
                 StudentTMP = StudentTMP->next;
             }
-            ofs << "-1";
             ClassTMP = ClassTMP->next;
             if (ClassTMP)
-                ofs << '\n';
+                ofs << "\n-1\n";
         }
         yearTMP = yearTMP->next;
         if (yearTMP)

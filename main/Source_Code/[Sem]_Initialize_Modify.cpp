@@ -1,4 +1,5 @@
 #include "../Header/Semester.h"
+#include "../Header/Utility.h"
 
 void initModify(Year *yearHead)
 {
@@ -9,7 +10,7 @@ void initModify(Year *yearHead)
     ListOption[0] = "\nOptions to modify:\n";
     ListOption[1] = "- Modify semester                      \n";
     ListOption[2] = "- Modify course                        \n";
-    ListOption[3] = "- Delete a course                      \n";
+    ListOption[3] = "- Remove a course                      \n";
     ListOption[4] = "- Add or remove a student from a course\n";
     ListOption[5] = "- Return                               \n";
 
@@ -24,7 +25,7 @@ void initModify(Year *yearHead)
         else
             cout << ListOption[i];
     }
-    SetConsoleTextAttribute(h, GREEN);
+
     TextColor(LIGHT_GREEN);
     cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
     TextColor(WHITE);
@@ -56,7 +57,7 @@ void initModify(Year *yearHead)
             {
                 if (i == opt)
                 {
-                    extColor(LIGHT_YELLOW);
+                    TextColor(LIGHT_YELLOW);
                     cout << ListOption[i];
                     TextColor(WHITE);
                 }
@@ -104,10 +105,10 @@ void RunModify(Year *yearHead, int opt)
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "\n";
-        deleteCourse(yearHead, year);
+        removeCourse(yearHead, year);
         break;
     case 4:
-        viewCourse(yearHead);
+        ViewCourse(yearHead);
         cout << "\n==> Please choose the year (yyyy): ";
         cin >> year;
         cout << "\n";

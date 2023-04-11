@@ -1,23 +1,23 @@
 #include "../Header/Login.h"
+#include "../Header/Utility.h"
 
 void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     system("cls");
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    cout << "\n";
 
-    SetConsoleTextAttribute(h, LIGHT_AQUA);
+    TextColor(LIGHT_AQUA);
     cout << "WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n\n";
-    SetConsoleTextAttribute(h, LIGHT_AQUA);
     cout << "PLEASE ENTER YOUR USERNAME AND PASSWORD TO LOGIN\n\n";
 
-    SetConsoleTextAttribute(h, LIGHT_GREEN);
+    TextColor(LIGHT_GREEN);
     std::cout << "\nUsername: ";
     std::cin >> user;
 
-    SetConsoleTextAttribute(h, LIGHT_RED);
+    TextColor(LIGHT_RED);
     std::cout << "Password: ";
     std::cin >> pass;
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
 
     Account *cur = accHead;
     bool loggedIn = false;
@@ -33,10 +33,11 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
 
     if (!loggedIn)
     {
-        SetConsoleTextAttribute(h, LIGHT_RED);
+        TextColor(LIGHT_RED);
         std::cout << "\nWrong username or password\n";
         std::cout << "Try again!!!\n\n\n";
-        SetConsoleTextAttribute(h, WHITE);
+        TextColor(WHITE);
+
         system("pause");
         LoggingIn(accHead, user, pass, role);
         return;
@@ -51,16 +52,15 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
 
 void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     std::cout << "\nEnter your current password: ";
     std::string tmp;
     std::cin >> tmp;
 
     while (tmp != pass)
     {
-        SetConsoleTextAttribute(h, RED);
+        TextColor(LIGHT_RED);
         std::cout << "Wrong Password!!!\nEnter password again: ";
-        SetConsoleTextAttribute(h, WHITE);
+        TextColor(WHITE);
         std::cin >> tmp;
     }
     bool assem = true;
@@ -83,16 +83,17 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
         cur = cur->next;
     cur->password = tmp;
     WriteAccount(accHead);
-    SetConsoleTextAttribute(h, GREEN);
+
+    TextColor(LIGHT_GREEN);
     std::cout << "\nChange password successfully.";
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
+
     return;
 }
 
 void Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     bool stop = false;
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
     int opt = 1;
     string *ListOption = new string[4];
@@ -106,16 +107,16 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
     {
         if (i == opt)
         {
-            SetConsoleTextAttribute(h, YELLOW);
+            TextColor(LIGHT_YELLOW);
             cout << ListOption[i];
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
         else
             cout << ListOption[i];
     }
-    SetConsoleTextAttribute(h, GREEN);
+    TextColor(LIGHT_GREEN);
     cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
 
     while (!stop)
     {
@@ -144,16 +145,16 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
             {
                 if (i == opt)
                 {
-                    SetConsoleTextAttribute(h, YELLOW);
+                    TextColor(LIGHT_YELLOW);
                     cout << ListOption[i];
-                    SetConsoleTextAttribute(h, WHITE);
+                    TextColor(WHITE);
                 }
                 else
                     cout << ListOption[i];
             }
-            SetConsoleTextAttribute(h, GREEN);
+            TextColor(LIGHT_GREEN);
             cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
     }
     delete[] ListOption;
@@ -185,7 +186,6 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
 
 void AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
 {
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     bool stop = false;
 
     int opt = 1;
@@ -198,16 +198,16 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     {
         if (i == opt)
         {
-            SetConsoleTextAttribute(h, YELLOW);
+            TextColor(LIGHT_YELLOW);
             cout << ListOption[i];
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
         else
             cout << ListOption[i];
     }
-    SetConsoleTextAttribute(h, GREEN);
+    TextColor(LIGHT_GREEN);
     cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    SetConsoleTextAttribute(h, WHITE);
+    TextColor(WHITE);
 
     ShowConsoleCursor(false);
 
@@ -237,17 +237,17 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
             {
                 if (i == opt)
                 {
-                    SetConsoleTextAttribute(h, YELLOW);
+                    TextColor(LIGHT_YELLOW);
                     cout << ListOption[i];
-                    SetConsoleTextAttribute(h, WHITE);
+                    TextColor(WHITE);
                 }
                 else
                     cout << ListOption[i];
             }
 
-            SetConsoleTextAttribute(h, GREEN);
+            TextColor(LIGHT_GREEN);
             cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            SetConsoleTextAttribute(h, WHITE);
+            TextColor(WHITE);
         }
     }
     delete[] ListOption;

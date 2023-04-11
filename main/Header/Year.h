@@ -23,25 +23,33 @@ void importClass(Year *curYear, int yearStart);
 
 //* Output year
 void Outyear(Year *yearHead);
+void NewAccount(Account *accHead, string ID, Account *accTmp);
+
+//* Delete the year linked list
+void DeleteYear(Year *&yearHead);
 
 //* New year
 void createSchoolYear(Year *&headYear, int yearStart);
 void Create_New_Classes(Year *newYear);
+
 void ChooseClassToAdd(Year *curYear);
 void Method(Class *curClass);
+
 void inputStudent(Class *curClass);
 void importStudent(Class *curClass);
+
 void add1stYearStudents(Class *curClass, string ID, string first, string last, string gen, string birth, string socialID);
-void NewAccount(Account *accHead, string ID, Account *accTmp);
 
 //* Validate the input
+void CapitalClassName(string &name);
+bool checkYear(Year *curYear, int year);
 bool checkClass(Year *curYear, string className);
 bool Check_Student(Class *curClass, string studentID);
-void CapitalClassName(string &name);
 bool isLeap(int year);
-bool isValidDate(const std::string &dateOfBirth);
-bool isValidGender(const std::string &gender);
+bool isValidDate(const string &dateOfBirth);
+bool isValidGender(const string &gender);
+bool isValidYear(string year);
 
 //* Interface
 Year *RecoverFile();
-void Interface_New_Year(year *yearHead);
+void Interface_New_Year(Year *yearHead);

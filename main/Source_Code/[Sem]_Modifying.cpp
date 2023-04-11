@@ -1,4 +1,5 @@
 #include "../Header/Semester.h"
+#include "../Header/Utility.h"
 
 //! Merge: change to yearHead
 void modifySemester(Year *yearHead, int year, int sem)
@@ -224,7 +225,7 @@ void ChangeCourseInfo(Course *cour_cur)
     return;
 }
 
-void deleteCourse(Year *yearHead, int year)
+void removeCourse(Year *yearHead, int year)
 {
     system("cls");
     cout << "\n";
@@ -237,7 +238,7 @@ void deleteCourse(Year *yearHead, int year)
         year_cur = year_cur->next;
     }
 
-    Semester *sem_cur = year_cur->semester;
+    Semester *sem_cur = year_cur->NoSemester;
 
     if (!sem_cur)
     {
@@ -298,7 +299,7 @@ void deleteCourse(Year *yearHead, int year)
 
     if (ch == 'Y' || ch == 'y')
     {
-        deleteCourse(yearHead, year);
+        removeCourse(yearHead, year);
         return;
     }
     return;

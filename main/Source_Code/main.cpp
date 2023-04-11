@@ -9,24 +9,21 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     int role;
     LoggingMain(accHead, user, pass, role);
     SyncFullName(yearHead, accHead);
+    NewYearMain(yearHead, accHead, role);
+}
 
+void EradicateLL(Account *&accHead, Year *&yearHead)
+{
+    DelAccount(accHead);
+    DeleteYear(yearHead);
 }
 
 int main()
 {
     Account *accHead = nullptr;
-    std::string user = "", pass = "";
-    int role = -1;
-    Semester *semHead = nullptr;
-    int yr = 2022;
-    int num_smt = 3, num_year = 1;
+    Year *yearHead = nullptr;
+    Merge_year_sem(accHead, yearHead);
 
-    LoggingMain(accHead, user, pass, role);
-    cout << role << '\n';
-    NewSemesterMain(semHead, yr, num_year, num_smt, accHead, role);
-
-    DeleteSMT(semHead);
-    DelAccount(accHead);
-    system("pause");
+    EradicateLL(accHead, yearHead);
     return 0;
 }

@@ -1,6 +1,7 @@
 #include "../Header/Semester.h"
 #include "../Header/Year.h"
 #include "../Header/Login.h"
+#include "../Header/Utility.h"
 
 // todo Alternate to sync more efficiently
 
@@ -9,7 +10,7 @@ void SyncFullName(Year *yearHead, Account *accHead)
     Year *year_cur = yearHead;
     while (year_cur)
     {
-        Semester *sem_cur = yearcur->semester;
+        Semester *sem_cur = year_cur->NoSemester;
         while (sem_cur)
         {
             Course *cse = sem_cur->course;
@@ -53,12 +54,12 @@ void ViewCourse(Year *yearHead)
     string *menu = new string[cnt + 3];
 
     menu[0] = "List of year\n";
-    menu[0] = "+ All year\n";
+    menu[1] = "+ All year\n";
     menu[cnt + 2] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
     year_cur = yearHead;
     for (int i = 2; i <= cnt + 1; i++)
     {
-        menu[i] = "+ " + to_string(year_cur->Year) + " - " + to_string(year_cur->Year + 1) + "\n";
+        menu[i] = "+ " + to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1) + "\n";
         year_cur = year_cur->next;
     }
     int opt = 1;
@@ -87,7 +88,7 @@ void ViewCourse(Year *yearHead)
                     opt--;
                 break;
             case DOWN:
-                if (opt < cnt + 2)
+                if (opt < cnt + 1)
                     opt++;
                 break;
             case ENTER:
@@ -122,24 +123,25 @@ void ViewCourse(Year *yearHead)
     year_cur = yearHead;
     while (year_cur)
     {
-        if (year_cur->Year == choice)
+        if (year_cur->yearStart == choice)
             break;
         year_cur = year_cur->next;
     }
-    viewCourseInYear(year_cur->semester);
+    ViewCourseInYear(year_cur->NoSemester);
     return;
 }
 void ViewCourseInYear(Semester *semHead)
 {
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (!semHead)
+        return;
     Semester *sem_cur = semHead;
     // cout << "List of courses: \n";
     for (int i = 0; i < 86; i++)
         cout << '=';
-    SetConsoleTextAttribute(h, 0xF8);
+    TextColor(0xF8);
     cout << '\n';
     cout << setw(40) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(36) << '\n';
-    SetConsoleTextAttribute(h, 15);
+    TextColor(WHITE);
     for (int i = 0; i < 86; i++)
         cout << '=';
 
@@ -181,9 +183,10 @@ void ViewAllCourse(Year *yearHead)
     Year *year_cur = yearHead;
     while (year_cur)
     {
-        viewCourseInYear(year_cur->semester);
+        ViewCourseInYear(year_cur->NoSemester);
         year_cur = year_cur->next;
     }
+    system("pause");
 }
 
 void StaffMain(Year *yearHead)
@@ -297,7 +300,7 @@ void StaffMain(Year *yearHead)
         cout << "\nSaving completed\n";
         return;
 
-    case 5:
+    case 6:
         //? Exit
         cout << "\n";
         cout << "Cleaning up the system";

@@ -2,26 +2,27 @@
 #include "proto.h"
 
 //? Add new semester, new course and import student
-Semester *AddSemester(Semester *&semHead);
-Course *AddCourse(Semester *semCurrent);
+Semester *AddSemester(Year* yearHead);
+Course *AddNewCourse(Semester *semCurrent, Year* yearHead);
 void ImportStudentFromFile(Course *courseCurrent);
 void AddStudentByHand(Course *courseCurrent);
-void AddingCourse(Semester *semCurrent);
-void Interface_New_Sem(Semester *&semHead);
+void AddingCourse(Semester *semCurrent, Year* yearHead);
+
+void Interface_New_Sem(Year* yearHead);
 
 //? Initialize Modification
-void ShowConsoleCursor(bool showFlag);
-void initModify(Semester *&semHead);
-void RunModify(Semester *&semHead, int opt);
+void initModify(Year* yearHead);
+void RunModify(Year* yearHead, int opt);
 
 //? Modifying
-void modifySemester(Semester *semHead, int year, int sem);
-void modifyCourse(Semester *semHead, int year);
+void modifySemester(Year *yearHead, int year, int sem);
+void modifyCourse(Year *yearHead, int year);
 void ChangeCourseInfo(Course *cour_cur);
-void deleteCourse(Semester *semHead, int year);
+void removeCourse(Year *yearHead, int year);
+
 void addStudent(Course *courCurrent, string course_id);
 void removeStudent(Course *courCurrent, string course_id);
-void addRemoveStudent(Semester *semHead, int year);
+void addRemoveStudent(Year* yearHead, int year);
 
 //? Read Semester from file
 Semester *Read_Sem(int year, int smt);
@@ -32,12 +33,12 @@ void DeleteCourse(Course *&course_head);
 void DeleteSMT(Year *yearHead);
 
 void OutCourse(Course *course_head, ofstream &ofs);
-void Output(Year* yearHead);
+void Output(Year *yearHead);
 
 //? View Course, Sync name from Account linked list
 void SyncFullName(Year *yearHead, Account *accHead);
 void ViewCourse(Year *yearHead);
 void ViewCourseInYear(Semester *semHead);
 void ViewAllCourse(Year *yearHead);
-void StaffMain(Semester *&semHead);
+void StaffMain(Year* yearHead);
 void NewYearMain(Year *&yearHead, Account *accHead, int role);

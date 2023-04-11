@@ -1,33 +1,25 @@
 #include "../Header/Year.h"
+#include "../Header/Semester.h"
 
 //? 1. Create a school year (2020-2021, for example)
 //* lần đầu gọi hàm thì cho cin yearStart trong hàm main
 void createSchoolYear(Year *&headYear, int yearStart)
 {
     Year *curYear = headYear;
-    while (curYear)
+    if (checkYear(headYear, yearStart))
     {
-        //! if the year already exists, it stops, so let it an option to enter again
-        if (curYear->yearStart == yearStart)
+        cout << "Year " << yearStart << '-' << yearStart + 1 << " already exists.\n";
+        cout << "Do you want to retry? (Y/N) ";
+        char ch;
+        cin >> ch;
+        while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
         {
-            cout << "Year " << yearStart << " already exists." << endl;
-            cout << "Do you want to re-enter?\n1. Yes.\n2. No." << endl;
-            cout << "Enter your choice: ";
-            int choice = 0;
-            cin >> choice;
-            switch (choice)
-            {
-            case 1:
-                cout << "Enter start year: ";
-                cin >> yearStart;
-                createSchoolYear(headYear, yearStart);
-                return;
-            case 2:
-                cout << "Finish adding to the new school year. Thank you!" << endl;
-                return;
-            }
+            cout << "Invalid input, retry: ";
+            cin >> ch;
         }
-        curYear = curYear->next;
+        if (ch == 'Y' || ch == 'y')
+            Interface_New_Year(headYear);
+        return;
     }
 
     Year *newYear = new Year;
@@ -42,40 +34,27 @@ void createSchoolYear(Year *&headYear, int yearStart)
             curYear = curYear->next;
         curYear->next = newYear;
     }
-    cout << "Year " << yearStart << " has been added successfully." << endl;
+    string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
+    path = "mkdir " + path;
+    system(path.c_str());
+
+    cout << "Year " << yearStart << '-' << yearStart + 1 << " has been added successfully.\n";
 
     for (int i = 0; i < 38; i++)
         cout << "-";
     cout << endl;
 
-    cout << "Do you want to add a new year?\n1. Yes.\n2. No." << endl;
-    cout << "Enter your choice: ";
-    int choice = 0;
-    cin >> choice;
-    switch (choice)
+    cout << "Do you want to add another school year? (Y/N) ";
+    char ch;
+    cin >> ch;
+    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
     {
-    case 1:
-        cout << "Enter start year: ";
-        cin >> yearStart;
-        createSchoolYear(headYear, yearStart);
-        break;
-    case 2:
-        cout << "Finish adding to the new school year. Thank you!" << endl;
-        return;
+        cout << "Invalid input, retry: ";
+        cin >> ch;
     }
-}
-
-//? Return true if the class already exists
-bool checkClass(Year *curYear, string className)
-{
-    Class *curClass = curYear->Class;
-    while (curClass)
-    {
-        if (curClass->Name == className)
-            return true;
-        curClass = curClass->next;
-    }
-    return false;
+    if (ch == 'Y' || ch == 'y')
+        Interface_New_Year(headYear);
+    return;
 }
 
 //? 2. Create several classes for 1st-year students.
@@ -117,26 +96,6 @@ void Create_New_Classes(Year *newYear)
         ClassTMP->Name = line;
         cout << "Added class " << line << " successfully.\n";
     }
-}
-
-//? Return true if the student already exists
-bool Check_Student(Class *curClass, string studentID)
-{
-    Student *curStudent = curClass->StudentClass;
-    while (curStudent)
-    {
-        if (curStudent->ID == studentID)
-            return true;
-        curStudent = curStudent->next;
-    }
-    return false;
-}
-
-//? Turn the classname to uppercase
-void CapitalClassName(string &name)
-{
-    for (int i = 0; i < name.length(); i++)
-        name[i] = toupper(name[i]);
 }
 
 //? Choose the class to add Student
@@ -186,44 +145,6 @@ void Method(Class *curClass)
     }
 }
 
-//? return true if it is a leap year
-bool isLeap(int year)
-{
-    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-}
-
-//? return true if the date is valid
-bool isValidDate(const std::string &dateOfBirth)
-{
-    if (dateOfBirth.length() != 10)
-        return false;
-
-    if (dateOfBirth[2] != '/' || dateOfBirth[5] != '/')
-        return false;
-
-    int dd = std::stoi(dateOfBirth.substr(0, 2));
-    int mm = std::stoi(dateOfBirth.substr(3, 2));
-    int yyyy = std::stoi(dateOfBirth.substr(6, 4));
-
-    if (mm < 1 || mm > 12)
-        return false;
-
-    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (isLeap(yyyy))
-        daysInMonth[1] = 29;
-
-    if (dd < 1 || dd > daysInMonth[mm - 1])
-        return false;
-
-    return true;
-}
-
-//? true if it is in the correct format
-bool isValidGender(const std::string &gender)
-{
-    return (gender == "F" || gender == "M");
-}
-
 //? Input student by hand one the cmd
 void inputStudent(Class *curClass)
 {
@@ -247,8 +168,7 @@ void inputStudent(Class *curClass)
     getline(cin, gen);
     while (!isValidGender(gen))
     {
-        cout << "Invalid Gender. Please retry."
-             << "\n";
+        cout << "Invalid Gender. Please retry.\n";
         cout << "Gender (M: male   F: female): ";
         getline(cin, gen);
     }
@@ -257,7 +177,7 @@ void inputStudent(Class *curClass)
     getline(cin, birth);
     while (!isValidDate(birth))
     {
-        cout << "Invalid Date of Birth. Please retry." << endl;
+        cout << "Invalid Date of Birth. Please retry.\n";
         cout << "Date of Birth (dd/mm/yyyy):";
         getline(cin, birth);
     }
@@ -345,7 +265,7 @@ void importStudent(Class *curClass)
 
         lineCount++;
         // add the student to class
-        if (checkStudent(curClass, studentID))
+        if (Check_Student(curClass, studentID))
             cout << "This student has already been added. Please retry." << endl;
         else
             add1stYearStudents(curClass, studentID, firstName, lastName, gender, dateofBirth, socialID);

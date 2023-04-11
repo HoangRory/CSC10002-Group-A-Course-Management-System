@@ -1,4 +1,5 @@
 #include "../Header/Semester.h"
+#include "../Header/Utility.h"
 
 // todo Alternate to add more semesters at once
 //! Adding semester 1 include in adding a year
@@ -11,7 +12,7 @@ Semester *AddSemester(Year *yearHead)
     cin >> N;
 
     Year *year_cur = yearHead;
-    while (year_cur && year_cur->Year != Y)
+    while (year_cur && year_cur->yearStart != Y)
         year_cur = year_cur->next;
     if (!year_cur)
     {
@@ -79,7 +80,7 @@ Semester *AddSemester(Year *yearHead)
 }
 
 //! Write a course modification function here!!!
-Course *AddCourse(Semester *semCurrent)
+Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
 {
     cout << "\nEnter the course ID: ";
     string id;
@@ -106,7 +107,7 @@ Course *AddCourse(Semester *semCurrent)
                     cin >> check;
                 }
                 if (check == 'Y' || check == 'y')
-                    modifyCourse(semCurrent, semCurrent->Year);
+                    modifyCourse(yearHead, semCurrent->Year);
                 return nullptr;
             }
             courseCurrent = courseCurrent->next;
@@ -225,11 +226,11 @@ void AddStudentByHand(Course *courseCurrent)
 
     cout << "\nDone adding new student!\n";
 }
-void AddingCourse(Semester *semCurrent)
+void AddingCourse(Semester *semCurrent, Year* yearHead)
 {
     if (!semCurrent)
         return;
-    Course *courseCurrent = AddCourse(semCurrent);
+    Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
 
     int choice = 1;
     bool stop = false;
@@ -319,7 +320,7 @@ void AddingCourse(Semester *semCurrent)
     }
 
     if (ch == 'Y' || ch == 'y')
-        AddingCourse(semCurrent);
+        AddingCourse(semCurrent, yearHead);
     return;
 }
 
@@ -327,7 +328,7 @@ void AddingCourse(Semester *semCurrent)
 void Interface_New_Sem(Year *yearHead)
 {
     Semester *semCurrent = AddSemester(yearHead);
-    AddingCourse(semCurrent);
+    AddingCourse(semCurrent, yearHead);
 
     cout << "Do you want to add another semester? (Y/N) ";
     char ch;

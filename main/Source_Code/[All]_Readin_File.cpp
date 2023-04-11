@@ -49,10 +49,14 @@ void ReadAccount(Account *&accHead)
 //? Year
 void loadingFile(Year *&yearHead, int &numofYear)
 {
-    cout << "Loading file..." << endl;
+    cout << "Loading file" << endl;
     importYear(yearHead, numofYear);
-    _sleep(3000);
-    cout << "Loading file completed." << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        Sleep(400);
+        cout << '.';
+    }
+    cout << "\nLoading file completed." << endl;
 }
 void importYear(Year *&yearHead, int &numofYear)
 {
@@ -97,9 +101,8 @@ void addClass(Year *curYear, string ClassName)
     {
         Class *curClass = curYear->Class;
         while (curClass->next)
-        {
             curClass = curClass->next;
-        }
+
         curClass->next = new Class;
         curClass->next->Name = ClassName;
     }
@@ -116,7 +119,6 @@ void importClass(Year *curYear, int yearStart)
         cerr << "Error: Cannot open directory for year " << yearStart << endl;
         return;
     }
-
     // open class file
     string classFilePath = path;
     ifstream classFile(classFilePath);
@@ -203,6 +205,8 @@ void importClass(Year *curYear, int yearStart)
         curClass = curClass->next;
     }
 
+    classFile.close();
+    ifs.close();
     // cout << "Class imported successfully" << endl;
 }
 

@@ -11,53 +11,41 @@ Year *RecoverFile()
 
     Year *yearTMP = headYear;
     while (yearTMP)
+    {
         yearTMP->NoSemester = Read_All_Semester(yearTMP->yearStart);
+        yearTMP = yearTMP->next;
+    }
     return headYear;
 }
 
-void Interface_New_Year(year *yearHead)
+void Interface_New_Year(Year *yearHead)
 {
-    // create a new school year
-    cout << "======ADDING NEW SCHOOL YEAR======" << endl;
-    //! A function to have all of this, tí nhờ Thư
-    cout << "Enter start year: ";
-    int yearStart = 0;
-    cin >> yearStart; // stuarttttttt
-    createSchoolYear(headYear, yearStart);
-
-    // create a new class in the new school year
-    Year *curYear = headYear;
-    while (curYear && curYear->yearStart != 2024)
-        curYear = curYear->next;
-    int choice = 0;
-    cout << "Do you want to create a new class?\n1. Yes\n2. No.\n3. Back" << endl;
-    cout << "Enter your choice: ";
-    cin >> choice;
-    if (choice == 1)
+    Year *year_cur = yearHead;
+    system("cls");
+    cout << "\n======ADDING NEW SCHOOL YEAR======\n";
+    cout << "Year list: \n";
+    while (year_cur)
     {
-        string className;
-        cout << "Enter class name: ";
+        int year_tmp = year_cur->yearStart;
+        cout << year_tmp << '-' << year_tmp + 1 << "\n";
+        year_cur = year_cur->next;
+    }
+
+    cout << "Enter -1 to return.\n";
+    cout << "Enter the year you want to create (yyyy-yyyy): ";
+    string newyear;
+    cin >> newyear;
+    if (newyear == "-1")
+        return;
+    while (!isValidYear(newyear))
+    {
+        cout << "Invalid year format, please retry.\n";
+        cout << "Enter the year you want to create (yyyy-yyyy): ";
         cin.ignore();
-        getline(cin, className);
-        createClasses(curYear, className);
+        getline(cin, newyear);
     }
-    else
-        cout << "Thank you for using our program. Program ended." << endl;
+    int start = stoi(newyear.substr(0, 4));
 
-    // add students to the new class
-    choice = 0;
-    while (choice != 2)
-    {
-        cout << "Do you want to add student to class?\n1. Yes\n2. No." << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
-        switch (choice)
-        {
-        case 1:
-            addStudenttoClass(curYear);
-            break;
-        case 2:
-            cout << "Thank you for using our program. Program ended." << endl;
-        }
-    }
+    createSchoolYear(yearHead, start);
+    return;
 }

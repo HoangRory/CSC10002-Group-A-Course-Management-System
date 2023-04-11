@@ -3,6 +3,7 @@
 #include "../Header/Login.h"
 
 //? Delete the year linked list
+//! Lồng delete student course vô trong lun
 void DeleteYear(Year *&yearHead)
 {
     Year *yearTMP = yearHead;
@@ -22,6 +23,7 @@ void DeleteYear(Year *&yearHead)
             ClassTMP = ClassTMP->next;
             delete ClassTMP2;
         }
+        DeleteSMT(yearTMP);
         Year *yearTMP2 = yearTMP;
         yearTMP = yearTMP->next;
         delete yearTMP2;
@@ -51,7 +53,7 @@ void DeleteSMT(Year *yearHead)
 {
     if (!yearHead->NoSemester)
         return;
-    Semester *semHead = yearHead->semester;
+    Semester *semHead = yearHead->NoSemester;
     while (semHead)
     {
         DeleteCourse(semHead->course);

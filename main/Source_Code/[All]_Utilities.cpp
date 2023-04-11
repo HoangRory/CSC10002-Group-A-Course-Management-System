@@ -1,4 +1,4 @@
-#include "../Header/Utilities.h"
+#include "../Header/Utility.h"
 
 void ShowConsoleCursor(bool showFlag)
 {
@@ -11,10 +11,10 @@ void ShowConsoleCursor(bool showFlag)
     SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-void TextColor(int x)//X là mã màu
+void TextColor(int x) // X là mã màu
 {
-	//Các hàm này là hàm thao tác API với windows bạn cứ coppy thôi không cần phải hiểu quá sâu
-	HANDLE color;
-	color = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(color, x);
+    // Các hàm này là hàm thao tác API với windows bạn cứ coppy thôi không cần phải hiểu quá sâu
+    HANDLE color;
+    color = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(color, x);
 }
