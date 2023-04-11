@@ -17,11 +17,13 @@ void ViewStudentClass(Year *yearHead)
         cout << "Not found!" << endl;
         return;
     }
-    while (yearHead->Class)
+    Class *cur_class = yearHead->Class;
+    while (cur_class)
     {
-        if (yearHead->Class->Name == class_name) //find the class and print students in that class
+        if (cur_class->Name == class_name) //find the class and print students in that class
         {
-            if(yearHead->Class->StudentClass) 
+            Student *cur_stu = cur_class->StudentClass;
+            if(cur_stu) 
             {
                 cout << "\nList of students in " << class_name << ":" << endl;
                 for (int i = 1; i <= 36; ++i)
@@ -34,21 +36,21 @@ void ViewStudentClass(Year *yearHead)
             }
             else 
                 cout << "\nThere is no student in " << class_name << endl;
-            while (yearHead->Class->StudentClass)
+            while (cur_stu)
             {
-                cout << "| " << yearHead->Class->StudentClass->ID  << " |" << "\t"; 
-                cout << yearHead->Class->StudentClass->accStudent->firstName << " " 
-                    << yearHead->Class->StudentClass->accStudent->lastName << setw(20 - yearHead->Class->StudentClass->accStudent->firstName.length() - yearHead->Class->StudentClass->accStudent->lastName.length()) << "|\n";
+                cout << "| " << cur_stu->ID  << " |" << "\t"; 
+                cout << cur_stu->accStudent->firstName << " " 
+                    << cur_stu->accStudent->lastName << setw(20 - cur_stu->accStudent->firstName.length() - cur_stu->accStudent->lastName.length()) << "|\n";
                 for (int i = 1; i <= 36; ++i)
                     cout << "=";
                 cout << "\n";
-                yearHead->Class->StudentClass = yearHead->Class->StudentClass->next;
+                cur_stu = cur_stu->next;
             }
             return;
         }
-        yearHead->Class = yearHead->Class->next;
+        cur_class = cur_class->next;
     }
-    if (!yearHead->Class)
+    if (!cur_class)
         cout << "Not found!" << endl;
 }
 
@@ -61,13 +63,15 @@ void ViewStudentCourse(Year *yearHead)
     //find the course in 3 while-loop: year->semester->course
     while (yearHead)
     {
-        while (yearHead->NoSemester)
+        Semester *cur_sem = yearHead->NoSemester;
+        while (cur_sem)
         {
-            while (yearHead->NoSemester->course)
+            Course *cur_cour = cur_sem->course;
+            while (cur_cour)
             {
-                if (yearHead->NoSemester->course->Name == course_name)
+                if (cur_cour->Name == course_name)
                 {
-                    if (yearHead->NoSemester->course->studentCourse)
+                    if (cur_cour->studentCourse)
                     { 
                         cout << "\nList of students in course " << course_name << ":" << endl;
                         for (int i = 1; i <= 36; ++i)
@@ -80,20 +84,21 @@ void ViewStudentCourse(Year *yearHead)
                     }
                     else 
                         cout << "\nThere is no student in course " << course_name << endl;
-                    while (yearHead->NoSemester->course->studentCourse)
+                    StudentCourse *cur_stu = cur_cour->studentCourse;
+                    while (cur_stu)
                     {
-                        cout << "| " << yearHead->NoSemester->course->studentCourse->ID  << " |" << "\t"; 
-                        cout << yearHead->NoSemester->course->studentCourse->FullName << setw(21 - yearHead->NoSemester->course->studentCourse->FullName.length()) << "|\n";
+                        cout << "| " << cur_stu->ID  << " |" << "\t"; 
+                        cout << cur_stu->FullName << setw(21 - cur_stu->FullName.length()) << "|\n";
                         for (int i = 1; i <= 36; ++i)
                             cout << "=";
                         cout << "\n";
-                        yearHead->NoSemester->course->studentCourse = yearHead->NoSemester->course->studentCourse->next;
+                        cur_stu = cur_stu->next;
                     }
                     return;
                 }
-                yearHead->NoSemester->course = yearHead->NoSemester->course->next;
+                cur_cour = cur_cour->next;
             }
-            yearHead->NoSemester = yearHead->NoSemester->next;
+            cur_sem = cur_sem->next;
         }
         yearHead = yearHead->next;
     }
