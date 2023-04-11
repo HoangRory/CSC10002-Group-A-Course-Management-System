@@ -14,13 +14,16 @@ void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
 void readAllFileCourses(Year *Yhead);
 
 void exportInforStudent(StudentCourse *stuHead, ofstream &out);
-void exportListStudentCourse(Semester *curSmt, ofstream &out);
+void exportListStudentCourse(Semester *curSmt);
 
 void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);
 
+
+int view_chooseOption(string *arrOption, int nOption); //task 21 & 22
 //task 21
 void viewScoreCourseStudent(ScoreBoardCourse SBC);
-Course* findCoursebyChoose(Course *courseHead, int index);
+int AmountOfCourse(Course *courseHead);
+Course* findCoursebyIndexOption(Course *courseHead, int index);
 void viewScoreBoardCourse(Course *courseHead); 
 
 //task 22
@@ -30,7 +33,6 @@ StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead);
 void enterMark(double &Mark);
 bool updateMark(ScoreBoardCourse &SCB, string Selection);
 void updateSCB (string ID, StudentCourse *stuCourseHead);
-int view_chooseOption(string *arrOption, int nOption);
 void UpdateStudentResult(Year *Yhead) ;
 
 

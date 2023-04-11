@@ -5,46 +5,69 @@
 //export the list student in course to file CSV
  //semester hiện tại, lấy từ việc tạo semester mới
 
-//infor này chỉ gồm ID và họ tên
+//task 19
+
 void exportInforStudent(StudentCourse *stuHead, ofstream &out) 
 {
     int No = 1;
-    out << "No,Student ID,Fullname" << endl;
+    out << "No,Student ID,Fullname,Total Mark,Final Mark,Mid Mark,Other Mark" << endl;
     while (stuHead) 
     {
         out << No++ << ","
             << stuHead->ID << ","
-            << stuHead->FullName ;
+            << stuHead->FullName << ","
+            << stuHead->ScoreBoardCourse.totalMark << ","
+            << stuHead->ScoreBoardCourse.finalMark << ","
+            << stuHead->ScoreBoardCourse.midMark << ","
+            << stuHead->ScoreBoardCourse.otherMark << "\n";
         stuHead = stuHead -> next;
     }
 }
-
-//task 19
 //func export the list student of a course
-void exportListStudentCourse(Semester *curSmt, ofstream &out )
+void exportListStudentCourse(Semester *curSmt )
  {
-    system("cls"); //xóa màn hình
-    string nameOrID;
+    int nOption = AmountOfCourse(curSmt->course);
+    string *arrOption = new string [nOption+1];
+    Course *cur = curSmt->course;
+    for(int i = 0; i < nOption; i++) {
+        arrOption[i] = cur->Name;
+        cur = cur->next;
+    }
+    arrOption[nOption] = "<-";
+    system("cls");
+    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
+    cout << "Using arrow keys to move and press enter to select your option." << endl;
+    system("pause");
+    system("cls");
+
     cout << "List of courses in the current semester." << endl;
-    //hàm xuất các khóa học hiện tại
-    cout << "Enter the name or the course ID to enter the score." << endl;
-    cin  >> nameOrID;
-    Course *curCourse = findCourse(nameOrID, curSmt->course);
-    if (!curCourse)
-     {
-        
-        cout << "The course name or course ID you entered does not exist for this semester." << endl;
-        cout << "Choose 1 to re-enter." << endl;
-        cout << "Or press any key to end to update." << endl;
-        char choose;
-        cin  >> choose;
-        if (choose == '1') 
-            exportListStudentCourse(curSmt, out);    
+    int option = view_chooseOption(arrOption,nOption + 1);
+    delete []arrOption;
+
+    if (option == nOption) {
+        return;
+    }
+
+    system("cls");
+    Course *curCourse = findCoursebyIndexOption(curSmt->course, option);
+    if (!curCourse) 
+    {
+        system ("cls");
+        cout << "The course you selected does not exist for this semester." << endl;
+        nOption = 2;
+        string *arrOption = new string [nOption];
+        arrOption[0] = "-To re-enter.";
+        arrOption[1] = "-To end to import";
+        option = view_chooseOption(arrOption,nOption);
+        delete []arrOption;
+        if(option == 0) return; 
+        exportListStudentCourse(curSmt);    
     }
     
-    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "studentCourse", "CSV");
+    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV");
     if (!checkFile(path)) 
         system(("mkdir " + path).c_str());
+    ofstream out;
     out.open(path);
     exportInforStudent(curCourse->studentCourse, out);
     out.close();   
@@ -72,16 +95,10 @@ void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead)
     delete []arrOption;
 
     if (option == nOption) {
-        cout << 1;
         return;
     }
 
     system("cls"); //xóa màn hình
-    // string nameOrID;
-    //hàm xuất các khóa học hiện tại
-    // cout << "Enter the name or the course ID to enter the score." << endl;
-    // cin  >> nameOrID;
-    // Course *curCourse = findCourse(nameOrID, curSmt->course);
     Course *curCourse = findCoursebyIndexOption(curSmt->course, option);
     if (!curCourse) 
     {
@@ -96,7 +113,7 @@ void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead)
             importScoreBoardCourse(curSmt,stuHead)    ;    
     }
 
-    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "Score", "CSV");
+    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
     if (!checkFile(path)) 
     {
         cout << "The scoreboard of this course does not exist." << endl
@@ -116,9 +133,10 @@ void viewScoreCourseStudent(ScoreBoardCourse SBC)
     cout << "| " << setw(15) << left << SBC.finalMark;
     cout << "| " << setw(15) << left << SBC.totalMark ; 
     cout << "| " << setw(15) << left << SBC.otherMark ;
-    cout << "|"<< endl;
+    cout << "| " << endl;
 }
-int AmountOfCourse(Course *courseHead) {
+int AmountOfCourse(Course *courseHead) 
+{
     int n = 0;
     while (courseHead) {
         courseHead = courseHead->next;
@@ -128,7 +146,7 @@ int AmountOfCourse(Course *courseHead) {
 }
 Course* findCoursebyIndexOption(Course *courseHead, int index) 
 {
-    for(int i = 0; courseHead == nullptr; i++) {
+    for(int i = 0; courseHead != nullptr; i++) {
         if(i == index) 
             break;
         courseHead = courseHead->next;
@@ -161,7 +179,7 @@ void viewScoreBoardCourse(Course *courseHead)
     cur = findCoursebyIndexOption(courseHead,option);
     StudentCourse *stuHead = cur->studentCourse;
     for(int i = 0; i < 110 ; i++)
-        cout <<"-";
+        cout <<"=";
     cout << endl;
     cout << "| " << setw(12) << left << "ID";
     cout << "| " << setw(25) << left << "Full Name";
@@ -173,7 +191,7 @@ void viewScoreBoardCourse(Course *courseHead)
     while (stuHead) 
     {
         for(int i = 0; i < 110 ; i++)
-            cout <<"-";
+            cout <<"=";
         cout << endl;
         cout << "| " << setw(12) << left << stuHead->ID ;
         cout << "| " << setw(25) << left<< stuHead->FullName;
@@ -181,7 +199,7 @@ void viewScoreBoardCourse(Course *courseHead)
         stuHead = stuHead->next;
     }
     for(int i = 0; i < 110 ; i++)
-        cout <<"-";
+        cout <<"=";
 }
 
 
@@ -208,7 +226,6 @@ Student* findStudentbyID(string IDStudent, Year *Yhead)
     }
     return nullptr;
 }
-
 Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead) 
 {
     Semester *curSmt;
@@ -231,7 +248,6 @@ Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead)
     }
     return nullptr;
 }
-
 StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead) 
 {
     while(stuCourseHead) 
@@ -242,8 +258,6 @@ StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead)
     }
     return nullptr;
 }
-
-
 void enterMark(double &Mark) 
 {
     // Mark = 2;
@@ -254,7 +268,6 @@ void enterMark(double &Mark)
         cin  >> Mark;
     }
 }
-
 //return true = đã update, return false = không update
 bool updateMark(ScoreBoardCourse &SBC, string Selection) {
     if( Selection == "1" || Selection == "MidMark" || Selection == "midmark") {
@@ -276,18 +289,30 @@ bool updateMark(ScoreBoardCourse &SBC, string Selection) {
 
     return true;
 }
-
 void updateSBC (string ID, StudentCourse *stuCourseHead) 
 {
     system ("cls");
     StudentCourse *stuUpdate = find_SBC(ID, stuCourseHead);
-    cout << "| " << setw(15) << left << "1.MidMark ";
-    cout << "| " << setw(15) << left << "2.FinalMark";
-    cout << "| " << setw(15) << left << "3.TotalMark ";
-    cout << "| " << setw(15) << left << "4.OtherMark" << endl;
+    //kẻ bảng điểm
+    for(int i = 0; i < 69; i++) 
+        cout << "=";
+    cout << endl;
+    cout << "| " << setw(15) << left << "Mid Mark ";
+    cout << "| " << setw(15) << left << "Final Mark";
+    cout << "| " << setw(15) << left << "Total Mark ";
+    cout << "| " << setw(15) << left << "OtherMark";
+    cout << "|"  << endl;
+    for(int i = 0; i < 69; i++)
+        cout << "=";
+    cout << endl;
     viewScoreCourseStudent(stuUpdate->ScoreBoardCourse);
+    for(int i = 0; i < 69; i++)
+        cout << "=";
+    cout << endl;
+
+
     cout << "Select the mark you want to update. (eg: Enter 1 or MidMark to update MidMark)"
-         << "Or enter X to end to update.";
+         << "Or enter X to end to update." << endl;
     string Selection = "";
     getline(cin,Selection);
     if(Selection == "X") return;
@@ -349,7 +374,17 @@ int view_chooseOption(string *arrOption, int nOption) {
     }
     return option;
 }
-
+Course* findCourse_ofStudent_byOption(CourseStudent *courseHead, int option) 
+{
+    int index = 0;
+    while(courseHead) 
+    {
+        if(index == option)
+            return courseHead->course;
+        courseHead = courseHead->next;
+    }
+    return nullptr;
+}
 void UpdateStudentResult(Year *Yhead) 
 {
     system ("cls");
@@ -362,9 +397,9 @@ void UpdateStudentResult(Year *Yhead)
     arrOption[2] = "3. To end to update.";
     
     cout << "Using arrow keys to move and press enter to choose your option" << endl;
-    system("paush");
+    system("pause");
+    system("cls");
     int option = view_chooseOption(arrOption,nOption);
-    // int option = 0;
     delete []arrOption;
 
     system ("cls");
@@ -374,20 +409,24 @@ void UpdateStudentResult(Year *Yhead)
     if (option == 0) 
     {
         system ("cls");
-        nOption = 2;
-        string *arrOption = new string [nOption];
-        arrOption[0] = "-To re-enter again.";
-        arrOption[1] = "-To end to update";
-        // để khi nhập sai có thể báo ra
-
         cout << "Please enter ID: ";
         getline(cin, IDStudent);
         Student *checkStudent = findStudentbyID(IDStudent, Yhead);
+
+        // để khi nhập sai có thể báo ra
+        nOption = 2;
+        arrOption = new string [nOption];
+        arrOption[0] = "-To re-enter again.";
+        arrOption[1] = "-To end to update";
+
         while (!checkStudent) 
         {
             cout << "The ID you entered does not exist. Please, press enter to choose below option to continue:" << endl;
+            system ("pause");
+            system ("cls");
             option = view_chooseOption(arrOption,nOption);
-            if(option == 1) {
+            if(option == 1) 
+            {
                 delete []arrOption;
                 return;
             }
@@ -396,28 +435,35 @@ void UpdateStudentResult(Year *Yhead)
             Student *checkStudent = findStudentbyID(IDStudent, Yhead);
         }
 
-        system ("cls");
-        //in ra các khóa của học sinh đó (trong kì đó), cho user nhập tên hoặc ID của khóa học để ra bản điểm để chỉnh sửa
-        cout << "Please enter name course or ID course:"; 
-        getline(cin, CourseName);
-        
-        Course *checkCourse = findCoursebyName_ID(CourseName,Yhead);
-        while (!checkCourse) 
+        // system ("cls");
+        // //in ra các khóa của học sinh đó (trong kì đó), cho user nhập tên hoặc ID của khóa học để ra bản điểm để chỉnh sửa
+        // cout << "Please enter name course or ID course:"; 
+        // getline(cin, CourseName);
+
+        //select khóa học
+        CourseStudent *curCourse = checkStudent->course;
+        nOption = 0;
+        while (curCourse) 
         {
-            system ("cls");
-            cout << "The ID or name you entered does not exist. Enter:" << endl;
-            int option = view_chooseOption(arrOption,nOption);
-            option = view_chooseOption(arrOption,nOption);
-            delete []arrOption;
-            if(option == 1) {
-                delete []arrOption;
-                return;
-            }
-            Course *checkCourse = findCoursebyName_ID(CourseName,Yhead);
+            nOption ++;
+            curCourse = curCourse->next;
         }
+        arrOption = new string [nOption+1];
+        curCourse = checkStudent->course;
+        for(int i = 0; i < nOption; i++)
+        {
+        arrOption[i] = curCourse->course->Name;
+        curCourse = curCourse->next;
+        }
+        arrOption [nOption] = "<-";
+        option = view_chooseOption(arrOption,nOption+1);
         delete []arrOption;
+        if(option == nOption) return;
+
+        Course *checkCourse = findCourse_ofStudent_byOption(checkStudent->course,option);
+        
+        //bắt đầu update
         updateSBC(IDStudent, checkCourse->studentCourse);
-        return;
     }
 
 
@@ -448,7 +494,7 @@ void UpdateStudentResult(Year *Yhead)
         }
 
         system ("cls");
-        cout << "Please enter ID: ";
+        cout << "Please enter ID: ";    
         getline(cin, IDStudent);
         Student *checkStudent = findStudentbyID(IDStudent, Yhead);
         while (!checkStudent) 
@@ -482,7 +528,6 @@ CourseStudent* checkExistence_OfCourse(CourseStudent *courseCheck, CourseStudent
     }
     return nullptr;
 }
-
 CourseStudent* CourseOfAClass (Student *studentHead) 
 {
     CourseStudent *CourHead = nullptr, *tmp = nullptr;
@@ -505,7 +550,6 @@ CourseStudent* CourseOfAClass (Student *studentHead)
     }
     return CourHead;
 }
-
 int CaculateAmountStudentOfClass(Student *studentHead) 
 {
     int count = 0;
@@ -516,7 +560,6 @@ int CaculateAmountStudentOfClass(Student *studentHead)
     }
     return count;
 }
-
 int CaculateAmountCourseOfClass(CourseStudent *courseHead) 
 {
     int count = 0;
@@ -527,7 +570,6 @@ int CaculateAmountCourseOfClass(CourseStudent *courseHead)
     }
     return count;
 }
-
 // nhập các final mark vào bảng điểm của lớp 
 void importSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student *studentHead) {
     StudentCourse *tmp;
@@ -545,7 +587,6 @@ void importSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student
         courseHead = courseHead->next;
     }
 }
-
 double CaculateGPA_1_Student(double *&SBC, int n) // n là số môn, tức là số cột của bảng SBC. n là số đã trừ cột cuối ra 
 {
     double GPA = 0;
@@ -562,7 +603,6 @@ double CaculateGPA_1_Student(double *&SBC, int n) // n là số môn, tức là 
         GPA /= count;
     return GPA;
 }
-
 void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studentHead, int Col, int Row )
 {
     SBC = new double*[Col + 1] ;
@@ -574,9 +614,7 @@ void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studen
         studentHead = studentHead->next;
     }
 }
-
 // mảng này sẽ có dạng | môn A | môn B |....| môn Z | GPA |
-
 void viewAllFinalMark_ofStudent(double *SBC, int Col)
 {
     for( int i = 0; i < Col; i++) 
@@ -587,7 +625,6 @@ void viewAllFinalMark_ofStudent(double *SBC, int Col)
             cout << "| " << setw(30) << left  << setprecision(1) << fixed  << SBC[i];
     }                             
 }
-
 void viewScoreboardClass(Class *Class) 
 {
     Student *studentHead = Class->StudentClass;
@@ -614,7 +651,7 @@ void viewScoreboardClass(Class *Class)
     while (studentHead) 
     {
         for(int i = 0; i < 79 ; i++) {
-        cout <<"-";
+        cout <<"=";
         }
         cout << endl;
         cout << "| " << setw(10) << left  << studentHead->ID;
@@ -629,7 +666,7 @@ void viewScoreboardClass(Class *Class)
     delete []SBC;
 }
 
-// test task 20
+
 
 
 // test task 21
@@ -654,54 +691,56 @@ void viewScoreboardClass(Class *Class)
 //     return 0;
 // }
 
-//test task 22
-// int main() {
-//     Year *yr = new Year;
-//     yr->yearStart = 2022;
+//test task 22 + 29
+int main() {
+    Year *yr = new Year;
+    yr->yearStart = 2022;
 
-//     yr->NoSemester = new Semester;
-//     yr->NoSemester->No = 2;
+    yr->NoSemester = new Semester;
+    yr->NoSemester->Year = 2022;
+    yr->NoSemester->No = 2;
 
-//     yr->NoSemester->course = new Course;
-//     yr->NoSemester->course->Name = "CSC10002";
-//     yr->NoSemester->course->TeacherName = "Dinh Ba Tien";
-//     readAllFileCourses(yr);
-//     StudentCourse *stuHead = yr->NoSemester->course->studentCourse;
-//     // while (stuHead) {
-//     //     cout << stuHead->ID << endl;
-//     //     stuHead = stuHead->next;
-//     // }
+    yr->NoSemester->course = new Course;
+    yr->NoSemester->course->Name = "CSC10002";
+    yr->NoSemester->course->TeacherName = "Dinh Ba Tien";
+    readAllFileCourses(yr);
+    StudentCourse *stuHead = yr->NoSemester->course->studentCourse;
+    // while (stuHead) {
+    //     cout << stuHead->ID << endl;
+    //     stuHead = stuHead->next;
+    // }
 
-//     yr->Class = new Class;
-//     yr->Class->StudentClass = new Student;
-//     yr->Class->StudentClass->ID = "22127123";
-//     yr->Class->StudentClass->course = new CourseStudent;
-//     yr->Class->StudentClass->course->course = yr->NoSemester->course;
-//     yr->Class->StudentClass->accStudent = new Account;
-//     yr->Class->StudentClass->accStudent->firstName = "Hoang";
-//     yr->Class->StudentClass->accStudent->lastName = "Le Ho Phi";
-//     // 22127124,Nguyen Van A
-//     yr->Class->StudentClass->next = new Student;
-//     yr->Class->StudentClass->next->ID = "22127124";
-//     yr->Class->StudentClass->next->course = new CourseStudent;
-//     yr->Class->StudentClass->next->course->course = yr->NoSemester->course;
-//     yr->Class->StudentClass->next->accStudent = new Account;
-//     yr->Class->StudentClass->next->accStudent->firstName = "A";
-//     yr->Class->StudentClass->next->accStudent->lastName = "Nguyen Van";
+    yr->Class = new Class;
+    yr->Class->StudentClass = new Student;
+    yr->Class->StudentClass->ID = "22127123";
+    yr->Class->StudentClass->course = new CourseStudent;
+    yr->Class->StudentClass->course->course = yr->NoSemester->course;
+    yr->Class->StudentClass->accStudent = new Account;
+    yr->Class->StudentClass->accStudent->firstName = "Hoang";
+    yr->Class->StudentClass->accStudent->lastName = "Le Ho Phi";
+    // 22127124,Nguyen Van A
+    yr->Class->StudentClass->next = new Student;
+    yr->Class->StudentClass->next->ID = "22127124";
+    yr->Class->StudentClass->next->course = new CourseStudent;
+    yr->Class->StudentClass->next->course->course = yr->NoSemester->course;
+    yr->Class->StudentClass->next->accStudent = new Account;
+    yr->Class->StudentClass->next->accStudent->firstName = "A";
+    yr->Class->StudentClass->next->accStudent->lastName = "Nguyen Van";
 
-//     UpdateStudentResult(yr);
-//     viewScoreboardClass(yr->Class);
-//     // UpdateStudentResult(yr);
-//     delete yr->Class->StudentClass->next->accStudent;
-//     delete yr->Class->StudentClass->accStudent;
-//     delete yr->Class->StudentClass->next->course;
-//     delete yr->Class->StudentClass->course;
-//     delete yr->Class->StudentClass->next;
-//     delete yr->Class->StudentClass;
-//     delete yr->Class;
-//     deleteAllCourse(yr);
-//     return 0;
-// }
+    UpdateStudentResult(yr);
+    exportListStudentCourse(yr->NoSemester);
+    // viewScoreboardClass(yr->Class);
+    // UpdateStudentResult(yr);
+    delete yr->Class->StudentClass->next->accStudent;
+    delete yr->Class->StudentClass->accStudent;
+    delete yr->Class->StudentClass->next->course;
+    delete yr->Class->StudentClass->course;
+    delete yr->Class->StudentClass->next;
+    delete yr->Class->StudentClass;
+    delete yr->Class;
+    deleteAllCourse(yr);
+    return 0;
+}
 
 //test task 23
 // int main() {

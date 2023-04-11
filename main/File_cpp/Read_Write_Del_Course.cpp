@@ -55,6 +55,8 @@ void readScoreStudentCourse(ScoreBoardCourse &SCB, ifstream &in) {
 
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
     StudentCourse *cur = studentHead;
+    string del = "";
+    if(!in.eof()) getline(in,del,'\n');
     while (!in.eof()) {
         if (!cur) cur = studentHead = new StudentCourse;
         else {
@@ -62,6 +64,7 @@ void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
             cur -> next -> prev = cur;
             cur = cur -> next;
         }
+        getline(in,del,',');
         getline(in,cur->ID,',');
         getline(in,cur->FullName,',');
         readScoreStudentCourse(cur->ScoreBoardCourse, in);    
