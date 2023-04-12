@@ -243,7 +243,8 @@ Semester *Read_Sem(int year, int smt)
         }
         ifs.ignore();
         getline(ifs, newCourse->Name);
-        ifs >> newCourse->CourseID >> newCourse->Credits >> newCourse->maxStudents >> newCourse->numStudents >> newCourse->Room;
+        ifs >> newCourse->CourseID >> newCourse->Credits >> newCourse->maxStudents 
+            >> newCourse->numStudents >> newCourse->Room;
         ifs.ignore();
         getline(ifs, newCourse->TeacherName);
         ifs >> newCourse->Day >> newCourse->Session;

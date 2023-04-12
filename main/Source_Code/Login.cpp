@@ -91,11 +91,11 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     return;
 }
 
-void Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
+bool Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     bool stop = false;
 
-    int opt = 1;
+    int opt = 1, prev_opt = 1;
     string *ListOption = new string[4]; // List of options
     ListOption[0] = "\nAccount Options:\n";
     ListOption[1] = "- Change your password\n";
@@ -126,11 +126,17 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
             {
             case UP:
                 if (opt > 0)
+                {
+                    prev_opt = opt;
                     opt--;
+                }
                 break;
             case DOWN:
                 if (opt < 3)
+                {
+                    prev_opt = opt;
                     opt++;
+                }
                 break;
             case ENTER:
                 stop = true;
@@ -139,22 +145,25 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
             if (stop)
                 break;
 
-            system("cls");
-
-            for (int i = 0; i < 4; i++)
+            if (prev_opt != opt)
             {
-                if (i == opt)
+                system("cls");
+
+                for (int i = 0; i < 4; i++)
                 {
-                    TextColor(LIGHT_YELLOW);
-                    cout << ListOption[i];
-                    TextColor(WHITE);
+                    if (i == opt)
+                    {
+                        TextColor(LIGHT_YELLOW);
+                        cout << ListOption[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << ListOption[i];
                 }
-                else
-                    cout << ListOption[i];
+                TextColor(LIGHT_GREEN);
+                cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+                TextColor(WHITE);
             }
-            TextColor(LIGHT_GREEN);
-            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            TextColor(WHITE);
         }
     }
     delete[] ListOption;
@@ -177,19 +186,20 @@ void Main_interface(Account *accHead, std::string &user, std::string &pass, int 
         break;
     case 3:
         std::cout << "Thanks for ur usage!\n\n";
-        return;
+        system("pause");
+        return true;
     }
     // Main_interface(accHead, user, pass, role);
     AccountAlteration(accHead, user, pass, role);
-    return;
+    return false;
 }
 
 //? Account Alteration
-void AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
+bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     bool stop = false;
 
-    int opt = 1;
+    int opt = 1, prev = -1;
     string *ListOption = new string[3];
     ListOption[0] = "\nAccount Alteration\n";
     ListOption[1] = "- Manage your account or Logout\n";
@@ -220,11 +230,17 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
             {
             case UP:
                 if (opt > 1)
+                {
+                    prev = opt;
                     opt--;
+                }
                 break;
             case DOWN:
                 if (opt < 2)
+                {
+                    prev = opt;
                     opt++;
+                }
                 break;
             case ENTER:
                 stop = true;
@@ -232,23 +248,27 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
             }
             if (stop)
                 break;
-            system("cls");
 
-            for (int i = 0; i < 3; i++)
+            if (prev != opt)
             {
-                if (i == opt)
-                {
-                    TextColor(LIGHT_YELLOW);
-                    cout << ListOption[i];
-                    TextColor(WHITE);
-                }
-                else
-                    cout << ListOption[i];
-            }
+                system("cls");
 
-            TextColor(LIGHT_GREEN);
-            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            TextColor(WHITE);
+                for (int i = 0; i < 3; i++)
+                {
+                    if (i == opt)
+                    {
+                        TextColor(LIGHT_YELLOW);
+                        cout << ListOption[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << ListOption[i];
+                }
+
+                TextColor(LIGHT_GREEN);
+                cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+                TextColor(WHITE);
+            }
         }
     }
     delete[] ListOption;
@@ -257,19 +277,21 @@ void AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     switch (opt)
     {
     case 1:
-        Main_interface(accHead, user, pass, role);
-        return;
+        if (Main_interface(accHead, user, pass, role))
+            return true;
+        break;
     case 2:
-        return;
-        // break;
+        return false;
+        break;
     }
-    return;
+    return false;
 }
 
-void LoggingMain(Account *&accHead, string &user, string &pass, int &role)
+bool LoggingMain(Account *&accHead, string &user, string &pass, int &role)
 {
     ReadAccount(accHead);
     LoggingIn(accHead, user, pass, role);
-    AccountAlteration(accHead, user, pass, role);
-    return;
+    if (AccountAlteration(accHead, user, pass, role))
+        return true;
+    return false;
 }

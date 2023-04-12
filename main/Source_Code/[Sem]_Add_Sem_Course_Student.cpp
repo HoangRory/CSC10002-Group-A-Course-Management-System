@@ -6,22 +6,40 @@
 //! Adding semester 1 include in adding a year
 Semester *AddSemester(Year *yearHead)
 {
-    int Y, N;
-    // Get the year and semester
-    cout << "School year: ";
-    cin >> Y;
-    cout << "No. semester (1,2,3): ";
-    cin >> N;
-
+    // Print the list of year
     Year *year_cur = yearHead;
-    while (year_cur && year_cur->yearStart != Y) // Move the current to the exact year
+    cout << "Year list: \n";
+    while (year_cur)
+    {
+        int year_tmp = year_cur->yearStart;
+        cout << year_tmp << '-' << year_tmp + 1 << "\n";
         year_cur = year_cur->next;
-    if (!year_cur) // Loop again the function if null
+    }
+    int Y, N;
+    string ye;
+    // Get the year and semester
+    cout << "\n\nSchool year: ";
+    cin >> ye;
+    while (!isValidYear(ye))
+    {
+        cout << "Invalid year format, please retry: \n";
+        cin >> ye;
+    }
+    Y = stoi(ye.substr(0, 4));
+
+    year_cur = yearHead;
+
+    if (checkYear(yearHead, Y) == false) // Check if the year is valid
     {
         cout << "Year not found! Enter again: ";
         return AddSemester(yearHead);
     }
 
+    while (year_cur && year_cur->yearStart != Y) // Move the current to the exact year
+        year_cur = year_cur->next;
+
+    cout << "No. semester (1,2,3): "; // get the semester
+    cin >> N;
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
     while (sem_cur)
@@ -68,8 +86,18 @@ Semester *AddSemester(Year *yearHead)
     //! Check validity
     cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
     cin >> sem_cur->startDate;
+    while (!isValidDate(sem_cur->startDate))
+    {
+        cout << "Invalid date format, please retry: ";
+        cin >> sem_cur->startDate;
+    }
     cout << "Ending date (dd/mm/yyyy): ";
     cin >> sem_cur->endDate;
+    while (!isValidDate(sem_cur->endDate))
+    {
+        cout << "Invalid date format, please retry: ";
+        cin >> sem_cur->endDate;
+    }
 
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
     string outPath = "..\\Data_file\\" + out_year + "\\smt" + to_string(N);
@@ -83,7 +111,7 @@ Semester *AddSemester(Year *yearHead)
 }
 
 //! Write a course modification function here!!!
-Course *AddNewCourse(Semester *semCurrent, Year* yearHead)
+Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
     cout << "\nEnter the course ID: "; // Get the in4
     string id;
@@ -190,7 +218,7 @@ void ImportStudentFromFile(Course *courseCurrent)
         while (ifs >> tmp) // read til the end
         {
             if (tmp == "\n")
-                break; 
+                break;
             studCourse->next = new StudentCourse;
             StudentCourse *tmpStud = studCourse;
             studCourse = studCourse->next;
@@ -238,7 +266,7 @@ void AddStudentByHand(Course *courseCurrent)
     cout << "\nDone adding new student!\n";
 }
 //? Generate the option to add student
-void AddingCourse(Semester *semCurrent, Year* yearHead)
+void AddingCourse(Semester *semCurrent, Year *yearHead)
 {
     if (!semCurrent)
         return;
@@ -322,7 +350,7 @@ void AddingCourse(Semester *semCurrent, Year* yearHead)
         break;
     }
 
-    cout << "\nDo you want to add a new course to this semester? (Y/N) ";
+    cout << "\nDo you want to add another course to this semester? (Y/N) ";
     char ch;
     cin >> ch;
     while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
@@ -340,10 +368,18 @@ void AddingCourse(Semester *semCurrent, Year* yearHead)
 void Interface_New_Sem(Year *yearHead)
 {
     Semester *semCurrent = AddSemester(yearHead); // New semester and return the default for next actions
-    AddingCourse(semCurrent, yearHead);
-
-    cout << "Do you want to add another semester? (Y/N) ";
+    cout << "Do you want to add a course to this semester? (Y/N) ";
     char ch;
+    cin >> ch;
+    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
+    {
+        cout << "Invalid respond, enter again: ";
+        cin >> ch;
+    }
+    if (ch == 'Y' || ch == 'y')
+        AddingCourse(semCurrent, yearHead);
+
+    cout << "\nDo you want to add another semester? (Y/N) ";
     cin >> ch;
     while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
     {

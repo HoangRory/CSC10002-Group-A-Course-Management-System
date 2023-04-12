@@ -53,14 +53,17 @@ void WriteAccount(Account *accHead)
     if (!ofs)
         return;
 
+    ofs << "Username,PassWord,Role,LastName,FirstName,Gender,SocialID,Birthday\n";
     Account *cur = accHead;
     while (cur) // follows username, pass, role, lastname, firstname, gender, social ID, birthday
     {
         ofs << cur->username << ',' << cur->password << ','
             << cur->role << ',' << cur->lastName << ','
             << cur->firstName << ',' << cur->Gender << ','
-            << cur->SocialID << ',' << cur->birth << '\n';
+            << cur->SocialID << ',' << cur->birth;
         cur = cur->next;
+        if (cur)
+            ofs << "\n";
     }
     ofs.close();
 }
@@ -105,7 +108,8 @@ void Outyear(Year *yearHead)
             Student *StudentTMP = ClassTMP->StudentClass;
             while (StudentTMP)
             {
-                ofs << "\n" << StudentTMP->ID;
+                ofs << "\n"
+                    << StudentTMP->ID;
                 StudentTMP = StudentTMP->next;
             }
             ClassTMP = ClassTMP->next;

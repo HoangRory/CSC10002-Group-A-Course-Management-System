@@ -117,6 +117,8 @@ void ViewCourse(Year *yearHead)
     {
         delete[] menu;
         ViewAllCourse(yearHead);
+        cout << "\n";
+        system("pause");
         return;
     }
     int choice = stoi(menu[opt].substr(2, 4)); // Get the start year of the year
@@ -129,6 +131,8 @@ void ViewCourse(Year *yearHead)
         year_cur = year_cur->next;
     }
     ViewCourseInYear(year_cur->NoSemester); // View the course in the certain year
+    cout << "\n";
+    system("pause");
     return;
 }
 
@@ -139,21 +143,21 @@ void ViewCourseInYear(Semester *semHead)
         return;
     Semester *sem_cur = semHead;
     // cout << "List of courses: \n";
-    for (int i = 0; i < 86; i++) // Display the table
+    for (int i = 0; i < 88; i++) // Display the table
         cout << '=';
     TextColor(0xF8);
     cout << '\n';
-    cout << setw(40) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(36) << '\n';
+    cout << setw(40) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(38) << '\n';
     TextColor(WHITE);
     for (int i = 0; i < 86; i++)
         cout << '=';
 
     cout << "\n|  Semester  |"
          << setw(14) << "Course ID" << setw(6) << '|'
-         << setw(20) << "Course name" << setw(10) << '|'
+         << setw(20) << "Course name" << setw(12) << '|'
          << setw(17) << "Teacher name" << setw(5) << '|' << '\n';
 
-    for (int i = 0; i < 86; i++)
+    for (int i = 0; i < 88; i++)
         cout << '=';
     cout << "\n";
 
@@ -169,9 +173,9 @@ void ViewCourseInYear(Semester *semHead)
             cout << setw(len + 5) << cour->Name << setw(30 - len - 5) << '|';
 
             len = cour->TeacherName.length();
-            cout << setw(len + 3) << cour->TeacherName << setw(22 - len - 3) << '|' << '\n';
+            cout << setw(len + 3) << cour->TeacherName << setw(24 - len - 3) << '|' << '\n';
 
-            for (int i = 0; i < 86; i++)
+            for (int i = 0; i < 88; i++)
                 cout << '=';
             cout << "\n";
 
@@ -191,11 +195,11 @@ void ViewAllCourse(Year *yearHead)
         ViewCourseInYear(year_cur->NoSemester);
         year_cur = year_cur->next;
     }
-    system("pause");
 }
 
 void StaffMain(Year *yearHead)
 {
+    system("cls");
     TextColor(240);
     cout << "STAFF MODE!\n";
     TextColor(WHITE);
@@ -293,8 +297,8 @@ void StaffMain(Year *yearHead)
     case 5:
         //? Save changes and quit
         cout << "\n";
-        Output(yearHead); // write down all the year
-        Outyear(yearHead);  // write down each year in4
+        Output(yearHead);  // write down all the year
+        Outyear(yearHead); // write down each year in4
 
         cout << "Cleaning up the system";
         for (int i = 0; i < 8; i++) // Show the loading

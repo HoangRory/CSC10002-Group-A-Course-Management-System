@@ -2,21 +2,22 @@
 #include "../Header/Login.h"
 #include "../Header/Year.h"
 
-void Merge_year_sem(Account *&accHead, Year *&yearHead)
-{
-    yearHead = RecoverFile();
-    string user = "", pass = "";
-    int role;
-    LoggingMain(accHead, user, pass, role);
-    SyncFullName(yearHead, accHead);
-    NewYearMain(yearHead, accHead, role);
-}
-
 void EradicateLL(Account *&accHead, Year *&yearHead)
 {
     DelAccount(accHead);
     DeleteYear(yearHead);
 }
+void Merge_year_sem(Account *&accHead, Year *&yearHead)
+{
+    yearHead = RecoverFile();
+    string user = "", pass = "";
+    int role;
+    if (LoggingMain(accHead, user, pass, role))
+        return;
+    SyncFullName(yearHead, accHead);
+    NewYearMain(yearHead, accHead, role);
+}
+
 
 int main()
 {
