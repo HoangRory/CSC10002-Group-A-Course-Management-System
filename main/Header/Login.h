@@ -9,8 +9,8 @@ void LoggingIn(Account *accHead, string &user, string &pass, int &role);
 
 void ChangePass(Account *accHead, string &user, string &pass);
 
-void Main_interface(Account *accHead, string &user, string &pass, int &role);
+bool Main_interface(Account *accHead, string &user, string &pass, int &role);
 
-void AccountAlteration(Account *accHead, string &user, string &pass, int &role);
+bool AccountAlteration(Account *accHead, string &user, string &pass, int &role);
 
-void LoggingMain(Account *&accHead, string &user, string &pass, int &role);
+bool LoggingMain(Account *&accHead, string &user, string &pass, int &role);
