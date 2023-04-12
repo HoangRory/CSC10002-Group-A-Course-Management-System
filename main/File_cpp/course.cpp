@@ -1,8 +1,9 @@
 #include "../Header/course.h"
 #include "../Header/help.h"
+#include "../Header/View.h"
+#include <iomanip>
 // #include "Staff_view.cpp"
 // #include "Read_Write_Del_Course.cpp"
-#include <iomanip>
 
 //export the list student in course to file CSV
  //semester hiện tại, lấy từ việc tạo semester mới
