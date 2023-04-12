@@ -8,32 +8,12 @@ Semester *AddSemester(Year *yearHead)
 {
     // Print the list of year
     Year *year_cur = yearHead;
-    cout << "Year list: \n";
-    while (year_cur)
-    {
-        int year_tmp = year_cur->yearStart;
-        cout << year_tmp << '-' << year_tmp + 1 << "\n";
-        year_cur = year_cur->next;
-    }
     int Y, N;
     string ye;
     // Get the year and semester
-    cout << "\n\nSchool year: ";
-    cin >> ye;
-    while (!isValidYear(ye))
-    {
-        cout << "Invalid year format, please retry: \n";
-        cin >> ye;
-    }
-    Y = stoi(ye.substr(0, 4));
+    Y = Get_CheckFormat_Existed_Year(yearHead);
 
     year_cur = yearHead;
-
-    if (checkYear(yearHead, Y) == false) // Check if the year is valid
-    {
-        cout << "Year not found! Enter again: ";
-        return AddSemester(yearHead);
-    }
 
     while (year_cur && year_cur->yearStart != Y) // Move the current to the exact year
         year_cur = year_cur->next;
@@ -272,7 +252,7 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
         return;
     Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
 
-    int choice = 1;
+    int choice = 1, prev = choice;
     bool stop = false;
     string menu[3]; // All allow actions
     menu[0] = "\nMethod to import student to the course:\n";
@@ -304,11 +284,11 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
             {
             case UP:
                 if (choice > 1)
-                    choice--;
+                    prev = choice--;
                 break;
             case DOWN:
                 if (choice < 2)
-                    choice++;
+                    prev = choice++;
                 break;
             case ENTER:
                 stop = true;
@@ -317,23 +297,25 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
 
             if (stop)
                 break;
-
-            system("cls");
-
-            for (int i = 0; i < 3; i++)
+            if (prev != choice)
             {
-                if (i == choice)
+                system("cls");
+
+                for (int i = 0; i < 3; i++)
                 {
-                    TextColor(LIGHT_YELLOW);
-                    cout << menu[i];
-                    TextColor(WHITE);
+                    if (i == choice)
+                    {
+                        TextColor(LIGHT_YELLOW);
+                        cout << menu[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << menu[i];
                 }
-                else
-                    cout << menu[i];
+                TextColor(LIGHT_GREEN);
+                cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+                TextColor(WHITE);
             }
-            TextColor(LIGHT_GREEN);
-            cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-            TextColor(WHITE);
         }
     }
     ShowConsoleCursor(true);

@@ -1,18 +1,19 @@
 #include "../Header/Semester.h"
+#include "../Header/Year.h"
 #include "../Header/Utility.h"
 
 void initModify(Year *yearHead)
 {
     bool stop = false;
     system("cls");
-    int opt = 1;
+    int opt = 1, prev = opt;
     string *ListOption = new string[6]; // Actions menu
     ListOption[0] = "\nOptions to modify:\n";
-    ListOption[1] = "- Modify semester                      \n";
-    ListOption[2] = "- Modify course                        \n";
-    ListOption[3] = "- Remove a course                      \n";
+    ListOption[1] = "- Modify semester\n";
+    ListOption[2] = "- Modify course\n";
+    ListOption[3] = "- Remove a course\n";
     ListOption[4] = "- Add or remove a student from a course\n";
-    ListOption[5] = "- Return                               \n";
+    ListOption[5] = "- Return\n";
 
     for (int i = 0; i < 6; i++)
     {
@@ -40,11 +41,11 @@ void initModify(Year *yearHead)
             {
             case UP:
                 if (opt > 1)
-                    opt--;
+                    prev = opt--;
                 break;
             case DOWN:
                 if (opt < 5)
-                    opt++;
+                    prev = opt++;
                 break;
             case ENTER:
                 stop = true;
@@ -53,21 +54,24 @@ void initModify(Year *yearHead)
             if (stop)
                 break;
 
-            for (int i = 0; i < 6; i++)
+            if (prev != opt)
             {
-                if (i == opt)
+                for (int i = 0; i < 6; i++)
                 {
-                    TextColor(LIGHT_YELLOW);
-                    cout << ListOption[i];
-                    TextColor(WHITE);
+                    if (i == opt)
+                    {
+                        TextColor(LIGHT_YELLOW);
+                        cout << ListOption[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << ListOption[i];
                 }
-                else
-                    cout << ListOption[i];
-            }
 
-            TextColor(LIGHT_GREEN);
-            cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            TextColor(WHITE);
+                TextColor(LIGHT_GREEN);
+                cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+                TextColor(WHITE);
+            }
         }
     }
     delete[] ListOption;
@@ -79,38 +83,33 @@ void initModify(Year *yearHead)
 
 void RunModify(Year *yearHead, int opt)
 {
-    string id;
+    string id, strYear;
     int sem, year;
     switch (opt)
     {
     case 1: // Modify the semester follow year and no_sem
-        // viewCourse(semHead);
-        //! Showing the list of semester
-        cout << "\n==> Please choose the year (yyyy): ";
-        cin >> year;
+        year = Get_CheckFormat_Existed_Year(yearHead);
         cout << "==> Please choose the semester (1, 2, 3): ";
         cin >> sem;
+
         cout << "\n";
         modifySemester(yearHead, year, sem);
         break;
     case 2: // View all the course and modify a course in the school year
         ViewAllCourse(yearHead);
-        cout << "\n==> Please choose the year that you want to review? (yyyy): ";
-        cin >> year;
+        year = Get_CheckFormat_Existed_Year(yearHead);
         cout << "\n";
         modifyCourse(yearHead, year);
         break;
     case 3: // Remove out the course
         // viewCourse(semHead);
-        cout << "\n==> Please choose the year (yyyy): ";
-        cin >> year;
+        year = Get_CheckFormat_Existed_Year(yearHead);
         cout << "\n";
         removeCourse(yearHead, year);
         break;
     case 4: // add or remove a student from a course
         ViewCourse(yearHead);
-        cout << "\n==> Please choose the year (yyyy): ";
-        cin >> year;
+        year = Get_CheckFormat_Existed_Year(yearHead);
         cout << "\n";
         //! Showing the list of students
         addRemoveStudent(yearHead, year);

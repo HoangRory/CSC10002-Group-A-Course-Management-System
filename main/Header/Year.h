@@ -53,3 +53,5 @@ bool isValidYear(string year);
 //* Interface
 Year *RecoverFile();
 void Interface_New_Year(Year *yearHead);
+void Show_Year_List(Year *yearHead);
+int Get_CheckFormat_Existed_Year(Year *yearHead);

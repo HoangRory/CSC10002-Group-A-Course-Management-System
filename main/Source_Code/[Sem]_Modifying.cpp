@@ -24,8 +24,18 @@ void modifySemester(Year *yearHead, int year, int sem)
             //! validity check
             cout << "Semester's new start date: ";
             cin >> sem_cur->startDate;
+            while (!isValidDate(sem_cur->startDate))
+            {
+                cout << "Invalid date, enter again: ";
+                cin >> sem_cur->startDate;
+            }
             cout << "Semester's end date: ";
             cin >> sem_cur->endDate;
+            while (!isValidDate(sem_cur->endDate))
+            {
+                cout << "Invalid date, enter again: ";
+                cin >> sem_cur->endDate;
+            }
 
             TextColor(GREEN);
             cout << "Semster has been updated\n\n";
@@ -101,7 +111,7 @@ void ChangeCourseInfo(Course *cour_cur)
     menu[6] = "- Teaching day: " + cour_cur->Day + "\n";
     menu[7] = "- Course section: " + cour_cur->Session + "\n";
 
-    int opt = 1;
+    int opt = 1, prev = opt;
     bool stop = false;
     for (int i = 0; i < 8; i++) // Color according to the choice
     {
@@ -127,11 +137,11 @@ void ChangeCourseInfo(Course *cour_cur)
             {
             case UP:
                 if (opt > 1)
-                    opt--;
+                    prev = opt--;
                 break;
             case DOWN:
                 if (opt < 7)
-                    opt++;
+                    prev = opt++;
                 break;
             case ENTER:
                 stop = true;
@@ -139,21 +149,25 @@ void ChangeCourseInfo(Course *cour_cur)
             }
             if (stop)
                 break;
-            system("cls");
-            for (int i = 0; i < 8; i++)
+
+            if (prev != opt) // Change the color of the selected in4
             {
-                if (i == opt)
+                system("cls");
+                for (int i = 0; i < 8; i++)
                 {
-                    TextColor(LIGHT_PURPLE);
-                    cout << menu[i];
-                    TextColor(WHITE);
+                    if (i == opt)
+                    {
+                        TextColor(LIGHT_PURPLE);
+                        cout << menu[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << menu[i];
                 }
-                else
-                    cout << menu[i];
+                TextColor(GREEN);
+                cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
+                TextColor(WHITE);
             }
-            TextColor(GREEN);
-            cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-            TextColor(WHITE);
         }
     }
     delete[] menu;
@@ -316,7 +330,7 @@ void addStudent(Course *courCurrent, string course_id)
 
     if (courCurrent->numStudents == courCurrent->maxStudents)
     {
-        cout << "Course is full, cannot add more student\n";    //  Check if the course is full
+        cout << "Course is full, cannot add more student\n"; //  Check if the course is full
         return;
     }
     cout << "Enter student ID (Enter -1 to stop): "; // Ask for the student ID
@@ -324,7 +338,7 @@ void addStudent(Course *courCurrent, string course_id)
     cin >> ID;
     if (ID == "-1")
         return;
-    
+
     stud_cur = courCurrent->studentCourse;
     stud_prev = stud_cur;
 
@@ -378,7 +392,7 @@ void removeStudent(Course *courCurrent, string course_id)
             else
                 stud_prev->next = stud_cur->next;
             delete stud_cur;
-            courCurrent->numStudents--;     // Decline down the number
+            courCurrent->numStudents--; // Decline down the number
             cout << "Student has been removed\n";
             removeStudent(courCurrent, course_id);
             return;
@@ -400,9 +414,9 @@ void addRemoveStudent(Year *yearHead, int year)
 
     bool stop = false;
 
-    int choice = 1;
+    int choice = 1, prev = choice;
     string *menu = new string[3]; // actions menu
-    menu[0] = "Choose to ADD or to REMOVE student from a course\n";
+    menu[0] = "\nChoose to ADD or to REMOVE student from a course\n";
     menu[1] = "- ADD student to a course                       \n";
     menu[2] = "- REMOVE student from a course                  \n";
 
@@ -430,11 +444,11 @@ void addRemoveStudent(Year *yearHead, int year)
             {
             case UP:
                 if (choice > 1)
-                    choice--;
+                    prev = choice--;
                 break;
             case DOWN:
                 if (choice < 2)
-                    choice++;
+                    prev = choice++;
                 break;
             case ENTER:
                 stop = true;
@@ -442,29 +456,32 @@ void addRemoveStudent(Year *yearHead, int year)
             }
             if (stop)
                 break;
+
             system("cls");
 
-            TextColor(LIGHT_GREEN);
-            cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-            TextColor(WHITE);
-
-            for (int i = 1; i < 3; i++)
+            if (prev != choice)
             {
-                if (i == choice)
+                for (int i = 1; i < 3; i++)
                 {
-                    TextColor(LIGHT_YELLOW);
-                    cout << menu[i];
-                    TextColor(WHITE);
+                    if (i == choice)
+                    {
+                        TextColor(LIGHT_YELLOW);
+                        cout << menu[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << menu[i];
                 }
-                else
-                    cout << menu[i];
+                TextColor(LIGHT_GREEN);
+                cout << "\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+                TextColor(WHITE);
             }
         }
     }
     delete[] menu;
     ShowConsoleCursor(true);
 
-    cout << "You chose to " << (choice == 1 ? "ADD" : "REMOVE") << " student from a course.\n";
+    cout << "\n\nYou chose to " << (choice == 1 ? "ADD" : "REMOVE") << " student from a course.\n";
 
     Semester *sem_cur = year_cur->NoSemester;
     if (!sem_cur)
@@ -500,7 +517,7 @@ void addRemoveStudent(Year *yearHead, int year)
     char ch;
     cin >> ch;
 
-    while (ch != 'Y' || ch != 'y' || ch != 'N' || ch != 'n')
+    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
     {
         cout << "Invalid respond, enter again!";
         cin >> ch;

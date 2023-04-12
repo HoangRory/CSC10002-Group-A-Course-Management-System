@@ -67,6 +67,7 @@ void Create_New_Classes(Year *newYear)
     Class *ClassTMP = newYear->Class;
 
     string line;
+    cout << "New Class: ";
     while (cin >> line)
     {
         if (line == "-1")
@@ -77,7 +78,7 @@ void Create_New_Classes(Year *newYear)
             cout << "Class " << line << " already exists.\nPlease re-enter: ";
             continue;
         }
-        if (line.substr(0, 2) != to_string(newYear->yearStart).substr(2, 2)) // Check if the class name is valid
+        if (line.substr(0, 2) != to_string(newYear->yearStart).substr(0, 2)) // Check if the class name is valid
         {
             cout << "Invalid class name. Please re-enter: ";
             continue;
@@ -95,6 +96,7 @@ void Create_New_Classes(Year *newYear)
         }
         ClassTMP->Name = line;
         cout << "Added class " << line << " successfully.\n";
+        cout << "\nNew Class: ";
     }
 }
 
@@ -102,11 +104,9 @@ void Create_New_Classes(Year *newYear)
 void ChooseClassToAdd(Year *curYear)
 {
     string className;
-    cout << "Enter -1 to quit!!!\n\n";
     cout << "Enter the class that you want to add student: ";
     cin >> className;
-    if (className == "-1")
-        return;
+
     CapitalClassName(className);
     if (!checkClass(curYear, className))
     {
@@ -143,6 +143,7 @@ void Method(Class *curClass)
         importStudent(curClass);
         break;
     }
+    return;
 }
 
 //? Input student by hand one the cmd
@@ -201,17 +202,20 @@ void inputStudent(Class *curClass)
             inputStudent(curClass);
         return;
     }
-    add1stYearStudents(curClass, ID, first, last, gen, birth, socialID); // add to class
     //? Add here
+    add1stYearStudents(curClass, ID, first, last, gen, birth, socialID); // add to class
 }
 
 //? Import student from file
 void importStudent(Class *curClass)
 {
-    cout << "Please import the CSV file to folder New_Enrolled_Student." << endl;
-    cout << "Please enter file name: ";
-    string fileName;
-    getline(cin, fileName);
+    cout << "Please import the CSV file to folder New_Enrolled_Student.\n";
+    cout << "Please enter file name(default is studentlist.csv, enter 0 to choose the default): ";
+    string fileName = "studentlist.csv";
+    string tmp;
+    getline(cin, tmp);
+    if (tmp != "0")
+        fileName = tmp;
     // Get the file name in4 and access the file
     string path = "..\\Data_file" + separator + "New_Enrolled_Student" + separator + fileName;
     cout << path << endl;
@@ -220,6 +224,7 @@ void importStudent(Class *curClass)
     if (!studentList.is_open())
     {
         cout << "File does not exit." << endl;
+        importStudent(curClass);
         return;
     }
 

@@ -56,14 +56,15 @@ void ViewCourse(Year *yearHead)
 
     menu[0] = "List of year\n";
     menu[1] = "+ All year\n";
-    menu[cnt + 2] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
     year_cur = yearHead;
     for (int i = 2; i <= cnt + 1; i++) // All the year
     {
         menu[i] = "+ " + to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1) + "\n";
         year_cur = year_cur->next;
     }
-    int opt = 1;
+    menu[cnt + 2] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
+
+    int opt = 1, prev = opt;
     bool stop = false;
     cout << "Choose the year you want to view the course: \n";
     for (int i = 0; i < cnt + 3; i++)
@@ -86,30 +87,33 @@ void ViewCourse(Year *yearHead)
             {
             case UP:
                 if (opt > 1)
-                    opt--;
+                    prev = opt--;
                 break;
             case DOWN:
                 if (opt < cnt + 1)
-                    opt++;
+                    prev = opt++;
                 break;
             case ENTER:
                 stop = true;
                 break;
             }
-            system("cls");
             if (stop)
                 break;
-            cout << "Choose the year you want to view the course: \n";
-            for (int i = 0; i < cnt + 3; i++)
+            if (opt != prev)
             {
-                if (i == opt)
+                system("cls");
+                cout << "Choose the year you want to view the course: \n";
+                for (int i = 0; i < cnt + 3; i++)
                 {
-                    TextColor(LIGHT_GREEN);
-                    cout << menu[i];
-                    TextColor(WHITE);
+                    if (i == opt)
+                    {
+                        TextColor(LIGHT_GREEN);
+                        cout << menu[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << menu[i];
                 }
-                else
-                    cout << menu[i];
             }
         }
     ShowConsoleCursor(true);
@@ -143,21 +147,21 @@ void ViewCourseInYear(Semester *semHead)
         return;
     Semester *sem_cur = semHead;
     // cout << "List of courses: \n";
-    for (int i = 0; i < 88; i++) // Display the table
+    for (int i = 0; i < 92; i++) // Display the table
         cout << '=';
     TextColor(0xF8);
     cout << '\n';
-    cout << setw(40) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(38) << '\n';
+    cout << setw(44) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(38) << '\n';
     TextColor(WHITE);
-    for (int i = 0; i < 86; i++)
+    for (int i = 0; i < 92; i++)
         cout << '=';
 
     cout << "\n|  Semester  |"
          << setw(14) << "Course ID" << setw(6) << '|'
-         << setw(20) << "Course name" << setw(12) << '|'
-         << setw(17) << "Teacher name" << setw(5) << '|' << '\n';
+         << setw(20) << "Course name" << setw(13) << '|'
+         << setw(18) << "Teacher name" << setw(7) << '|' << '\n';
 
-    for (int i = 0; i < 88; i++)
+    for (int i = 0; i < 92; i++)
         cout << '=';
     cout << "\n";
 
@@ -170,12 +174,12 @@ void ViewCourseInYear(Semester *semHead)
 
             cout << setw(13) << cour->CourseID << setw(7) << '|';
             int len = cour->Name.length();
-            cout << setw(len + 5) << cour->Name << setw(30 - len - 5) << '|';
+            cout << setw(len + 5) << cour->Name << setw(33 - len - 5) << '|';
 
             len = cour->TeacherName.length();
-            cout << setw(len + 3) << cour->TeacherName << setw(24 - len - 3) << '|' << '\n';
+            cout << setw(len + 3) << cour->TeacherName << setw(25 - len - 3) << '|' << '\n';
 
-            for (int i = 0; i < 88; i++)
+            for (int i = 0; i < 92; i++)
                 cout << '=';
             cout << "\n";
 
@@ -201,7 +205,7 @@ void StaffMain(Year *yearHead)
 {
     system("cls");
     TextColor(240);
-    cout << "STAFF MODE!\n";
+    cout << "\nSTAFF MODE!\n";
     TextColor(WHITE);
 
     string *menu = new string[8]; // Create the menu
@@ -213,7 +217,8 @@ void StaffMain(Year *yearHead)
     menu[5] = "- Save changes and quit\n";
     menu[6] = "- Exit\n";
     menu[7] = "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    int choice = 1;
+
+    int choice = 1, prev = choice;
     bool stop = false;
 
     for (int i = 0; i < 8; i++)
@@ -235,11 +240,11 @@ void StaffMain(Year *yearHead)
             {
             case UP:
                 if (choice > 1)
-                    choice--;
+                    prev = choice--;
                 break;
             case DOWN:
                 if (choice < 6)
-                    choice++;
+                    prev = choice++;
                 break;
             case ENTER:
                 stop = true;
@@ -248,17 +253,23 @@ void StaffMain(Year *yearHead)
             if (stop)
                 break;
 
-            system("cls");
-            for (int i = 0; i < 8; i++)
+            if (prev != choice)
             {
-                if (i == choice) // Highlight the choice
+                system("cls");
+                TextColor(240);
+                cout << "\nSTAFF MODE!\n";
+                TextColor(WHITE);
+                for (int i = 0; i < 8; i++)
                 {
-                    TextColor(LIGHT_YELLOW);
-                    cout << menu[i];
-                    TextColor(WHITE);
+                    if (i == choice) // Highlight the choice
+                    {
+                        TextColor(LIGHT_YELLOW);
+                        cout << menu[i];
+                        TextColor(WHITE);
+                    }
+                    else
+                        cout << menu[i];
                 }
-                else
-                    cout << menu[i];
             }
         }
     delete[] menu;
@@ -347,4 +358,5 @@ void NewYearMain(Year *&yearHead, Account *accHead, int role)
         StaffMain(yearHead);
         break;
     }
+    return;
 }
