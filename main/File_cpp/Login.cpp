@@ -143,7 +143,7 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     std::cout << "\nChange password successfully.";
 }
 
-void Main_interface(Account *accHead, std::string &user, std::string &pass, int &role)
+void Main_interface(Account *accHead, string &user, string &pass, int &role)
 {
     std::cout << "Option: \n1. Change your password.\n2. Logout\n3. Quit\nYour choice: ";
     int check = -1;

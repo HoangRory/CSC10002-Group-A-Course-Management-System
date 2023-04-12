@@ -1,7 +1,7 @@
 22/10/2022 03/01/2023
 Ki nang mem
-CSC10121 2 70 2 I44
-Do Thi Thu Ha
+CSC10121 3 50 2 I44
+Do Thi Thanh Ha
 WED
 S3
 Nhap mon lap trinh
