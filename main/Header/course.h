@@ -19,7 +19,7 @@ void exportListStudentCourse(Semester *curSmt);
 void exportScoreCourseStudent(ScoreBoardCourse ScoreBoardCourse);
 
 
-int view_chooseOption(string *arrOption, int nOption); //task 21 & 22
+int view_chooseOption(string *arrOption, int nOption, string title); //task 21 & 22
 //task 21
 void viewScoreCourseStudent(ScoreBoardCourse SBC);
 int AmountOfCourse(Course *courseHead);
@@ -32,7 +32,7 @@ Course* findCoursebyName_ID(string CourseName_ID, Year *Yhead);
 StudentCourse* find_SBC(string ID, StudentCourse *stuCourseHead);
 void enterMark(double &Mark);
 bool updateMark(ScoreBoardCourse &SCB, string Selection);
-void updateSCB (string ID, StudentCourse *stuCourseHead);
+void updateSCB (string ID, StudentCourse *stuUpdate);
 void UpdateStudentResult(Year *Yhead) ;
 
 

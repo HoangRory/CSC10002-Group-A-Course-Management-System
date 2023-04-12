@@ -5,6 +5,7 @@
 #include <fstream>
 #include<conio.h>
 #include<windows.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -12,9 +13,9 @@ struct Account
 {
     string username = "", password = "";
     string firstName = "", lastName = "";
-    string Gender; // M is male, F is female
-    string SocialID;
-    string birth;
+    string Gender = ""; // M is male, F is female
+    string SocialID = "";
+    string birth = "";
     int role; // 1 student, 2 teacher, 3 staff.
     Account *next = nullptr, *prev = nullptr;
 };
@@ -54,7 +55,7 @@ struct CourseStudent
 struct Student
 {
     Account *accStudent = nullptr;
-    string ID;
+    string ID = "";
     string ClassName = "";
     CourseStudent *course = nullptr;
     Student *next = nullptr, *prev = nullptr;
@@ -63,7 +64,7 @@ struct Student
 struct Class
 {
     string Name; // eg 22CLC02
-    Student *StudentClass;
+    Student *StudentClass = nullptr;
     Class *next = nullptr, *prev = nullptr;
 };
 
