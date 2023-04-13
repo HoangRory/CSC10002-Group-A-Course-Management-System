@@ -1,0 +1,6 @@
+Username,PassWord,Role,LastName,FirstName,Gender,SocialID,Birthday
+admin,admin,3,Admin,HCMUS,M,123456789123,01/01/2023
+22127123,phihoang,1,Le Ho Phi,Hoang,M,079204123456,02/02/2004
+22127026,giabao,1,On Gia,Bao,M,079204111222,03/03/2004
+22127275,m2i0n0h4,1,Tran Anh,Minh,M,079204111333,04/04/2004
+dbtien,dbtien,2,Dinh Ba,Tien,M,079075121212,05/05/1975 
