@@ -39,11 +39,11 @@ void ViewCoursesOfAStudent(Account *accHead, Course *courseHead) //courseHead in
 //task 24: view scoreboard of all course of a student in a semester
 void ViewScoreboard(Account *accHead, Course *courseHead)
 {
-    for (int i = 1; i <= 84; i++)
+    for (int i = 1; i <= 85; i++)
         cout << "=";
     cout << "\n";
-    cout << "| Subject" << setw(28) << "Mid mark"<< setw(15) << "Final mark" << setw(15) << "Other mark" << setw(17) << "Total mark |" << endl; 
-    for (int i = 1; i <= 84; i++)
+    cout << "|            Subject" << setw(24) << "| Mid mark"<< setw(13) << "| Final mark" << setw(13) << "| Other mark" << setw(15) << "| Total mark |" << endl; 
+    for (int i = 1; i <= 85; i++)
         cout << "=";
     cout << "\n";
     while (courseHead)
@@ -54,10 +54,13 @@ void ViewScoreboard(Account *accHead, Course *courseHead)
             if (cur_stu->ID == accHead->username) //truy cập từng student trong từng course check ID 
             {
                 cout <<  "| " << courseHead->Name;
-                cout << setw(35 - courseHead->Name.length()) << right << cur_stu->ScoreBoardCourse.midMark;
-                cout << setw(23 - to_string(cur_stu->ScoreBoardCourse.midMark).length()) << right << cur_stu->ScoreBoardCourse.finalMark;
-                cout << setw(15) << right << cur_stu->ScoreBoardCourse.otherMark;
-                cout << setw(15) << right << cur_stu->ScoreBoardCourse.totalMark << " |";
+                cout << setw(34 - courseHead->Name.length()) << "| " << setw(8) << cur_stu->ScoreBoardCourse.midMark;
+                cout << " |" << setw(11) << cur_stu->ScoreBoardCourse.finalMark;
+                cout << " |" << setw(11) << right << cur_stu->ScoreBoardCourse.otherMark;
+                cout << " |" << setw(11) << right << cur_stu->ScoreBoardCourse.totalMark << " |";
+                cout << "\n";
+                for (int i = 1; i <= 85; i++)
+                    cout << "=";
                 cout << "\n";
             }
             cur_stu = cur_stu->next;
