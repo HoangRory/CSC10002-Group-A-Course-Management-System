@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <fstream>
 #include <iomanip>
 #include <windows.h>
@@ -36,9 +37,9 @@ struct Account
 {
     string username = "", password = "";
     string firstName = "", lastName = "";
-    string Gender; // M is male, F is female
-    string SocialID;
-    string birth;
+    string Gender = ""; // M is male, F is female
+    string SocialID = "";
+    string birth = "";
     int role; // 1 student, 2 teacher, 3 staff.
     Account *next = nullptr, *prev = nullptr;
 };
@@ -70,12 +71,17 @@ struct Course
     Course *next = nullptr, *prev = nullptr;
 };
 // student của toàn trường, được lưu trong từng lớp
+struct CourseStudent 
+{
+    Course *course = nullptr;
+    CourseStudent *next = nullptr;
+};
 struct Student
 {
     Account *accStudent = nullptr;
-    string ID;
+    string ID = "";
     string ClassName = "";
-    Course *Course1st = nullptr;
+    CourseStudent *course = nullptr;
     Student *next = nullptr, *prev = nullptr;
 };
 
@@ -87,10 +93,10 @@ struct Class
 };
 
 // hết -1 một môn, -2 kì, -3 năm
-struct Semester
+struct Semester 
 {
-    int No;   // eg semester 1 thì No = 1
-    int Year; // only the start year, when cout put the end year in by adding 1
+    int No; // eg semester 1 thì No = 1
+    int Year; // only the start year, when cout put the end year in by adding 1 
     string startDate, endDate;
     Course *course = nullptr;
     Semester *next = nullptr, *prev = nullptr;
