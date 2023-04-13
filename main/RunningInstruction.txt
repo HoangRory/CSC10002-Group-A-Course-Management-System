@@ -1,0 +1,8 @@
+Run file:
+
+Path: current main.cpp folder
+compile: g++ *.cpp -o main
+
+Run: ./main (./main.exe)
+
+T có tạo thêm 1 header Utility.h để chỉnh mấy cái hàm ẩn hiện con trỏ, màu chữ với ba cái hàm dùng trong mọi file
