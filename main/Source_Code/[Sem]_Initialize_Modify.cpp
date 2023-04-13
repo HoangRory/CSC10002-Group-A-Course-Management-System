@@ -4,80 +4,19 @@
 
 void initModify(Year *yearHead)
 {
-    bool stop = false;
     system("cls");
-    int opt = 1, prev = opt;
-    string *ListOption = new string[6]; // Actions menu
-    ListOption[0] = "\nOptions to modify:\n";
-    ListOption[1] = "- Modify semester\n";
-    ListOption[2] = "- Modify course\n";
-    ListOption[3] = "- Remove a course\n";
-    ListOption[4] = "- Add or remove a student from a course\n";
-    ListOption[5] = "- Return\n";
 
-    for (int i = 0; i < 6; i++)
-    {
-        if (i == opt) // change color to fit the cursor
-        {
-            TextColor(LIGHT_YELLOW);
-            cout << ListOption[i];
-            TextColor(WHITE);
-        }
-        else
-            cout << ListOption[i];
-    }
+    PrintMenu();
+    vector<string> menu;
+    menu.push_back("Modify semester");
+    menu.push_back("Modify course");
+    menu.push_back("Remove a course");
+    menu.push_back("Add/Remove student");
+    menu.push_back("Return");
 
-    TextColor(LIGHT_GREEN);
-    cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-    TextColor(WHITE);
+    int opt = Draw(menu);
 
-    ShowConsoleCursor(false);
-    while (!stop)
-    {
-        if (_kbhit()) // get the input from arrow buttons
-        {
-            system("cls");
-            switch (_getch())
-            {
-            case UP:
-                if (opt > 1)
-                    prev = opt--;
-                break;
-            case DOWN:
-                if (opt < 5)
-                    prev = opt++;
-                break;
-            case ENTER:
-                stop = true;
-                break;
-            }
-            if (stop)
-                break;
-
-            if (prev != opt)
-            {
-                for (int i = 0; i < 6; i++)
-                {
-                    if (i == opt)
-                    {
-                        TextColor(LIGHT_YELLOW);
-                        cout << ListOption[i];
-                        TextColor(WHITE);
-                    }
-                    else
-                        cout << ListOption[i];
-                }
-
-                TextColor(LIGHT_GREEN);
-                cout << "\n\n(Using your arrow on the keyboard to move the choice and enter to select!)\n\n";
-                TextColor(WHITE);
-            }
-        }
-    }
-    delete[] ListOption;
-    ShowConsoleCursor(true); // show back the cursor
-
-    RunModify(yearHead, opt); // Begin to do the chosen option
+    RunModify(yearHead, opt - 1); // Begin to do the chosen option
     return;
 }
 

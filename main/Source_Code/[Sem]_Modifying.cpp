@@ -218,7 +218,8 @@ void ChangeCourseInfo(Course *cour_cur)
     cout << "\n";
     TextColor(LIGHT_BLUE);
     // Re-show the course in4
-    cout << "\n\tNew information for the course " << cour_cur->CourseID << ":\n";
+    cout << "\nNew information for the course " << cour_cur->CourseID << ":\n";
+    TextColor(WHITE);
     cout << "- Course name: " << cour_cur->Name << "\n";
     cout << "- Teacher name: " << cour_cur->TeacherName << "\n";
     cout << "- Number of credits: " << cour_cur->Credits << "\n";
@@ -227,7 +228,6 @@ void ChangeCourseInfo(Course *cour_cur)
     cout << "- Teaching day: " << cour_cur->Day << "\n";
     cout << "- Course section: " << cour_cur->Session << "\n";
     Sleep(1000);
-    TextColor(WHITE);
 
     cout << "Do you want to change another information? (Y/N): "; // Check again?
     char ch;
@@ -266,8 +266,9 @@ void removeCourse(Year *yearHead, int year)
     }
 
     Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
-
-    ViewCourseInYear(sem_cur);
+    int i = 8;
+    PrintView_Course();
+    ViewCourseInYear(sem_cur, i);
     string course_id;
 
     TextColor(LIGHT_RED); // Ask for the course ID - red for alert
@@ -295,7 +296,9 @@ void removeCourse(Year *yearHead, int year)
 
                 system("cls");
                 cout << "\nAfter deleting the course:\n"; // Review the course after deleted
-                ViewCourseInYear(tmp);
+                int i = 8;
+                PrintView_Course();
+                ViewCourseInYear(tmp, i);
                 return;
             }
             cour_prev = cour_cur;

@@ -3,8 +3,9 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-#include <windows.h>
+#include <vector>
 #include <conio.h>
+#include <windows.h>
 
 
 #define BLACK 0
