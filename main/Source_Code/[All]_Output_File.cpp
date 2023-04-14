@@ -1,12 +1,8 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
-#include "../Header/course.h"
-#include "../Header/help.h"
 #include "../Header/Login.h"
 
 //? Output the course information
-// 
-
 void OutCourse(Course *course_head, ofstream &ofs)
 {
     if (!course_head)
@@ -23,28 +19,6 @@ void OutCourse(Course *course_head, ofstream &ofs)
             << course_head->Day << '\n'
             << course_head->Session;
         course_head = course_head->next;
-    }
-}
-void outScoreboard_StudentCourse (ofstream &ofs, ScoreBoardCourse SBC) 
-{
-    if(SBC.totalMark < 0) ofs << "X" << ",";
-    else ofs << SBC.totalMark << ",";
-    if(SBC.finalMark < 0) ofs << "X" << ",";
-    else ofs << SBC.finalMark << ",";
-    if(SBC.midMark < 0) ofs << "X" << ",";
-    else ofs << SBC.midMark << ",";
-    if(SBC.otherMark < 0) ofs << "X" << endl;
-    else ofs << SBC.otherMark << endl;
-}
-void OutStudent_Course(ofstream &ofs, StudentCourse *curStudent)
-{
-    int no = 1;
-    while (curStudent) 
-    {
-        ofs << no++ << ","
-            << curStudent->ID << ","
-            << curStudent->FullName;
-        outScoreboard_StudentCourse(ofs,curStudent->ScoreBoardCourse);
     }
 }
 void Output(Year *yearHead)
@@ -65,20 +39,8 @@ void Output(Year *yearHead)
         // ofs << sem_cur->No << '\n';
         ofs << sem_cur->startDate << ' ' << sem_cur->endDate; // Output the date
         OutCourse(sem_cur->course, ofs);
-        ofs.close();
-        Course *courseHead = sem_cur->course;
-        while(courseHead) {
-            string path = createNameFile(sem_cur->Year, sem_cur->No,courseHead->Name,"score","csv");
-            if (!checkFile(path)) 
-                system(("mkdir " + path).c_str());
-            ofs.open(path);
-            ofs << courseHead->Name << endl;
-            OutStudent_Course(ofs,courseHead->studentCourse);
-            ofs.close(); 
-
-        }
-
         sem_cur = sem_cur->next;
+        ofs.close();
     }
 }
 
@@ -160,31 +122,3 @@ void Outyear(Year *yearHead)
     }
     outyear.close();
 }
-
-//task 19
-//func export the list student of a course to sent to teacher
-//hàm này lấy 
-void exportListStudentCourse(Semester *curSmt)
- {
-    system("cls");
-    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
-    cout << "Using arrow keys to move and press enter to select your option." << endl;
-    system("pause");
-    system("cls");
-
-    //nếu muốn hàm chọn
-    Course *curCourse = chooseCoursebyOption(curSmt->course);
-    if(!curCourse) {
-        //quay lại menu
-        return;
-    }
-
-
-    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV");
-    if (!checkFile(path)) 
-        system(("mkdir " + path).c_str());
-    ofstream out;
-    out.open(path);
-    outStudentCourse(curCourse->studentCourse, out);
-    out.close();   
-}// hàm này chỉ xuất chứ chưa xóa linked list
