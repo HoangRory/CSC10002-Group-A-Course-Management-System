@@ -4,19 +4,58 @@
 void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     system("cls");
-    cout << "\n";
 
     TextColor(LIGHT_AQUA);
-    cout << "WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n\n";
-    cout << "PLEASE ENTER YOUR USERNAME AND PASSWORD TO LOGIN\n\n";
+    goToXY(14, 1);
+    cout << " ___  ___  ___   _   _   ___   _____  _____ ___  ___ _____  _   _  _____   _____ __   __ _____  _____  _____ ___  ___";
+    goToXY(14, 2);
+    cout << " |  \\/  | / _ \\ | \\ | | / _ \\ |  __ \\|  ___||  \\/  ||  ___|| \\ | ||_   _| /  ___|\\ \\ / //  ___||_   _||  ___||  \\/  |";
+    goToXY(14, 3);
+    cout << " | .  . |/ /_\\ \\|  \\| |/ /_\\ \\| |  \\/| |__  | .  . || |__  |  \\| |  | |   \\ `--.  \\ V / \\ `--.   | |  | |__  | .  . |";
+    goToXY(14, 4);
+    cout << " | |\\/| ||  _  || . ` ||  _  || | __ |  __| | |\\/| ||  __| | . ` |  | |    `--. \\  \\ /   `--. \\  | |  |  __| | |\\/| |";
+    goToXY(14, 5);
+    cout << " | |  | || | | || |\\  || | | || |_\\ \\| |___ | |  | || |___ | |\\  |  | |   /\\__/ /  | |  /\\__/ /  | |  | |___ | |  | |";
+    goToXY(14, 6);
+    cout << " \\_|  |_/\\_| |_/\\_| \\_/\\_| |_/ \\____/\\____/ \\_|  |_/\\____/ \\_| \\_/  \\_/   \\____/   \\_/  \\____/   \\_/  \\____/ \\_|  |_/";
 
     TextColor(LIGHT_GREEN);
-    std::cout << "\nUsername: ";
-    std::cin >> user;
+    goToXY(60, 8);
+    cout << " _     ___    ___ ___  _  _";
+    goToXY(60, 9);
+    cout << "| |   / _ \\  / __|_ _|| \\| |";
+    goToXY(60, 10);
+    cout << "| |__| (_) || (_ || | | .` |";
+    goToXY(60, 11);
+    cout << "|____|\\___/  \\___|___||_|\\_|";
 
-    TextColor(LIGHT_RED);
-    std::cout << "Password: ";
-    std::cin >> pass;
+    goToXY(50, 16);
+    TextColor(0x0E);
+    cout << "Username";
+
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 17 + i);
+        cout << "                                              ";
+    }
+    // TextColor(73);
+
+    goToXY(50, 21);
+    TextColor(0x0E);
+    cout << "Password";
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 22 + i);
+        cout << "                                              ";
+    }
+
+    TextColor(63);
+    goToXY(52, 18);
+    cin >> user;
+    goToXY(52, 23);
+    cin >> pass;
     TextColor(WHITE);
 
     Account *cur = accHead;
@@ -34,20 +73,27 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
     if (!loggedIn)
     {
         TextColor(LIGHT_RED);
-        std::cout << "\nWrong username or password\n";
-        std::cout << "Try again!!!\n\n\n";
+
+        goToXY(60, 26);
+        cout << "Wrong username or password";
+        goToXY(66, 27);
+
+        cout << "Try again!!!";
         TextColor(WHITE);
 
-        system("pause");
+        Pause();
         LoggingIn(accHead, user, pass, role);
         return;
     }
     role = cur->role;
-    std::cout << "\nLogged in successfully!!\n";
-    std::cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!\n";
+    TextColor(LIGHT_YELLOW);
+    goToXY(60, 26);
+    cout << "Logged in successfully!!";
+    goToXY(60, 27);
+    cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!";
+
+    Pause();
     return;
-    // Main_interface(accHead, user, pass, role);
-    // AccountAlteration(accHead, user, pass, role);
 }
 
 void ChangePass(Account *accHead, std::string &user, std::string &pass)

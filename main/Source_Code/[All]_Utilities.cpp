@@ -9,6 +9,18 @@ void ShowConsoleCursor(bool visible)
     lpCursor.dwSize = 20;
     SetConsoleCursorInfo(console, &lpCursor);
 }
+void Pause()
+{
+    ShowConsoleCursor(false);
+    while (1)
+        if (_kbhit())
+        {
+            int tmp = _getch();
+            break;
+        }
+    ShowConsoleCursor(true);
+    return;
+}
 
 //? Change the text color in terminal
 void TextColor(int x) // X là mã màu
