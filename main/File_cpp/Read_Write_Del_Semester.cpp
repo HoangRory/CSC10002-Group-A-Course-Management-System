@@ -1,5 +1,6 @@
 // #include "Header/proto.h"
 #include "../Header/Semester.h"
+#include "../Header/course.h"
 
 // todo make it more efficient
 void Read_SMT(Semester *&semHead, int y, int smt)
@@ -53,26 +54,6 @@ void Read_SMT(Semester *&semHead, int y, int smt)
             getline(ifs, tmp_C->TeacherName);
             ifs >> tmp_C->Day >> tmp_C->Session;
 
-            StudentCourse *tmp_S;
-            string ID;
-            while (ifs >> ID)
-            {
-                if (ID == "-1")
-                    break;
-                if (!tmp_C->studentCourse)
-                {
-                    tmp_C->studentCourse = new StudentCourse;
-                    tmp_S = tmp_C->studentCourse;
-                }
-                else
-                {
-                    tmp_S->next = new StudentCourse;
-                    StudentCourse *temp = tmp_S;
-                    tmp_S = tmp_S->next;
-                    tmp_S->prev = temp;
-                }
-                tmp_S->ID = ID;
-            }
         }
     }
     path = "";
@@ -83,6 +64,7 @@ void Read_multi_SMT(Semester *&semHead, int yr, int num_year, int num_smt)
         for (int smt = 1; smt <= num_smt; smt++)
             Read_SMT(semHead, y, smt);
 }
+
 
 void DeleteStudent(StudentCourse *&stud_head)
 {
@@ -113,18 +95,7 @@ void DeleteSMT(Semester *&semHead)
     semHead = nullptr;
 }
 
-void OutStudent(StudentCourse *stud_head, ofstream &ofs)
-{
-    if (!stud_head)
-        return;
-    while (stud_head)
-    {
-        ofs << stud_head->ID << '\n';
-        stud_head = stud_head->next;
-    }
-    ofs << -1;
-    return;
-}
+
 void OutCourse(Course *course_head, ofstream &ofs)
 {
     if (!course_head)
@@ -140,16 +111,39 @@ void OutCourse(Course *course_head, ofstream &ofs)
             << '\n'
             << course_head->Day << '\n'
             << course_head->Session << '\n';
-        OutStudent(course_head->studentCourse, ofs);
+        // OutStudent(course_head->studentCourse, ofs);
         course_head = course_head->next;
     }
 }
+void outScoreboard_StudentCourse (ofstream &ofs, ScoreBoardCourse SBC) 
+{
+    if(SBC.totalMark < 0) ofs << "X" << ",";
+    else ofs << SBC.totalMark << ",";
+    if(SBC.finalMark < 0) ofs << "X" << ",";
+    else ofs << SBC.finalMark << ",";
+    if(SBC.midMark < 0) ofs << "X" << ",";
+    else ofs << SBC.midMark << ",";
+    if(SBC.otherMark < 0) ofs << "X" << endl;
+    else ofs << SBC.otherMark << endl;
+}
+void OutStudent_Course(ofstream &ofs, StudentCourse *curStudent)
+{
+    int no = 1;
+    while (curStudent) 
+    {
+        ofs << no++ << ","
+            << curStudent->ID << ","
+            << curStudent->FullName;
+        outScoreboard_StudentCourse(ofs,curStudent->ScoreBoardCourse);
+    }
+}
+
 void Output(Semester *semHead)
 {
     if (!semHead)
         return;
     Semester *sem_cur = semHead;
-
+    
     while (sem_cur)
     {
         string out_year = to_string(sem_cur->Year) + '_' + to_string(sem_cur->Year + 1);
@@ -165,9 +159,22 @@ void Output(Semester *semHead)
         // ofs << sem_cur->No << '\n';
         ofs << sem_cur->startDate << ' ' << sem_cur->endDate;
         OutCourse(sem_cur->course, ofs);
-        sem_cur = sem_cur->next;
         ofs.close();
+        Course *courseHead = sem_cur->course;
+        while(courseHead) {
+            string path = createNameFile(sem_cur->Year, sem_cur->No,courseHead->Name,"score","csv");
+            if (!checkFile(path)) 
+                system(("mkdir " + path).c_str());
+            ofs.open(path);
+            ofs << courseHead->Name << endl;
+            OutStudent_Course(ofs,courseHead->studentCourse);
+            ofs.close(); 
+
+        }
+        sem_cur = sem_cur->next;
+        
     }
 }
+
 
 //? Path in the output and read Semester function
