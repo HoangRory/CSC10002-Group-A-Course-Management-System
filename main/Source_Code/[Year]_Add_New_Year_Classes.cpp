@@ -38,7 +38,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
     path = "mkdir " + path;
     system(path.c_str()); // Create a folder in the sys
 
-    cout << "Year " << yearStart << '-' << yearStart + 1 << " has been added successfully.\n";
+    cout << "\nYear " << yearStart << '-' << yearStart + 1 << " has been added successfully.\n";
 
     for (int i = 0; i < 38; i++)
         cout << "-";

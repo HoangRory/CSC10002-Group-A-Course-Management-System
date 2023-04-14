@@ -8,6 +8,8 @@ void resizeWindow(int x, int y);
 void hideScrollBar();
 void initWindow(int width, int length);
 
+void Pause();
+
 //? Draw the menu word
 void PrintMenu();
 
