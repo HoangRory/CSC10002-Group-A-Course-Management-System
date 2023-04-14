@@ -1,17 +1,25 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
+#include "../Header/Utility.h"
 const string separator = "\\";
 
 void Show_Year_List(Year *yearHead)
 {
     Year *year_cur = yearHead;
-    cout << "Year list: \n";
+    TextColor(0xF1);
+    int i = 0;
+
+    goToXY(67, 13);
+    cout << "=====YEAR LIST=====";
+
     while (year_cur)
     {
         int year_tmp = year_cur->yearStart;
-        cout << year_tmp << '-' << year_tmp + 1 << "\n";
+        goToXY(67, 14 + i++);
+        cout << "   > " << year_tmp << '-' << year_tmp + 1 << "     ";
         year_cur = year_cur->next;
     }
+    TextColor(WHITE);
 }
 
 //? Check if the year is in correct format and it is already existed
@@ -19,18 +27,33 @@ int Get_CheckFormat_Existed_Year(Year *yearHead)
 {
     string strYear;
     Show_Year_List(yearHead);
-    cout << "\n==> Please choose the year (yyyy-yyyy): ";
+
+    goToXY(50, 18);
+    TextColor(0x0E);
+    cout << "Choose year";
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 19 + i);
+        cout << "                           ";
+    }
+
+    goToXY(52, 20);
     cin >> strYear;
     strYear[4] = '_';
 
     while (!isValidYear(strYear) || !checkYear(yearHead, stoi(strYear.substr(0, 4))))
     {
-        cout << "Invalid year format or already has, please retry.\n";
-        cout << "Enter the year you want to create (yyyy-yyyy): ";
-        cin.ignore();
-        getline(cin, strYear);
+        string message = "Invalid year format or already has!\nPlease retry.";
+        string title = "Error";
+        Message_Warning(message, title);
+        goToXY(50, 20);
+        cout << "                           ";
+        goToXY(52, 20);
+        cin >> strYear;
         strYear[4] = '_';
     }
+    TextColor(7);
     return stoi(strYear.substr(0, 4));
 }
 
@@ -53,25 +76,39 @@ Year *RecoverFile()
 void Interface_New_Year(Year *yearHead)
 {
     Year *year_cur = yearHead;
+    string strYear;
     system("cls");
-    cout << "\n====== ADDING NEW SCHOOL YEAR ======\n";
 
+    Render_NewYear();
     Show_Year_List(yearHead);
 
-    cout << "Enter -1 to return.\n";
-    cout << "Enter the year you want to create (yyyy-yyyy): ";
-    string newyear;
-    cin >> newyear;
-    if (newyear == "-1")
-        return;
-    while (!isValidYear(newyear)) // check if the year is valid
+    goToXY(50, 18);
+    TextColor(0x0E);
+    cout << "Choose year";
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
     {
-        cout << "Invalid year format, please retry.\n";
-        cout << "Enter the year you want to create (yyyy-yyyy): ";
-        cin.ignore();
-        getline(cin, newyear);
+        goToXY(50, 19 + i);
+        cout << "               ";
     }
-    int start = stoi(newyear.substr(0, 4));
+
+    goToXY(52, 20);
+    cin >> strYear;
+    strYear[4] = '_';
+
+    while (!isValidYear(strYear))
+    {
+        string message = "Invalid year format or already has!\nPlease retry.";
+        string title = "Error";
+        Message_Warning(message, title);
+        goToXY(50, 20);
+        cout << "               ";
+        goToXY(52, 20);
+        cin >> strYear;
+        strYear[4] = '_';
+    }
+    TextColor(7);
+    int start = stoi(strYear.substr(0, 4));
 
     createSchoolYear(yearHead, start);
     return;

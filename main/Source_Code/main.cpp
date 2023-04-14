@@ -16,7 +16,7 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     if (LoggingMain(accHead, user, pass, role))
         return;
     SyncFullName(yearHead, accHead);
-    NewYearMain(yearHead, accHead, role);
+    MainMenu(yearHead, accHead, user, pass, role);
 }
 
 int main()

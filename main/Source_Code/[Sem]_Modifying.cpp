@@ -267,7 +267,7 @@ void removeCourse(Year *yearHead, int year)
 
     Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
     int i = 8;
-    PrintView_Course();
+    Render_ViewCourse();
     ViewCourseInYear(sem_cur, i);
     string course_id;
 
@@ -297,7 +297,7 @@ void removeCourse(Year *yearHead, int year)
                 system("cls");
                 cout << "\nAfter deleting the course:\n"; // Review the course after deleted
                 int i = 8;
-                PrintView_Course();
+                Render_ViewCourse();
                 ViewCourseInYear(tmp, i);
                 return;
             }
