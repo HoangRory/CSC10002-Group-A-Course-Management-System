@@ -19,12 +19,12 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
 }
 
 
-int main()
-{
-    Account *accHead = nullptr;
-    Year *yearHead = nullptr;
-    Merge_year_sem(accHead, yearHead);
+// int main()
+// {
+//     Account *accHead = nullptr;
+//     Year *yearHead = nullptr;
+//     Merge_year_sem(accHead, yearHead);
 
-    EradicateLL(accHead, yearHead);
-    return 0;
-}
+//     EradicateLL(accHead, yearHead);
+//     return 0;
+// }

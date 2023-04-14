@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <windows.h>
 #include <conio.h>
+#include <vector>
 
 
 #define BLACK 0
