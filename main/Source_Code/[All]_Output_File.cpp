@@ -1,6 +1,7 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
+#include "../Header/course.h"
 
 //? Output the course information
 void OutCourse(Course *course_head, ofstream &ofs)
@@ -39,8 +40,19 @@ void Output(Year *yearHead)
         // ofs << sem_cur->No << '\n';
         ofs << sem_cur->startDate << ' ' << sem_cur->endDate; // Output the date
         OutCourse(sem_cur->course, ofs);
-        sem_cur = sem_cur->next;
         ofs.close();
+        Course *courseHead = sem_cur->course;
+        while(courseHead) {
+            string path = createNameFile(sem_cur->Year, sem_cur->No,courseHead->Name,"score","csv");
+            if (!checkFile(path)) 
+                system(("mkdir " + path).c_str());
+            ofs.open(path);
+            ofs << courseHead->Name << endl;
+            outStudentCourse(courseHead->studentCourse,ofs);
+            ofs.close(); 
+            courseHead = courseHead->next;
+        }
+        sem_cur = sem_cur->next;
     }
 }
 
@@ -122,3 +134,53 @@ void Outyear(Year *yearHead)
     }
     outyear.close();
 }
+
+void outScoreboard_StudentCourse (ofstream &ofs, ScoreBoardCourse SBC) 
+{
+    if(SBC.totalMark < 0) ofs << "X" << ",";
+    else ofs << SBC.totalMark << ",";
+    if(SBC.finalMark < 0) ofs << "X" << ",";
+    else ofs << SBC.finalMark << ",";
+    if(SBC.midMark < 0) ofs << "X" << ",";
+    else ofs << SBC.midMark << ",";
+    if(SBC.otherMark < 0) ofs << "X";
+    else ofs << SBC.otherMark;
+}
+void outStudentCourse(StudentCourse *stuHead, ofstream &ofs) 
+{
+    int No = 1;
+    ofs << "No,Student ID,Fullname,Total Mark,Final Mark,Mid Mark,Other Mark" ;
+    while (stuHead) 
+    {
+        ofs << "\n"
+            << No++ << ","
+            << stuHead->ID << ","
+            << stuHead->FullName << ",";
+        outScoreboard_StudentCourse(ofs,stuHead->ScoreBoardCourse);
+        stuHead = stuHead -> next;
+    }
+}
+
+void exportListStudentCourse(Semester *curSmt)
+ {
+    system("cls");
+    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
+    cout << "Using arrow keys to move and press enter to select your option." << endl;
+    system("pause");
+    system("cls");
+
+
+    Course *curCourse = chooseCoursebyOption(curSmt->course);
+    if(!curCourse) {
+        //quay lại menu
+        return;
+    }
+    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV");
+    if (!checkFile(path)) 
+        system(("mkdir " + path).c_str());
+    ofstream out;
+    out.open(path);
+    outStudentCourse(curCourse->studentCourse, out);
+    out.close();   
+}
+

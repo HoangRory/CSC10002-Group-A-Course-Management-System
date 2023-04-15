@@ -1,6 +1,7 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
+#include "../Header/course.h"
 
 //? Account
 void ReadAccount(Account *&accHead)
@@ -273,4 +274,87 @@ Semester *Read_All_Semester(int year)
         newSem->prev = tmp;
     }
     return semHead;
+}
+
+
+void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in) {
+    string s_totalMark, s_finalMark, s_midMark, s_otherMark;
+    getline(in,s_totalMark,',');
+    getline(in,s_finalMark,',');
+    getline(in,s_midMark,',');
+    getline(in,s_otherMark,'\n');
+    
+    SBC.totalMark = SBC.finalMark = SBC.midMark = SBC.otherMark = -1;
+    if(s_totalMark != "X") SBC.totalMark = stod(s_totalMark);
+    if(s_finalMark != "X") SBC.finalMark = stod(s_totalMark);
+    if(s_midMark != "X")   SBC.midMark = stod(s_midMark);
+    if(s_otherMark != "X") SBC.otherMark = stod(s_otherMark); 
+}
+
+void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
+    StudentCourse *cur = studentHead;
+    string del = "";
+    if(!in.eof()) getline(in,del,'\n');
+    while (!in.eof()) {
+        if (!cur) cur = studentHead = new StudentCourse;
+        else {
+            cur -> next = new StudentCourse;
+            cur -> next -> prev = cur;
+            cur = cur -> next;
+        }
+        getline(in,del,',');
+        getline(in,cur->ID,',');
+        getline(in,cur->FullName,',');
+        readScoreStudentCourse(cur->ScoreBoardCourse, in);    
+    }
+}
+
+// import data course
+void readAllFileCourses(Semester *HeadSmt) {
+    ifstream in;
+    Semester *curSmt = HeadSmt;
+    Course *curCourse;
+    while (curSmt)
+    {
+        curCourse = curSmt->course;
+        while(curCourse) {
+            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV"); 
+            in.open(path);
+            if(!in.is_open())
+                cout << "khong co file này"; // messbox
+            else {
+            readStudentCourse(curCourse->studentCourse, in); 
+            }
+            in.close();
+            curCourse = curCourse->next;
+        }  
+        curSmt = curSmt->next;      
+    }
+
+}
+
+void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead) 
+{
+    system("cls");
+    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
+    cout << "Using arrow keys to move and press enter to select your option." << endl;
+    system("pause");
+    system("cls");
+    Course *curCourse = chooseCoursebyOption(curSmt->course);
+    if(!curCourse) {
+        //quay lại menu
+        return;
+    }
+
+    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
+    if (!checkFile(path)) 
+    {
+        cout << "The scoreboard of this course does not exist." << endl
+             << "Please contact the teacher to get scoreboard and to try again.";
+        return;
+    }
+    ifstream in;
+    in.open (path);
+    readStudentCourse(curCourse->studentCourse, in);
+    in.close();
 }

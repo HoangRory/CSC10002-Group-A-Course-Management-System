@@ -55,7 +55,15 @@ Course* findCourse_ofStudent_byOption(CourseStudent *courseHead, int option)
     }
     return nullptr;
 }
-
+int amountOfCourse(Course *courseHead)
+{
+    int n = 0; 
+    while(courseHead) {
+        n++;
+        courseHead = courseHead->next;
+    }
+    return n;
+}
 //task 23
 int amountStudentOfClass(Student *studentHead) 
 {

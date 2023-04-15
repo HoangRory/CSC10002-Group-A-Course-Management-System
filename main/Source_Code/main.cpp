@@ -24,7 +24,8 @@ int main()
     Account *accHead = nullptr;
     Year *yearHead = nullptr;
 
-    initWindow(1000, 500);
+    initWindow(500, 500);
+    // SetWindowSize(500,500);
     system("title Course Management System");
 
     Merge_year_sem(accHead, yearHead);

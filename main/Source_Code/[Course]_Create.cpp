@@ -1,4 +1,5 @@
 #include"../Header/course.h"
+//lấy kí
 
 string createNameFile(int year, int no_smt, string course, string file, string type) {
     string s_year = to_string(year) + "_" + to_string(year + 1) + "/";

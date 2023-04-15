@@ -16,3 +16,5 @@ void PrintMenu();
 //? Draw the option
 int Draw(vector<string> menu);
 void PrintView_Course();
+
+void SetWindowSize(int width, int height);

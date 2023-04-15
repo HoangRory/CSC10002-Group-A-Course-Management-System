@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////
 void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
-void readAllFileCourses(Year *Yhead);
+void readAllFileCourses(Semester *HeadSmt);
 
 void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead);
 
@@ -13,7 +13,7 @@ void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead);
  //                     OUT                     //
 /////////////////////////////////////////////////
 void outScoreboard_StudentCourse (ofstream &ofs, ScoreBoardCourse SBC);
-void outStudentCourse(StudentCourse *stuHead, ofstream &out);
+void outStudentCourse(StudentCourse *stuHead, ofstream &ofs);
 
 void exportListStudentCourse(Semester *curSmt);
   ////////////////////////////////////////////////////////

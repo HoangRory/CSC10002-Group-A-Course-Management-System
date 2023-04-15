@@ -1,5 +1,6 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
+#include "../Header/course.h"
 const string separator = "\\";
 
 void Show_Year_List(Year *yearHead)
@@ -45,6 +46,7 @@ Year *RecoverFile()
     while (yearTMP)
     {
         yearTMP->NoSemester = Read_All_Semester(yearTMP->yearStart); // read the semesters in years
+        readAllFileCourses(yearTMP->NoSemester);
         yearTMP = yearTMP->next;
     }
     return headYear;
