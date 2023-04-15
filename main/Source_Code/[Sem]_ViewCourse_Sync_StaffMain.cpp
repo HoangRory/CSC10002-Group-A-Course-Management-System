@@ -55,7 +55,7 @@ void ViewCourse(Year *yearHead)
         year_cur = year_cur->next;
     }
 
-    PrintView_Course();
+    Render_ViewCourse();
 
     int opt = Draw(menu);
     system("cls");
@@ -63,8 +63,7 @@ void ViewCourse(Year *yearHead)
     if (opt == 0)
     {
         ViewAllCourse(yearHead);
-        cout << "\n";
-        system("pause");
+        Pause();
         return;
     }
 
@@ -78,10 +77,9 @@ void ViewCourse(Year *yearHead)
         year_cur = year_cur->next;
     }
     int i = 8;
-    PrintView_Course();
+    Render_ViewCourse();
     ViewCourseInYear(year_cur->NoSemester, i); // View the course in the certain year
-    cout << "\n";
-    system("pause");
+    Pause();
     return;
 }
 
@@ -92,29 +90,29 @@ void ViewCourseInYear(Semester *semHead, int &i)
         return;
     Semester *sem_cur = semHead;
     // cout << "List of courses: \n";
-    goToXY(30, i++);
+    goToXY(25, i++);
     for (int i = 0; i < 92; i++) // Display the table
         cout << '=';
-    TextColor(0xF8);
-    goToXY(30, i++);
+    TextColor(0xF1);
+    goToXY(25, i++);
     cout << setw(44) << "Year: " << sem_cur->Year << " - " << sem_cur->Year + 1 << setw(38) << '\n';
     TextColor(WHITE);
-    goToXY(30, i++);
+    goToXY(25, i++);
     for (int i = 0; i < 92; i++)
         cout << '=';
 
-    goToXY(30, i++);
+    goToXY(25, i++);
 
     cout << "|  Semester  |"
          << setw(14) << "Course ID" << setw(6) << '|'
          << setw(20) << "Course name" << setw(13) << '|'
          << setw(18) << "Teacher name" << setw(7) << '|';
 
-    goToXY(30, i++);
+    goToXY(25, i++);
 
     for (int i = 0; i < 92; i++)
         cout << '=';
-    goToXY(30, i++);
+    goToXY(25, i++);
 
     while (sem_cur)
     {
@@ -129,11 +127,11 @@ void ViewCourseInYear(Semester *semHead, int &i)
 
             len = cour->TeacherName.length();
             cout << setw(len + 3) << cour->TeacherName << setw(25 - len - 3) << '|';
-            goToXY(30, i++);
+            goToXY(25, i++);
 
             for (int i = 0; i < 92; i++)
                 cout << '=';
-            goToXY(30, i++);
+            goToXY(25, i++);
 
             cour = cour->next;
         }
@@ -144,7 +142,7 @@ void ViewCourseInYear(Semester *semHead, int &i)
 //? View all the course in the school
 void ViewAllCourse(Year *yearHead)
 {
-    PrintView_Course();
+    Render_ViewCourse();
     Year *year_cur = yearHead;
     int i = 8;
     while (year_cur)
@@ -155,12 +153,13 @@ void ViewAllCourse(Year *yearHead)
     }
 }
 
-void StaffMain(Year *yearHead)
+void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
-    PrintMenu();
+    Render_Menu();
 
     vector<string> menu;
+    menu.push_back("Account options");
     menu.push_back("View course");
     menu.push_back("Add a new year");
     menu.push_back("Add a new semester");
@@ -170,41 +169,52 @@ void StaffMain(Year *yearHead)
     menu.push_back("Quit");
 
     int choice = Draw(menu);
+    int ye;
+    Year *year_cur;
 
     switch (choice) // Do the choice
     {
     case 0:
-        //? View course
-        system("cls");
-        cout << "\n";
-        ViewCourse(yearHead);
-        StaffMain(yearHead); // Recursion back to the StaffMain function
+        if (AccountAlteration(accHead, user, pass, role))
+            return;
+        StaffMain(yearHead, accHead, user, pass, role);
         return;
     case 1:
-        //? Add a new year
-        Interface_New_Year(yearHead);
-        StaffMain(yearHead); // Recursion back to the StaffMain function
+        //? View course
+        system("cls");
+        ViewCourse(yearHead);
+        StaffMain(yearHead, accHead, user, pass, role); // Recursion back to the StaffMain function
         return;
     case 2:
-        //? Add a new semester
-        system("cls");
-        cout << "\n";
-        Interface_New_Sem(yearHead);
-        // Recursion back to the StaffMain function
-        StaffMain(yearHead);
+        //? Add a new year
+        Interface_New_Year(yearHead);
+        StaffMain(yearHead, accHead, user, pass, role); // Recursion back to the StaffMain function
         return;
     case 3:
-        //? Add a new course
-        break;
-    case 4:
-        //? Modify year/semester/course
+        //? Add a new semester
         system("cls");
-        cout << "\n";
-        initModify(yearHead);
+        Interface_New_Sem(yearHead);
         // Recursion back to the StaffMain function
-        StaffMain(yearHead);
+        StaffMain(yearHead, accHead, user, pass, role);
+        return;
+    case 4:
+        //? Add a new course
+        ye = Get_CheckFormat_Existed_Year(yearHead);
+        year_cur = yearHead;
+        while (year_cur && year_cur->yearStart != ye)
+            year_cur = year_cur->next;
+        AddingCourse(year_cur->NoSemester, yearHead);
+        // Recursion back to the StaffMain function
+        StaffMain(yearHead, accHead, user, pass, role);
         return;
     case 5:
+        //? Modify year/semester/course
+        system("cls");
+        initModify(yearHead);
+        // Recursion back to the StaffMain function
+        StaffMain(yearHead, accHead, user, pass, role);
+        return;
+    case 6:
         //? Save changes and quit
         cout << "\n";
         Output(yearHead);  // write down all the year
@@ -219,21 +229,21 @@ void StaffMain(Year *yearHead)
         cout << "\nSaving completed\n";
         return;
 
-    case 6:
+    case 7:
         //? Exit
         cout << "\n";
         cout << "Cleaning up the system";
         for (int i = 0; i < 8; i++)
         {
             cout << '.';
-            Sleep(200);
+            Sleep(100);
         }
         cout << "\nClosing system\n";
         return;
     }
 }
 
-void NewYearMain(Year *&yearHead, Account *accHead, int role)
+void MainMenu(Year *&yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
     cout << "\n";
@@ -254,7 +264,7 @@ void NewYearMain(Year *&yearHead, Account *accHead, int role)
         break;
     case 3:
         //? StaffMain
-        StaffMain(yearHead);
+        StaffMain(yearHead, accHead, user, pass, role);
         break;
     }
     return;

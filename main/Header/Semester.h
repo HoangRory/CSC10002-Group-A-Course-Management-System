@@ -40,5 +40,7 @@ void SyncFullName(Year *yearHead, Account *accHead);
 void ViewCourse(Year *yearHead);
 void ViewCourseInYear(Semester *semHead, int &i);
 void ViewAllCourse(Year *yearHead);
-void StaffMain(Year *yearHead);
-void NewYearMain(Year *&yearHead, Account *accHead, int role);
+
+//? Main
+void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
+void MainMenu(Year *&yearHead, Account *accHead, string &user, string &pass, int &role);

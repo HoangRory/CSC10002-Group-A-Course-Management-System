@@ -50,6 +50,8 @@ bool isValidDate(const string &dateOfBirth);
 bool isValidGender(const string &gender);
 bool isValidYear(string year);
 
+void SeparateName(string full, string &first, string &last);
+
 //* Interface
 Year *RecoverFile();
 void Interface_New_Year(Year *yearHead);

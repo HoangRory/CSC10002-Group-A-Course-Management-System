@@ -55,7 +55,7 @@ void loadingFile(Year *&yearHead, int &numofYear)
     importYear(yearHead, numofYear); // Read the year's stored file
     for (int i = 0; i < 5; i++)
     {
-        Sleep(400);
+        Sleep(200);
         cout << '.'; // The effect :)))
     }
     cout << "\nLoading file completed." << endl;
@@ -88,7 +88,7 @@ void importYear(Year *&yearHead, int &numofYear)
         }
 
         numofYear++;
-        ifs >> curYear->yearStart; // Get the year starting year to generate
+        ifs >> curYear->yearStart;                // Get the year starting year to generate
         importClass(curYear, curYear->yearStart); // Access the saved classes files
     }
 }
@@ -225,7 +225,7 @@ Semester *Read_Sem(int year, int smt)
 
     Semester *newSem = new Semester;
     newSem->Year = year;
-    newSem->No = smt; // Get the year and semester
+    newSem->No = smt;                            // Get the year and semester
     ifs >> newSem->startDate >> newSem->endDate; // Get the date
 
     Course *newCourse = nullptr;
@@ -244,8 +244,7 @@ Semester *Read_Sem(int year, int smt)
         }
         ifs.ignore();
         getline(ifs, newCourse->Name);
-        ifs >> newCourse->CourseID >> newCourse->Credits >> newCourse->maxStudents 
-            >> newCourse->numStudents >> newCourse->Room;
+        ifs >> newCourse->CourseID >> newCourse->Credits >> newCourse->maxStudents >> newCourse->numStudents >> newCourse->Room;
         ifs.ignore();
         getline(ifs, newCourse->TeacherName);
         ifs >> newCourse->Day >> newCourse->Session;

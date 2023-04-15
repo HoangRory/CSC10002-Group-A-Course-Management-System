@@ -6,7 +6,7 @@ void initModify(Year *yearHead)
 {
     system("cls");
 
-    PrintMenu();
+    Render_Menu();
     vector<string> menu;
     menu.push_back("Modify semester");
     menu.push_back("Modify course");
