@@ -18,6 +18,17 @@ namespace UICourseManagementSystem {
 		MyForm(void)
 		{
 			InitializeComponent();
+			//Set placeholder text for username and password text boxes //NEW
+			//username->Text = L"Username";
+			//password->Text = L"Password";
+			//username->ForeColor = System::Drawing::Color::Gray;
+			//password->ForeColor = System::Drawing::Color::Gray;
+
+			// Add event handlers for username and password text boxes //NEW
+			//username->Enter += gcnew System::EventHandler(this, &MyForm::username_Enter);
+			//username->Leave += gcnew System::EventHandler(this, &MyForm::username_Leave);
+			//password->Enter += gcnew System::EventHandler(this, &MyForm::password_Enter);
+			//password->Leave += gcnew System::EventHandler(this, &MyForm::password_Leave);
 			//
 			//TODO: Add the constructor code here
 			//
@@ -41,6 +52,10 @@ namespace UICourseManagementSystem {
 	private: System::Windows::Forms::TextBox^ password;
 	private: System::Windows::Forms::CheckBox^ checkBox1;
 	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ button2;
+
+
+
 
 	protected:
 
@@ -72,6 +87,7 @@ namespace UICourseManagementSystem {
 			this->password = (gcnew System::Windows::Forms::TextBox());
 			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->box))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -86,18 +102,22 @@ namespace UICourseManagementSystem {
 			// 
 			// Sysname
 			// 
+			this->Sysname->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->Sysname->BackColor = System::Drawing::Color::White;
 			this->Sysname->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->Sysname->Cursor = System::Windows::Forms::Cursors::Default;
 			this->Sysname->Font = (gcnew System::Drawing::Font(L"Google Sans", 16.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(163)));
-			this->Sysname->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
-				static_cast<System::Int32>(static_cast<System::Byte>(192)));
-			this->Sysname->Location = System::Drawing::Point(290, 153);
+			this->Sysname->ForeColor = System::Drawing::Color::MidnightBlue;
+			this->Sysname->Location = System::Drawing::Point(293, 160);
 			this->Sysname->Name = L"Sysname";
-			this->Sysname->Size = System::Drawing::Size(300, 27);
+			this->Sysname->ReadOnly = true;
+			this->Sysname->Size = System::Drawing::Size(364, 34);
 			this->Sysname->TabIndex = 1;
 			this->Sysname->Text = L"School Management System";
+			this->Sysname->TextChanged += gcnew System::EventHandler(this, &MyForm::Sysname_TextChanged);
 			// 
 			// username
 			// 
@@ -107,9 +127,11 @@ namespace UICourseManagementSystem {
 			this->username->ForeColor = System::Drawing::Color::DimGray;
 			this->username->Location = System::Drawing::Point(333, 222);
 			this->username->Name = L"username";
-			this->username->Size = System::Drawing::Size(225, 24);
+			this->username->Size = System::Drawing::Size(225, 29);
 			this->username->TabIndex = 2;
 			this->username->Text = L"Username";
+			this->username->Enter += gcnew System::EventHandler(this, &MyForm::username_Enter);
+			this->username->Leave += gcnew System::EventHandler(this, &MyForm::username_Leave);
 			// 
 			// password
 			// 
@@ -119,23 +141,29 @@ namespace UICourseManagementSystem {
 			this->password->ForeColor = System::Drawing::Color::DimGray;
 			this->password->Location = System::Drawing::Point(333, 278);
 			this->password->Name = L"password";
-			this->password->Size = System::Drawing::Size(225, 24);
+			this->password->Size = System::Drawing::Size(225, 29);
 			this->password->TabIndex = 3;
 			this->password->Text = L"Password";
+			this->password->UseSystemPasswordChar = true;
+			this->password->Enter += gcnew System::EventHandler(this, &MyForm::password_Enter);
+			this->password->Leave += gcnew System::EventHandler(this, &MyForm::password_Leave);
 			// 
 			// checkBox1
 			// 
 			this->checkBox1->AutoSize = true;
 			this->checkBox1->BackColor = System::Drawing::Color::White;
+			this->checkBox1->Checked = true;
+			this->checkBox1->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBox1->Font = (gcnew System::Drawing::Font(L"Google Sans", 6, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(163)));
 			this->checkBox1->ForeColor = System::Drawing::Color::Gray;
 			this->checkBox1->Location = System::Drawing::Point(333, 325);
 			this->checkBox1->Name = L"checkBox1";
-			this->checkBox1->Size = System::Drawing::Size(77, 14);
+			this->checkBox1->Size = System::Drawing::Size(95, 17);
 			this->checkBox1->TabIndex = 4;
 			this->checkBox1->Text = L"I\'m not a robot";
 			this->checkBox1->UseVisualStyleBackColor = false;
+			this->checkBox1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox1_CheckedChanged);
 			// 
 			// button1
 			// 
@@ -145,12 +173,28 @@ namespace UICourseManagementSystem {
 			this->button1->Font = (gcnew System::Drawing::Font(L"Google Sans", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(163)));
 			this->button1->ForeColor = System::Drawing::Color::White;
-			this->button1->Location = System::Drawing::Point(391, 365);
+			this->button1->Location = System::Drawing::Point(333, 367);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(109, 32);
+			this->button1->Size = System::Drawing::Size(95, 32);
 			this->button1->TabIndex = 5;
 			this->button1->Text = L"Log in";
 			this->button1->UseVisualStyleBackColor = false;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
+			// 
+			// button2
+			// 
+			this->button2->BackColor = System::Drawing::Color::White;
+			this->button2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button2->Font = (gcnew System::Drawing::Font(L"Google Sans", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(163)));
+			this->button2->ForeColor = System::Drawing::Color::Silver;
+			this->button2->Location = System::Drawing::Point(463, 367);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(95, 32);
+			this->button2->TabIndex = 6;
+			this->button2->Text = L"Exit";
+			this->button2->UseVisualStyleBackColor = false;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
 			// MyForm
 			// 
@@ -158,6 +202,7 @@ namespace UICourseManagementSystem {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
 			this->ClientSize = System::Drawing::Size(882, 533);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->checkBox1);
 			this->Controls->Add(this->password);
@@ -177,13 +222,85 @@ namespace UICourseManagementSystem {
 
 		}
 #pragma endregion
+	//private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	//}
+	//khuc nay la de nhap cai password voi username thoi do :))
+	private:
+		System::Void username_Enter(System::Object^ sender, System::EventArgs^ e) {
+			// Clear placeholder text when username text box is focused
+			if (username->Text == L"Username") {
+				username->Text = L"";
+				username->ForeColor = System::Drawing::Color::Black;
+			}
+		}
+
+		System::Void username_Leave(System::Object^ sender, System::EventArgs^ e) {
+			// Restore placeholder text when username text box loses focus and is empty
+			if (username->Text == L"") {
+				username->Text = L"Username";
+				username->ForeColor = System::Drawing::Color::Gray;
+			}
+		}
+
+		System::Void password_Enter(System::Object^ sender, System::EventArgs^ e) {
+			// Clear placeholder text and set password char when password text box is focused
+			if (password->Text == L"Password") {
+				password->Text = L"";
+				password->UseSystemPasswordChar = true;
+				password->ForeColor = System::Drawing::Color::Black;
+			}
+		}
+
+		System::Void password_Leave(System::Object^ sender, System::EventArgs^ e) {
+			// Restore placeholder text and hide password char when password text box loses focus and is empty
+			if (password->Text == L"") {
+				password->Text = L"Password";
+				password->UseSystemPasswordChar = false;
+				password->ForeColor = System::Drawing::Color::Gray;
+			}
+		}
+	//toi day ne =0
+
 	private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
+		//////////////////////////////////////////////////////////
+		if (checkBox1->Checked) {
+			button1->Enabled = true;
+		}
+		else {
+			button1->Enabled = false;
+		}
+		//////////////////////////////////////////////////////////
 	}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void Sysname_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void username_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void password_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		Application::Exit();
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		////////////////////////////////////////////////////////
+		if (username->Text == "admin") {
+			if (password->Text == "admin") {
+				MessageBox::Show("Login Sucessfully!", "System", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+				Application::Exit();
+			}
+			else {
+				MessageBox::Show("Incorrect Password\nPlease retry.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+		}
+		else {
+			MessageBox::Show("Incorrect Username\nPlease retry.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		//////////////////////////////////////////////////////////
 	}
 
 	};

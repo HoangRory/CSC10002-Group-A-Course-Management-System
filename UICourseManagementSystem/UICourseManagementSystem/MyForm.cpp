@@ -1,4 +1,5 @@
 #include "MyForm.h"
+#include <msclr/marshal_cppstd.h> //for password and username change
 
 using namespace System;
 using namespace System::Windows::Forms;
