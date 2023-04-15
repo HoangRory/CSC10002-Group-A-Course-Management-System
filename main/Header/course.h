@@ -82,7 +82,7 @@ void ViewClass(Year* yearHead);
     // task 16 //
 void ViewStudentsClass(Year *yearHead);
     //task 17 //
-void ViewCourse(Year *yearHead);
+// void ViewCourse(Year *yearHead);
     //task 18 //
 void ViewStudentCourse(Year *yearHead);
     //task 21 //

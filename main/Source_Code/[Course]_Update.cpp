@@ -1,5 +1,4 @@
 #include "../Header/course.h"
-#include "../Header/help.h"
 
 //task 22
 
