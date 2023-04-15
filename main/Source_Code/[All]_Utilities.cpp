@@ -35,7 +35,7 @@ bool Message_YesNo(string message, string title)
 {
     ShowConsoleCursor(false);
     EnableWindow(GetConsoleWindow(), false);
-    bool result = MessageBoxA(NULL, message.c_str(), title.c_str(), MB_YESNO | MB_ICONQUESTION);
+    int result = MessageBoxA(NULL, message.c_str(), title.c_str(), MB_YESNO | MB_ICONQUESTION);
     EnableWindow(GetConsoleWindow(), true);
     ShowConsoleCursor(true);
     return (result == IDYES ? true : false);

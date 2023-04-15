@@ -58,6 +58,58 @@ int Draw(vector<string> menu)
     }
 }
 
+int Draw_ShortVer(vector<string> menu)
+{
+    vector<int> choice(menu.size(), 0);
+    int cur = 0;
+    ShowConsoleCursor(0);
+    while (1)
+    {
+        choice[cur] = 1;
+        for (int i = 0; i < choice.size(); i++)
+        {
+            if (choice[i])
+            {
+                TextColor(0xFF);
+                goToXY(60, 14 + i);
+                cout << "                         ";
+                goToXY(62, 14 + i);
+                TextColor(0xF3);
+                cout << menu[i];
+            }
+            else
+            {
+                TextColor(7);
+                goToXY(60, 14 + i);
+                cout << "                         ";
+                goToXY(62, 14 + i);
+                TextColor(7);
+                cout << menu[i];
+            }
+        }
+        TextColor(07);
+        int tmp;
+        if (tmp = _getch())
+        {
+            switch (tmp)
+            {
+            case ENTER:
+                system("cls");
+                ShowConsoleCursor(1);
+                return cur;
+            case UP:
+                choice[cur] = 0;
+                cur = (cur > 0 ? cur - 1 : menu.size() - 1);
+                break;
+            case DOWN:
+                choice[cur] = 0;
+                cur = (cur < menu.size() - 1 ? cur + 1 : 0);
+                break;
+            }
+        }
+    }
+}
+
 void Render_Login()
 {
     TextColor(11);
@@ -159,4 +211,28 @@ void Render_NewYear()
     cout << "  | | | |   __| | | |  |_   _|   __|     |    -|";
     goToXY(50, 6);
     cout << "  |_|___|_____|_____|    |_| |_____|__|__|__|__|";
+}
+
+void Render_Semester()
+{
+    goToXY(55, 3);
+    cout << " ___ ___ __  __ ___ ___ _____ ___ ___";
+    goToXY(55, 4);
+    cout << "/ __| __|  \\/  | __/ __|_   _| __| _ \\";
+    goToXY(55, 5);
+    cout << "\\__ \\ _|| |\\/| | _|\\__ \\ | | | _||   /";
+    goToXY(55, 6);
+    cout << "|___/___|_|  |_|___|___/ |_| |___|_|_\\";
+}
+
+void Render_Class()
+{
+    goToXY(60, 3);
+    cout << "  ___ _      _   ___ ___";
+    goToXY(60, 4);
+    cout << " / __| |    /_\\ / __/ __|";
+    goToXY(60, 5);
+    cout << "| (__| |__ / _ \\\\__ \\__ \\";
+    goToXY(60, 6);
+    cout << " \\ ___|____/_/ \\_\\___/___/";
 }

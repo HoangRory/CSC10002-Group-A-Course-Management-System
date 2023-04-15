@@ -94,3 +94,10 @@ bool isValidYear(string year)
     int y2 = stoi(year.substr(5, 4));
     return (y2 - y1 == 1);
 }
+
+void SeparateName(string full, string &first, string &last)
+{
+    size_t pos = full.find_last_of(" ");
+    first = full.substr(0, pos);
+    last = full.substr(pos + 1);
+}

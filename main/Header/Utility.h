@@ -20,6 +20,9 @@ void Render_Menu();
 void Render_ViewCourse();
 void Render_Account();
 void Render_NewYear();
+void Render_Semester();
+void Render_Class();
 
 //? Draw the option
 int Draw(vector<string> menu);
+int Draw_ShortVer(vector<string> menu);

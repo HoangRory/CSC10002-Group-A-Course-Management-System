@@ -143,68 +143,68 @@ void ViewStudentsClass(Year *yearHead)
     }
 }
 //task 17: view the list of courses in a semester of a school year, different with view course in task 9
-void ViewCourse(Year *yearHead)
-{
-// mới viết
-    Year *ChooseYear = nullptr;
-    Semester *ChooseSem = nullptr;
-    Course *ChooseCourse = nullptr;
-    if(yearHead == nullptr){
-        cout << "There are no school year.";
-        system("pause");
-        // gọi lại hàm mainmenu
-        return;
-    }
-    do {
-        ChooseYear = chooseYearbyOption(yearHead);
-        if(ChooseYear == nullptr){
-            //quay lại main menu
-            return;
-        }
-        system("cls");
-        do {
-            if(ChooseYear->NoSemester == nullptr) {
-                cout << "There are no semester in this school year."  << endl;
-                system("pause");
-                break;
-            }
-            ChooseSem = chooseSemesterbyOption(ChooseYear->NoSemester);
-            system("cls");
+// void ViewCourse(Year *yearHead)
+// {
+// // mới viết
+//     Year *ChooseYear = nullptr;
+//     Semester *ChooseSem = nullptr;
+//     Course *ChooseCourse = nullptr;
+//     if(yearHead == nullptr){
+//         cout << "There are no school year.";
+//         system("pause");
+//         // gọi lại hàm mainmenu
+//         return;
+//     }
+//     do {
+//         ChooseYear = chooseYearbyOption(yearHead);
+//         if(ChooseYear == nullptr){
+//             //quay lại main menu
+//             return;
+//         }
+//         system("cls");
+//         do {
+//             if(ChooseYear->NoSemester == nullptr) {
+//                 cout << "There are no semester in this school year."  << endl;
+//                 system("pause");
+//                 break;
+//             }
+//             ChooseSem = chooseSemesterbyOption(ChooseYear->NoSemester);
+//             system("cls");
 
-            if(ChooseSem){
-                if(ChooseSem->course == nullptr) {
-                    cout << "There are no course in this semester" << endl;
-                    system("pause");
+//             if(ChooseSem){
+//                 if(ChooseSem->course == nullptr) {
+//                     cout << "There are no course in this semester" << endl;
+//                     system("pause");
 
-                } else{
-                    ChooseCourse = chooseCoursebyOption(ChooseSem->course);
-                }
-                system("cls"); 
-            } else 
-                break;
-        }while(ChooseCourse == nullptr);
+//                 } else{
+//                     ChooseCourse = chooseCoursebyOption(ChooseSem->course);
+//                 }
+//                 system("cls"); 
+//             } else 
+//                 break;
+//         }while(ChooseCourse == nullptr);
         
-    } while (ChooseSem == nullptr);
-// phía trên là để chọn được course
-    cout << "\nList of courses in the semester " << ChooseSem->No << " of the " << ChooseSem->Year << "-" << ChooseSem->Year + 1 << " school year:" << endl;
-    for (int i = 1; i <= 70; ++i)
-        cout << "=";
-    cout << "\n";
-    cout << "|    ID" << setw(18) << "|         Name" << setw(33) << "|       Teacher" << setw(13) << "|\n"; 
-    for (int i = 1; i <= 70; ++i)
-        cout << "=";
-    cout << "\n";
-    while (ChooseCourse)
-    {
-        cout << "| " << ChooseCourse->CourseID << " | ";
-        cout << ChooseCourse->Name << setw(32 - ChooseCourse->Name.length()) << "| ";  
-        cout << ChooseCourse->TeacherName << setw(26 - ChooseCourse->TeacherName.length()) << "|\n";
-        for (int i = 1; i <= 70; ++i)
-            cout << "=";
-        cout << "\n";
-        ChooseCourse = ChooseCourse->next;
-    }
-}
+//     } while (ChooseSem == nullptr);
+// // phía trên là để chọn được course
+//     cout << "\nList of courses in the semester " << ChooseSem->No << " of the " << ChooseSem->Year << "-" << ChooseSem->Year + 1 << " school year:" << endl;
+//     for (int i = 1; i <= 70; ++i)
+//         cout << "=";
+//     cout << "\n";
+//     cout << "|    ID" << setw(18) << "|         Name" << setw(33) << "|       Teacher" << setw(13) << "|\n"; 
+//     for (int i = 1; i <= 70; ++i)
+//         cout << "=";
+//     cout << "\n";
+//     while (ChooseCourse)
+//     {
+//         cout << "| " << ChooseCourse->CourseID << " | ";
+//         cout << ChooseCourse->Name << setw(32 - ChooseCourse->Name.length()) << "| ";  
+//         cout << ChooseCourse->TeacherName << setw(26 - ChooseCourse->TeacherName.length()) << "|\n";
+//         for (int i = 1; i <= 70; ++i)
+//             cout << "=";
+//         cout << "\n";
+//         ChooseCourse = ChooseCourse->next;
+//     }
+// }
 //task 18: view students in a course 
 void ViewStudentCourse(Year *yearHead)
 {

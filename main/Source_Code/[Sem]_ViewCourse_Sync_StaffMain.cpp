@@ -63,8 +63,7 @@ void ViewCourse(Year *yearHead)
     if (opt == 0)
     {
         ViewAllCourse(yearHead);
-        cout << "\n";
-        system("pause");
+        Pause();
         return;
     }
 
@@ -80,8 +79,7 @@ void ViewCourse(Year *yearHead)
     int i = 8;
     Render_ViewCourse();
     ViewCourseInYear(year_cur->NoSemester, i); // View the course in the certain year
-    cout << "\n";
-    system("pause");
+    Pause();
     return;
 }
 
@@ -92,7 +90,7 @@ void ViewCourseInYear(Semester *semHead, int &i)
         return;
     Semester *sem_cur = semHead;
     // cout << "List of courses: \n";
-    goToXY(30, i++);
+    goToXY(25, i++);
     for (int i = 0; i < 92; i++) // Display the table
         cout << '=';
     TextColor(0xF1);
