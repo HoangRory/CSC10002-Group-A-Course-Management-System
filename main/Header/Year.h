@@ -42,6 +42,7 @@ void add1stYearStudents(Class *curClass, string ID, string first, string last, s
 
 //* Validate the input
 void CapitalClassName(string &name);
+bool isValidStudentID(string studentID, string year);
 bool checkYear(Year *curYear, int year);
 bool checkClass(Year *curYear, string className);
 bool Check_Student(Class *curClass, string studentID);
@@ -51,6 +52,7 @@ bool isValidGender(const string &gender);
 bool isValidYear(string year);
 
 void SeparateName(string full, string &first, string &last);
+void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &birth, string &socialID, string yr);
 
 //* Interface
 Year *RecoverFile();
