@@ -66,7 +66,7 @@ int amountCourse(Course* courseHead);
   /////////////////////////////////////////////////////////////
  //                     CHOOSE                              //
 /////////////////////////////////////////////////////////////
-Year* chooseYearbyOption(Year* yearHead); 
+Year* chooseYearbyOption(Year* yearHead, int option); 
 Semester* chooseSemesterbyOption(Semester* semHead);
 Class* chooseClassbyOption(Class *classHead);
 Course* chooseCoursebyOption(Course* courseHead) ;

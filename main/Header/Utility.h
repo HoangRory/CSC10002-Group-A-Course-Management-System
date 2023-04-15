@@ -17,4 +17,6 @@ void PrintMenu();
 int Draw(vector<string> menu);
 void PrintView_Course();
 
+void Print_Update();
+
 void SetWindowSize(int width, int height);

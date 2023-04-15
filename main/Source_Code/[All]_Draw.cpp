@@ -101,3 +101,27 @@ void PrintView_Course()
     TextColor(0x0F);
     cout << "   \\____/ \\___/  \\___/ \\_| \\_|\\____/ \\____/\n";
 }
+
+void Print_Update()
+{
+    int i = 1;
+    goToXY(54,i++);
+    TextColor(0x0A);
+    cout <<   " _   _  _____ ______   ___   _____  _____ ";
+    goToXY(54,i++);
+    TextColor(0x0A);
+    cout <<   "| | | || ___ \\|  _  \\ / _ \\ |_   _||  ___|";
+    goToXY(54,i++);
+    TextColor(0x0A);
+    cout <<   "| | | || |_/ /| | | |/ /_\\ \\  | |  | |__";
+    goToXY(54,i++);
+    TextColor(0x0A);
+    cout <<   "| | | ||  __/ | | | ||  _  |  | |  |  __|";
+    goToXY(54,i++);
+    TextColor(0x0A);
+    cout <<   "| |_| || |    | |/ / | | | |  | |  | |___ ";
+    goToXY(54,i++);
+    TextColor(0x0A);
+    cout <<   "\\___/ \\_|    |___/  \\_| |_/  \\_/  \\____/ ";
+//       
+}

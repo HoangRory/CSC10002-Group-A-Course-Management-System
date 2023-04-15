@@ -1,24 +1,11 @@
 #include "../Header/course.h"
 
-Year* chooseYearbyOption(Year* yearHead) 
+Year* chooseYearbyOption(Year* yearHead, int option) 
 {
-    int nOption, option;
-    string *arrOption;
-    Year *curYear = yearHead;
-
-    nOption = amountYear (yearHead);
-    arrOption = new string [nOption + 1];
-    for (int i = 0; i < nOption; i++) {
-        arrOption[i] = to_string(curYear->yearStart) + "-" + to_string(curYear->yearStart +1);
-        curYear = curYear->next;
-    }
-    arrOption[nOption] =  "<-";
-    system("cls");
-    string title = "Select Year: ";
-    option = view_chooseOption(arrOption,nOption+1,title);
-    delete []arrOption;
-    while(yearHead && option--)
+    int index = 0;
+    while(yearHead && index != option) {
         yearHead = yearHead->next;
+    }
     return yearHead;
 }
 

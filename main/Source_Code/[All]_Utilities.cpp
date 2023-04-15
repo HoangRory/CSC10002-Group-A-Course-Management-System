@@ -65,19 +65,3 @@ void initWindow(int width, int length)
     resizeWindow(width, length);
     hideScrollBar();
 }
-
-
-
-
-void SetWindowSize(int width, int height)
-{
-    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    SMALL_RECT WindowSize;
-    WindowSize.Top = 0;
-    WindowSize.Left = 0;
-    WindowSize.Right = width;
-    WindowSize.Bottom = height;
- 
-    SetConsoleWindowInfo(hStdout, 1, &WindowSize);
-}
