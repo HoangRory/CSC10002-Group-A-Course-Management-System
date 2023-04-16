@@ -1,31 +1,46 @@
 #pragma once
-
 #include "proto.h"
 
-void Read_SMT(Semester *&semHead, int y, int smt);
-void Read_multi_SMT(Semester *&semHead, int yr, int num_year, int num_smt);
-void SyncFullName(Semester *semHead, Account *accHead);
+//? Add new semester, new course and import student
+Semester *AddSemester(Year *yearHead);
+Course *AddNewCourse(Semester *semCurrent, Year *yearHead);
+void ImportStudentFromFile(Course *courseCurrent);
+void AddStudentByHand(Course *courseCurrent);
+void AddingCourse(Semester *semCurrent, Year *yearHead);
+
+void Interface_New_Sem(Year *yearHead);
+
+//? Initialize Modification
+void initModify(Year *yearHead);
+void RunModify(Year *yearHead, int opt);
+
+//? Modifying
+void modifySemester(Year *yearHead, int year, int sem);
+void modifyCourse(Year *yearHead, int year);
+void ChangeCourseInfo(Course *cour_cur);
+void removeCourse(Year *yearHead, int year);
+
+void addStudent(Course *courCurrent, string course_id);
+void removeStudent(Course *courCurrent, string course_id);
+void addRemoveStudent(Year *yearHead, int year);
+
+//? Read Semester from file
+Semester *Read_Sem(int year, int smt);
+Semester *Read_All_Semester(int year);
 
 void DeleteStudent(StudentCourse *&stud_head);
 void DeleteCourse(Course *&course_head);
-void DeleteSMT(Semester *&semHead);
+void DeleteSMT(Year *yearHead);
 
-void OutStudent(StudentCourse *stud_head, ofstream &ofs);
 void OutCourse(Course *course_head, ofstream &ofs);
-void Output(Semester *semHead);
+void Output(Year *yearHead);
 
-void AddSemester(Semester *semHead);
-void AddCourse(Semester *semHead, Semester *&sem);
-void AddStudent(Course *&new_course, Semester *sem);
+//? View Course, Sync name from Account linked list
+void SyncFullName(Year *yearHead, Account *accHead);
+void ViewCourse(Year *yearHead);
+void ViewCourseInYear(Semester *semHead, int &i);
+void ViewAllCourse(Year *yearHead);
 
-void viewCourse(Semester *semHead);
-void modifyCourse(Semester *semHead, string id);
-void modifySemester(Semester *semHead, int year, int sem);
-
-void addStudent(Semester *semHead, string id);
-void removeStudent(Semester *semHead, string id);
-void addRemoveStudent(Semester *semHead, string id);
-
-void deleteCourse(Semester *semHead, string id);
-
-void initModify(Semester *&semHead);
+//? Main
+void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
+void MainMenu(Year *&yearHead, Account *accHead, string &user, string &pass, int &role);
