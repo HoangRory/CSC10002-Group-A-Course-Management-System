@@ -27,6 +27,7 @@ void UpdateStudentResult(Year *Yhead) ;
   ///////////////////////////////////////////////////////
  //                  CREATE                           //
 ///////////////////////////////////////////////////////
+string getFirstChar(string name);
 string createNameFile(int year, int no_smt, string course, string file, string type);
 
 CourseStudent* CourseOfAClass (Student *studentHead);
@@ -66,7 +67,7 @@ int amountCourse(Course* courseHead);
   /////////////////////////////////////////////////////////////
  //                     CHOOSE                              //
 /////////////////////////////////////////////////////////////
-Year* chooseYearbyOption(Year* yearHead, int option); 
+Year* chooseYearbyOption(Year* yearHead); 
 Semester* chooseSemesterbyOption(Semester* semHead);
 Class* chooseClassbyOption(Class *classHead);
 Course* chooseCoursebyOption(Course* courseHead) ;
@@ -86,8 +87,7 @@ void ViewStudentsClass(Year *yearHead);
     //task 18 //
 void ViewStudentCourse(Year *yearHead);
     //task 21 //
-void viewScoreBoardCourse(Course *courseHead); 
-void viewScoreCourseStudent(ScoreBoardCourse SBC);
+void viewScoreBoardCourse(Course *courseHead);
     //task 23 //
 void viewAllFinalMark_ofStudent(double *SBC, int Col);
 void viewScoreboardClass(Class *Class);

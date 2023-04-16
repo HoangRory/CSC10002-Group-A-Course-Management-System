@@ -2,6 +2,7 @@
 #include "../Header/Login.h"
 #include "../Header/Year.h"
 #include "../Header/Utility.h"
+#include "../Header/course.h"
 
 void EradicateLL(Account *&accHead, Year *&yearHead)
 {
@@ -13,8 +14,10 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     yearHead = RecoverFile();
     string user = "", pass = "";
     int role;
+    ReadAccount(accHead);
     if (LoggingMain(accHead, user, pass, role))
         return;
+    SyncInForStudent(yearHead, accHead);
     SyncFullName(yearHead, accHead);
     MainMenu(yearHead, accHead, user, pass, role);
 }
@@ -30,6 +33,10 @@ int main()
 
     Merge_year_sem(accHead, yearHead);
 
+    ViewClass(yearHead);
+    ViewStudentsClass(yearHead);
+    ViewCourse(yearHead);
+    ViewStudentCourse(yearHead);
     EradicateLL(accHead, yearHead);
     return 0;
 }

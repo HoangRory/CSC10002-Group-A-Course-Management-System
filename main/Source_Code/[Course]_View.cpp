@@ -1,4 +1,5 @@
 #include "../Header/course.h"
+#include "../Header/Utility.h"
 
 //all
 int view_chooseOption(string *arrOption, int nOption, string title) 
@@ -85,31 +86,43 @@ void ViewCoursesOfAStudent(Account *accHead, Course *courseHead) //courseHead in
 //task 15: view all classes which are existed
 void ViewClass(Year* yearHead)
 {
-    Year *yr_cur = yearHead;
-    cout << "List of classes:\n";
-    for (int i = 0; i < 50; i++)
-        cout << '-';
-    while (yr_cur)
-    {
-        Class *cls_cur = yr_cur->Class;
-        cout << "\nSchool year " << yr_cur->yearStart << "-" << yr_cur->yearStart + 1 << ":" << endl; // seperate the list into many parts by the school year
-        while (cls_cur)
-        {
-            cout << cls_cur->Name << endl;
-            cls_cur = cls_cur->next;
-        }
-        yr_cur = yr_cur->next;
-    }
-    for (int i = 0; i < 50; i++)
-        cout << '-';
-}
-//task 16: view students in a class 
-void ViewStudentsClass(Year *yearHead) 
-{   
+    system("cls");
+    Render_View();
     Year *ChooseYear = chooseYearbyOption(yearHead);
     if(ChooseYear == nullptr)
         return;
         //gọi lại hàm mainmenu
+    system("cls");
+    Render_View();
+    int x = 55, y = 15;
+    Class *cls_cur = ChooseYear->Class;
+    goToXY(x,y++);
+    cout << "List of class in school year " << ChooseYear->yearStart << "-" << ChooseYear->yearStart + 1 ; // seperate the list into many parts by the school year
+    goToXY(x,y++);
+    for (int i = 0; i < 38 ; i++)
+        cout << '=';
+    while (cls_cur)
+    {
+        goToXY(x,y++);
+        cout  << setw(14) << left << "|"  << setw(10) << cls_cur->Name << setw(14) << right << "|";
+        cls_cur = cls_cur->next;
+        goToXY(x,y++);
+        for (int i = 0; i < 38; i++)
+            cout << '=';
+    }
+    Pause();
+}
+//task 16: view students in a class 
+void ViewStudentsClass(Year *yearHead)
+{   
+    system("cls");
+    Render_View();
+    Year *ChooseYear = chooseYearbyOption(yearHead);
+    if(ChooseYear == nullptr)
+        return;
+        //gọi lại hàm mainmenu
+    system("cls");
+    Render_View();
     Class *ChooseClass = chooseClassbyOption(ChooseYear->Class);
     if(ChooseClass == nullptr) {
         ViewStudentsClass(yearHead);
@@ -117,32 +130,39 @@ void ViewStudentsClass(Year *yearHead)
     }
 
     system("cls");
+    Render_View();
     Student *currStudent = ChooseClass->StudentClass;
+    int x = 50,y = 10;
     if(currStudent) 
     {
-        cout <<  "\nList of students in " << ChooseClass->Name << ":" << endl;
-        for (int i = 1; i <= 36; ++i)
+        goToXY(x,y++);
+        cout <<  "List of students in " << ChooseClass->Name;
+        goToXY(x,y++);
+        for (int i = 1; i <= 57; ++i)
             cout << "=";
-        cout << "\n";
-        cout << "|    ID" << setw(5) << "|" << setw(15) << "Full name" << setw(9) << "|" << endl;
-        for (int i = 1; i <= 36; ++i)
+        goToXY(x,y++);
+        cout << setw(8) << left << "|" << setw(12) << "ID" << "|";
+        cout << setw(10) << " " << setw(25) << "Full Name " << "|";
+        goToXY(x,y++);
+        for (int i = 1; i <= 57; ++i)
             cout << "=";
-        cout << "\n";
     }
     else 
-        cout << "\nThere is no student in " << ChooseClass->Name<< endl;
+        Message_Warning("There is no student in " + ChooseClass->Name, "Error");
     while (currStudent)
     {
-        cout << "| " << currStudent->ID  << " |" << "\t"; 
-        cout << currStudent->accStudent->firstName << " " 
-            << currStudent->accStudent->lastName << setw(20 - currStudent->accStudent->firstName.length() - currStudent->accStudent->lastName.length()) << "|\n";
-        for (int i = 1; i <= 36; ++i)
+        string fullname = currStudent->accStudent->lastName +" "+ currStudent->accStudent->firstName;
+        goToXY(x,y++);
+        cout << setw(5) << left << "|" << setw(15) << currStudent->ID << "|"; 
+        cout << setw(8) << " " << setw(27) << left  << fullname << "|" ;
+        goToXY(x,y++);
+        for (int i = 1; i <= 57; ++i)
             cout << "=";
-        cout << "\n";
         currStudent = currStudent->next;
     }
+    Pause();
 }
-//task 17: view the list of courses in a semester of a school year, different with view course in task 9
+// task 17: view the list of courses in a semester of a school year, different with view course in task 9
 // void ViewCourse(Year *yearHead)
 // {
 // // mới viết
@@ -150,8 +170,7 @@ void ViewStudentsClass(Year *yearHead)
 //     Semester *ChooseSem = nullptr;
 //     Course *ChooseCourse = nullptr;
 //     if(yearHead == nullptr){
-//         cout << "There are no school year.";
-//         system("pause");
+//         Message_Warning("There are no school year.", "Error not exist");
 //         // gọi lại hàm mainmenu
 //         return;
 //     }
@@ -164,8 +183,7 @@ void ViewStudentsClass(Year *yearHead)
 //         system("cls");
 //         do {
 //             if(ChooseYear->NoSemester == nullptr) {
-//                 cout << "There are no semester in this school year."  << endl;
-//                 system("pause");
+//                 Message_Warning("There are no semester in this school year.", "Error not exist");
 //                 break;
 //             }
 //             ChooseSem = chooseSemesterbyOption(ChooseYear->NoSemester);
@@ -173,9 +191,7 @@ void ViewStudentsClass(Year *yearHead)
 
 //             if(ChooseSem){
 //                 if(ChooseSem->course == nullptr) {
-//                     cout << "There are no course in this semester" << endl;
-//                     system("pause");
-
+//                     Message_Warning("There are no course in this semester","Error not exist");
 //                 } else{
 //                     ChooseCourse = chooseCoursebyOption(ChooseSem->course);
 //                 }
@@ -205,15 +221,17 @@ void ViewStudentsClass(Year *yearHead)
 //         ChooseCourse = ChooseCourse->next;
 //     }
 // }
-//task 18: view students in a course 
+// //task 18: view students in a course 
 void ViewStudentCourse(Year *yearHead)
 {
+    system("cls");
+    Render_StudnetClass();
+    //in ra chư studentcourse
     Year *ChooseYear = nullptr;
     Semester *ChooseSem = nullptr;
     Course *ChooseCourse = nullptr;
     if(yearHead == nullptr){
-        cout << "There are no school year.";
-        system("pause");
+        Message_Warning("There are no school year.","Error not exist");
         // gọi lại hàm mainmenu
         return;
     }
@@ -224,24 +242,23 @@ void ViewStudentCourse(Year *yearHead)
             return;
         }
         system("cls");
+        Render_StudnetClass();
         do {
             if(ChooseYear->NoSemester == nullptr) {
-                cout << "There are no semester in this school year."  << endl;
-                system("pause");
+                Message_Warning("There are no semester in this school year.","Error not exist");
                 break;
             }
             ChooseSem = chooseSemesterbyOption(ChooseYear->NoSemester);
             system("cls");
-
+            Render_StudnetClass();
             if(ChooseSem){
                 if(ChooseSem->course == nullptr) {
-                    cout << "There are no course in this semester" << endl;
-                    system("pause");
-
+                    Message_Warning("There are no course in this semester", "Error not Exist");
                 } else{
                     ChooseCourse = chooseCoursebyOption(ChooseSem->course);
                 }
                 system("cls"); 
+                Render_StudnetClass();
             } else 
                 break;
         }while(ChooseCourse == nullptr);
@@ -249,13 +266,11 @@ void ViewStudentCourse(Year *yearHead)
     } while (ChooseSem == nullptr);
 
     //này là để chọn được course
-
-
-
+    system("cls");
+    Render_StudnetClass();
     StudentCourse *currStudent = ChooseCourse->studentCourse;
     if(!currStudent) {
-        cout << "\nThere is no student in course " << ChooseCourse->Name << endl;
-        system("pause");
+        Message_Warning(" There is no student in course " + ChooseCourse->Name, "Error not exist");
         system("cls");
         return;
     }
@@ -281,49 +296,49 @@ void ViewStudentCourse(Year *yearHead)
 
 }
 //này của task 21
-void viewScoreCourseStudent(ScoreBoardCourse SBC) 
-{
-    cout << "| " << setw(15) << left << SBC.midMark; 
-    cout << "| " << setw(15) << left << SBC.finalMark;
-    cout << "| " << setw(15) << left << SBC.totalMark ; 
-    cout << "| " << setw(15) << left << SBC.otherMark ;
-    cout << "| " << endl;
-}
 void viewScoreBoardCourse(Course *courseHead) 
 {
-
-    system("cls");
-    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
-    cout << "Using arrow keys to move and press enter to select your option." << endl;
-    system("pause");
+    // system("cls");
+    // cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
+    // cout << "Using arrow keys to move and press enter to select your option." << endl;
+    // system("pause");
     system("cls");
 
     Course *curCourse = chooseCoursebyOption(courseHead);
     if(!curCourse) {
+        Message_Warning("There aren't any courses for the current semester.", "Error not exist");
         //quay lại menu chính
         return;
     }
+
     StudentCourse *stuHead = curCourse->studentCourse;
+    int x = 45, y = 10;
+    goToXY(x,y++);
     for(int i = 0; i < 110 ; i++)
         cout <<"=";
-    cout << endl;
+    goToXY(x,y++);
     cout << "| " << setw(12) << left << "ID";
     cout << "| " << setw(25) << left << "Full Name";
     cout << "| " << setw(15) << left << "Mid Mark"; 
     cout << "| " << setw(15) << left << "Final Mark";
     cout << "| " << setw(15) << left << "Total Mark" ; 
     cout << "| " << setw(15) << left << "Other Mark" ;
-    cout << "| " << endl;
+    cout << "| ";
     while (stuHead) 
     {
+        goToXY(x,y++);
         for(int i = 0; i < 110 ; i++)
             cout <<"=";
-        cout << endl;
-        cout << "| " << setw(12) << left << stuHead->ID ;
+        goToXY(x,y++);
+        cout << "| " << setw(12) << left << stuHead->ID;
         cout << "| " << setw(25) << left<< stuHead->FullName;
-        viewScoreCourseStudent(stuHead->ScoreBoardCourse);
+        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.midMark; 
+        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.finalMark;
+        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.totalMark; 
+        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.otherMark;
         stuHead = stuHead->next;
     }
+    goToXY(x,y++);
     for(int i = 0; i < 110 ; i++)
         cout <<"=";
 }

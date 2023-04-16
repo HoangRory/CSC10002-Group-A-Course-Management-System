@@ -186,7 +186,7 @@ void UpdateStudentResult(Year *Yhead)
                     year_cur = year_cur->next;
                 }
                 int option = Draw(menu);
-            ChooseYear = chooseYearbyOption(Yhead, option);
+            ChooseYear = chooseYearbyOption(Yhead);
             if(ChooseYear == nullptr){
                 //quay lại main menu
                 return;

@@ -4,6 +4,37 @@
 #include "../Header/Utility.h"
 
 // todo Alternate to sync more efficiently
+//? get infor student from account linklist
+void SyncInForStudent(Year *yearHead, Account *accHead) 
+{
+    Year *year_cur;
+    Class *class_cur;
+    Student *student_cur;
+    Account *account_cur;
+    year_cur = yearHead;
+    while(year_cur)
+    {
+        class_cur = yearHead->Class;
+        while (class_cur) 
+        {
+            student_cur = class_cur->StudentClass;
+            while(student_cur)
+            {
+                account_cur = accHead;
+                while(account_cur && student_cur->ID != account_cur->username) 
+                    account_cur = account_cur->next;
+                if(account_cur == nullptr) {
+                    Message_Warning("Student information with ID: " + student_cur->ID + " does not exist.", "error import" );
+                } else {
+                    student_cur->accStudent = account_cur;
+                }
+                student_cur = student_cur->next;                
+            }
+            class_cur = class_cur->next;
+        }
+        year_cur = year_cur->next;
+    }
+}
 
 //? get the fullname from account linked list
 void SyncFullName(Year *yearHead, Account *accHead)
@@ -23,9 +54,7 @@ void SyncFullName(Year *yearHead, Account *accHead)
                     Account *acc_cur = accHead;
                     while (acc_cur)
                     {
-                        if (stcse->FullName != "")
-                            break;
-                        if (acc_cur->username == stcse->ID)
+                        if (stcse->FullName == "" && acc_cur->username == stcse->ID)
                         {
                             stcse->FullName = acc_cur->lastName + ' ' + acc_cur->firstName;
                             break;
@@ -45,6 +74,7 @@ void SyncFullName(Year *yearHead, Account *accHead)
 //? Show option to view course
 void ViewCourse(Year *yearHead)
 {
+    system("cls");
     Year *year_cur = yearHead;
 
     vector<string> menu;
@@ -243,14 +273,14 @@ void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int
     }
 }
 
-void MainMenu(Year *&yearHead, Account *accHead, string &user, string &pass, int &role)
+void MainMenu(Year *yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
     cout << "\n";
     //! Read year
     //! In add the semester in each read year
-    Year *year_cur = yearHead;
-    yearHead->NoSemester = Read_All_Semester(yearHead->yearStart);
+    // Year *year_cur = yearHead;
+    // yearHead->NoSemester = Read_All_Semester(yearHead->yearStart);
     // SyncFullName(yearHead, accHead);
     switch (role)
     {

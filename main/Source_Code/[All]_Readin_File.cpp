@@ -2,6 +2,7 @@
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
 #include "../Header/course.h"
+#include "../Header/Utility.h"
 
 //? Account
 void ReadAccount(Account *&accHead)
@@ -320,10 +321,9 @@ void readAllFileCourses(Semester *HeadSmt) {
             string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV"); 
             in.open(path);
             if(!in.is_open())
-                cout << "khong co file này"; // messbox
-            else {
-            readStudentCourse(curCourse->studentCourse, in); 
-            }
+                Message_Warning(path + " is not exist.", "Error");
+            else 
+                readStudentCourse(curCourse->studentCourse, in); 
             in.close();
             curCourse = curCourse->next;
         }  

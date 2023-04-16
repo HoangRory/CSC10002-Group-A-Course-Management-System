@@ -1,9 +1,18 @@
 #include "../Header/course.h"
+#include "../Header/Utility.h"
 
-Year* chooseYearbyOption(Year* yearHead, int option) 
+Year* chooseYearbyOption(Year* yearHead) 
 {
-    int index = 0;
-    while(yearHead && index != option) {
+    Year *year_cur = yearHead;
+    vector<string> menu;
+    while (year_cur)
+    {
+        menu.push_back(" " + to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1));
+        year_cur = year_cur->next;
+    }
+    menu.push_back(" BACK");
+    int option = Draw(menu);
+    while(yearHead && option--) {
         yearHead = yearHead->next;
     }
     return yearHead;
@@ -11,38 +20,29 @@ Year* chooseYearbyOption(Year* yearHead, int option)
 
 Class* chooseClassbyOption(Class *classHead) 
 {
-    Class *curClass = classHead;
-
-    int nOption = amountClass(classHead);
-    string *arrOption = new string [nOption + 1];
-    for (int i = 0; i < nOption; i++) {
-        arrOption[i] = curClass->Name;
-        curClass = curClass->next;
+    vector<string> menu;
+    Class *class_cur = classHead;
+    while(class_cur) {
+        menu.push_back(" " + class_cur->Name);
+        class_cur = class_cur->next;
     }
-    arrOption[nOption] =  "<-";
-    system("cls");
-    string title = "Select Class: ";
-    int option = view_chooseOption(arrOption,nOption+1,title);
-    delete []arrOption;
+    menu.push_back(" BACK");
+    int option = Draw(menu);
+
     while(classHead && option--)
         classHead = classHead->next;
     return classHead;
 }
 Semester* chooseSemesterbyOption(Semester* semHead) 
 {
-    string *arrOption = new string [4];
-    int nOption = 0;
-    Semester *curSem = semHead;
-    while(curSem) {
-        nOption++;
-        curSem = curSem->next;
+    vector<string> menu;
+    Semester *sem_cur = semHead;
+    while(sem_cur) {
+        menu.push_back(" Semester " + to_string(sem_cur->No));
+        sem_cur = sem_cur->next;
     }
-    for(int i = 0; i < nOption; i++) {
-        arrOption[i] = "Semester " + to_string(i+1);
-    }
-    arrOption[nOption] = "<-";
-    string title = "Select Semester:";
-    int option = view_chooseOption(arrOption, nOption + 1, title);
+    menu.push_back(" BACK");
+    int option = Draw(menu);
     while (semHead && option--) {
         semHead = semHead->next;
     }
@@ -51,16 +51,14 @@ Semester* chooseSemesterbyOption(Semester* semHead)
 
 Course* chooseCoursebyOption(Course* courseHead) 
 {
-    int nOption = amountCourse(courseHead);
-    string *arrOption = new string [nOption+1];
-    Course *curCourse = courseHead;
-    for(int i = 0; i < nOption; i++) {
-        arrOption[i] = curCourse->Name;
-        curCourse = curCourse->next;
+    vector<string> menu;
+    Course *course_cur = courseHead;
+    while(course_cur) {
+        menu.push_back("  " + course_cur->Name);
+        course_cur = course_cur->next;
     }
-    arrOption[nOption] = "<-";
-    string title = "Select Course: ";
-    int option = view_chooseOption(arrOption, nOption + 1,title);
+    menu.push_back(" BACK ");
+    int option = Draw(menu);
     while(courseHead && option--) {
         courseHead = courseHead->next;
     }

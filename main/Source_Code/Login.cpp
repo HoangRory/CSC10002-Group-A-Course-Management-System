@@ -210,7 +210,7 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
 
 bool LoggingMain(Account *&accHead, string &user, string &pass, int &role)
 {
-    ReadAccount(accHead);
+    // ReadAccount(accHead);
     LoggingIn(accHead, user, pass, role);
     if (AccountAlteration(accHead, user, pass, role))
         return true;

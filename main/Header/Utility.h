@@ -22,6 +22,8 @@ void Render_Account();
 void Render_NewYear();
 void Render_Semester();
 void Render_Class();
+void Render_View();
+void Render_StudnetClass();
 
 //? Draw the option
 int Draw(vector<string> menu);

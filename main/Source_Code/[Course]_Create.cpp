@@ -1,10 +1,32 @@
 #include"../Header/course.h"
+#include <cctype>
 //lấy kí
 
+string getFirstChar(string name) 
+{
+    char* c_name = new char[name.length()];
+    strcpy(c_name, name.c_str());
+    int n = name.length();
+    if(n == 0)
+        return name;
+    string tmp ="";
+    char space = ' ';
+    tmp += c_name[0];
+    for(int i = 0; i < n; i++) {
+        if((int)c_name[i] == (int)space){
+            toupper(c_name[i+1]);
+            tmp += c_name[i+1];
+        }
+            
+    }
+    return tmp;
+}
+
 string createNameFile(int year, int no_smt, string course, string file, string type) {
+
     string s_year = to_string(year) + "_" + to_string(year + 1) + "/";
     string s_smt = "smt" + to_string(no_smt) + "/";
-    string path = "../Data_file/" + s_year + s_smt + course + file + "." + type;
+    string path = "../Data_file/" + s_year + s_smt + getFirstChar(course) + file + "." + type;
     return path;
 }
 

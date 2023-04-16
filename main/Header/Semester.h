@@ -37,10 +37,11 @@ void Output(Year *yearHead);
 
 //? View Course, Sync name from Account linked list
 void SyncFullName(Year *yearHead, Account *accHead);
+void SyncInForStudent(Year *yearHead, Account *accHead);
 void ViewCourse(Year *yearHead);
 void ViewCourseInYear(Semester *semHead, int &i);
 void ViewAllCourse(Year *yearHead);
 
 //? Main
 void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
-void MainMenu(Year *&yearHead, Account *accHead, string &user, string &pass, int &role);
+void MainMenu(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
