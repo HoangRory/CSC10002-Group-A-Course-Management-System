@@ -24,4 +24,15 @@ admin,admin,3,Admin,HCMUS,M,123456789123,01/01/2023
 23127004,tuandat,1,Do Phan Tuan,Dat,M,079204111987,09/04/2005
 23127005,thanhdat,1,Pham Thanh,Dat,M,079204111986,19/03/2005
 23127006,tiendat,1,Tran Anh Tien,Dat,M,079204111985,05/08/2005
-dbtien,dbtien,2,Dinh Ba,Tien,M,079075121212,05/05/1975 
+23120007,hoangduc,1,Vo Hoang,Duc,M,079204111984,01/01/2005
+23120008,quocdung,1,Pham Quoc,Dung,M,079204111983,19/10/2005
+23120009,dinhhai,1,Do Dinh,Hai,M,079204111982,29/09/2005
+dbtien,dbtien,2,Dinh Ba,Tien,M,079075121212,05/05/1975
+dttha,dttha,2,Do Thi Thanh,Ha,F,079075121213,05/05/1976
+vcnam,vcnam,2,Van Chi,Nam,M,079075121214,05/05/1977
+ntphuong,ntphuong,2,Ngo Tuan,Phuong,M,079075121214,05/05/1978
+bhthong,bhthong,2,Bui Huy,Thong,M,079075121215,05/05/1979
+lttung,lttung,2,Le Thanh,Tung,M,079075121216,05/05/1980
+nktung,nktung,2,Nguyen Khanh,Tung,M,079075121217,05/05/1981
+ptpuyen,ptpuyen,2,Phan Thi Phuong,Uyen,F,079075121218,05/05/1982
+gva,gva,2,GV,A,F,079075121219,05/05/1983
