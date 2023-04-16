@@ -1,0 +1,8 @@
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.AssemblyReference.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.MyForm.resources
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.GenerateResource.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem - Copy\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.AssemblyReference.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem - Copy\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem - Copy\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.MyForm.resources
+C:\Users\belan\OneDrive\Documents\GitHub\UICourseManagementSystem - Copy\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.GenerateResource.cache
