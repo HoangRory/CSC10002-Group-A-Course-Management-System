@@ -1,6 +1,6 @@
+#include "../Header/Utility.h"
 #include "../Header/Semester.h"
 #include "../Header/Year.h"
-#include "../Header/Utility.h"
 
 // todo Alternate to add more semesters at once
 //! Adding semester 1 include in adding a year
@@ -18,24 +18,21 @@ Semester *AddSemester(Year *yearHead)
     while (year_cur && year_cur->yearStart != Y) // Move the current to the exact year
         year_cur = year_cur->next;
 
-    cout << "No. semester (1,2,3): "; // get the semester
-    cin >> N;
+    vector<string> small_menu;
+    small_menu.push_back("1st semester");
+    small_menu.push_back("2nd semester");
+    small_menu.push_back("3rd semester");
+
+    N = Draw(small_menu) + 1;
+
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
     while (sem_cur)
     {
         if (sem_cur->No == N) // If already had, ask to modify
         {
-            cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
-            char check;
-            cin >> check;
-
-            while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
-            {
-                cout << "Invalid input! Enter again: ";
-                cin >> check;
-            }
-            if (check == 'Y' || check == 'y')
+            string mess = "This semester already exists, do you want to modify it?";
+            if (Message_YesNo(mess, "Notice"))
             {
                 // To modify the semester
                 modifySemester(yearHead, Y, N);
@@ -64,19 +61,43 @@ Semester *AddSemester(Year *yearHead)
     sem_cur->No = N;
     sem_cur->Year = Y;
     //! Check validity
+    system("cls");
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 13 + i);
+        cout << "                                              ";
+    }
+    goToXY(52, 14);
     cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
-    cin >> sem_cur->startDate;
+    getline(cin, sem_cur->startDate);
+
     while (!isValidDate(sem_cur->startDate))
     {
-        cout << "Invalid date format, please retry: ";
-        cin >> sem_cur->startDate;
+        Message_Warning("Invalid date format!\nEnter again!", "Error");
+        goToXY(50, 14);
+        cout << "                                              ";
+        goToXY(52, 14);
+        cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
+        getline(cin, sem_cur->startDate);
     }
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 17 + i);
+        cout << "                                              ";
+    }
+    goToXY(52, 18);
     cout << "Ending date (dd/mm/yyyy): ";
-    cin >> sem_cur->endDate;
+    getline(cin, sem_cur->endDate);
+    
     while (!isValidDate(sem_cur->endDate))
     {
-        cout << "Invalid date format, please retry: ";
-        cin >> sem_cur->endDate;
+        Message_Warning("Invalid date format!\nEnter again!", "Error");
+        goToXY(50, 18);
+        cout << "                                              ";
+        goToXY(52, 18);
+        cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
+        getline(cin, sem_cur->endDate);
     }
 
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
@@ -84,9 +105,11 @@ Semester *AddSemester(Year *yearHead)
     string tmp_sys = "mkdir " + outPath;
     // Create a folder to store its information
     const char *cstr_path = tmp_sys.c_str();
+    TextColor(7);
+    goToXY(30, 25);
     system(cstr_path);
-    system("cls");
-
+    goToXY(30, 25);
+    cout << "                                                                    ";
     return sem_cur;
 }
 

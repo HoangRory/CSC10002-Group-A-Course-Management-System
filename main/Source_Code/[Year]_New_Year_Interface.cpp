@@ -84,18 +84,21 @@ void Interface_New_Year(Year *yearHead)
     Render_NewYear();
     Show_Year_List(yearHead);
 
-    goToXY(50, 18);
+    goToXY(52, 18);
     TextColor(0x0E);
-    cout << "Choose year";
+    cout << "Choose year (Enter -1 to back)";
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {
         goToXY(50, 19 + i);
-        cout << "               ";
+        cout << "                                                  ";
     }
 
     goToXY(52, 20);
     cin >> strYear;
+    TextColor(7);
+    if (strYear == "-1")
+        return;
     strYear[4] = '_';
 
     while (!isValidYear(strYear))
@@ -103,8 +106,9 @@ void Interface_New_Year(Year *yearHead)
         string message = "Invalid year format or already has!\nPlease retry.";
         string title = "Error";
         Message_Warning(message, title);
+        TextColor(63);
         goToXY(50, 20);
-        cout << "               ";
+        cout << "                                                  ";
         goToXY(52, 20);
         cin >> strYear;
         strYear[4] = '_';

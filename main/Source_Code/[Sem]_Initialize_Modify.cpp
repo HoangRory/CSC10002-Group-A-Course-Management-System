@@ -16,7 +16,7 @@ void initModify(Year *yearHead)
 
     int opt = Draw(menu);
 
-    RunModify(yearHead, opt - 1); // Begin to do the chosen option
+    RunModify(yearHead, opt); // Begin to do the chosen option
     return;
 }
 
@@ -24,61 +24,52 @@ void RunModify(Year *yearHead, int opt)
 {
     string id, strYear;
     int sem, year;
+    vector<string> small_menu;
     switch (opt)
     {
-    case 1: // Modify the semester follow year and no_sem
+    case 0: // Modify the semester follow year and no_sem
         year = Get_CheckFormat_Existed_Year(yearHead);
-        cout << "==> Please choose the semester (1, 2, 3): ";
-        cin >> sem;
+        small_menu.push_back("1st semester");
+        small_menu.push_back("2nd semester");
+        small_menu.push_back("3rd semester");
 
-        cout << "\n";
+        sem = Draw(small_menu) + 1;
+
         modifySemester(yearHead, year, sem);
         break;
-    case 2: // View all the course and modify a course in the school year
+    case 1: // View all the course and modify a course in the school year
         ViewAllCourse(yearHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
-        cout << "\n";
         modifyCourse(yearHead, year);
         break;
-    case 3: // Remove out the course
+    case 2: // Remove out the course
         // viewCourse(semHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
-        cout << "\n";
         removeCourse(yearHead, year);
         break;
-    case 4: // add or remove a student from a course
+    case 3: // add or remove a student from a course
         ViewCourse(yearHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
-        cout << "\n";
         //! Showing the list of students
         addRemoveStudent(yearHead, year);
         break;
-    case 5:
-        cout << "\n\n";
-        TextColor(LIGHT_RED); // RED for better noticing
-        cout << "Modification completed, remember to SAVE the changes!\n";
-        TextColor(WHITE);
+    case 4:
+        string mess = "Modification completed!\nRemember to SAVE changes.";
+        Message_Warning(mess, "Notice");
+
         return;
     }
 
-    cout << "\nDo you want to continue modifying? (Y/N): ";
-    char c;
-    cin >> c;
-    while (c != 'y' && c != 'Y' && c != 'n' && c != 'N')
-    {
-        cout << "Invalid input! Please enter again: ";
-        cin >> c;
-    }
-
-    if (c == 'y' || c == 'Y')
+    string mess = "Do you want to continue modifying?";
+    if (Message_YesNo(mess, "Confirm"))
     {
         initModify(yearHead);
         return;
     }
-
     else
     {
-        cout << "\nModification completed, remember to save the changes!\n";
+        string mess = "Modification completed!\nRemember to SAVE changes.";
+        Message_Warning(mess, "Notice");
         return;
     }
 }

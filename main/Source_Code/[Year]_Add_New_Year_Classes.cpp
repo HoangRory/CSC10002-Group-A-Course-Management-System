@@ -28,9 +28,14 @@ void createSchoolYear(Year *&headYear, int yearStart)
             curYear = curYear->next;
         curYear->next = newYear;
     }
+
     string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
     path = "mkdir " + path;
+    TextColor(7);
+    goToXY(30, 30);
     system(path.c_str()); // Create a folder in the sys
+    goToXY(30, 30);
+    cout << "                                                                                                     ";
 
     string message = "Year " + to_string(yearStart) + "-" + to_string(yearStart + 1) + " has been added successfully.\nDo you want to add class to this year?";
     string title = "Success";
@@ -40,9 +45,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
 
         message = "Add student to class?";
         if (Message_YesNo(message, title))
-        {
             ChooseClassToAdd(newYear);
-        }
         return;
     }
     return;
@@ -55,23 +58,25 @@ void Create_New_Classes(Year *newYear)
 {
     system("cls");
     Render_Class();
-    goToXY(50, 18);
+    goToXY(63, 15);
     TextColor(0x0E);
     cout << "YEAR: " << newYear->yearStart << "_" << newYear->yearStart + 1;
-    cout << "New Class(-1 to stop)";
+    goToXY(60, 17);
+    cout << "New Class (-1 to stop)";
     Class *ClassTMP = newYear->Class;
     string line;
     int i = 0;
     while (1)
     {
         TextColor(63);
-        goToXY(50, 19 + i);
-        cout << "               ";
-        goToXY(52, 19 + i);
+        goToXY(58, 19 + i);
+        cout << "                             ";
+        goToXY(65, 19 + i);
+        getline(cin, line);
 
-        cin >> line;
         if (line == "-1")
             break;
+
         CapitalClassName(line); // Capitalize the first letter of each word
         if (checkClass(newYear, line))
         {
@@ -113,6 +118,7 @@ void Create_New_Classes(Year *newYear)
 //? Choose the class to add Student
 void ChooseClassToAdd(Year *curYear)
 {
+    TextColor(63);
     system("cls");
     vector<string> listClass;
     Class *class_cur = curYear->Class;
@@ -135,6 +141,12 @@ void ChooseClassToAdd(Year *curYear)
         class_cur = class_cur->next;
     }
     Method(class_cur);
+    string mess = "Do you want to add student to another class?";
+    if (Message_YesNo(mess, "Another student?"))
+    {
+        ChooseClassToAdd(curYear);
+        return;
+    }
     return;
 }
 
@@ -142,6 +154,7 @@ void ChooseClassToAdd(Year *curYear)
 void Method(Class *curClass)
 {
     system("cls");
+    Render_Student();
     vector<string> menu;
     menu.push_back("Adding by hand");
     menu.push_back("Importing from file");
@@ -167,77 +180,11 @@ void Method(Class *curClass)
 void inputStudent(Class *curClass)
 {
     system("cls");
-    string ID, full, first, last, gen, birth, socialID;
-    cin.ignore();
-    goToXY(60, 12);
-    cout << "Student information";
+    Render_Student();
+    string ID, first, last, gen, birth, socialID;
+    string yr = curClass->Name.substr(0, 2);
 
-    goToXY(60, 13);
-    TextColor(63);
-    cout << "  Student ID:                    ";
-    goToXY(75, 13);
-    getline(cin, ID);
-    TextColor(7);
-    goToXY(60, 13);
-    cout << "  Student ID: " << ID << "                                 ";
-
-    cin.ignore();
-    goToXY(60, 14);
-    TextColor(63);
-    cout << "  Full name:                                       ";
-    goToXY(74, 14);
-    getline(cin, full);
-    TextColor(7);
-    goToXY(60, 14);
-    cout << "  Full name: " << full << "                                 ";
-
-    SeparateName(full, first, last);
-
-    cin.ignore();
-    goToXY(60, 15);
-    TextColor(63);
-    cout << "  Gender (M: male, F: female):          ";
-    goToXY(92, 15);
-    getline(cin, gen);
-    while (!isValidGender(gen))
-    {
-        string message = "Invalid gender format!\nPlease retry.";
-        string title = "Error";
-        Message_Warning(message, title);
-        goToXY(60, 15);
-        cout << "  Gender (M: male, F: female):          ";
-        goToXY(92, 15);
-        getline(cin, gen);
-    }
-    TextColor(7);
-    cout << "  Gender (M: male, F: female): " << gen << "                                 ";
-
-    cin.ignore();
-    goToXY(60, 15);
-    TextColor(63);
-    cout << "  Date of Birth (dd/mm/yyyy):                ";
-    goToXY(91, 15);
-    getline(cin, birth);
-    while (!isValidDate(birth))
-    {
-        string message = "Invalid Date of Birth. Please retry.";
-        string title = "Error";
-        Message_Warning(message, title);
-        goToXY(60, 15);
-        cout << "  Date of Birth (dd/mm/yyyy):                ";
-        goToXY(91, 15);
-        getline(cin, birth);
-    }
-    TextColor(7);
-    cout << "  Date of Birth (dd/mm/yyyy): " << birth << "                                 ";
-
-    goToXY(60, 16);
-    cout << "  Social ID:                ";
-    goToXY(74, 16);
-    getline(cin, socialID);
-    TextColor(7);
-    goToXY(60, 16);
-    cout << "  Social ID: " << socialID << "                                 ";
+    Draw_In_Stud(ID, first, last, gen, birth, socialID, yr);
 
     if (Check_Student(curClass, ID))
     {
@@ -248,27 +195,48 @@ void inputStudent(Class *curClass)
     }
     //? Add here
     add1stYearStudents(curClass, ID, first, last, gen, birth, socialID); // add to class
+    string message = "Student " + last + " " + first + " has been added to class " + curClass->Name + ".";
+    message += "\nDo you want to add another to this class?";
+
+    string title = "Student added";
+    if (Message_YesNo(message, title))
+    {
+        inputStudent(curClass);
+        return;
+    }
+    return;
 }
 
 //? Import student from file
 void importStudent(Class *curClass)
 {
+    system("cls");
+    Render_Student();
+    goToXY(50, 12);
     cout << "Please import the CSV file to folder New_Enrolled_Student.\n";
+    goToXY(50, 13);
     cout << "Please enter file name(default is studentlist.csv, enter 0 to choose the default): ";
+
     string fileName = "studentlist.csv";
     string tmp;
+
+    goToXY(60, 14);
+    cout << "File name: ";
     getline(cin, tmp);
     if (tmp != "0")
         fileName = tmp;
     // Get the file name in4 and access the file
     string path = "..\\Data_file" + separator + "New_Enrolled_Student" + separator + fileName;
-    cout << path << endl;
+    goToXY(60, 16);
+    cout << "Using file at: " << path;
     // check if the file exits
     ifstream studentList(path.c_str());
+
     if (!studentList.is_open())
     {
-        cout << "File does not exit." << endl;
-        importStudent(curClass);
+        string message = "File not found!!!\nDo you want to retry?";
+        if (Message_YesNo(message, "Conitnue"))
+            importStudent(curClass);
         return;
     }
 
@@ -301,10 +269,6 @@ void importStudent(Class *curClass)
             i++;
         }
 
-        // check if the line have the correct num of fields
-        if (i != 6)
-            cout << "Invalid line format in CSV file. Please import another.\n";
-
         // save the student information
         string studentID = fields[0];
         string firstName = fields[1];
@@ -316,11 +280,15 @@ void importStudent(Class *curClass)
         lineCount++;
         // add the student to class
         if (Check_Student(curClass, studentID))
-            cout << "This student has already been added. Please retry." << endl;
+        {
+            lineCount--;
+            continue;
+        }
         else
             add1stYearStudents(curClass, studentID, firstName, lastName, gender, dateofBirth, socialID);
     }
-    cout << "Imported " << lineCount << " students to class " << curClass->Name << ".\n";
+    string mess = "Imported " + to_string(lineCount) + " students to class " + curClass->Name + ".";
+    Message_Warning(mess, "Success");
 }
 
 //? Add student one by one
@@ -351,59 +319,107 @@ void add1stYearStudents(Class *curClass, string ID, string first, string last, s
         newStud->prev = headStudent;
     }
 
-    cout << "Student " << accTmp->firstName << " " << accTmp->lastName
-         << " has been added to class " << curClass->Name << "\n";
+    // string message = "Student " + accTmp->firstName + " " + accTmp->lastName + " has been added to class " + curClass->Name + ".";
+    // string title = "Success";
+    // Message_Warning(message, title);
 }
 
-// lần đầu gọi hàm thì cho cin className trong hàm main
-//!
-/*
-void createClasses(Year *curYear, string className)
+void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &birth, string &socialID, string ye)
 {
-    if (checkClass(curYear, className) && to_string(curYear->yearStart % 100) == className.substr(0, 2))
+    system("cls");
+    TextColor(3);
+    Render_Student();
+
+    vector<string> menu;
+    menu.push_back("Student ID:          ");
+    menu.push_back("Student fullname:    ");
+    menu.push_back("Student gender(M/F): ");
+    menu.push_back("Student birth:       ");
+    menu.push_back("Student socialID:    ");
+    string space = "                                           ";
+
+    TextColor(7);
+    int i;
+    for (i = 0; i < menu.size(); i++)
     {
-        cout << "Class " << className << " already exists or invalid class name. Please retry." << endl;
-        int choice = -1;
-        while (choice != 2)
+        goToXY(62, 10 + 4 * i);
+        cout << menu[i];
+    }
+
+    string line, full;
+    i = 0;
+    while (i < menu.size())
+    {
+        TextColor(63);
+        for (int j = 0; j < 3; j++)
         {
-            cout << "Do you want to enter a new class?\n1. Yes.\n2. No.\n3. Back" << endl;
-            cout << "Enter your choice: ";
-            cin >> choice;
-            switch (choice)
-            {
-            case 1:
-                cout << "Enter class name: ";
-                cin >> className;
-                createClasses(curYear, className);
-                break;
-            case 2:
-                cout << "Finish adding to the new class. Thank you!" << endl;
-                return;
-            case 3:
-                cout << "======ADDING NEW SCHOOL YEAR======" << endl;
-                cout << "Enter start year: ";
-                int yearStart = 0;
-                cin >> yearStart;
-                createSchoolYear(curYear, yearStart);
-            }
+            goToXY(60, 9 + 4 * i + j);
+            cout << space;
         }
-    }
+        goToXY(62, 10 + 4 * i);
+        cout << menu[i];
+        // goToXY(62 + menu[i].length(), 10 + 4 * i);
+        // getline(cin, line);
+        getline(cin, line);
 
-    Class *newClass = new Class;
-    newClass->Name = className;
-    newClass->StudentClass = nullptr;
+        if (i == 0)
+        {
+            while (!isValidStudentID(line, ye))
+            {
+                string mess = "Invalid student ID. Please enter again.";
+                Message_Warning(mess, "Warning");
+                goToXY(60, 9 + 4 * i + 1);
+                cout << space;
+                goToXY(62, 10 + 4 * i);
+                cout << menu[i];
+                getline(cin, line);
+            }
+            ID = line;
+        }
+        else if (i == 1)
+            full = line;
+        else if (i == 2)
+        {
+            while (!isValidGender(line))
+            {
+                string mess = "Invalid gender format (M: male, F:female).\n Please enter again.";
+                Message_Warning(mess, "Warning");
+                goToXY(60, 9 + 4 * i + 1);
+                cout << space;
+                goToXY(62, 10 + 4 * i);
+                cout << menu[i];
+                getline(cin, line);
+            }
+            gen = line;
+        }
 
-    if (!curYear->Class)
-        curYear->Class = newClass;
-    else
-    {
-        Class *prevClass = curYear->Class;
-        while (prevClass->next)
-            prevClass = prevClass->next;
-        prevClass->next = newClass;
-        //? thêm cái link ngược về nữa
-        prevClass->next->prev = prevClass;
+        else if (i == 3)
+        {
+            while (!isValidDate(line))
+            {
+                string mess = "Invalid date format (dd/mm/yyyy).\n Please enter again.";
+                Message_Warning(mess, "Warning");
+                goToXY(60, 9 + 4 * i + 1);
+                cout << space;
+                goToXY(62, 10 + 4 * i);
+                cout << menu[i];
+                getline(cin, line);
+            }
+            birth = line;
+        }
+        else if (i == 4)
+            socialID = line;
+
+        TextColor(7);
+        for (int j = 0; j < 3; j++)
+        {
+            goToXY(60, 9 + 4 * i + j);
+            cout << space;
+        }
+        goToXY(62, 10 + 4 * i);
+        cout << menu[i] << line;
+        i++;
     }
-    cout << "Class " << className << " has been added successfully!" << endl;
+    SeparateName(full, first, last);
+    return;
 }
-*/
