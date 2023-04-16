@@ -10,3 +10,7 @@ C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-Syst
 C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.SuggestedBindingRedirects.cache
 C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.MyForm.resources
 C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.GenerateResource.cache
+C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.AssemblyReference.cache
+C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.MyForm.resources
+C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\x64\Debug\UICourseManagementSystem.vcxproj.GenerateResource.cache

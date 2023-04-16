@@ -1,7 +1,7 @@
 #pragma once
 #include "../Header/Login.h"
-#include "../LoginWrapper.h"
-#include <string>
+#include "../Header/LoginWrapper.h"
+//#include <string>
 
 namespace UICourseManagementSystem {
 
@@ -19,13 +19,23 @@ namespace UICourseManagementSystem {
 	{
 	public:
 		//MyForm(void)
+		MyForm(void)
+		{
+			// Initialize your form here
+			InitializeComponent();
+		}
+
 		MyForm(Account* accHead, std::string& user, std::string& pass, int& role)
 		{
 			InitializeComponent();
 			this->accHead = accHead;
-			this->username = &user;
-			this->password = &pass;
-			this->AccessibleRole = &role;
+			System::String^ managedUsername = gcnew System::String(user.c_str());
+			this->username->Text = managedUsername;
+			//this->username = user;
+			System::String^ managedPassword = gcnew System::String(pass.c_str());
+			this->username->Text = managedPassword;
+			//this->password = pass;
+			this->SetUserRole(role);
 		}
 
 	protected:
@@ -45,6 +55,11 @@ namespace UICourseManagementSystem {
 		std::string* pass;
 		int* role;
 
+	private: int userRole;
+
+	public: void SetUserRole(int role) {
+		userRole = role;
+	}
 	private: System::Windows::Forms::PictureBox^ box;
 	protected:
 	private: System::Windows::Forms::TextBox^ Sysname;

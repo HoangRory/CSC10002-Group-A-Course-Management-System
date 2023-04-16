@@ -2,10 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\Source_Code",
-    "\\UICourseManagementSystem",
-    "\\UICourseManagementSystem\\UICourseManagementSystem",
-    "\\UICourseManagementSystem\\x64\\Debug"
+    "\\UICourseManagementSystem"
   ],
-  "SelectedNode": "\\Source_Code",
+  "SelectedNode": "\\UICourseManagementSystem\\MyForm.h",
   "PreviewInSolutionExplorer": false
 }

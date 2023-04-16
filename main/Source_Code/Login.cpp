@@ -1,6 +1,6 @@
 #include "../Header/Login.h"
 #include "../Header/Utility.h"
-#include "../UICourseManagementSystem/UICourseManagementSystem/x64/MyForm.h" // Include the header file for your WinForms form
+#include "../Header/MyForm.h" // Include the header file for your WinForms form
 
 using namespace System;
 using namespace System::Windows::Forms;
