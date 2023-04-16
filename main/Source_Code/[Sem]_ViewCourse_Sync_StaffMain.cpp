@@ -246,11 +246,8 @@ void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int
 void MainMenu(Year *&yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
-    cout << "\n";
     //! Read year
     //! In add the semester in each read year
-    Year *year_cur = yearHead;
-    yearHead->NoSemester = Read_All_Semester(yearHead->yearStart);
     // SyncFullName(yearHead, accHead);
     switch (role)
     {
