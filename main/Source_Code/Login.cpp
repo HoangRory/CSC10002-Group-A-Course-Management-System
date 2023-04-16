@@ -1,54 +1,70 @@
 #include "../Header/Login.h"
 #include "../Header/Utility.h"
+#include "../UICourseManagementSystem/UICourseManagementSystem/x64/MyForm.h" // Include the header file for your WinForms form
 
-void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
+using namespace System;
+using namespace System::Windows::Forms;
+
+void LoggingIn(Account* accHead, std::string& user, std::string& pass, int& role)
 {
-    system("cls");
-    cout << "\n";
+    Application::EnableVisualStyles();
+    Application::SetCompatibleTextRenderingDefault(false);
 
-    TextColor(LIGHT_AQUA);
-    cout << "WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n\n";
-    cout << "PLEASE ENTER YOUR USERNAME AND PASSWORD TO LOGIN\n\n";
+    // Create an instance of your WinForms form
+    UICourseManagementSystem::MyForm form(accHead, user, pass, role);
 
-    TextColor(LIGHT_GREEN);
-    std::cout << "\nUsername: ";
-    std::cin >> user;
-
-    TextColor(LIGHT_RED);
-    std::cout << "Password: ";
-    std::cin >> pass;
-    TextColor(WHITE);
-
-    Account *cur = accHead;
-    bool loggedIn = false;
-    while (cur)
-    {
-        if (cur->username == user && cur->password == pass)
-        {
-            loggedIn = true;
-            break;
-        }
-        cur = cur->next;
-    }
-
-    if (!loggedIn)
-    {
-        TextColor(LIGHT_RED);
-        std::cout << "\nWrong username or password\n";
-        std::cout << "Try again!!!\n\n\n";
-        TextColor(WHITE);
-
-        system("pause");
-        LoggingIn(accHead, user, pass, role);
-        return;
-    }
-    role = cur->role;
-    std::cout << "\nLogged in successfully!!\n";
-    std::cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!\n";
-    return;
-    // Main_interface(accHead, user, pass, role);
-    // AccountAlteration(accHead, user, pass, role);
+    // Run the form and handle the login process inside the form
+    Application::Run(% form);
 }
+
+//void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
+//{
+//    system("cls");
+//    cout << "\n";
+//
+//    TextColor(LIGHT_AQUA);
+//    cout << "WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n\n";
+//    cout << "PLEASE ENTER YOUR USERNAME AND PASSWORD TO LOGIN\n\n";
+//
+//    TextColor(LIGHT_GREEN);
+//    std::cout << "\nUsername: ";
+//    std::cin >> user;
+//
+//    TextColor(LIGHT_RED);
+//    std::cout << "Password: ";
+//    std::cin >> pass;
+//    TextColor(WHITE);
+//
+//    Account *cur = accHead;
+//    bool loggedIn = false;
+//    while (cur)
+//    {
+//        if (cur->username == user && cur->password == pass)
+//        {
+//            loggedIn = true;
+//            break;
+//        }
+//        cur = cur->next;
+//    }
+//
+//    if (!loggedIn)
+//    {
+//        TextColor(LIGHT_RED);
+//        std::cout << "\nWrong username or password\n";
+//        std::cout << "Try again!!!\n\n\n";
+//        TextColor(WHITE);
+//
+//        system("pause");
+//        LoggingIn(accHead, user, pass, role);
+//        return;
+//    }
+//    role = cur->role;
+//    std::cout << "\nLogged in successfully!!\n";
+//    std::cout << "Hello, " << cur->lastName << ' ' << cur->firstName << "!\n";
+//    return;
+//    // Main_interface(accHead, user, pass, role);
+//    // AccountAlteration(accHead, user, pass, role);
+//}
 
 void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
