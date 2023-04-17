@@ -23,9 +23,12 @@ void Render_NewYear();
 void Render_Semester();
 void Render_Class();
 void Render_View();
-void Render_StudnetClass();
+void Render_StudentClass();
 void Render_Student();
+void Render_StudentCourse();
+void Render_ScoreBoardCourse();
 
 //? Draw the option
 int Draw(vector<string> menu);
+int Draw_XY(vector<string> menu, int sStart, int Start);
 int Draw_ShortVer(vector<string> menu);

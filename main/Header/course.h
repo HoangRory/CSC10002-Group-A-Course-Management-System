@@ -72,6 +72,8 @@ Semester* chooseSemesterbyOption(Semester* semHead);
 Class* chooseClassbyOption(Class *classHead);
 Course* chooseCoursebyOption(Course* courseHead) ;
 
+Course* chooseCoursebyOption_XY(Course* courseHead, int x, int y);
+
   ///////////////////////////////////////////////////////////
  //                      VIEW                             //
 ///////////////////////////////////////////////////////////

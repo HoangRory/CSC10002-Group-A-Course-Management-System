@@ -64,3 +64,19 @@ Course* chooseCoursebyOption(Course* courseHead)
     }
     return courseHead;
 }
+
+Course* chooseCoursebyOption_XY(Course* courseHead, int x, int y) 
+{
+    vector<string> menu;
+    Course *course_cur = courseHead;
+    while(course_cur) {
+        menu.push_back("  " + course_cur->Name);
+        course_cur = course_cur->next;
+    }
+    menu.push_back("  BACK ");
+    int option = Draw_XY(menu, x, y);
+    while(courseHead && option--) {
+        courseHead = courseHead->next;
+    }
+    return courseHead;
+}
