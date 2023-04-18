@@ -4,7 +4,7 @@ CSC10003 4 52 3 I42
 Bui Huy Thong
 THU
 S3
-Mang may tinh 
+Mang may tinh
 CSC10008 4 50 5 I33
 Huynh Thuy Bao Tran
 MON

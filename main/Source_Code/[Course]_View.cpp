@@ -407,7 +407,7 @@ void viewScoreboardClass(Class *Class)
 
     bool stop = false;
     while(!stop) {
-        x = 25; y = 15;
+        x = 15; y = 15;
         system ("cls");
         Render_ScoreBoardClass();
         goToXY(x,y++);
@@ -433,7 +433,7 @@ void viewScoreboardClass(Class *Class)
             goToXY(x,y++);
             cout << "| " << setw(10) << left  << student_cur->ID;
             cout << "| " << setw(25) << left << student_cur->accStudent->lastName + " " + student_cur->accStudent->firstName;
-            viewAllFinalMark_ofStudent(SBC[Col_cur + i], Col, Col_cur);
+            viewAllFinalMark_ofStudent(SBC[Row_cur + i], Col, Col_cur);
             cout << "| "<< setw(5) << left  << setprecision(1) << fixed << CaculateGPA_1_Student(SBC[Row_cur + i], Col); 
             cout << "|" << endl;
             student_cur = student_cur->next;
@@ -449,12 +449,13 @@ void viewScoreboardClass(Class *Class)
             switch (option)
             {
             case 0:
-                for( int i = 0;  i < 3 + min(3,Col_cur); i ++)
-                    course_cur = course_cur->prev;
                 if(Col_cur - 3 < 0) 
                     Message_Warning("This is the front page", "Error"); 
                 else 
-                    Col_cur -= 3;   
+                    Col_cur -= 3;
+                course_cur = courseHead;   
+                for( int i = 0;  i < Col_cur; i ++)
+                    course_cur = course_cur->next;
                 break;
             case 1:
                 if(Col_cur + 3 >= Col){

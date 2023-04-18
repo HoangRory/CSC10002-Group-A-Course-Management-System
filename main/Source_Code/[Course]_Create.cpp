@@ -16,13 +16,12 @@ string getFirstChar(string name)
     tmp += toupper(c_name[0]);
     for(int i = 0; i < n; i++) {
         if((int)c_name[i] == (int)space){
-            tmp += toupper(c_name[i+1]);
+            if(isdigit(c_name[i])) {
+                tmp += c_name[i];
+            } else   
+                tmp += toupper(c_name[i+1]);
         }
-        if(isdigit(c_name[i])) {
-            tmp += c_name[i];
-        }     
     }
-    delete[]c_name;
     return tmp;
     
 }
