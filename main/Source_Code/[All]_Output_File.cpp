@@ -47,7 +47,6 @@ void Output(Year *yearHead)
             if (!checkFile(path)) 
                 system(("mkdir " + path).c_str());
             ofs.open(path);
-            ofs << courseHead->Name << endl;
             outStudentCourse(courseHead->studentCourse,ofs);
             ofs.close(); 
             courseHead = courseHead->next;

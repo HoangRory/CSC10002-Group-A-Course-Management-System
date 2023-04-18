@@ -11,7 +11,7 @@ void ReadAccount(Account *&accHead)
     if (!ifs)
         return;
 
-    Account *cur;
+    Account *cur = nullptr;
     string str;
     getline(ifs, str, '\n'); // get the first title line in csv file
     while (!ifs.eof())
@@ -73,7 +73,7 @@ void importYear(Year *&yearHead, int &numofYear)
         return;
     }
 
-    Year *curYear;
+    Year *curYear = nullptr;
     while (!ifs.eof()) // Create the year linked list according to the saved years
     {
         if (!yearHead)
@@ -286,7 +286,7 @@ void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in) {
     getline(in,s_otherMark,'\n');
     
     SBC.totalMark = SBC.finalMark = SBC.midMark = SBC.otherMark = -1;
-    if(s_totalMark != "X") SBC.totalMark = stod(s_totalMark);
+                                                                                                                                                                          if(s_totalMark != "X") SBC.totalMark = stod(s_totalMark);
     if(s_finalMark != "X") SBC.finalMark = stod(s_totalMark);
     if(s_midMark != "X")   SBC.midMark = stod(s_midMark);
     if(s_otherMark != "X") SBC.otherMark = stod(s_otherMark); 
@@ -319,7 +319,7 @@ void readAllFileCourses(Semester *HeadSmt) {
     {
         curCourse = curSmt->course;
         while(curCourse) {
-            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV"); 
+            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv"); 
             in.open(path);
             if(!in.is_open())
                 Message_Warning(path + " is not exist.", "Error");

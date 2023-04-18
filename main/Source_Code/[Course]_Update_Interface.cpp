@@ -47,7 +47,10 @@ void updateSBC (string ID, StudentCourse *stuUpdate)
     for(int i = 0; i < 69; i++)
         cout << "=";
     cout << endl;
-    // viewScoreCourseStudent(stuUpdate->ScoreBoardCourse);
+    cout << "| " << setw(15) << left << stuUpdate->ScoreBoardCourse.midMark;
+    cout << "| " << setw(15) << left << stuUpdate->ScoreBoardCourse.finalMark;
+    cout << "| " << setw(15) << left << stuUpdate->ScoreBoardCourse.totalMark;
+    cout << "| " << setw(15) << left << stuUpdate->ScoreBoardCourse.otherMark;
     for(int i = 0; i < 69; i++)
         cout << "=";
     cout << endl;
