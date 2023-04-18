@@ -119,15 +119,16 @@ void ViewStudentsClass(Year *yearHead)
 {   
     system("cls");
     // Render_View();
+    int x = 60, y = 16;
     Render_StudentClass();
-    Year *ChooseYear = chooseYearbyOption(yearHead);
+    Year *ChooseYear = chooseYearbyOption_XY(yearHead, x, y);
     if(ChooseYear == nullptr)
         return;
         //gọi lại hàm mainmenu
     system("cls");
     // Render_View();
     Render_StudentClass();
-    Class *ChooseClass = chooseClassbyOption(ChooseYear->Class);
+    Class *ChooseClass = chooseClassbyOption_XY(ChooseYear->Class, x,y);
     if(ChooseClass == nullptr) {
         ViewStudentsClass(yearHead);
         return;
@@ -137,7 +138,7 @@ void ViewStudentsClass(Year *yearHead)
     // Render_View();
     Render_StudentClass();
     Student *currStudent = ChooseClass->StudentClass;
-    int x = 50,y = 10;
+    x = 50,y = 16;
     if(currStudent) 
     {
         goToXY(x,y++);

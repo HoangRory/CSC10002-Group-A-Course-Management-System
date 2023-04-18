@@ -36,7 +36,7 @@ int main()
 
     // ViewClass(yearHead);
 
-    // ViewStudentsClass(yearHead);
+    ViewStudentsClass(yearHead);
     
     // ViewCourse(yearHead);
     
@@ -47,8 +47,8 @@ int main()
     // Semester *curSem = chooseSemesterbyOption(yearHead->NoSemester);
     // viewScoreBoardCourse(curSem->course);
 
-    Class *Class = yearHead->Class;
-    viewScoreboardClass(Class);
+    // Class *Class = yearHead->Class;
+    // viewScoreboardClass(Class);
 
     EradicateLL(accHead, yearHead);
     return 0;
