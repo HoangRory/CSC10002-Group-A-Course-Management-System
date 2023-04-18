@@ -1,9 +1,8 @@
 #pragma once
 #include "proto.h"
-#include "AccReader.h"
-
 
 void DelAccount(Account *&accHead);
+void ReadAccount(Account*& accHead);
 void WriteAccount(Account *accHead);
 
 void LoggingIn(Account *accHead, string &user, string &pass, int &role);

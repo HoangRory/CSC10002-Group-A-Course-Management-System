@@ -121,9 +121,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source_Code\Login.cpp" />
+    <ClCompile Include="..\Source_Code\[All]_Del_LL.cpp" />
+    <ClCompile Include="..\Source_Code\[All]_Output_File.cpp" />
+    <ClCompile Include="..\Source_Code\[All]_Readin_File.cpp" />
+    <ClCompile Include="..\Source_Code\[All]_Utilities.cpp" />
+    <ClCompile Include="..\Source_Code\[Sem]_Add_Sem_Course_Student.cpp" />
+    <ClCompile Include="..\Source_Code\[Sem]_Initialize_Modify.cpp" />
+    <ClCompile Include="..\Source_Code\[Sem]_Modifying.cpp" />
+    <ClCompile Include="..\Source_Code\[Sem]_ViewCourse_Sync_StaffMain.cpp" />
+    <ClCompile Include="..\Source_Code\[Year]_Add_New_Year_Classes.cpp" />
+    <ClCompile Include="..\Source_Code\[Year]_Check_Validity.cpp" />
+    <ClCompile Include="..\Source_Code\[Year]_New_Year_Interface.cpp" />
     <ClCompile Include="MyForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Header\Login.h" />
+    <ClInclude Include="..\Header\proto.h" />
+    <ClInclude Include="..\Header\Semester.h" />
+    <ClInclude Include="..\Header\Utility.h" />
+    <ClInclude Include="..\Header\Year.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

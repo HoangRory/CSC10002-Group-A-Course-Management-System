@@ -7,14 +7,16 @@ using namespace System::Windows::Forms;
 
 void LoggingIn(Account* accHead, std::string& user, std::string& pass, int& role)
 {
+    
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
 
     // Create an instance of your WinForms form
-    UICourseManagementSystem::MyForm form(accHead, user, pass, role);
+    UICourseManagementSystem::MyForm form;//(accHead, user, pass, role);
 
     // Run the form and handle the login process inside the form
     Application::Run(% form);
+    AccountAlteration(accHead, user, pass, role);
 }
 
 //void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)

@@ -1,7 +1,3 @@
-﻿  MyForm.cpp
-C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\Header\AccReader.h(5,15): error C2143: syntax error: missing ';' before '^'
-C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\Header\AccReader.h(5,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\Header\AccReader.h(5,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\Header\AccReader.h(6,35): error C2065: 'accHead': undeclared identifier
-C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\Header\AccReader.h(6,6): error C2182: 'ReadAccount': this use of 'void' is not valid
-C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\UICourseManagementSystem\MyForm.h(272,4): error C2064: term does not evaluate to a function taking 1 arguments
+﻿  Login.cpp
+  Login.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  UICourseManagementSystem.vcxproj -> C:\Users\belan\OneDrive\Documents\GitHub\CSC10002-Group-A-Course-Management-System\main\x64\Debug\UICourseManagementSystem.exe

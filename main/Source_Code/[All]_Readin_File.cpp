@@ -1,41 +1,15 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
-#include "../Header/AccReader.h"
 
 //? Account
-WinFormAccount^ ConvertToWinFormAccount(Account* account)
+void ReadAccount(Account*& accHead)
 {
-    if (account == nullptr)
-        return nullptr;
-
-    WinFormAccount^ winFormAccount = gcnew WinFormAccount();
-    winFormAccount->username = gcnew String(account->username.c_str());
-    winFormAccount->password = gcnew String(account->password.c_str());
-    winFormAccount->firstName = gcnew String(account->firstName.c_str());
-    winFormAccount->lastName = gcnew String(account->lastName.c_str());
-    winFormAccount->Gender = gcnew String(account->Gender.c_str());
-    winFormAccount->SocialID = gcnew String(account->SocialID.c_str());
-    winFormAccount->birth = gcnew String(account->birth.c_str());
-    winFormAccount->role = account->role;
-    winFormAccount->next = ConvertToWinFormAccount(account->next);
-    winFormAccount->prev = nullptr;
-
-    if (winFormAccount->next != nullptr)
-        winFormAccount->next->prev = winFormAccount;
-
-    return winFormAccount;
-}
-
-void ReadAccount(WinFormAccount^% accHead)
-{
-    Account* accountHead = nullptr;
-
     std::ifstream ifs("../Data_file/account.csv");
     if (!ifs)
         return;
 
-    Account *cur;
+    Account* cur;
     string str;
     getline(ifs, str, '\n'); // get the first title line in csv file
     while (!ifs.eof())
@@ -49,7 +23,7 @@ void ReadAccount(WinFormAccount^% accHead)
         else
         {
             cur->next = new Account;
-            Account *tmp = cur;
+            Account* tmp = cur;
             cur = cur->next;
             cur->prev = tmp;
         }
@@ -71,9 +45,6 @@ void ReadAccount(WinFormAccount^% accHead)
 
     ifs.close();
     return;
-
-    // Convert the Account structure to WinFormAccount structure
-    accHead = ConvertToWinFormAccount(accountHead);
 }
 
 //? Year

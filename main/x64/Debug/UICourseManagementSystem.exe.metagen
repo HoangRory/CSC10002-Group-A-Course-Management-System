@@ -14,9 +14,19 @@ Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=
 	hash=None, flags=None
 Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
+Class UICourseManagementSystem.WinFormAccount: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.String username : Public
+    System.String password : Public
+    System.String firstName : Public
+    System.String lastName : Public
+    System.String Gender : Public
+    System.String SocialID : Public
+    System.String birth : Public
+    Int32 role : Public
+    UICourseManagementSystem.WinFormAccount next : Public
+    UICourseManagementSystem.WinFormAccount prev : Public
 Class UICourseManagementSystem.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
-    Void .ctor(Account*, std.basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, std.basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, Int32*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-  Methods:
-    SetUserRole(Int32): PrivateScope, Public, HideBySig
