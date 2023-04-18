@@ -57,6 +57,39 @@ void goToXY(int x, int y)
     SetConsoleCursorPosition(console, cursorPosition);
 }
 
+string Limit_Input(int x, int y, int limit, int color)
+{
+    goToXY(x, y);
+    TextColor(63);
+    string input;
+    char c;
+    int i = 0;
+    while (true)
+    {
+        c = _getch();
+        if (c == 13 && i > 0)
+            break;
+        else if (c == 8)
+        {
+            if (i > 0)
+            {
+                i--;
+                input.pop_back();
+                goToXY(x + i, y);
+                cout << " ";
+                goToXY(x + i, y);
+            }
+        }
+        else if (i < limit)
+        {
+            input.push_back(c);
+            cout << c;
+            i++;
+        }
+    }
+    return input;
+}
+
 void resizeWindow(int x, int y)
 {
     HWND console = GetConsoleWindow();

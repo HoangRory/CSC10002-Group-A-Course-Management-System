@@ -5,30 +5,33 @@
 
 // todo Alternate to sync more efficiently
 //? get infor student from account linklist
-void SyncInForStudent(Year *yearHead, Account *accHead) 
+void SyncInForStudent(Year *yearHead, Account *accHead)
 {
     Year *year_cur;
     Class *class_cur;
     Student *student_cur;
     Account *account_cur;
     year_cur = yearHead;
-    while(year_cur)
+    while (year_cur)
     {
         class_cur = yearHead->Class;
-        while (class_cur) 
+        while (class_cur)
         {
             student_cur = class_cur->StudentClass;
-            while(student_cur)
+            while (student_cur)
             {
                 account_cur = accHead;
-                while(account_cur && student_cur->ID != account_cur->username) 
+                while (account_cur && student_cur->ID != account_cur->username)
                     account_cur = account_cur->next;
-                if(account_cur == nullptr) {
-                    Message_Warning("Student information with ID: " + student_cur->ID + " does not exist.", "error import" );
-                } else {
+                if (account_cur == nullptr)
+                {
+                    Message_Warning("Student information with ID: " + student_cur->ID + " does not exist.", "error import");
+                }
+                else
+                {
                     student_cur->accStudent = account_cur;
                 }
-                student_cur = student_cur->next;                
+                student_cur = student_cur->next;
             }
             class_cur = class_cur->next;
         }
@@ -201,6 +204,7 @@ void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int
     int choice = Draw(menu);
     int ye;
     Year *year_cur;
+    string mess;
 
     switch (choice) // Do the choice
     {
@@ -246,29 +250,18 @@ void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int
         return;
     case 6:
         //? Save changes and quit
-        cout << "\n";
         Output(yearHead);  // write down all the year
         Outyear(yearHead); // write down each year in4
 
+        mess = "File save!\nNow clean up and close!";
+        Message_Warning(mess, "Quit");
         cout << "Cleaning up the system";
-        for (int i = 0; i < 8; i++) // Show the loading
-        {
-            cout << '.';
-            Sleep(200);
-        }
-        cout << "\nSaving completed\n";
         return;
 
     case 7:
         //? Exit
-        cout << "\n";
-        cout << "Cleaning up the system";
-        for (int i = 0; i < 8; i++)
-        {
-            cout << '.';
-            Sleep(100);
-        }
-        cout << "\nClosing system\n";
+        mess = "Cleaned up the system.\nNow close!";
+        Message_Warning(mess, "Quit");
         return;
     }
 }
@@ -283,15 +276,15 @@ void MainMenu(Year *yearHead, Account *accHead, string &user, string &pass, int 
     {
     case 1:
         //? StudentMain
-        cout << "You've entered the student main menu\n";
+        // cout << "You've entered the student main menu\n";
         break;
     case 2:
         //? TeacherMain
-        cout << "You've entered the teacher main menu\n";
+        // cout << "You've entered the teacher main menu\n";
         break;
     case 3:
         //? StaffMain
-        StaffMain(yearHead, accHead, user, pass, role);
+        // StaffMain(yearHead, accHead, user, pass, role);
         break;
     }
     return;

@@ -8,7 +8,7 @@ void ImportStudentFromFile(Course *courseCurrent);
 void AddStudentByHand(Course *courseCurrent);
 void AddingCourse(Semester *semCurrent, Year *yearHead);
 
-void Interface_New_Sem(Year *yearHead);
+Semester* Interface_New_Sem(Year *yearHead);
 
 //? Initialize Modification
 void initModify(Year *yearHead);

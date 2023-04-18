@@ -109,6 +109,7 @@ struct Year
     Class *Class = nullptr;
     Semester *NoSemester = nullptr;
     Year *next = nullptr;
+    Year* prev = nullptr;
 };
 
 /*

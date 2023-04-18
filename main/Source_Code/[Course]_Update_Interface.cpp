@@ -47,7 +47,7 @@ void updateSBC (string ID, StudentCourse *stuUpdate)
     for(int i = 0; i < 69; i++)
         cout << "=";
     cout << endl;
-    viewScoreCourseStudent(stuUpdate->ScoreBoardCourse);
+    // viewScoreCourseStudent(stuUpdate->ScoreBoardCourse);
     for(int i = 0; i < 69; i++)
         cout << "=";
     cout << endl;

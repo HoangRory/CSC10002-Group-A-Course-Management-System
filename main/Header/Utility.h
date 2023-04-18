@@ -8,6 +8,8 @@ void resizeWindow(int x, int y);
 void hideScrollBar();
 void initWindow(int width, int length);
 
+string Limit_Input(int x, int y, int limit, int color);
+
 //? Pause the program
 void Pause();
 //? Popup message box

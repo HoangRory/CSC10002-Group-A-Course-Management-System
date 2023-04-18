@@ -260,8 +260,8 @@ void removeCourse(Year *yearHead, int year)
 
     if (!sem_cur) // Check if the year has any semester
     {
-        cout << "This year hasn't had any semester yet!\n";
-        Sleep(400);
+        string mess = "There is no semester in this year";
+        Message_Warning(mess, "Notice");
         return;
     }
 

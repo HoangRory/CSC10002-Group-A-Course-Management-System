@@ -27,6 +27,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
         while (curYear->next)
             curYear = curYear->next;
         curYear->next = newYear;
+        newYear->prev = curYear;
     }
 
     string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
