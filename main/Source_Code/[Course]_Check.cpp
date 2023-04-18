@@ -14,7 +14,7 @@ CourseStudent* checkExistence_OfCourse(CourseStudent *courseCheck, CourseStudent
     {
         if (courseCheck->course == courseHead->course) 
             return courseCheck;
-        courseHead->next;
+        courseHead = courseHead->next;
     }
     return nullptr;
 }

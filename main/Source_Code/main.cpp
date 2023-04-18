@@ -17,9 +17,10 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     ReadAccount(accHead);
     SyncInForStudent(yearHead, accHead);
     SyncFullName(yearHead, accHead);
-    if (LoggingMain(accHead, user, pass, role))
-        return;
-    MainMenu(yearHead, accHead, user, pass, role);
+    SyncCourse(yearHead); 
+    // if (LoggingMain(accHead, user, pass, role))
+    //     return;
+    // MainMenu(yearHead, accHead, user, pass, role);
 }
 
 int main()
@@ -27,8 +28,8 @@ int main()
     Account *accHead = nullptr;
     Year *yearHead = nullptr;
 
-    initWindow(20,50);
-    // SetWindowSize(500,500);
+    // initWindow(20,50);
+    // SetWindowSize(1500,1000);
     system("title Course Management System");
 
     Merge_year_sem(accHead, yearHead);
@@ -41,9 +42,13 @@ int main()
     
     // ViewStudentCourse(yearHead);
     
-    system("cls");
-    Semester *curSem = chooseSemesterbyOption(yearHead->NoSemester);
-    viewScoreBoardCourse(curSem->course);
+    // system("cls");
+
+    // Semester *curSem = chooseSemesterbyOption(yearHead->NoSemester);
+    // viewScoreBoardCourse(curSem->course);
+
+    Class *Class = yearHead->Class;
+    viewScoreboardClass(Class);
 
     EradicateLL(accHead, yearHead);
     return 0;

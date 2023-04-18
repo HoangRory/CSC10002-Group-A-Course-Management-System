@@ -27,8 +27,11 @@ void Render_StudentClass();
 void Render_Student();
 void Render_StudentCourse();
 void Render_ScoreBoardCourse();
+void Render_ScoreBoardClass(); 
+
 
 //? Draw the option
 int Draw(vector<string> menu);
 int Draw_XY(vector<string> menu, int sStart, int Start);
 int Draw_ShortVer(vector<string> menu);
+int Draw_Horizontal_XY(vector<string> menu, int x , int y);

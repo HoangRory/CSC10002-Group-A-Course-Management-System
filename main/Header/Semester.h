@@ -38,6 +38,7 @@ void Output(Year *yearHead);
 //? View Course, Sync name from Account linked list
 void SyncFullName(Year *yearHead, Account *accHead);
 void SyncInForStudent(Year *yearHead, Account *accHead);
+void SyncCourse(Year *yearHead);
 void ViewCourse(Year *yearHead);
 void ViewCourseInYear(Semester *semHead, int &i);
 void ViewAllCourse(Year *yearHead);

@@ -1,25 +1,30 @@
 #include"../Header/course.h"
 #include <cctype>
+#pragma warning(suppress : 4996)
 //lấy kí
 
 string getFirstChar(string name) 
 {
-    char* c_name = new char[name.length()];
-    strcpy(c_name, name.c_str());
+    //char* c_name = new char[name.length()];
+    //strcpy(c_name, name.c_str());
+    char* c_name = (char*)name.c_str();
     int n = name.length();
     if(n == 0)
         return name;
     string tmp ="";
     char space = ' ';
-    tmp += c_name[0];
+    tmp += toupper(c_name[0]);
     for(int i = 0; i < n; i++) {
         if((int)c_name[i] == (int)space){
-            toupper(c_name[i+1]);
-            tmp += c_name[i+1];
+            tmp += toupper(c_name[i+1]);
         }
-            
+        if(isdigit(c_name[i])) {
+            tmp += c_name[i];
+        }     
     }
+    delete[]c_name;
     return tmp;
+    
 }
 
 string createNameFile(int year, int no_smt, string course, string file, string type) {
