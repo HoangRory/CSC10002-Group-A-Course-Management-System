@@ -174,7 +174,7 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     menu.push_back("Logout");
     menu.push_back("Quit");
 
-    int opt = Draw(menu);
+    int opt = Draw_XY(menu, 60, 12);
 
     switch (opt)
     {

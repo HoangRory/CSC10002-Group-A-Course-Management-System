@@ -23,7 +23,7 @@ Semester *AddSemester(Year *yearHead)
     small_menu.push_back("2nd semester");
     small_menu.push_back("3rd semester");
 
-    N = Draw(small_menu) + 1;
+    N = Draw_XY(small_menu, 60, 12) + 1;
 
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
@@ -89,7 +89,7 @@ Semester *AddSemester(Year *yearHead)
     goToXY(52, 18);
     cout << "Ending date (dd/mm/yyyy): ";
     getline(cin, sem_cur->endDate);
-    
+
     while (!isValidDate(sem_cur->endDate))
     {
         Message_Warning("Invalid date format!\nEnter again!", "Error");
@@ -272,8 +272,8 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     //! add a title
     menu.push_back("Import student from file");
     menu.push_back("Add student by hand");
-    
-    int choice = Draw(menu);
+
+    int choice = Draw_XY(menu, 60, 12);
 
     switch (choice) // Access according to the choice
     {
@@ -293,15 +293,51 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     return;
 }
 
+void New_Stuff(Year *yearHead)
+{
+    system("cls");
+
+    vector<string> menu;
+    menu.push_back("Add a new year");
+    menu.push_back("Add a new semester");
+    menu.push_back("Add a new course");
+    int ye;
+    Year *year_cur = nullptr;
+
+    int opt = Draw_XY(menu, 50, 12);
+    switch (opt)
+    {
+    case 0:
+        //? Add a new year
+        Interface_New_Year(yearHead);
+        return;
+    case 1:
+        //? Add a new semester
+        system("cls");
+        Interface_New_Sem(yearHead);
+        // Recursion back to the StaffMain function
+        return;
+    case 2:
+        //? Add a new course
+        ye = Get_CheckFormat_Existed_Year(yearHead);
+        year_cur = yearHead;
+        while (year_cur && year_cur->yearStart != ye)
+            year_cur = year_cur->next;
+        AddingCourse(year_cur->NoSemester, yearHead);
+        // Recursion back to the StaffMain function
+        return;
+    }
+}
+
 //? Run to begin the new semester
-Semester* Interface_New_Sem(Year *yearHead)
+Semester *Interface_New_Sem(Year *yearHead)
 {
     Semester *semCurrent = AddSemester(yearHead); // New semester and return the default for next actions
     string mess;
     mess = "Do you want to add a course to this semester?";
     if (Message_YesNo(mess, "Notice"))
         AddingCourse(semCurrent, yearHead);
-        
+
     system("cls");
     mess = "Do you want to add another semester?";
     if (Message_YesNo(mess, "Notice"))

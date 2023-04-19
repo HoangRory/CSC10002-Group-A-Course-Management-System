@@ -33,7 +33,6 @@ void Render_ScoreBoardClass();
 
 
 //? Draw the option
-int Draw(vector<string> menu);
-int Draw_XY(vector<string> menu, int sStart, int Start);
-int Draw_ShortVer(vector<string> menu);
-int Draw_Horizontal_XY(vector<string> menu, int x , int y);
+int Draw_XY(vector<string> menu, int xStart, int yStart, int color = 0xF3);
+int Draw_ShortVer(vector<string> menu, int x, int y, int color = 0xF3);
+int Draw_Horizontal_XY(vector<string> menu, int x , int y, int color = 0xF3);

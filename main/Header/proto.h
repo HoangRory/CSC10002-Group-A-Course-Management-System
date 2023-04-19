@@ -8,7 +8,6 @@
 #include <conio.h>
 #include <Windows.h>
 
-
 #define BLACK 0
 #define BLUE 1
 #define GREEN 2
@@ -27,6 +26,7 @@
 #define BRIGHT_WHITE 15
 
 #define ENTER 13
+#define ESC 27
 #define UP 72
 #define LEFT 75
 #define RIGHT 77
@@ -72,7 +72,7 @@ struct Course
     Course *next = nullptr, *prev = nullptr;
 };
 // student của toàn trường, được lưu trong từng lớp
-struct CourseStudent 
+struct CourseStudent
 {
     Course *course = nullptr;
     CourseStudent *next = nullptr;
@@ -95,10 +95,10 @@ struct Class
 };
 
 // hết -1 một môn, -2 kì, -3 năm
-struct Semester 
+struct Semester
 {
-    int No; // eg semester 1 thì No = 1
-    int Year; // only the start year, when cout put the end year in by adding 1 
+    int No;   // eg semester 1 thì No = 1
+    int Year; // only the start year, when cout put the end year in by adding 1
     string startDate, endDate;
     Course *course = nullptr;
     Semester *next = nullptr, *prev = nullptr;
@@ -110,7 +110,7 @@ struct Year
     Class *Class = nullptr;
     Semester *NoSemester = nullptr;
     Year *next = nullptr;
-    Year* prev = nullptr;
+    Year *prev = nullptr;
 };
 
 /*
