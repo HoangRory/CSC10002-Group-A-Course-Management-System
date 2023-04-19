@@ -171,55 +171,45 @@ void UpdateStudentResult(Year *Yhead)
         Year *ChooseYear = nullptr;
         Semester *ChooseSem = nullptr;
         Course *ChooseCourse = nullptr;
-        // if(Yhead == nullptr){
-        //     cout << "There are no school year.";
-        //     system("pause");
-        //     // gọi lại hàm mainmenu
-        //     return;
-        // } 
+        if(Yhead == nullptr){
+            Message_Warning("There are no school years at all", "Error not exist!");
+            // gọi lại hàm mainmenu
+            return;
+        } 
         //messbox
+        int x, y;
         do {
-                Year *year_cur = Yhead;
-
-                vector<string> menu;
-                menu.push_back("All year");
-                while (year_cur)
-                {
-                    menu.push_back(to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1));
-                    year_cur = year_cur->next;
-                }
-                int option = Draw(menu);
-            ChooseYear = chooseYearbyOption(Yhead);
-            if(ChooseYear == nullptr){
-                //quay lại main menu
-                return;
+            Render_Update(40,1);
+            Render_ScoreBoard(30, 7);
+            Year *year_cur = Yhead;
+            vector<string> menu;
+            while (year_cur)
+            {
+                menu.push_back(to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1));
+                year_cur = year_cur->next;
             }
-            system("cls");
+            ChooseYear = chooseYearbyOption_XY(Yhead, 60, 15, 5);
+            if(ChooseYear == nullptr)
+                return;//quay lại main menu
             do {
                 if(ChooseYear->NoSemester == nullptr) {
-                    string mess = "There are no semester in this school year.";  
-                    break;
+                    Message_Warning("There are no semester in this school year.","Error not exist!");
+                   break;
                 }
-                ChooseSem = chooseSemesterbyOption(ChooseYear->NoSemester);
-                system("cls");
-
-                if(ChooseSem){
-                    if(ChooseSem->course == nullptr) {
-                        cout << "There are no course in this semester" << endl;
-                        system("pause");
-
-                    } else{
-                        ChooseCourse = chooseCoursebyOption(ChooseSem->course);
-                    }
-                    system("cls"); 
-                } else 
+                ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, 60, 15, 5);
+                if(ChooseSem)
+                    if(ChooseSem->course == nullptr) 
+                        Message_Warning("There are no course in this semester", "Error not exist");
+                    else
+                        ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, 60 ,15, 5);
+                    
+                else 
                     break;
             }while(ChooseCourse == nullptr);
-            
         } while (ChooseSem == nullptr);
 
         
-        system ("cls");
+        // system ("cls");
         //hàm xem danh sách sinh viên trong khóa học
 
         cout << "Please enter ID: ";    

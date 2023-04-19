@@ -72,10 +72,10 @@ Semester* chooseSemesterbyOption(Semester* semHead);
 Class* chooseClassbyOption(Class *classHead);
 Course* chooseCoursebyOption(Course* courseHead) ;
 
-Year* chooseYearbyOption_XY(Year* yearHead, int x, int y);
-Class* chooseClassbyOption_XY(Class *classHead, int x, int y);
-Semester* chooseSemesterbyOption_XY(Semester* semHead, int x, int y);
-Course* chooseCoursebyOption_XY(Course* courseHead, int x, int y);
+Year* chooseYearbyOption_XY(Year* yearHead, int x, int y, int nOption_eachTime);
+Class* chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTime);
+Semester* chooseSemesterbyOption_XY(Semester* semHead, int x, int y, int nOption_eachTime);
+Course* chooseCoursebyOption_XY(Course* courseHead, int x, int y, int nOption_eachTime);
 
   ///////////////////////////////////////////////////////////
  //                      VIEW                             //

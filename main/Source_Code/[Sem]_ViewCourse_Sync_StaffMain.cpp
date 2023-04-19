@@ -60,8 +60,9 @@ void SyncCourse(Year *yearHead)
                             if(stclass->course == nullptr)
                                 stclass->course = new CourseStudent;
                             else{
-                                stclass->course->prev = new CourseStudent;
-                                stclass->course = stclass->course->prev;
+                                CourseStudent *tmp = new CourseStudent;
+                                tmp->next = stclass->course;
+                                stclass->course = tmp;
                             }
                             stclass->course->course = cse;
                             break;
