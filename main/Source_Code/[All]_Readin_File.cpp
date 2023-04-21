@@ -336,25 +336,27 @@ void readAllFileCourses(Semester *HeadSmt) {
 void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead) 
 {
     system("cls");
-    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
-    cout << "Using arrow keys to move and press enter to select your option." << endl;
-    system("pause");
-    system("cls");
-    Course *curCourse = chooseCoursebyOption(curSmt->course);
-    if(!curCourse) {
-        //quay lại menu
-        return;
-    }
 
-    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
-    if (!checkFile(path)) 
-    {
-        cout << "The scoreboard of this course does not exist." << endl
-             << "Please contact the teacher to get scoreboard and to try again.";
-        return;
-    }
-    ifstream in;
-    in.open (path);
-    readStudentCourse(curCourse->studentCourse, in);
-    in.close();
+    // cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
+    // cout << "Using arrow keys to move and press enter to select your option." << endl;
+    // system("pause");
+    // system("cls");
+    // Course *curCourse = chooseCoursebyOption(curSmt->course);
+    // if(!curCourse) {
+    //     //quay lại menu
+    //     return;
+    // }
+    int x = 45, y = 1; 
+    Render_Import(x, y);
+    // string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
+    // if (!checkFile(path)) 
+    // {
+    //     cout << "The scoreboard of this course does not exist." << endl
+    //          << "Please contact the teacher to get scoreboard and to try again.";
+    //     return;
+    // }
+    // ifstream in;
+    // in.open (path);
+    // readStudentCourse(curCourse->studentCourse, in);
+    // in.close();
 }

@@ -162,12 +162,12 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     Render_Account();
 
     vector<string> menu;
-    menu.push_back("Continue");
+    menu.push_back("Main Menu");
     menu.push_back("Change password");
     menu.push_back("Logout");
     menu.push_back("Quit");
 
-    int opt = Draw_XY(menu, 60, 12);
+    int opt = Draw_XY(menu, 60, 12, 4, 20, 63);
 
     switch (opt)
     {

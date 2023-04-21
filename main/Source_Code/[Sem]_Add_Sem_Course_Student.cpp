@@ -22,8 +22,11 @@ Semester *AddSemester(Year *yearHead)
     small_menu.push_back("1st semester");
     small_menu.push_back("2nd semester");
     small_menu.push_back("3rd semester");
+    small_menu.push_back("Back");
 
-    N = Draw_XY(small_menu, 60, 12) + 1;
+    N = Draw_XY(small_menu, 60, 12, 20, 63) + 1;
+    if (N == 4)
+        return nullptr;
 
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
@@ -325,19 +328,22 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     //! add a title
     menu.push_back("Import student from file");
     menu.push_back("Add student by hand");
+    menu.push_back("Back");
 
-    int choice = Draw_XY(menu, 60, 12);
+    int choice = Draw_XY(menu, 55, 12, 3, 30, 63);
 
     switch (choice) // Access according to the choice
     {
-    case 1:
+    case 0:
         Message_Warning("Importing student from file!", "Notice");
         ImportStudentFromFile(courseCurrent);
         break;
-    case 2:
+    case 1:
         Message_Warning("Adding student by hand!", "Notice");
         AddStudentByHand(courseCurrent);
         break;
+    case 2:
+        return;
     }
 
     string mess = "Do you want to add another course to this semester?";
@@ -360,7 +366,7 @@ void New_Stuff(Year *yearHead)
     int ye;
     Year *year_cur = nullptr;
 
-    int opt = Draw_XY(menu, 50, 12);
+    int opt = Draw_XY(menu, 50, 12, 4, 24, 63);
     switch (opt)
     {
     case 0:

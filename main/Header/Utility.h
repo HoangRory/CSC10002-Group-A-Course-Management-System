@@ -24,16 +24,25 @@ void Render_ViewCourse();
 void Render_Account();
 void Render_NewYear();
 void Render_Semester();
-void Render_Class();
 void Render_View();
+void Render_Class(int x, int y);
+void Render_Course(int x, int y);
+void Render_Student(int x, int y);
+void Render_Export(int x, int y);
+void Render_Import(int x, int y);
+void Render_ScoreBoard(int x, int y);
+void Render_Update(int x, int y);
 void Render_StudentClass();
-void Render_Student();
 void Render_StudentCourse();
 void Render_ScoreBoardCourse();
 void Render_ScoreBoardClass(); 
 
-
 //? Draw the option
-int Draw_XY(vector<string> menu, int xStart, int yStart, int color = 0xF3);
+int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, int width, int color = 0xF3);
 int Draw_ShortVer(vector<string> menu, int x, int y, int color = 0xF3);
-int Draw_Horizontal_XY(vector<string> menu, int x , int y, int color = 0xF3);
+int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur, int color = 0xF3);
+void Draw_table(
+    string **table,int num_row, int num_col, int *width, int height, int *pos,
+    int x, int y, int Row_eachTime, int Col_eachTime,
+    bool *edit_Col, int &x_cur, int &y_cur
+);

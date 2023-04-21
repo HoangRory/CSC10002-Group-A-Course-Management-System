@@ -418,7 +418,7 @@ void addRemoveStudent(Year *yearHead, int year)
     Semester *sem_cur = year_cur->NoSemester;
     if (!sem_cur)
     {
-        cout << "No semester in this year yet!\n";
+        Message_Warning("No semester in this year yet!", "Notice");
         return;
     }
 
@@ -427,7 +427,7 @@ void addRemoveStudent(Year *yearHead, int year)
     menu.push_back("Remove student from a course");
     menu.push_back("Back to menu");
 
-    int choice = Draw_XY(menu, 50, 10, 63);
+    int choice = Draw_XY(menu, 50, 10, 3, 30, 63);
     if (choice == 2)
         return;
     Message_Warning("You chose to " + string(choice == 0 ? "ADD" : "REMOVE") + " student from a course", "Notice");

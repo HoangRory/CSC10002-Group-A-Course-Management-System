@@ -76,7 +76,6 @@ struct CourseStudent
 {
     Course *course = nullptr;
     CourseStudent *next = nullptr;
-    CourseStudent *prev = nullptr;
 };
 struct Student
 {

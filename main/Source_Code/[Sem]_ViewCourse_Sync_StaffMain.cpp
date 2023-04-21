@@ -182,7 +182,7 @@ void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int
     menu.push_back("Modify");
     menu.push_back("Quit");
 
-    int choice = Draw_XY(menu, 60, 12);
+    int choice = Draw_XY(menu, 60, 12,5,20);
     int ye;
     Year *year_cur;
     string mess;

@@ -1,6 +1,6 @@
 #include "../Header/course.h"
 #include "../Header/Utility.h"
-
+#include <math.h>
 //all
 int view_chooseOption(string *arrOption, int nOption, string title) 
 {
@@ -51,13 +51,28 @@ int view_chooseOption(string *arrOption, int nOption, string title)
 //task 14: view the list of courses of a stundent in a semester
 void ViewCoursesOfAStudent(Account *accHead, Course *courseHead) //courseHead in a semester, accHead is current account after the student login
 {
-    for (int i = 1; i <= 112; i++)
+    system("cls");
+    Render_Course(40,1);
+    Render_Student(35,7);
+    int x = 20, y = 15;
+    goToXY(x,y++);
+    cout << "All course of " << accHead->lastName+" "+accHead->firstName << ". MSSV: " << accHead->username;
+    goToXY(x, y++);
+    for (int i = 1; i <= 115; i++)
         cout << "=";
-    cout << "\n";
-    cout << "|    ID" << setw(20) << "Name"<< setw(21) << "Credit" << setw(11) << "Day" << setw(15)  << "Session"  << setw(10) << "Room" << setw(15) << "Teacher" << setw(13) << "|" << endl; 
-    for (int i = 1; i <= 112; i++)
+    goToXY(x, y++);
+    cout << "| " << setw(10) << left << "ID";
+    cout << "| " << setw(28) << left << "Name";
+    cout << "| " << setw(9)  << left << "Credits";
+    cout << " | " << setw(9) << left<< "Day";
+    cout << " | " << setw(9) << left<< "Session";   
+    cout << " | " << setw(9) << left << "Room";  
+    cout << " | " << setw(22) << left << "TeacherName ";
+    cout << "|";   
+    goToXY(x, y++);
+    for (int i = 1; i <= 115; i++)
         cout << "=";
-    cout << "\n";
+    
     
     while (courseHead)
     {
@@ -66,37 +81,39 @@ void ViewCoursesOfAStudent(Account *accHead, Course *courseHead) //courseHead in
         {
             if (cur_stu->ID == accHead->username)
             {
-                cout << "| " << courseHead->CourseID;
-                cout << "       " << courseHead->Name;
-                cout << setw(29 - courseHead->Name.length()) << right << courseHead->Credits;
-                cout << setw(13) << right << courseHead->Day;
-                cout << setw(12) << right << courseHead->Session;   
-                cout << setw(12) << right << courseHead->Room;  
-                cout << "         " << courseHead->TeacherName << setw(20 - courseHead->TeacherName.length()) << "|";       
-                cout << "\n";
+                goToXY(x, y++);
+                cout << "| " << setw(10) << left << courseHead->CourseID;
+                cout << "| " << setw(28) << left << courseHead->Name;
+                cout << "| " << setw(9)  << right << courseHead->Credits;
+                cout << " | " << setw(9) << left << courseHead->Day;
+                cout << " | " << setw(9) << left << courseHead->Session;   
+                cout << " | " << setw(9) << left << courseHead->Room;  
+                cout << " | " << setw(22) << left << courseHead->TeacherName;
+                cout << "|";       
+                goToXY(x, y++);
+                for (int i = 1; i <= 115; i++)
+                    cout << "=";
                 break;
             }
             cur_stu = cur_stu->next;
         }
         courseHead = courseHead->next;
     }
-    for (int i = 1; i <= 112; i++)
-        cout << "=";
 }
 //task 15: view all classes which are existed
 void ViewClass(Year* yearHead)
 {
     system("cls");
-    // Render_View();
-    Render_Class();
-    Year *ChooseYear = chooseYearbyOption(yearHead);
+    int x = 40, y = 2;  
+    Render_Class(x, y);
+    Year *ChooseYear = chooseYearbyOption_XY(yearHead, 60, 15, 5);
     if(ChooseYear == nullptr)
         return;
         //gọi lại hàm mainmenu
     system("cls");
-    // Render_View();
-    Render_Class();
-    int x = 55, y = 15;
+    x= 40, y = 2;
+    Render_Class(x, y);
+    y = 10;
     Class *cls_cur = ChooseYear->Class;
     goToXY(x,y++);
     cout << "List of class in school year " << ChooseYear->yearStart << "-" << ChooseYear->yearStart + 1 ; // seperate the list into many parts by the school year
@@ -121,14 +138,14 @@ void ViewStudentsClass(Year *yearHead)
     // Render_View();
     int x = 60, y = 16;
     Render_StudentClass();
-    Year *ChooseYear = chooseYearbyOption_XY(yearHead, x, y);
+    Year *ChooseYear = chooseYearbyOption_XY(yearHead, x, y,5);
     if(ChooseYear == nullptr)
         return;
         //gọi lại hàm mainmenu
     system("cls");
     // Render_View();
     Render_StudentClass();
-    Class *ChooseClass = chooseClassbyOption_XY(ChooseYear->Class, x,y);
+    Class *ChooseClass = chooseClassbyOption_XY(ChooseYear->Class, x,y,5);
     if(ChooseClass == nullptr) {
         ViewStudentsClass(yearHead);
         return;
@@ -243,7 +260,7 @@ void ViewStudentCourse(Year *yearHead)
         return;
     }
     do {
-        ChooseYear = chooseYearbyOption_XY(yearHead, x, y);
+        ChooseYear = chooseYearbyOption_XY(yearHead, x, y,5);
         if(ChooseYear == nullptr){
             //quay lại main menu
             return;
@@ -254,13 +271,13 @@ void ViewStudentCourse(Year *yearHead)
                 Message_Warning("There are no semester in this school year.","Error not exist");
                 break;
             }
-            ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester,x,y);
+            ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester,x,y,5);
             Render_StudentCourse();
             if(ChooseSem){
                 if(ChooseSem->course == nullptr) {
                     Message_Warning("There are no course in this semester", "Error not Exist");
                 } else{
-                    ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course,x,y);
+                    ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course,x,y,5);
                 }
                 Render_StudentCourse();
             } else 
@@ -310,12 +327,13 @@ void viewScoreBoardCourse(Course *courseHead)
 {
     system("cls");
     Render_ScoreBoardCourse();
-    Course *curCourse = chooseCoursebyOption_XY(courseHead, 65, 20);
+    Course *curCourse = chooseCoursebyOption_XY(courseHead, 65, 20,5);
     if(!curCourse) {
         Message_Warning("There aren't any courses for the current semester.", "Error not exist");
         //quay lại menu chính
         return;
     }
+    //? đem cái đống trên ra ngoài
     Render_ScoreBoardCourse();
     StudentCourse *stuHead = curCourse->studentCourse;
     int x = 25, y = 18;
@@ -357,10 +375,10 @@ void viewAllFinalMark_ofStudent(double *SBC, int Col, int Col_cur)
 {
     for( int i = 0; i < min (3,Col-Col_cur); i++) 
     {
-        if(SBC[i] < 0)
-            cout << setw(27) << left << "| X";
+        if(SBC[i + Col_cur] < 0)
+            cout << setw(32) << left << "| X";
         else 
-            cout << "| " << setw(25) << left  << setprecision(1) << fixed  << SBC[i];
+            cout << "| " << setw(30) << left  << setprecision(1) << fixed  << SBC[i +Col_cur];
     }                             
 }
 void viewScoreboardClass(Class *Class) 
@@ -402,16 +420,16 @@ void viewScoreboardClass(Class *Class)
     }
     move.push_back("X");
 
-    int Col_cur = 0, Row_cur = 0;
-    int x , y ;
-
+    int Col_cur = 0, Row_cur = 0,
+        cur = 0,
+        x, y;
     bool stop = false;
     while(!stop) {
-        x = 15; y = 15;
+        x = 5; y = 14;
         system ("cls");
         Render_ScoreBoardClass();
         goToXY(x,y++);
-        for(int i = 0; i < 47 + 27* min(3, Col-Col_cur) ; i++) {
+        for(int i = 0; i < 47 + 32* min(3, Col-Col_cur) ; i++) {
             cout << "=";
         }
         goToXY(x,y++);
@@ -420,38 +438,40 @@ void viewScoreboardClass(Class *Class)
         
         for(int i = 0; i < min (3,Col-Col_cur); i++)
         {
-            cout <<"| " << setw(25) << left <<course_cur->course->Name;
+            cout <<"| " << setw(30) << left <<course_cur->course->Name;
             course_cur = course_cur->next;
         }
-        cout << setw(7) << left << "| GPA"; 
+        if(Col - Col_cur <= 3)
+            cout << setw(7) << left << "| GPA"; 
         cout << "|" ;
         int i = 0;
         for(int i = 0; i < min(8,Row-Row_cur); i++){
             goToXY(x,y++);
-            for(int i = 0; i < 47 + 27*min(3,Col-Col_cur) ; i++) 
+            for(int i = 0; i < 47 + 32*min(3,Col-Col_cur) ; i++) 
             cout <<"=";
             goToXY(x,y++);
             cout << "| " << setw(10) << left  << student_cur->ID;
             cout << "| " << setw(25) << left << student_cur->accStudent->lastName + " " + student_cur->accStudent->firstName;
             viewAllFinalMark_ofStudent(SBC[Row_cur + i], Col, Col_cur);
-            cout << "| "<< setw(5) << left  << setprecision(1) << fixed << CaculateGPA_1_Student(SBC[Row_cur + i], Col); 
-            cout << "|" << endl;
+            if(Col - Col_cur <= 3)
+                cout << "| "<< setw(5) << left  << setprecision(1) << fixed << CaculateGPA_1_Student(SBC[Row_cur + i], Col); 
+            cout << "|";
             student_cur = student_cur->next;
         }
         goToXY(x,y++);
-        for(int i = 0; i < 47 + 27*min (3, Col-Col_cur) ; i++) 
+        for(int i = 0; i < 47 + 32*min (3, Col-Col_cur) ; i++) 
             cout <<"=";
-        int option = Draw_Horizontal_XY(move, x + 47, y);
-        // int option = 1;
+        goToXY(x,y);
+        cout << "Page " << (int) ceil(1.0*(Col_cur + 1) / 3) << "/" << (int) ceil((1.0*Col) / 3);
+        int option = Draw_Horizontal_XY(move, x + 47, y, cur);
+        // int option = 2;
         if(key == 0) stop = true;
         else if(key == 1) {
             student_cur = Class->StudentClass;
             switch (option)
             {
             case 0:
-                if(Col_cur - 3 < 0) 
-                    Message_Warning("This is the front page", "Error"); 
-                else 
+                if(Col_cur >= 3) 
                     Col_cur -= 3;
                 course_cur = courseHead;   
                 for( int i = 0;  i < Col_cur; i ++)
@@ -459,7 +479,6 @@ void viewScoreboardClass(Class *Class)
                 break;
             case 1:
                 if(Col_cur + 3 >= Col){
-                    Message_Warning("This is the last page", "Error");
                     course_cur = courseHead;
                     for( int i = 0; i < Col_cur; i ++) 
                         course_cur = course_cur->next;
@@ -478,16 +497,14 @@ void viewScoreboardClass(Class *Class)
             switch (option)
             {
             case 0:
-                if(Row_cur - 8 < 0) {
-                    Message_Warning("This is the front page", "Error");
-                } else Row_cur -= 8;   
+                if(Row_cur >= 8) 
+                    Row_cur -= 8;   
                 student_cur = Class->StudentClass;
                 for( int i = 0; i < Row_cur; i ++) 
                     student_cur = student_cur->next;
                 break;
             case 1:
                 if(Row_cur + 8 >= Row){
-                    Message_Warning("This is the last page", "Error");
                     student_cur = Class->StudentClass;
                     for( int i = 0; i < Row_cur; i ++) 
                         student_cur = student_cur->next;
@@ -504,48 +521,46 @@ void viewScoreboardClass(Class *Class)
             switch (option)
             {
             case 0:
-                for( int i = 0; i < min(8,Row-Row_cur); i ++) 
-                    student_cur = student_cur->prev;
-                if(Col_cur - 3 < 0) 
-                    Message_Warning("This is the front page", "Error"); 
-                else 
-                    Col_cur -= 3;
                 course_cur = courseHead;
-                for( int i = 0;  i < Col_cur; i ++)
+                for(int i = 0; i < Col_cur; i++)
                     course_cur = course_cur->next;
-                break;
-            case 1:
-                for( int i = 0; i < min(8,Row-Row_cur); i ++) 
-                    student_cur = student_cur->prev;
-                if(Col_cur + 3 >= Col){
-                    Message_Warning("This is the last page", "Error");
-                    course_cur = courseHead;
-                    for( int i = 0; i < Col_cur; i ++) 
-                        course_cur = course_cur->next;
-                } else 
-                    Col_cur += 3;
-                break;
-            case 2:
-                for(int i = 0; i < min(3,Col-Col_cur); i++)
-                    course_cur = course_cur->prev;
-                if(Row_cur - 8 < 0) {
-                    Message_Warning("This is the front page", "Error");
-                } else
+                if(Row_cur >= 8)
                      Row_cur -= 8;   
                 student_cur = Class->StudentClass;
                 for( int i = 0; i < Row_cur; i ++) 
                     student_cur = student_cur->next;  
                 break;
-            case 3:
-                for(int i = 0; i < min(3,Col-Col_cur); i++)
-                    course_cur = course_cur->prev;
+            case 1:
+                course_cur = courseHead;
+                for(int i = 0; i < Col_cur; i++)
+                    course_cur = course_cur->next;
                 if(Row_cur + 8 >= Row){
-                    Message_Warning("This is the last page", "Error");
                     student_cur = Class->StudentClass;
                     for( int i = 0; i < Row_cur; i ++) 
                         student_cur = student_cur->next;
                 } else 
                     Row_cur += 8;
+                break;
+            case 2:
+                student_cur = Class->StudentClass;
+                for( int i = 0; i < Row_cur; i ++) 
+                    student_cur = student_cur->next;
+                if(Col_cur >= 3) 
+                    Col_cur -= 3;
+                course_cur = courseHead;
+                for( int i = 0;  i < Col_cur; i ++)
+                    course_cur = course_cur->next;
+                break;
+            case 3:
+                student_cur = Class->StudentClass;
+                for( int i = 0; i < Row_cur; i ++) 
+                    student_cur = student_cur->next;
+                if(Col_cur + 3 >= Col){
+                    course_cur = courseHead;
+                    for( int i = 0; i < Col_cur; i ++) 
+                        course_cur = course_cur->next;
+                } else 
+                    Col_cur += 3;
                 break;
             case 4:
                 stop = true;
@@ -563,31 +578,40 @@ void viewScoreboardClass(Class *Class)
 //task 24: view scoreboard of all course of a student in a semester
 void ViewScoreboard(Account *accHead, Course *courseHead)
 {
-    for (int i = 1; i <= 84; i++)
+    system("cls");
+    Render_ScoreBoard(25,1);
+    int x = 35, y = 8;
+    
+    goToXY(x,y++);
+        cout << "ScoreBoard of " << accHead->lastName+" "+accHead->firstName << ". MSSV: " << accHead->username;
+    goToXY(x,y++);
+    for (int i = 1; i <= 89; i++)
         cout << "=";
-    cout << "\n";
-    cout << "| Subject" << setw(28) << "Mid mark"<< setw(15) << "Final mark" << setw(15) << "Other mark" << setw(17) << "Total mark |" << endl; 
-    for (int i = 1; i <= 84; i++)
+    goToXY(x,y++);
+    cout << setw(28) << left  << "| Subject" << setw(15)<< "| Mid mark" << setw(15) << "| Final mark" << setw(15) << "| Other mark"  << setw(15) << "| Total mark" << "|" ;
+    goToXY(x,y++); 
+    for (int i = 1; i <= 89; i++)
         cout << "=";
-    cout << "\n";
     while (courseHead)
     {
         StudentCourse *cur_stu = courseHead->studentCourse;
         while (cur_stu)
         {
+            
             if (cur_stu->ID == accHead->username) //truy cập từng student trong từng course check ID 
             {
-                cout <<  "| " << courseHead->Name;
-                cout << setw(35 - courseHead->Name.length()) << right << cur_stu->ScoreBoardCourse.midMark;
-                cout << setw(23 - to_string(cur_stu->ScoreBoardCourse.midMark).length()) << right << cur_stu->ScoreBoardCourse.finalMark;
-                cout << setw(15) << right << cur_stu->ScoreBoardCourse.otherMark;
-                cout << setw(15) << right << cur_stu->ScoreBoardCourse.totalMark << " |";
-                cout << "\n";
+                goToXY(x,y++);
+                cout <<  "| " << setw(25) << courseHead->Name;
+                cout <<  " | " << setw(12) << right << cur_stu->ScoreBoardCourse.midMark;
+                cout <<  " | " << setw(12) << right << cur_stu->ScoreBoardCourse.finalMark;
+                cout <<  " | " << setw(12) << right << cur_stu->ScoreBoardCourse.otherMark;
+                cout <<  " | " << setw(12) << right << cur_stu->ScoreBoardCourse.totalMark << " |";
+                goToXY(x,y++);
+                for (int i = 1; i <= 89; i++)
+                    cout << "=";
             }
             cur_stu = cur_stu->next;
         }
         courseHead = courseHead->next;
     }
-    for (int i = 1; i <= 84; i++)
-        cout << "=";
 }

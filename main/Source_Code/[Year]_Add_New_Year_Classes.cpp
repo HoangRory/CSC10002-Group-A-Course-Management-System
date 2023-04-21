@@ -58,7 +58,8 @@ void createSchoolYear(Year *&headYear, int yearStart)
 void Create_New_Classes(Year *newYear)
 {
     system("cls");
-    Render_Class();
+    int y = 3;
+    Render_Class(50,y);
     goToXY(63, 15);
     TextColor(0x0E);
     cout << "YEAR: " << newYear->yearStart << "_" << newYear->yearStart + 1;
@@ -154,7 +155,8 @@ void ChooseClassToAdd(Year *curYear)
 void Method(Class *curClass)
 {
     system("cls");
-    Render_Student();
+    int y = 3;
+    Render_Student(50,y);
     vector<string> menu;
     menu.push_back("Adding by hand");
     menu.push_back("Importing from file");
@@ -180,7 +182,8 @@ void Method(Class *curClass)
 void inputStudent(Class *curClass)
 {
     system("cls");
-    Render_Student();
+    int y = 3;
+    Render_Student(45, y);
     string ID, first, last, gen, birth, socialID;
     string yr = curClass->Name.substr(0, 2);
 
@@ -211,7 +214,8 @@ void inputStudent(Class *curClass)
 void importStudent(Class *curClass)
 {
     system("cls");
-    Render_Student();
+    int y = 3;
+    Render_Student(45,y);
     goToXY(50, 12);
     cout << "Please import the CSV file to folder New_Enrolled_Student.\n";
     goToXY(50, 13);
@@ -328,7 +332,8 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
 {
     system("cls");
     TextColor(3);
-    Render_Student();
+    int y = 3;
+    Render_Student(45,y);
 
     vector<string> menu;
     menu.push_back("Student ID:          ");

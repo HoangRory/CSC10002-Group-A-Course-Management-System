@@ -19,9 +19,7 @@ void exportListStudentCourse(Semester *curSmt);
   ////////////////////////////////////////////////////////
  //                 Update                             //
 ////////////////////////////////////////////////////////
-void enterMark(double &Mark);
-bool updateMark(ScoreBoardCourse &SBC, string Selection);
-void updateSBC (string ID, StudentCourse *stuUpdate);
+void updateSBC(Course* ChooseCourse, int x, int y);
 void UpdateStudentResult(Year *Yhead) ;
 
   ///////////////////////////////////////////////////////
@@ -67,15 +65,10 @@ int amountCourse(Course* courseHead);
   /////////////////////////////////////////////////////////////
  //                     CHOOSE                              //
 /////////////////////////////////////////////////////////////
-Year* chooseYearbyOption(Year* yearHead); 
-Semester* chooseSemesterbyOption(Semester* semHead);
-Class* chooseClassbyOption(Class *classHead);
-Course* chooseCoursebyOption(Course* courseHead) ;
-
-Year* chooseYearbyOption_XY(Year* yearHead, int x, int y);
-Class* chooseClassbyOption_XY(Class *classHead, int x, int y);
-Semester* chooseSemesterbyOption_XY(Semester* semHead, int x, int y);
-Course* chooseCoursebyOption_XY(Course* courseHead, int x, int y);
+Year* chooseYearbyOption_XY(Year* yearHead, int x, int y, int nOption_eachTime);
+Class* chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTime);
+Semester* chooseSemesterbyOption_XY(Semester* semHead, int x, int y, int nOption_eachTime);
+Course* chooseCoursebyOption_XY(Course* courseHead, int x, int y, int nOption_eachTime);
 
   ///////////////////////////////////////////////////////////
  //                      VIEW                             //
@@ -94,7 +87,6 @@ void ViewStudentCourse(Year *yearHead);
     //task 21 //
 void viewScoreBoardCourse(Course *courseHead);
     //task 23 //
-void viewAllFinalMark_ofStudent(double *SBC, int Col);
 void viewScoreboardClass(Class *Class);
 
 // for student //

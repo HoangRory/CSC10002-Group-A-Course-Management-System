@@ -2,6 +2,7 @@
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
 #include "../Header/course.h"
+#include "../Header/Utility.h"
 
 //? Output the course information
 void OutCourse(Course *course_head, ofstream &ofs)
@@ -159,17 +160,11 @@ void outStudentCourse(StudentCourse *stuHead, ofstream &ofs)
         stuHead = stuHead -> next;
     }
 }
-
+//?task 19
 void exportListStudentCourse(Semester *curSmt)
  {
     system("cls");
-    cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
-    cout << "Using arrow keys to move and press enter to select your option." << endl;
-    system("pause");
-    system("cls");
-
-
-    Course *curCourse = chooseCoursebyOption(curSmt->course);
+    Course *curCourse = chooseCoursebyOption_XY(curSmt->course, 55, 10, 5);
     if(!curCourse) {
         //quay lại menu
         return;
@@ -181,5 +176,7 @@ void exportListStudentCourse(Semester *curSmt)
     out.open(path);
     outStudentCourse(curCourse->studentCourse, out);
     out.close();   
+    if(Message_YesNo("File export successful.\n Would you like to continue?", "Success")) 
+        exportListStudentCourse(curSmt);
 }
 
