@@ -7,8 +7,9 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
     vector<int> choice(menu.size(), 0);
     int cur = 0;
     int step = 0;
+    bool stop = false;
     ShowConsoleCursor(0);
-    while (1)
+    while (!stop)
     {
         if(step < (cur/nOption_eachTime) * nOption_eachTime){
             for( int i= 0; i < nOption_eachTime; i++) {
@@ -56,9 +57,9 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
             switch (tmp)
             {
             case ENTER:
-                system("cls");
                 ShowConsoleCursor(1);
-                return cur;
+                stop = true;
+                break;
             case UP:
                 choice[cur] = 0;
                 cur = (cur > 0 ? cur - 1 : menu.size() - 1);
@@ -70,8 +71,175 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
             }
         }
     }
+    for( int i= 0; i < nOption_eachTime; i++) {
+        TextColor(7);
+        for (int j = 0; j < 3; j++)
+        {
+            goToXY(xStart, yStart + i * 3 + j);
+            cout << setw(width) << " ";
+        }
+    }
+    return cur;
 }
 
+int Draw_table
+(    string **table,int num_row, int num_col, int width[], int height,
+    int x, int y, int Row_eachTime, int Col_eachTime, int always_show,
+    bool edit_Col[], int &x_cur, int &y_cur         )
+{
+
+    if(Col_eachTime > num_col) 
+        Col_eachTime = num_col;
+    if(Row_eachTime > num_row) 
+        Row_eachTime = num_row;
+    int **choice = new int* [num_row];
+    for(int i = 0; i < num_row; i++){
+        choice[i] = new int [num_col];
+        for(int j = 0; j < num_col; j++)
+            choice[i][j] = 0;
+    }
+    int *pos = new int [num_col]; // vị trí bắt đầu của các cột, bắt đầu từ cột đầu là 0
+    pos[0] = 0;
+    for(int i = 1; i < 7; i++) {
+        pos[i] = pos[i-1] + width[i-1];
+    }
+
+    int x_prev = x_cur, y_prev = y_cur;
+    int x_step;
+    int y_step;
+    ShowConsoleCursor(0);
+    bool stop = false;
+
+    x_step = (x_cur/Col_eachTime) * Col_eachTime;
+    y_step = (y_cur/Row_eachTime) * Row_eachTime;
+    choice[y_cur%Row_eachTime][x_cur%Col_eachTime] = 1;
+    for (int i = 0; i < Row_eachTime && i + y_step < num_row; i++)
+    {
+        for(int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
+        {
+            if (choice[i][j])
+            {
+                goToXY(x + pos[j], y + i * height);
+                TextColor(0xFF);
+                cout << setw(width[j]) << " ";
+                goToXY(x + 2 + pos[j], y + i * height);
+                TextColor(0xF3);
+                cout << table[i + y_step][j + x_step];
+            }
+            else
+            {
+                TextColor(7);
+                goToXY(x + pos[j], y + i * height);
+                cout << setw(width[j]) << " ";
+
+                goToXY(x + 2 + pos[j], y + i * height);
+                TextColor(7);
+                cout << table[i + y_step][j + x_step];
+            }
+        }
+    }
+
+    while (stop != true)
+    {
+        if((x_prev/Col_eachTime) != (x_cur/Col_eachTime) || (y_prev/Row_eachTime) != (y_cur/Row_eachTime) ) {
+            for (int i = 0; i < Row_eachTime && i + y_step < num_row; i++)
+            {
+                for(int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
+                {
+                    TextColor(7);
+                    goToXY(x + pos[j], y + i * height);
+                    cout << setw(width[j]) << " ";
+                }
+            }
+            x_step = (x_cur/Col_eachTime) * Col_eachTime;
+            y_step = (y_cur/Row_eachTime) * Row_eachTime;
+            choice[y_cur%Row_eachTime][x_cur%Col_eachTime] = 1;
+            for (int i = 0; i < Row_eachTime && i + y_step < num_row; i++)
+            {
+                for(int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
+                {
+                    if (choice[i][j])
+                    {
+                        TextColor(0xFF);
+                        goToXY(x + pos[j], y + i * height);
+                        cout << setw(width[j]) << " ";
+                        goToXY(x + 2 + pos[j], y + i * height);
+                        TextColor(0xF3);
+                        cout << table[i + y_step][j + x_step];
+                    }
+                    else
+                    {
+                        TextColor(7);
+                        goToXY(x + pos[j], y + i * height);
+                        cout << setw(width[j]) << " ";
+
+                        goToXY(x + 2 + pos[j], y + i * height);
+                        TextColor(7);
+                        cout << table[i + y_step][j + x_step];
+                    }
+                }
+            }
+        }
+        else {
+            TextColor(0xFF);
+            goToXY(x + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
+            cout << setw(width[x_cur%Col_eachTime]) << " ";
+            TextColor(0xF3);
+            goToXY(x + 2 + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
+            cout << table[y_cur%Row_eachTime + y_step][x_cur%Col_eachTime + x_step];
+
+            TextColor(7);
+            goToXY(x + pos[x_prev%Col_eachTime], y + (y_prev%Row_eachTime) * height);
+            cout << setw(width[x_prev%Col_eachTime]) << " ";
+            TextColor(7);
+            goToXY(x + 2 + pos[x_prev%Col_eachTime], y + (y_prev%Row_eachTime) * height);
+            cout << table[y_prev%Row_eachTime + y_step][x_prev%Col_eachTime + x_step];
+
+        }
+        
+        x_prev = x_cur;
+        y_prev = y_cur;
+        TextColor(7);
+        int tmp;
+        if (tmp = _getch())
+        {
+            switch (tmp)
+            {
+            case 27:
+                x_cur = -1;
+                y_cur = -1;
+                stop = true;
+                break;
+            case ENTER:
+                ShowConsoleCursor(1);
+                if(edit_Col[x_cur] == false)
+                    Message_Warning("This cell is not editable", "Error!");
+                else
+                    stop = true;
+                break;
+            case UP:
+                choice[y_cur%Row_eachTime][x_cur%Col_eachTime] = 0;
+                y_cur = (y_cur > 0 ? y_cur - 1 : num_row - 1);
+                break;
+            case DOWN:
+                choice[y_cur%Row_eachTime][x_cur%Col_eachTime] = 0;
+                y_cur = (y_cur < num_row - 1 ? y_cur + 1 : 0);
+                break;
+            case LEFT:
+                choice[y_cur%Row_eachTime][x_cur%Col_eachTime] = 0;
+                x_cur = (x_cur > 0 ? x_cur - 1 : num_col - 1);
+                break;
+            case RIGHT:
+                choice[y_cur%Row_eachTime][x_cur%Col_eachTime] = 0;
+                x_cur = (x_cur < num_col - 1 ? x_cur + 1 : 0);
+            }
+        }
+    }  
+    for(int i = 0; i < num_row; i++)
+        delete []choice[i];
+    delete choice;
+    delete []pos;
+}
 int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur)
 {
     vector<int> choice(menu.size(), 0);
@@ -437,17 +605,7 @@ void Render_View()
     goToXY(x,y++);
     cout << "    \\ ' /      _| |_   _| |__/ |     \\  /\\  / ";
     goToXY(x,y++);
-    cout << "     \\_/      |_____| |________|      \\/  \\/";
-
-
-//   ____   ____   _____   ________   ____      ____      ______    _________   _____  _____   ______     ________   ____  _____   _________      ______ _____         _      ______   ______    
-//  |_  _| |_  _| |_   _| |_   __  | |_  _|    |_  _|   .' ____ \  |  _   _  | |_   _||_   _| |_   _ `.  |_   __  | |_   \|_   _| |  _   _  |   .' ___  |_   _|       / \   .' ____ \.' ____ \   
-//    \ \   / /     | |     | |_ \_|   \ \  /\  / /     | (___ \_| |_/ | | \_|   | |    | |     | | `. \   | |_ \_|   |   \ | |   |_/ | | \_|  / .'   \_| | |        / _ \  | (___ \_| (___ \_|  
-//     \ \ / /      | |     |  _| _     \ \/  \/ /       _.____`.      | |       | '    ' |     | |  | |   |  _| _    | |\ \| |       | |      | |        | |   _   / ___ \  _.____`. _.____`.   
-//      \ ' /      _| |_   _| |__/ |     \  /\  /       | \____) |    _| |_       \ \__/ /     _| |_.' /  _| |__/ |  _| |_\   |_     _| |_     \ `.___.'\_| |__/ |_/ /   \ \| \____) | \____) |  
-//       \_/      |_____| |________|      \/  \/         \______.'   |_____|       `.__.'     |______.'  |________| |_____|\____|   |_____|     `.____ .|________|____| |____\______.'\______.'  
-//                                                                                                                                                                                               
-
+    cout << "     \\_/      |_____| |________|      \\/  \\/";                                                                                                                                                                                          
 }
 
 
@@ -475,6 +633,21 @@ void Render_ScoreBoard(int x, int y)
     cout << " | \\____) | \\ `.___.'\\ \\  `-'  /  _| |  \\ \\_   _| |__/ |  _| |__) | \\  `-'  /  _/ /   \\ \\_   _| |  \\ \\_   _| |_.' /    ";
     goToXY(x,y++);
     cout << "  \\______.'  `.____ .'  `.___.'  |____| |___| |________| |_______/   `.___.'  |____| |____| |____| |___| |______.'         ";
+}
+void Render_Update(int x, int y)
+{
+    goToXY(x,y++);
+    cout << "  _____  _____   _______    ______          _        _________   ________  ";
+    goToXY(x,y++);
+    cout << " |_   _||_   _| |_   __ \\  |_   _ `.       / \\      |  _   _  | |_   __  | ";
+    goToXY(x,y++);
+    cout << "   | |    | |     | |__) |   | | `. \\     / _ \\     |_/ | | \\_|   | |_ \\_| ";
+    goToXY(x,y++);
+    cout << "   | '    ' |     |  ___/    | |  | |    / ___ \\        | |       |  _| _  ";
+    goToXY(x,y++);
+    cout << "    \\ \\__/ /     _| |_      _| |_.' /  _/ /   \\ \\_     _| |_     _| |__/ | ";
+    goToXY(x,y++);
+    cout << "     `.__.'     |_____|    |______.'  |____| |____|   |_____|   |________| ";
 }
 void Render_Export(int x, int y) 
 {

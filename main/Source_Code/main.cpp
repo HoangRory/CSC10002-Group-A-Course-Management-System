@@ -34,6 +34,7 @@ int main()
 
     Merge_year_sem(accHead, yearHead);
 
+    system("mode 1000, 5000");
     // ViewClass(yearHead);
 
     // ViewStudentsClass(yearHead);
@@ -53,6 +54,8 @@ int main()
     // exportListStudentCourse(yearHead->NoSemester);
     // ViewScoreboard(yearHead->Class->StudentClass->accStudent->next, yearHead->NoSemester->course);
     // ViewCoursesOfAStudent(yearHead->Class->StudentClass->accStudent->next, yearHead->NoSemester->course);
+    UpdateStudentResult(yearHead);
+        
     EradicateLL(accHead, yearHead);
     return 0;
 }

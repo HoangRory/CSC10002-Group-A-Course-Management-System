@@ -76,7 +76,7 @@ void updateSBC (string ID, StudentCourse *stuUpdate)
 }
 void UpdateStudentResult(Year *Yhead) 
 {
-    system ("cls");
+    // system ("cls");
     // //chọn 1 để nhập số bao danh học sinh cần sửa sau đó nhập khóa học
     // //chọn 2 để chọn khóa học có học sinh cần sửa điểm, sau đó chọn học sinh
     // vector <string> arrOption;
@@ -97,8 +97,8 @@ void UpdateStudentResult(Year *Yhead)
     // delete []arrOption;
 
     // system ("cls");
-    string IDStudent = "";
-    string CourseName = "";
+    // string IDStudent = "";
+    // string CourseName = "";
 
     // if (option == 0) 
     // {
@@ -168,7 +168,95 @@ void UpdateStudentResult(Year *Yhead)
     //nếu chọn 2:
     // if (1 == option) 
     // {
-        Year *ChooseYear = nullptr;
+        // Year *ChooseYear = nullptr;
+        // Semester *ChooseSem = nullptr;
+        // Course *ChooseCourse = nullptr;
+        // if(Yhead == nullptr){
+        //     Message_Warning("There are no school years at all", "Error not exist!");
+        //     // gọi lại hàm mainmenu
+        //     return;
+        // } 
+        //messbox
+        int x, y;
+        // do {
+        //     Render_Update(40,1);
+        //     Render_ScoreBoard(30, 7);
+        //     Year *year_cur = Yhead;
+        //     vector<string> menu;
+        //     while (year_cur)
+        //     {
+        //         menu.push_back(to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1));
+        //         year_cur = year_cur->next;
+        //     }
+        //     ChooseYear = chooseYearbyOption_XY(Yhead, 60, 15, 5);
+        //     if(ChooseYear == nullptr)
+        //         return;//quay lại main menu
+        //     do {
+        //         if(ChooseYear->NoSemester == nullptr) {
+        //             Message_Warning("There are no semester in this school year.","Error not exist!");
+        //            break;
+        //         }
+        //         ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, 60, 15, 5);
+        //         if(ChooseSem)
+        //             if(ChooseSem->course == nullptr) 
+        //                 Message_Warning("There are no course in this semester", "Error not exist");
+        //             else
+        //                 ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, 60 ,15, 5);
+                    
+        //         else 
+        //             break;
+        //     }while(ChooseCourse == nullptr);
+        // } while (ChooseSem == nullptr);
+        // ChooseCourse = Yhead->NoSemester->course;
+        // x = 10; y= 15;
+        // StudentCourse *studentHead = ChooseCourse->studentCourse;
+        
+        // vector<vector<string>> table;
+        // int height = 1, Row_eachTime = 8, Col_eachTime = 1, x_cur = 0, y_cur = 0;
+        // bool edit_Col[6] = {false, false,true,true,true,true};
+        // vector<int> width;
+        // width.push_back(5);
+        // width.push_back(12);
+        // width.push_back(30);
+        // width.push_back(15);
+        // width.push_back(15);
+        // width.push_back(15);
+        // width.push_back(15);
+        // vector<string> tmp;
+        // for(int i = 0; studentHead != nullptr; i++){
+            
+        //     tmp.push_back(to_string(i+1));
+        //     tmp.push_back(studentHead->ID);
+        //     tmp.push_back(studentHead->FullName);
+        //     tmp.push_back(to_string(studentHead->ScoreBoardCourse.midMark));
+        //     tmp.push_back(to_string(studentHead->ScoreBoardCourse.finalMark));
+        //     tmp.push_back(to_string(studentHead->ScoreBoardCourse.otherMark));
+        //     tmp.push_back(to_string(studentHead->ScoreBoardCourse.totalMark));
+        //     table.push_back(tmp);
+        //     tmp.clear();
+        //     studentHead = studentHead->next;
+        // }
+
+        // Draw_table(table, width,height,x,y,Row_eachTime,Col_eachTime,3,edit_Col, x_cur,y_cur);
+    
+        // system ("cls");
+        //hàm xem danh sách sinh viên trong khóa học
+
+        // cout << "Please enter ID: ";    
+        // getline(cin, IDStudent);
+        // StudentCourse *stuUpdate = find_SBC_ofStudent(IDStudent, ChooseCourse->studentCourse);
+        // if(stuUpdate == nullptr) {
+        //     cout << "student is not exist.\n";
+        //     system("pause");
+        //     return;
+        // }
+        // updateSBC(IDStudent, ChooseCourse->studentCourse);
+        // return;
+    // }
+    //không phải 0 hoặc 1 thì se thoát
+
+
+    Year *ChooseYear = nullptr;
         Semester *ChooseSem = nullptr;
         Course *ChooseCourse = nullptr;
         if(Yhead == nullptr){
@@ -176,8 +264,6 @@ void UpdateStudentResult(Year *Yhead)
             // gọi lại hàm mainmenu
             return;
         } 
-        //messbox
-        int x, y;
         do {
             Render_Update(40,1);
             Render_ScoreBoard(30, 7);
@@ -207,21 +293,75 @@ void UpdateStudentResult(Year *Yhead)
                     break;
             }while(ChooseCourse == nullptr);
         } while (ChooseSem == nullptr);
+    
 
+    x = 10;
+    y= 15;
+    StudentCourse *studentHead = ChooseCourse->studentCourse;
+
+    int num_row = 0;
+    while(studentHead) {
+        num_row ++;
+        studentHead = studentHead->next;
+    }
+    string **table = new string* [num_row];
+    for(int i = 0; i < num_row; i++)
+        table[i] = new string[7];
+    
+    int height = 1, Row_eachTime = 8, Col_eachTime = 7, x_cur = 0, y_cur = 0;
+    bool edit_Col[7] = {false, false,false,true,true,true,true};
+    int width[7];
+    width[0] = 5;
+    width[1] = 12;
+    width[2] = 30;
+    width[3] = 15;
+    width[4] = 15;
+    width[5] = 15;
+    width[6] = 15;
+
+
+    // vector<int> width;
+    // width.push_back(5);
+    // width.push_back(12);
+    // width.push_back(30);
+    // width.push_back(15);
+    // width.push_back(15);
+    // width.push_back(15);
+    // width.push_back(15);
+    studentHead = ChooseCourse->studentCourse;
+    for(int i = 0; studentHead != nullptr; i++){
+        int j = 0;
+        table[i][j++] = to_string(i+1);
+        table[i][j++] = studentHead->ID;
+        table[i][j++] = studentHead->FullName;
+        if(studentHead->ScoreBoardCourse.midMark == 10)
+            table[i][j++] = to_string(studentHead->ScoreBoardCourse.midMark).substr(0,5);
+        else 
+            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.midMark).substr(0,4);
+        if(studentHead->ScoreBoardCourse.finalMark == 10)
+            table[i][j++] = to_string(studentHead->ScoreBoardCourse.finalMark).substr(0,5);
+        else 
+            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.finalMark).substr(0,4);        
+        if(studentHead->ScoreBoardCourse.otherMark == 10)
+            table[i][j++] = to_string(studentHead->ScoreBoardCourse.otherMark).substr(0,5);
+        else 
+            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.otherMark).substr(0,4);
+        if(studentHead->ScoreBoardCourse.midMark == 10)
+            table[i][j++] = to_string(studentHead->ScoreBoardCourse.totalMark).substr(0,5);
+        else 
+            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.totalMark).substr(0,4);
         
-        // system ("cls");
-        //hàm xem danh sách sinh viên trong khóa học
-
-        cout << "Please enter ID: ";    
-        getline(cin, IDStudent);
-        StudentCourse *stuUpdate = find_SBC_ofStudent(IDStudent, ChooseCourse->studentCourse);
-        if(stuUpdate == nullptr) {
-            cout << "student is not exist.\n";
-            system("pause");
-            return;
-        }
-        updateSBC(IDStudent, ChooseCourse->studentCourse);
-        return;
+        studentHead = studentHead->next;
+    }
+    Draw_table(table,num_row,7, width,height,x,y,Row_eachTime,Col_eachTime,3,edit_Col, x_cur,y_cur);
+    // studentHead = yearHead->NoSemester->course->studentCourse;
+    // for(int i = 0; studentHead!=nullptr; i++){
+    //     for(int j = 0; j < 7; j ++){
+    //         cout << table[i][j] << " ";
+    //     }
+    //     cout << endl;
     // }
-    //không phải 0 hoặc 1 thì se thoát
+    for(int i = 0; i < num_row; i++)
+        delete []table[i];
+    delete []table;
 } 
