@@ -19,6 +19,7 @@ bool Message_YesNo(string message, string title);
 //? Draw Word Art
 void Render_Login();
 void Render_Menu();
+void Render_NewInfo();
 void Render_ViewCourse();
 void Render_Account();
 void Render_NewYear();

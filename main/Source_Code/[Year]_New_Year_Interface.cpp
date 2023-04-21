@@ -39,8 +39,7 @@ int Get_CheckFormat_Existed_Year(Year *yearHead)
         cout << "                                       ";
     }
 
-    goToXY(61, 20);
-    cin >> strYear;
+    strYear = Limit_Input(61, 20, 9, 63);
     strYear[4] = '_';
 
     while (!isValidYear(strYear) || !checkYear(yearHead, stoi(strYear.substr(0, 4))))
@@ -50,8 +49,7 @@ int Get_CheckFormat_Existed_Year(Year *yearHead)
         Message_Warning(message, title);
         goToXY(59, 20);
         cout << "                                       ";
-        goToXY(61, 20);
-        cin >> strYear;
+        strYear = Limit_Input(61, 20, 9, 63);
         strYear[4] = '_';
     }
     TextColor(7);
@@ -64,7 +62,7 @@ Year *RecoverFile()
     int numofYear = 0;
     // import existing years and classes
     loadingFile(headYear, numofYear);
-    
+
     Year *yearTMP = headYear;
     while (yearTMP)
     {
@@ -94,8 +92,7 @@ void Interface_New_Year(Year *yearHead)
         cout << "                                                  ";
     }
 
-    goToXY(52, 20);
-    cin >> strYear;
+    strYear = Limit_Input(52, 20, 9, 63);
     TextColor(7);
     if (strYear == "-1")
         return;
@@ -109,8 +106,7 @@ void Interface_New_Year(Year *yearHead)
         TextColor(63);
         goToXY(50, 20);
         cout << "                                                  ";
-        goToXY(52, 20);
-        cin >> strYear;
+        strYear = Limit_Input(52, 20, 9, 63);
         strYear[4] = '_';
     }
     TextColor(7);

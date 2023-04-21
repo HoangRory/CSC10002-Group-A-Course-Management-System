@@ -72,8 +72,7 @@ void Create_New_Classes(Year *newYear)
         TextColor(63);
         goToXY(58, 19 + i);
         cout << "                             ";
-        goToXY(65, 19 + i);
-        getline(cin, line);
+        line = Limit_Input(65, 19 + i, 8, 63);
 
         if (line == "-1")
             break;
@@ -223,7 +222,7 @@ void importStudent(Class *curClass)
 
     goToXY(60, 14);
     cout << "File name: ";
-    getline(cin, tmp);
+    tmp = Limit_Input(60 + 11, 14, 100, 7);
     if (tmp != "0")
         fileName = tmp;
     // Get the file name in4 and access the file
@@ -359,9 +358,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
         }
         goToXY(62, 10 + 4 * i);
         cout << menu[i];
-        // goToXY(62 + menu[i].length(), 10 + 4 * i);
-        // getline(cin, line);
-        getline(cin, line);
+        line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 30, 63);
 
         if (i == 0)
         {
@@ -373,7 +370,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
                 cout << space;
                 goToXY(62, 10 + 4 * i);
                 cout << menu[i];
-                getline(cin, line);
+                line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 8, 63);
             }
             ID = line;
         }
@@ -389,7 +386,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
                 cout << space;
                 goToXY(62, 10 + 4 * i);
                 cout << menu[i];
-                getline(cin, line);
+                line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 1, 63);
             }
             gen = line;
         }
@@ -404,7 +401,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
                 cout << space;
                 goToXY(62, 10 + 4 * i);
                 cout << menu[i];
-                getline(cin, line);
+                line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 10, 63);
             }
             birth = line;
         }

@@ -90,6 +90,18 @@ bool isValidDate(const string &dateOfBirth)
     return true;
 }
 
+//? return true if the Day format is correct
+bool isDay(string day)
+{
+    return (day == "MON" || day == "TUE" || day == "WED" || day == "THU" || day == "FRI" || day == "SAT" || day == "SUN");
+}
+
+//? return true if the session format is correct
+bool isSession(string ss)
+{
+    return (ss == "S1" || ss == "S2" || ss == "S3" || ss == "S4");
+}
+
 //? true if it is in the correct format
 bool isValidGender(const string &gender)
 {

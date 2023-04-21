@@ -56,7 +56,6 @@ void RunModify(Year *yearHead, int opt)
     case 4:
         string mess = "Modification completed!\nRemember to SAVE changes.";
         Message_Warning(mess, "Notice");
-
         return;
     }
 

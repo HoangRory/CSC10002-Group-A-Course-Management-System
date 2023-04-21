@@ -48,6 +48,9 @@ bool checkClass(Year *curYear, string className);
 bool Check_Student(Class *curClass, string studentID);
 bool isLeap(int year);
 bool isValidDate(const string &dateOfBirth);
+bool isDay(string day);
+bool isSession(string ss);
+
 bool isValidGender(const string &gender);
 bool isValidYear(string year);
 

@@ -19,7 +19,6 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int color)
                     cout << "                         ";
                 }
                 goToXY(xStart + 2, yStart + 1 + i * 3);
-                TextColor(color);
                 cout << menu[i];
             }
             else
@@ -31,7 +30,6 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int color)
                     cout << "                         ";
                 }
                 goToXY(xStart + 2, yStart + 1 + i * 3);
-                TextColor(7);
                 cout << menu[i];
             }
         }
@@ -216,6 +214,18 @@ void Render_Menu()
     TextColor(7);
 }
 
+void Render_NewInfo()
+{
+    goToXY(50, 2);
+    cout << " _  _ ___ _      _   ___  _  _ ____  ___";
+    goToXY(50, 3);
+    cout << "| \\| | __\\ \\    / / |_ _|| \\| | |_  / _ \\  ";
+    goToXY(50, 4);
+    cout << "| .` | _| \\ \\/\\/ /   | | | .` | __|| (_) |";
+    goToXY(50, 5);
+    cout << "|_|\\_|___| \\_/\\_/   |___||_|\\_|_|   \\___/";
+}
+
 void Render_ViewCourse()
 {
     int x = 50, y = 1;
@@ -353,30 +363,30 @@ void Render_View()
 void Render_StudentClass()
 {
     int x = 35, y = 3;
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "  ______    _________   _____  _____   ______     ________   ____  _____   _________        ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << ".' ____ \\  |  _   _  | |_   _||_   _| |_   _ `.  |_   __  | |_   \\|_   _| |  _   _  |      ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "| (___ \\_| |_/ | | \\_|   | |    | |     | | `. \\   | |_ \\_|   |   \\ | |   |_/ | | \\_| ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << " _.____`.      | |       | '    ' |     | |  | |   |  _| _    | |\\ \\| |       | |         ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "| \\____) |    _| |_       \\ \\__/ /     _| |_.' /  _| |__/ |  _| |_\\   |_     _| |_      ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << " \\______.'   |_____|       `.__.'     |______.'  |________| |_____|\\____|   |_____|       ";
     x = 45;
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "        ______   _____           _         ______     ______  ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "      .' ___  | |_   _|         / \\      .' ____ \\  .' ____ \\ ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "     / .'   \\_|   | |          / _ \\     | (___ \\_| | (___ \\_|";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "     | |          | |   _     / ___ \\     _.____`.   _.____`. ";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "     \\ `.___.'\\  _| |__/ |  _/ /   \\ \\_  | \\____) | | \\____) |";
-    goToXY(x,y++);
+    goToXY(x, y++);
     cout << "      `.____ .' |________| |____| |____|  \\______.'  \\______.";
 }
 
