@@ -12,9 +12,9 @@ void initModify(Year *yearHead)
     menu.push_back("Modify course");
     menu.push_back("Remove a course");
     menu.push_back("Add/Remove student");
-    menu.push_back("Return");
+    menu.push_back("Back");
 
-    int opt = Draw_XY(menu, 60, 12);
+    int opt = Draw_XY(menu, 60, 12, 5, 24, 63);
 
     RunModify(yearHead, opt); // Begin to do the chosen option
     return;
@@ -32,8 +32,9 @@ void RunModify(Year *yearHead, int opt)
         small_menu.push_back("1st semester");
         small_menu.push_back("2nd semester");
         small_menu.push_back("3rd semester");
+        small_menu.push_back("Back");
 
-        sem = Draw_XY(small_menu, 60, 12) + 1;
+        sem = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
 
         modifySemester(yearHead, year, sem);
         break;
@@ -56,7 +57,6 @@ void RunModify(Year *yearHead, int opt)
     case 4:
         string mess = "Modification completed!\nRemember to SAVE changes.";
         Message_Warning(mess, "Notice");
-
         return;
     }
 

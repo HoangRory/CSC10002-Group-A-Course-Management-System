@@ -7,8 +7,9 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
 {
     Render_ViewCourse();
 
-    int row = 8;
+    int row = 10;
     goToXY(25, row++);
+    TextColor(7);
     for (int i = 0; i < 95; i++) // Display the table
         cout << '=';
 

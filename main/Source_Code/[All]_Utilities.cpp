@@ -87,6 +87,7 @@ string Limit_Input(int x, int y, int limit, int color)
             i++;
         }
     }
+    TextColor(7);
     return input;
 }
 

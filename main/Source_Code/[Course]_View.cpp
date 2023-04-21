@@ -106,7 +106,7 @@ void ViewClass(Year* yearHead)
     system("cls");
     int x = 40, y = 2;  
     Render_Class(x, y);
-    Year *ChooseYear = chooseYearbyOption(yearHead);
+    Year *ChooseYear = chooseYearbyOption_XY(yearHead, 60, 15, 5);
     if(ChooseYear == nullptr)
         return;
         //gọi lại hàm mainmenu

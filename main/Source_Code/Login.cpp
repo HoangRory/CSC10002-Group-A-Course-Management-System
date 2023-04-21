@@ -16,7 +16,6 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
         goToXY(50, 19 + i);
         cout << "                                              ";
     }
-    // TextColor(73);
 
     goToXY(50, 23);
     TextColor(0x0E);
@@ -28,8 +27,8 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
         cout << "                                              ";
     }
 
-    user = Limit_Input(52, 20, 42, 63);
-    pass = Limit_Input(52, 25, 42, 63);
+    user = Limit_Input(52, 20, 30, 63);
+    pass = Limit_Input(52, 25, 30, 63);
     TextColor(WHITE);
 
     Account *cur = accHead;
@@ -110,8 +109,7 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     }
     string tmp;
     TextColor(63);
-    goToXY(52, 20);
-    cin >> tmp;
+    tmp = Limit_Input(52, 20, 30, 63);
 
     while (tmp != pass) // If the password is wrong
     {
@@ -123,15 +121,12 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
         TextColor(63);
         goToXY(50, 20);
         cout << "                                              ";
-        goToXY(52, 20);
-        cin >> tmp;
+        tmp = Limit_Input(52, 20, 30, 63);
     }
 
     string p1, p2;
-    goToXY(52, 25);
-    cin >> p1;
-    goToXY(52, 30);
-    cin >> p2;
+    p1 = Limit_Input(52, 25, 30, 63);
+    p2 = Limit_Input(52, 30, 30, 63);
 
     while (p1 != p2)
     {
@@ -142,10 +137,8 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
         cout << "                                              ";
         goToXY(50, 30);
         cout << "                                              ";
-        goToXY(52, 25);
-        cin >> p1;
-        goToXY(52, 30);
-        cin >> p2;
+        p1 = Limit_Input(52, 25, 30, 63);
+        p2 = Limit_Input(52, 30, 30, 63);
     }
 
     Account *cur = accHead;
@@ -169,12 +162,12 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     Render_Account();
 
     vector<string> menu;
-    menu.push_back("Continue");
+    menu.push_back("Main Menu");
     menu.push_back("Change password");
     menu.push_back("Logout");
     menu.push_back("Quit");
 
-    int opt = Draw_XY(menu, 60, 12);
+    int opt = Draw_XY(menu, 60, 12, 4, 20, 63);
 
     switch (opt)
     {

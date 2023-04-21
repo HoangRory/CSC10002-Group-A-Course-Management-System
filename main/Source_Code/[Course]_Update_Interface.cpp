@@ -1,17 +1,7 @@
 #include "../Header/course.h"
 #include "../Header/Utility.h"
-//task 22
-
-void enterMark(double &Mark) 
-{
-    cin >> Mark;
-    while (Mark < 0 || Mark > 10) 
-    {
-        cout << "Please re-enter your score. 0 <= mark <= 10";
-        cin  >> Mark;
-    }
-}
-void updateSBC (Course *ChooseCourse, int x, int y) 
+// task 22
+void updateSBC(Course* ChooseCourse, int x, int y)
 {
     int width[7];
     width[0] = 5;
@@ -21,31 +11,34 @@ void updateSBC (Course *ChooseCourse, int x, int y)
     width[4] = 15;
     width[5] = 15;
     width[6] = 15;
-    int *pos = new int [7]; // vị trí bắt đầu của các cột, bắt đầu từ cột đầu là 0
+    int *pos = new int[7]; // vị trí bắt đầu của các cột, bắt đầu từ cột đầu là 0
     pos[0] = 0;
-    for(int i = 1; i < 7; i++) {
-        pos[i] = pos[i-1] + width[i-1];
-    }    
+    for (int i = 1; i < 7; i++)
+    {
+        pos[i] = pos[i - 1] + width[i - 1];
+    }
     x = 10;
-    y= 15;
+    y = 15;
     StudentCourse *studentHead = ChooseCourse->studentCourse;
 
     int num_row = 0;
-    while(studentHead) {
-        num_row ++;
+    while (studentHead)
+    {
+        num_row++;
         studentHead = studentHead->next;
     }
-    string **table = new string* [num_row];
-    for(int i = 0; i < num_row; i++)
+    string **table = new string *[num_row];
+    for (int i = 0; i < num_row; i++)
         table[i] = new string[7];
-    
+
     int height = 1, Row_eachTime = 8, Col_eachTime = 7, x_cur = 0, y_cur = 0;
-    bool edit_Col[7] = {false, false,false,true,true,true,true};
+    bool edit_Col[7] = {false, false, false, true, true, true, true};
 
     studentHead = ChooseCourse->studentCourse;
-    for(int i = 0; studentHead != nullptr; i++){
+    for (int i = 0; studentHead != nullptr; i++)
+    {
         int j = 0;
-        table[i][j++] = to_string(i+1);
+        table[i][j++] = to_string(i + 1);
         table[i][j++] = studentHead->ID;
         table[i][j++] = studentHead->FullName;
         if(studentHead->ScoreBoardCourse.midMark == 10)
@@ -67,7 +60,7 @@ void updateSBC (Course *ChooseCourse, int x, int y)
         
         studentHead = studentHead->next;
     }
-    Draw_table(table,num_row,7, width, pos ,height,x,y,Row_eachTime,Col_eachTime,3,edit_Col, x_cur,y_cur);
+    Draw_table(table,num_row,7, width, height, pos ,x,y,Row_eachTime,Col_eachTime,edit_Col, x_cur,y_cur);
     if(x_cur == -1){
         for(int i = 0; i < num_row; i++)
             delete []table[i];
@@ -115,18 +108,21 @@ void updateSBC (Course *ChooseCourse, int x, int y)
     }
     updateSBC(ChooseCourse, x, y);
 }
-void UpdateStudentResult(Year *Yhead) 
+
+void UpdateStudentResult(Year *Yhead)
 {
     Year *ChooseYear = nullptr;
     Semester *ChooseSem = nullptr;
     Course *ChooseCourse = nullptr;
-    if(Yhead == nullptr){
+    if (Yhead == nullptr)
+    {
         Message_Warning("There are no school years at all", "Error not exist!");
         // gọi lại hàm mainmenu
         return;
-    } 
-    do {
-        Render_Update(40,1);
+    }
+    do
+    {
+        Render_Update(40, 1);
         Render_ScoreBoard(30, 7);
         Year *year_cur = Yhead;
         vector<string> menu;
@@ -136,24 +132,26 @@ void UpdateStudentResult(Year *Yhead)
             year_cur = year_cur->next;
         }
         ChooseYear = chooseYearbyOption_XY(Yhead, 60, 15, 5);
-        if(ChooseYear == nullptr)
-            return;//quay lại main menu
-        do {
-            if(ChooseYear->NoSemester == nullptr) {
-                Message_Warning("There are no semester in this school year.","Error not exist!");
+        if (ChooseYear == nullptr)
+            return; // quay lại main menu
+        do
+        {
+            if (ChooseYear->NoSemester == nullptr)
+            {
+                Message_Warning("There are no semester in this school year.", "Error not exist!");
                 break;
             }
             ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, 60, 15, 5);
-            if(ChooseSem)
-                if(ChooseSem->course == nullptr) 
+            if (ChooseSem)
+                if (ChooseSem->course == nullptr)
                     Message_Warning("There are no course in this semester", "Error not exist");
                 else
-                    ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, 60 ,15, 5);
-                
-            else 
+                    ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, 60, 15, 5);
+
+            else
                 break;
-        }while(ChooseCourse == nullptr);
+        } while (ChooseCourse == nullptr);
     } while (ChooseSem == nullptr);
     int x = 20, y = 15;
-    updateSBC(ChooseCourse,x,y);
-} 
+    updateSBC(ChooseCourse, x, y);
+}

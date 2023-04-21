@@ -19,6 +19,7 @@ bool Message_YesNo(string message, string title);
 //? Draw Word Art
 void Render_Login();
 void Render_Menu();
+void Render_NewInfo();
 void Render_ViewCourse();
 void Render_Account();
 void Render_NewYear();
@@ -35,12 +36,21 @@ void Render_StudentClass();
 void Render_StudentCourse();
 void Render_ScoreBoardCourse();
 void Render_ScoreBoardClass(); 
+
 //? Draw the option
 int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, int width, int color = 0xF3);
 int Draw_ShortVer(vector<string> menu, int x, int y, int color = 0xF3);
 int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur, int color = 0xF3);
+<<<<<<< HEAD
 int Draw_table(
     string **table,int num_row, int num_col, int width[],int pos[], int height,
     int x, int y, int Row_eachTime, int Col_eachTime, int always_show,
     bool edit_Col[], int &x_cur, int &y_cur
 );
+=======
+void Draw_table(
+    string **table,int num_row, int num_col, int *width, int height, int *pos,
+    int x, int y, int Row_eachTime, int Col_eachTime,
+    bool *edit_Col, int &x_cur, int &y_cur
+);
+>>>>>>> ba2132c0221c5d1c8c70aa279d11f728ffbdba7a

@@ -19,7 +19,11 @@ void exportListStudentCourse(Semester *curSmt);
   ////////////////////////////////////////////////////////
  //                 Update                             //
 ////////////////////////////////////////////////////////
+<<<<<<< HEAD
 void updateSBC (Course *ChooseCourse, int x, int y);// x y là tọa độ của cái bảng
+=======
+void updateSBC(Course* ChooseCourse, int x, int y);
+>>>>>>> ba2132c0221c5d1c8c70aa279d11f728ffbdba7a
 void UpdateStudentResult(Year *Yhead) ;
 
   ///////////////////////////////////////////////////////
@@ -65,11 +69,6 @@ int amountCourse(Course* courseHead);
   /////////////////////////////////////////////////////////////
  //                     CHOOSE                              //
 /////////////////////////////////////////////////////////////
-Year* chooseYearbyOption(Year* yearHead); 
-Semester* chooseSemesterbyOption(Semester* semHead);
-Class* chooseClassbyOption(Class *classHead);
-Course* chooseCoursebyOption(Course* courseHead) ;
-
 Year* chooseYearbyOption_XY(Year* yearHead, int x, int y, int nOption_eachTime);
 Class* chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTime);
 Semester* chooseSemesterbyOption_XY(Semester* semHead, int x, int y, int nOption_eachTime);
@@ -92,7 +91,6 @@ void ViewStudentCourse(Year *yearHead);
     //task 21 //
 void viewScoreBoardCourse(Course *courseHead);
     //task 23 //
-void viewAllFinalMark_ofStudent(double *SBC, int Col);
 void viewScoreboardClass(Class *Class);
 
 // for student //
