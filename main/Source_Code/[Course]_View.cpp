@@ -464,7 +464,7 @@ void viewScoreboardClass(Class *Class)
         goToXY(x,y);
         cout << "Page " << (int) ceil(1.0*(Col_cur + 1) / 3) << "/" << (int) ceil((1.0*Col) / 3);
         int option = Draw_Horizontal_XY(move, x + 47, y, cur);
-        // int option = 2;
+        
         if(key == 0) stop = true;
         else if(key == 1) {
             student_cur = Class->StudentClass;

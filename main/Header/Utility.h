@@ -40,7 +40,7 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
 int Draw_ShortVer(vector<string> menu, int x, int y, int color = 0xF3);
 int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur, int color = 0xF3);
 int Draw_table(
-    string **table,int num_row, int num_col, int width[], int height,
+    string **table,int num_row, int num_col, int width[],int pos[], int height,
     int x, int y, int Row_eachTime, int Col_eachTime, int always_show,
     bool edit_Col[], int &x_cur, int &y_cur
 );

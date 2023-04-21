@@ -19,9 +19,7 @@ void exportListStudentCourse(Semester *curSmt);
   ////////////////////////////////////////////////////////
  //                 Update                             //
 ////////////////////////////////////////////////////////
-void enterMark(double &Mark);
-bool updateMark(ScoreBoardCourse &SBC, string Selection);
-void updateSBC (string ID, StudentCourse *stuUpdate);
+void updateSBC (Course *ChooseCourse, int x, int y);// x y là tọa độ của cái bảng
 void UpdateStudentResult(Year *Yhead) ;
 
   ///////////////////////////////////////////////////////

@@ -83,7 +83,7 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
 }
 
 int Draw_table
-(    string **table,int num_row, int num_col, int width[], int height,
+(    string **table,int num_row, int num_col, int width[], int pos[], int height,
     int x, int y, int Row_eachTime, int Col_eachTime, int always_show,
     bool edit_Col[], int &x_cur, int &y_cur         )
 {
@@ -97,11 +97,6 @@ int Draw_table
         choice[i] = new int [num_col];
         for(int j = 0; j < num_col; j++)
             choice[i][j] = 0;
-    }
-    int *pos = new int [num_col]; // vị trí bắt đầu của các cột, bắt đầu từ cột đầu là 0
-    pos[0] = 0;
-    for(int i = 1; i < 7; i++) {
-        pos[i] = pos[i-1] + width[i-1];
     }
 
     int x_prev = x_cur, y_prev = y_cur;
@@ -181,12 +176,6 @@ int Draw_table
             }
         }
         else {
-            TextColor(0xFF);
-            goToXY(x + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
-            cout << setw(width[x_cur%Col_eachTime]) << " ";
-            TextColor(0xF3);
-            goToXY(x + 2 + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
-            cout << table[y_cur%Row_eachTime + y_step][x_cur%Col_eachTime + x_step];
 
             TextColor(7);
             goToXY(x + pos[x_prev%Col_eachTime], y + (y_prev%Row_eachTime) * height);
@@ -195,6 +184,12 @@ int Draw_table
             goToXY(x + 2 + pos[x_prev%Col_eachTime], y + (y_prev%Row_eachTime) * height);
             cout << table[y_prev%Row_eachTime + y_step][x_prev%Col_eachTime + x_step];
 
+            TextColor(0xFF);
+            goToXY(x + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
+            cout << setw(width[x_cur%Col_eachTime]) << " ";
+            TextColor(0xF3);
+            goToXY(x + 2 + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
+            cout << table[y_cur%Row_eachTime + y_step][x_cur%Col_eachTime + x_step];
         }
         
         x_prev = x_cur;
@@ -238,7 +233,6 @@ int Draw_table
     for(int i = 0; i < num_row; i++)
         delete []choice[i];
     delete choice;
-    delete []pos;
 }
 int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur, int color)
 {
