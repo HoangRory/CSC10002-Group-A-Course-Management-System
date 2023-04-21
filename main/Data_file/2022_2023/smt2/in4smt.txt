@@ -4,16 +4,33 @@ CSC10002 4 70 3 I35
 Dinh Ba Tien
 WED
 S1
-22127026
-22127275
-22127123
--1
 Triet hoc Mac Lenin
-BAA00101 3 90 3 HTI
-Ngo Tan Phuong
+BAA00101 3 90 4 HTI
+Ngo Tuan Phuong
 FRI
 S1
-22127026
-22127275
-22127123
--1
+Vi tich phan 1
+MTH00005 4 70 5 C22
+Le Anh Ha
+WED
+S3
+Vat ly dai cuong 1
+PHY00005 4 70 5 C22
+Huynh Truc Phuong
+TUE
+S3
+Tin hoc co so 2
+TIN00002 3 50 5 I62
+Nguyen Thanh Quan
+FRI
+S3
+Tieng anh 2
+ANH00002 2 100 5 HTI
+GV X
+SUN 
+S1
+Tieng nhat 2
+NHA00002 2 100 5 HTI
+GV Y
+SUN
+S3
