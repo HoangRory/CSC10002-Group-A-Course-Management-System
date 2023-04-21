@@ -10,7 +10,7 @@ Van Chi Nam
 TUE
 S3
 Toan roi rac
-MTH00009 3 75 20 C22
+MTH00009 3 75 40 C22
 Nguyen Viet Dong
 THU
 S1
