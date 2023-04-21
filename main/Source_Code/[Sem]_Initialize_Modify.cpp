@@ -14,7 +14,7 @@ void initModify(Year *yearHead)
     menu.push_back("Add/Remove student");
     menu.push_back("Return");
 
-    int opt = Draw(menu);
+    int opt = Draw_XY(menu, 60, 12);
 
     RunModify(yearHead, opt); // Begin to do the chosen option
     return;
@@ -33,12 +33,12 @@ void RunModify(Year *yearHead, int opt)
         small_menu.push_back("2nd semester");
         small_menu.push_back("3rd semester");
 
-        sem = Draw(small_menu) + 1;
+        sem = Draw_XY(small_menu, 60, 12) + 1;
 
         modifySemester(yearHead, year, sem);
         break;
     case 1: // View all the course and modify a course in the school year
-        ViewAllCourse(yearHead);
+        ViewCourse(yearHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
         modifyCourse(yearHead, year);
         break;

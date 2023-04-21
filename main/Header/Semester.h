@@ -2,13 +2,16 @@
 #include "proto.h"
 
 //? Add new semester, new course and import student
+void New_Stuff(Year *yearHead);
+
 Semester *AddSemester(Year *yearHead);
+
 Course *AddNewCourse(Semester *semCurrent, Year *yearHead);
 void ImportStudentFromFile(Course *courseCurrent);
 void AddStudentByHand(Course *courseCurrent);
 void AddingCourse(Semester *semCurrent, Year *yearHead);
 
-void Interface_New_Sem(Year *yearHead);
+Semester *Interface_New_Sem(Year *yearHead);
 
 //? Initialize Modification
 void initModify(Year *yearHead);
@@ -35,13 +38,15 @@ void DeleteSMT(Year *yearHead);
 void OutCourse(Course *course_head, ofstream &ofs);
 void Output(Year *yearHead);
 
-//? View Course, Sync name from Account linked list
+//? Sync name from Account linked list
 void SyncFullName(Year *yearHead, Account *accHead);
 void SyncInForStudent(Year *yearHead, Account *accHead);
 void SyncCourse(Year *yearHead);
+
+//? View course
 void ViewCourse(Year *yearHead);
-void ViewCourseInYear(Semester *semHead, int &i);
-void ViewAllCourse(Year *yearHead);
+Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur);
+// void ViewCourseInYear(Semester *semHead);
 
 //? Main
 void StaffMain(Year *yearHead, Account *accHead, string &user, string &pass, int &role);

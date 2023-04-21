@@ -11,7 +11,7 @@ Year* chooseYearbyOption(Year* yearHead)
         year_cur = year_cur->next;
     }
     menu.push_back(" BACK");
-    int option = Draw(menu);
+    int option = Draw_XY(menu, 60, 12);
     while(yearHead && option--) {
         yearHead = yearHead->next;
     }
@@ -42,7 +42,7 @@ Semester* chooseSemesterbyOption(Semester* semHead)
         sem_cur = sem_cur->next;
     }
     menu.push_back(" BACK");
-    int option = Draw(menu);
+    int option = Draw_XY(menu, 60, 12);
     
     while (semHead && option--) {
         semHead = semHead->next;
@@ -58,7 +58,7 @@ Course* chooseCoursebyOption(Course* courseHead)
         course_cur = course_cur->next;
     }
     menu.push_back(" BACK ");
-    int option = Draw(menu);
+    int option = Draw_XY(menu, 60, 12);
     while(courseHead && option--) {
         courseHead = courseHead->next;
     }

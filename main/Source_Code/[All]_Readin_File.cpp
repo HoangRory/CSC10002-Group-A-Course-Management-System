@@ -85,6 +85,7 @@ void importYear(Year *&yearHead, int &numofYear)
         {
             Year *tmp = new Year;
             curYear->next = tmp;
+            tmp->prev = curYear;
             curYear = tmp;
         }
 

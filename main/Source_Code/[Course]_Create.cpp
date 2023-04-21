@@ -1,32 +1,32 @@
-#include"../Header/course.h"
+#include "../Header/course.h"
 #include <cctype>
 #pragma warning(suppress : 4996)
-//lấy kí
+// lấy kí
 
-string getFirstChar(string name) 
+string getFirstChar(string name)
 {
-    //char* c_name = new char[name.length()];
-    //strcpy(c_name, name.c_str());
-    char* c_name = (char*)name.c_str();
+    // char* c_name = new char[name.length()];
+    // strcpy(c_name, name.c_str());
+    char *c_name = (char *)name.c_str();
     int n = name.length();
-    if(n == 0)
+    if (n == 0)
         return name;
-    string tmp ="";
+    string tmp = "";
     char space = ' ';
     tmp += toupper(c_name[0]);
-    for(int i = 0; i < n; i++) {
-        if((int)c_name[i] == (int)space){
-            if(isdigit(c_name[i])) {
+    for (int i = 0; i < n; i++)
+        if ((int)c_name[i] == (int)space)
+        {
+            if (isdigit(c_name[i]))
                 tmp += c_name[i];
-            } else   
-                tmp += toupper(c_name[i+1]);
+            else
+                tmp += toupper(c_name[i + 1]);
         }
-    }
     return tmp;
-    
 }
 
-string createNameFile(int year, int no_smt, string course, string file, string type) {
+string createNameFile(int year, int no_smt, string course, string file, string type)
+{
 
     string s_year = to_string(year) + "_" + to_string(year + 1) + "/";
     string s_smt = "smt" + to_string(no_smt) + "/";
@@ -34,16 +34,16 @@ string createNameFile(int year, int no_smt, string course, string file, string t
     return path;
 }
 
-CourseStudent* CourseOfAClass (Student *studentHead) 
+CourseStudent *CourseOfAClass(Student *studentHead)
 {
     CourseStudent *CourHead = nullptr, *tmp = nullptr;
     CourseStudent *courseCheck;
-    while(studentHead) 
+    while (studentHead)
     {
         courseCheck = studentHead->course;
-        while (courseCheck) 
+        while (courseCheck)
         {
-            if( !checkExistence_OfCourse(courseCheck, CourHead) ) 
+            if (!checkExistence_OfCourse(courseCheck, CourHead))
             {
                 CourseStudent *tmp = new CourseStudent;
                 tmp->course = courseCheck->course;
@@ -56,32 +56,33 @@ CourseStudent* CourseOfAClass (Student *studentHead)
     }
     return CourHead;
 }
-// nhập các final mark vào bảng điểm của lớp 
-void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student *studentHead) {
+// nhập các final mark vào bảng điểm của lớp
+void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student *studentHead)
+{
     StudentCourse *tmp;
     CourseStudent *courseCheck;
     int i = 0;
-    while (courseHead) 
+    while (courseHead)
     {
-        courseCheck = checkExistence_OfCourse(courseHead,studentHead->course);
-        if (courseCheck) 
+        courseCheck = checkExistence_OfCourse(courseHead, studentHead->course);
+        if (courseCheck)
         {
             tmp = find_SBC_ofStudent(studentHead->ID, courseHead->course->studentCourse);
-                SBC[i++] = tmp->ScoreBoardCourse.finalMark;
-        } else 
+            SBC[i++] = tmp->ScoreBoardCourse.finalMark;
+        }
+        else
             SBC[i++] = -1; // -1 là hs này không học môn đó
         courseHead = courseHead->next;
     }
 }
-void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studentHead, int Col, int Row )
+void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studentHead, int Col, int Row)
 {
-    SBC = new double*[Col + 1] ;
-    for(int i = 0; i<Row; i++)
+    SBC = new double *[Col + 1];
+    for (int i = 0; i < Row; i++)
     {
-        SBC[i] = new double[Col+1]; // +1 là + 1 cột cuối để lưu GPA của học sinh đó trong kì này
+        SBC[i] = new double[Col + 1]; // +1 là + 1 cột cuối để lưu GPA của học sinh đó trong kì này
         CreateSB_ofStudent_inClass(SBC[i], courseHead, studentHead);
         SBC[i][Col] = CaculateGPA_1_Student(SBC[i], Col);
         studentHead = studentHead->next;
     }
 }
-

@@ -21,7 +21,7 @@ SAT
 S1
 Nhap mon cong nghe thong tin
 CSC00004 4 50 5 I91
-Nguyen Thuy Bao Tran
+Huynh Thuy Bao Tran
 MON 
 S1
 Tin hoc co so 1

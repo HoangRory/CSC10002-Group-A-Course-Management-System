@@ -28,11 +28,8 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
         cout << "                                              ";
     }
 
-    TextColor(63);
-    goToXY(52, 20);
-    cin >> user;
-    goToXY(52, 25);
-    cin >> pass;
+    user = Limit_Input(52, 20, 42, 63);
+    pass = Limit_Input(52, 25, 42, 63);
     TextColor(WHITE);
 
     Account *cur = accHead;
@@ -177,7 +174,7 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     menu.push_back("Logout");
     menu.push_back("Quit");
 
-    int opt = Draw(menu);
+    int opt = Draw_XY(menu, 60, 12);
 
     switch (opt)
     {

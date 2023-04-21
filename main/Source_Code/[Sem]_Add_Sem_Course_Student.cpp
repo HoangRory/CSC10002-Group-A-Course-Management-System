@@ -23,7 +23,7 @@ Semester *AddSemester(Year *yearHead)
     small_menu.push_back("2nd semester");
     small_menu.push_back("3rd semester");
 
-    N = Draw(small_menu) + 1;
+    N = Draw_XY(small_menu, 60, 12) + 1;
 
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
@@ -89,7 +89,7 @@ Semester *AddSemester(Year *yearHead)
     goToXY(52, 18);
     cout << "Ending date (dd/mm/yyyy): ";
     getline(cin, sem_cur->endDate);
-    
+
     while (!isValidDate(sem_cur->endDate))
     {
         Message_Warning("Invalid date format!\nEnter again!", "Error");
@@ -133,15 +133,8 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
             if (courseCurrent->CourseID == id)
             {
                 // ask if they want to change its in4
-                cout << "*** Already has this course, modify it? (Y/N) ***\n==> ";
-                char check;
-                cin >> check;
-                while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
-                {
-                    cout << "Please enter Y or N: ";
-                    cin >> check;
-                }
-                if (check == 'Y' || check == 'y')
+                string mess = "This course already exists, do you want to modify it?";
+                if (Message_YesNo(mess, "Notice"))
                     // Modify the semester
                     modifyCourse(yearHead, semCurrent->Year);
                 return nullptr;
@@ -275,73 +268,12 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
         return;
     Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
 
-    int choice = 1, prev = choice;
-    bool stop = false;
-    string menu[3]; // All allow actions
-    menu[0] = "\nMethod to import student to the course:\n";
-    menu[1] = "- Import student from file\n";
-    menu[2] = "- Add student by hand     \n";
-    system("cls");
-    for (int i = 0; i < 3; i++)
-    {
-        if (i == choice) // Change color according to the current cursor
-        {
-            TextColor(LIGHT_YELLOW);
-            cout << menu[i];
-            TextColor(WHITE);
-        }
-        else
-            cout << menu[i];
-    }
+    vector<string> menu;
+    //! add a title
+    menu.push_back("Import student from file");
+    menu.push_back("Add student by hand");
 
-    TextColor(LIGHT_GREEN);
-    cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-    TextColor(WHITE);
-
-    ShowConsoleCursor(false); // Disable the cursor
-    while (!stop)
-    {
-        if (_kbhit()) // get the input from arrow buttons
-        {
-            switch (_getch())
-            {
-            case UP:
-                if (choice > 1)
-                    prev = choice--;
-                break;
-            case DOWN:
-                if (choice < 2)
-                    prev = choice++;
-                break;
-            case ENTER:
-                stop = true;
-                break;
-            }
-
-            if (stop)
-                break;
-            if (prev != choice)
-            {
-                system("cls");
-
-                for (int i = 0; i < 3; i++)
-                {
-                    if (i == choice)
-                    {
-                        TextColor(LIGHT_YELLOW);
-                        cout << menu[i];
-                        TextColor(WHITE);
-                    }
-                    else
-                        cout << menu[i];
-                }
-                TextColor(LIGHT_GREEN);
-                cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-                TextColor(WHITE);
-            }
-        }
-    }
-    ShowConsoleCursor(true);
+    int choice = Draw_XY(menu, 60, 12);
 
     switch (choice) // Access according to the choice
     {
@@ -355,43 +287,60 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
         break;
     }
 
-    cout << "\nDo you want to add another course to this semester? (Y/N) ";
-    char ch;
-    cin >> ch;
-    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
-    {
-        cout << "Invalid respond, enter again: ";
-        cin >> ch;
-    }
-
-    if (ch == 'Y' || ch == 'y')
+    string mess = "Do you want to add another course to this semester?";
+    if (Message_YesNo(mess, "Notice"))
         AddingCourse(semCurrent, yearHead);
     return;
 }
 
+void New_Stuff(Year *yearHead)
+{
+    system("cls");
+
+    vector<string> menu;
+    menu.push_back("Add a new year");
+    menu.push_back("Add a new semester");
+    menu.push_back("Add a new course");
+    int ye;
+    Year *year_cur = nullptr;
+
+    int opt = Draw_XY(menu, 50, 12);
+    switch (opt)
+    {
+    case 0:
+        //? Add a new year
+        Interface_New_Year(yearHead);
+        return;
+    case 1:
+        //? Add a new semester
+        system("cls");
+        Interface_New_Sem(yearHead);
+        // Recursion back to the StaffMain function
+        return;
+    case 2:
+        //? Add a new course
+        ye = Get_CheckFormat_Existed_Year(yearHead);
+        year_cur = yearHead;
+        while (year_cur && year_cur->yearStart != ye)
+            year_cur = year_cur->next;
+        AddingCourse(year_cur->NoSemester, yearHead);
+        // Recursion back to the StaffMain function
+        return;
+    }
+}
+
 //? Run to begin the new semester
-void Interface_New_Sem(Year *yearHead)
+Semester *Interface_New_Sem(Year *yearHead)
 {
     Semester *semCurrent = AddSemester(yearHead); // New semester and return the default for next actions
-    cout << "Do you want to add a course to this semester? (Y/N) ";
-    char ch;
-    cin >> ch;
-    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
-    {
-        cout << "Invalid respond, enter again: ";
-        cin >> ch;
-    }
-    if (ch == 'Y' || ch == 'y')
+    string mess;
+    mess = "Do you want to add a course to this semester?";
+    if (Message_YesNo(mess, "Notice"))
         AddingCourse(semCurrent, yearHead);
 
-    cout << "\nDo you want to add another semester? (Y/N) ";
-    cin >> ch;
-    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
-    {
-        cout << "Invalid respond, enter again: ";
-        cin >> ch;
-    }
-    if (ch == 'Y' || ch == 'y')
+    system("cls");
+    mess = "Do you want to add another semester?";
+    if (Message_YesNo(mess, "Notice"))
         Interface_New_Sem(yearHead);
-    return;
+    return semCurrent;
 }

@@ -260,15 +260,16 @@ void removeCourse(Year *yearHead, int year)
 
     if (!sem_cur) // Check if the year has any semester
     {
-        cout << "This year hasn't had any semester yet!\n";
-        Sleep(400);
+        string mess = "There is no semester in this year";
+        Message_Warning(mess, "Notice");
         return;
     }
 
     Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
     int i = 8;
     Render_ViewCourse();
-    ViewCourseInYear(sem_cur, i);
+    // ViewCourseInYear(sem_cur);
+    ViewCourse(year_cur);
     string course_id;
 
     TextColor(LIGHT_RED); // Ask for the course ID - red for alert
@@ -298,7 +299,8 @@ void removeCourse(Year *yearHead, int year)
                 cout << "\nAfter deleting the course:\n"; // Review the course after deleted
                 int i = 8;
                 Render_ViewCourse();
-                ViewCourseInYear(tmp, i);
+                // ViewCourseInYear(tmp);
+                ViewCourse(year_cur);
                 return;
             }
             cour_prev = cour_cur;

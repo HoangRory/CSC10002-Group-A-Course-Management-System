@@ -27,6 +27,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
         while (curYear->next)
             curYear = curYear->next;
         curYear->next = newYear;
+        newYear->prev = curYear;
     }
 
     string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
@@ -131,7 +132,7 @@ void ChooseClassToAdd(Year *curYear)
     goToXY(60, 12);
     cout << "Classes in " << curYear->yearStart << "-" << curYear->yearStart + 1;
 
-    int opt = Draw_ShortVer(listClass);
+    int opt = Draw_ShortVer(listClass, 60, 12);
     string className = listClass[opt];
 
     class_cur = curYear->Class;
@@ -165,7 +166,7 @@ void Method(Class *curClass)
     goToXY(60, 12);
     cout << "Choose method to add student";
 
-    int opt = Draw_ShortVer(menu);
+    int opt = Draw_ShortVer(menu, 60, 12);
     switch (opt)
     {
     case 0:

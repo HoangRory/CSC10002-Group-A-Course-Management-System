@@ -28,7 +28,7 @@ int main()
     Account *accHead = nullptr;
     Year *yearHead = nullptr;
 
-    initWindow(1200,600);
+    initWindow(1200, 600);
     // SetWindowSize(1500,1000);
     system("title Course Management System");
 
@@ -38,11 +38,11 @@ int main()
     // ViewClass(yearHead);
 
     // ViewStudentsClass(yearHead);
-    
+
     // ViewCourse(yearHead);
-    
+
     // ViewStudentCourse(yearHead);
-    
+
     // system("cls");
 
     // Semester *curSem = chooseSemesterbyOption(yearHead->NoSemester);
