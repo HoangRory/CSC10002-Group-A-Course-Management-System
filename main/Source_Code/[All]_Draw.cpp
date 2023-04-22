@@ -2,7 +2,7 @@
 
 int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, int width, int color)
 {
-    if (nOption_eachTime > menu.size())
+    if(nOption_eachTime > menu.size()) 
         nOption_eachTime = menu.size();
     vector<int> choice(menu.size(), 0);
     int cur = 0;
@@ -11,10 +11,8 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
     ShowConsoleCursor(0);
     while (!stop)
     {
-        if (step < (cur / nOption_eachTime) * nOption_eachTime)
-        {
-            for (int i = 0; i < nOption_eachTime; i++)
-            {
+        if(step < (cur/nOption_eachTime) * nOption_eachTime){
+            for( int i= 0; i < nOption_eachTime; i++) {
                 TextColor(7);
                 for (int j = 0; j < 3; j++)
                 {
@@ -23,11 +21,11 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
                 }
             }
         }
-        step = (cur / nOption_eachTime) * nOption_eachTime;
+        step = (cur/nOption_eachTime) * nOption_eachTime;
         choice[cur] = 1;
         for (int i = 0; i < nOption_eachTime && i + step < menu.size(); i++)
         {
-            if (choice[i + step])
+            if (choice[i+step])
             {
                 TextColor(color);
                 for (int j = 0; j < 3; j++)
@@ -49,7 +47,7 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
                 }
                 goToXY(xStart + 2, yStart + 1 + i * 3);
                 TextColor(7);
-                cout << menu[i + step];
+                cout << menu[i+ step];
             }
         }
         TextColor(07);
@@ -85,18 +83,10 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
     return cur;
 }
 
-<<<<<<< HEAD
-int Draw_table
-(    string **table,int num_row, int num_col, int width[], int pos[], int height,
-    int x, int y, int Row_eachTime, int Col_eachTime, int always_show,
-    bool edit_Col[], int &x_cur, int &y_cur         )
-=======
-void Draw_table(string **table, int num_row, int num_col, int *width, int height, int *pos,
+void Draw_table(string **table, string *title, int num_row, int num_col, int *width, int height,
                 int x, int y, int Row_eachTime, int Col_eachTime,
                 bool *edit_Col, int &x_cur, int &y_cur)
->>>>>>> ba2132c0221c5d1c8c70aa279d11f728ffbdba7a
 {
-
     if (Col_eachTime > num_col)
         Col_eachTime = num_col;
     if (Row_eachTime > num_row)
@@ -108,6 +98,12 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
         for (int j = 0; j < num_col; j++)
             choice[i][j] = 0;
     }
+    int *pos = new int[num_col]; // vị trí bắt đầu của các cột, bắt đầu từ cột đầu là 0
+    pos[0] = 0;
+    for (int i = 1; i < num_col; i++)
+    {
+        pos[i] = pos[i - 1] + width[i - 1];
+    }
 
     int x_prev = x_cur, y_prev = y_cur;
     int x_step;
@@ -118,43 +114,99 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
     x_step = (x_cur / Col_eachTime) * Col_eachTime;
     y_step = (y_cur / Row_eachTime) * Row_eachTime;
     choice[y_cur % Row_eachTime][x_cur % Col_eachTime] = 1;
+    goToXY(x, y - 1);
+    cout << char (218); // 218 is top left
+    goToXY(x, y);
+    cout << char(179);
+    goToXY(x, y+ 1);
+    cout << char (195);
+    for (int  j = 0; j < Col_eachTime && j + x_step < num_col; j++) {
+        for(int t = 0; t < width[j] - 1; t++) {
+            goToXY(x + pos[j] + t + 1 , y -  1);
+            cout << char(196);
+            goToXY(x + pos[j] + t + 1, y +  1);
+            cout << char (196);
+        }
+        goToXY(x + pos[j] + 2, y);
+        cout << title[j];
+        if(j == Col_eachTime - 1 || j == num_col - x_step -1){
+            goToXY(x + pos[j] + width[j], y - 1);
+            cout << char(191);
+            goToXY(x + pos[j] + width[j], y  + 1);
+            cout << char (180);
+        } else {
+        goToXY(x + pos[j] + width[j], y +  - 1);
+        cout << char(194);
+        goToXY(x + pos[j] + width[j], y +  1);
+        cout << char (197);
+        }
+        goToXY(x + pos[j] + width[j], y);
+        cout << char(179);
+    }
+    y+=2;
+   
     for (int i = 0; i < Row_eachTime && i + y_step < num_row; i++)
     {
         for (int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
         {
+            goToXY(x + pos[j] + 1, y + i * (height + 1) + 1);
+            for(int t = 0; t < width[j] - 1; t++)
+                cout << char(196);
+            goToXY(x + pos[j] , y + i * (height + 1) + 1);
+            if(i != Row_eachTime - 1 && i != num_row - 1 - y_step){
+                if(j == 0) 
+                    cout << char (195); // 195  is|-
+                else 
+                    cout << char (197); // 197 is +
+            } else {
+                if(j == 0) 
+                    cout << char (192); // 192  is|_
+                else if(j != Col_eachTime -1 && j != num_col - x_step - 1)
+                    cout << char (193); // 193 is _|_
+            }
+
+            goToXY(x + pos[j], y + i * (height + 1));
+            cout << char(179); //179 is |
+            goToXY(x + 1 + pos[j], y + i * (height + 1)); // +1 để in background không bị đè
             if (choice[i][j])
             {
-                goToXY(x + pos[j], y + i * height);
                 TextColor(0xFF);
-                cout << setw(width[j]) << " ";
-                goToXY(x + 2 + pos[j], y + i * height);
+                cout << setw(width[j] - 1) << " ";
+                goToXY(x + 2 + pos[j], y + i * (height +1));
                 TextColor(0xF3);
                 cout << table[i + y_step][j + x_step];
             }
             else
             {
                 TextColor(7);
-                goToXY(x + pos[j], y + i * height);
-                cout << setw(width[j]) << " ";
-
-                goToXY(x + 2 + pos[j], y + i * height);
+                cout << setw(width[j] - 1) << " ";
+                goToXY(x + 3 + pos[j], y + i * (height + 1)); //+3 là để lùi vào trong một ít cho đẹp
                 TextColor(7);
                 cout << table[i + y_step][j + x_step];
             }
+            TextColor(7);
+            goToXY(x + pos[j] + width[j], y + i * (height + 1));
+            cout << char (179); // 179 is |
+            goToXY(x + pos[j] + width[j], y + i * (height + 1) + 1);
+            if(i == Row_eachTime -1 || i == num_row - 1 - y_step)
+                cout << char (217); // 217 is _|
+            else 
+                cout << char (180); // 180 -|
         }
     }
-
     while (stop != true)
     {
         if ((x_prev / Col_eachTime) != (x_cur / Col_eachTime) || (y_prev / Row_eachTime) != (y_cur / Row_eachTime))
         {
+            TextColor(7);
             for (int i = 0; i < Row_eachTime && i + y_step < num_row; i++)
             {
                 for (int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
                 {
-                    TextColor(7);
-                    goToXY(x + pos[j], y + i * height);
-                    cout << setw(width[j]) << " ";
+                    goToXY(x + pos[j], y + i * (height +1) );
+                    cout << setw(width[j] + 1) << " ";
+                    goToXY(x + pos[j], y + i * (height +1) + 1);
+                    cout << setw(width[j] + 1) << " ";
                 }
             }
             x_step = (x_cur / Col_eachTime) * Col_eachTime;
@@ -164,59 +216,67 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
             {
                 for (int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
                 {
+                    goToXY(x + pos[j] + 1, y + i * (height + 1) + 1);
+                    for(int t = 0; t < width[j] - 1; t++)
+                        cout << char(196);
+                    goToXY(x + pos[j] , y + i * (height + 1) + 1);
+                    if(i != Row_eachTime - 1 && i != num_row - 1 - y_step){
+                        if(j == 0) 
+                            cout << char (195); // 195  is|-
+                        else 
+                            cout << char (197); // 197 is +
+                    } else {
+                        if(j == 0) 
+                            cout << char (192); // 192  is|_
+                        else if(j != Col_eachTime -1 && j != num_col - x_step - 1)
+                            cout << char (193); // 193 is _|_
+                    }
+
+                    goToXY(x + pos[j], y + i * (height + 1));
+                    cout << char(179); //179 is |
+                    goToXY(x + 1 + pos[j], y + i * (height + 1)); // +1 để in background không bị đè
                     if (choice[i][j])
                     {
                         TextColor(0xFF);
-                        goToXY(x + pos[j], y + i * height);
-                        cout << setw(width[j]) << " ";
-                        goToXY(x + 2 + pos[j], y + i * height);
+                        cout << setw(width[j] - 1) << " ";
+                        goToXY(x + 2 + pos[j], y + i * (height +1));
                         TextColor(0xF3);
                         cout << table[i + y_step][j + x_step];
                     }
                     else
                     {
                         TextColor(7);
-                        goToXY(x + pos[j], y + i * height);
-                        cout << setw(width[j]) << " ";
-
-                        goToXY(x + 2 + pos[j], y + i * height);
+                        cout << setw(width[j] - 1) << " ";
+                        goToXY(x + 3 + pos[j], y + i * (height + 1)); //+3 là để lùi vào trong một ít cho đẹp
                         TextColor(7);
                         cout << table[i + y_step][j + x_step];
                     }
+                    TextColor(7);
+                    goToXY(x + pos[j] + width[j], y + i * (height + 1));
+                    cout << char (179); // 179 is |
+                    goToXY(x + pos[j] + width[j], y + i * (height + 1) + 1);
+                    if(i == Row_eachTime -1 || i == num_row - 1 - y_step)
+                        cout << char (217); // 217 is _|
+                    else 
+                        cout << char (180); // 180 -|
                 }
             }
         }
-<<<<<<< HEAD
         else {
-=======
-        else
-        {
-            TextColor(0xFF);
-            goToXY(x + pos[x_cur % Col_eachTime], y + (y_cur % Row_eachTime) * height);
-            cout << setw(width[x_cur % Col_eachTime]) << " ";
-            TextColor(0xF3);
-            goToXY(x + 2 + pos[x_cur % Col_eachTime], y + (y_cur % Row_eachTime) * height);
-            cout << table[y_cur % Row_eachTime + y_step][x_cur % Col_eachTime + x_step];
->>>>>>> ba2132c0221c5d1c8c70aa279d11f728ffbdba7a
 
             TextColor(7);
-            goToXY(x + pos[x_prev % Col_eachTime], y + (y_prev % Row_eachTime) * height);
-            cout << setw(width[x_prev % Col_eachTime]) << " ";
+            goToXY(x + 1 + pos[x_prev % Col_eachTime], y + (y_prev % Row_eachTime) * (height + 1) );
+            cout << setw(width[x_prev % Col_eachTime] - 1) << " ";
             TextColor(7);
-<<<<<<< HEAD
-            goToXY(x + 2 + pos[x_prev%Col_eachTime], y + (y_prev%Row_eachTime) * height);
+            goToXY(x + 3 + pos[x_prev%Col_eachTime], y + (y_prev%Row_eachTime) * (height + 1));
             cout << table[y_prev%Row_eachTime + y_step][x_prev%Col_eachTime + x_step];
 
             TextColor(0xFF);
-            goToXY(x + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
-            cout << setw(width[x_cur%Col_eachTime]) << " ";
+            goToXY(x + 1 + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * (height + 1));
+            cout << setw(width[x_cur%Col_eachTime] - 1) << " ";
             TextColor(0xF3);
-            goToXY(x + 2 + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * height);
+            goToXY(x + 3 + pos[x_cur%Col_eachTime], y + (y_cur%Row_eachTime) * (height + 1));
             cout << table[y_cur%Row_eachTime + y_step][x_cur%Col_eachTime + x_step];
-=======
-            goToXY(x + 2 + pos[x_prev % Col_eachTime], y + (y_prev % Row_eachTime) * height);
-            cout << table[y_prev % Row_eachTime + y_step][x_prev % Col_eachTime + x_step];
->>>>>>> ba2132c0221c5d1c8c70aa279d11f728ffbdba7a
         }
 
         x_prev = x_cur;
@@ -259,11 +319,8 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
     }
     for (int i = 0; i < num_row; i++)
         delete[] choice[i];
-    delete choice;
-<<<<<<< HEAD
-=======
-    delete[] pos;
->>>>>>> ba2132c0221c5d1c8c70aa279d11f728ffbdba7a
+    delete []choice;
+    delete []pos;
 }
 int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
 {

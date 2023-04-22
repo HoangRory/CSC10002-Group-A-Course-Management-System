@@ -7,6 +7,9 @@
 #include <vector>
 #include <conio.h>
 #include <Windows.h>
+#include <sstream>
+#include <cctype>
+#include <algorithm>
 
 #define BLACK 0
 #define BLUE 1

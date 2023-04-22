@@ -17,7 +17,7 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     ReadAccount(accHead);
     SyncInForStudent(yearHead, accHead);
     SyncFullName(yearHead, accHead);
-    SyncCourse(yearHead); 
+    SyncCourse(yearHead);
     // if (LoggingMain(accHead, user, pass, role))
     //     return;
     // MainMenu(yearHead, accHead, user, pass, role);
@@ -35,27 +35,29 @@ int main()
     Merge_year_sem(accHead, yearHead);
 
     system("mode 1000, 5000");
-    // ViewClass(yearHead);
+    // task 14
+    //  ViewCoursesOfAStudent(yearHead->Class->StudentClass->accStudent->next, yearHead);
+    //  ViewClass(yearHead);
+    Interface_ViewStudentClass(yearHead);
+    //  ViewCourse(yearHead);
 
-    // ViewStudentsClass(yearHead);
-
-    // ViewCourse(yearHead);
-
-    // ViewStudentCourse(yearHead);
+    Interface_ViewStudentCourse(yearHead);
 
     // system("cls");
 
-    // Semester *curSem = chooseSemesterbyOption(yearHead->NoSemester);
-    // viewScoreBoardCourse(curSem->course);
+    // task 19
+    //  exportListStudentCourse(yearHead->NoSemester);
 
+    // Semester *curSem = chooseSemesterbyOption_XY(yearHead->NoSemester,60, 15,5);
+    // viewScoreBoardCourse(curSem->course);
+    // task 22
+    // UpdateStudentResult(yearHead);
+    // task 23
     // Class *Class = yearHead->Class;
-    //task 23
     // viewScoreboardClass(Class);
-    // exportListStudentCourse(yearHead->NoSemester);
+    // //task 24
     // ViewScoreboard(yearHead->Class->StudentClass->accStudent->next, yearHead->NoSemester->course);
-    // ViewCoursesOfAStudent(yearHead->Class->StudentClass->accStudent->next, yearHead->NoSemester->course);
-    UpdateStudentResult(yearHead);
-        
+
     EradicateLL(accHead, yearHead);
     return 0;
 }

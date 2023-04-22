@@ -60,7 +60,7 @@ void goToXY(int x, int y)
 string Limit_Input(int x, int y, int limit, int color)
 {
     goToXY(x, y);
-    TextColor(63);
+    TextColor(color);
     string input;
     char c;
     int i = 0;
