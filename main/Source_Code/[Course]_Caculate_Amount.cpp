@@ -46,3 +46,12 @@ int amountCourse(Course* courseHead)
     }
     return n;
 }
+int amountCourseOf_aStudent(CourseStudent *courseHead)
+{
+    int n = 0;
+    while(courseHead){
+        courseHead = courseHead->next;
+        n++;
+    }
+    return n;
+}

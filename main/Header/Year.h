@@ -2,10 +2,7 @@
 #include "proto.h"
 
 // #include <filesystem> //doc folder
-#include <sstream>
-#include <cstring>
-#include <cctype>
-#include <algorithm>
+
 
 #ifdef _WIN32
 #define PATH_SEPARATOR '\\'

@@ -5,7 +5,7 @@
 Year *chooseYearbyOption_XY(Year *yearHead, int x, int y, int nOption_eachTime)
 {
     Year *year_cur = yearHead;
-    vector<string> menu(10);
+    vector<string> menu;
     while (year_cur)
     {
         menu.push_back(to_string(year_cur->yearStart) + " - " + to_string(year_cur->yearStart + 1));
@@ -21,7 +21,7 @@ Year *chooseYearbyOption_XY(Year *yearHead, int x, int y, int nOption_eachTime)
 }
 Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTime)
 {
-    vector<string> menu(10);
+    vector<string> menu;
     Class *class_cur = classHead;
     while (class_cur)
     {
@@ -38,7 +38,7 @@ Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTi
 }
 Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption_eachTime)
 {
-    vector<string> menu(10);
+    vector<string> menu;
     Semester *sem_cur = semHead;
     while (sem_cur)
     {
@@ -58,7 +58,7 @@ Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption
 
 Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_eachTime)
 {
-    vector<string> menu(10);
+    vector<string> menu;
     Course *course_cur = courseHead;
     while (course_cur)
     {

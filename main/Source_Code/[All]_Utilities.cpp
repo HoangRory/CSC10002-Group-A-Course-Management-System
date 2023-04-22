@@ -55,7 +55,7 @@ string Limit_Input(int x, int y, int limit, int color)
 {
     ShowConsoleCursor(true);
     goToXY(x, y);
-    TextColor(63);
+    TextColor(color);
     string input;
     char c;
     int i = 0;

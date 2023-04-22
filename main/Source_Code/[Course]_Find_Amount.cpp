@@ -55,6 +55,7 @@ Course* findCourse_ofStudent_byOption(CourseStudent *courseHead, int option)
     }
     return nullptr;
 }
+
 int amountOfCourse(Course *courseHead)
 {
     int n = 0; 

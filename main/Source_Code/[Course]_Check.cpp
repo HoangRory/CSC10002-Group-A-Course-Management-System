@@ -8,6 +8,12 @@ bool checkFile(string name) {
 }
 
 //task 23
+bool isDouble(string str) 
+{
+    istringstream ss(str);
+    double d;
+    return (ss >> d) && (ss.eof());
+}
 CourseStudent* checkExistence_OfCourse(CourseStudent *courseCheck, CourseStudent *courseHead) 
 {
     while(courseHead) 
