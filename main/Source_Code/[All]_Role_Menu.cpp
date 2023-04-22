@@ -7,74 +7,82 @@
 void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
-    Render_Menu();
+    Render_Menu(50, 3);
 
     vector<string> menu;
-    menu.push_back("Account options");
-    //! Merge 1 nùi view
-    menu.push_back("View course");
-    //! Merge 1 nùi add
-    menu.push_back("Add");
-    //! 1 nùi modify
-    menu.push_back("Modify");
+    menu.push_back("Account");
+    menu.push_back("View");   //! 1 nui` view j do
+    menu.push_back("Add");    //! 1 nui` add j do
+    menu.push_back("Modify"); //! 1 nui` modify j do
+    menu.push_back("Import");
+    menu.push_back("Export");
     menu.push_back("Quit");
 
-    int choice = Draw_XY(menu, 60, 12, 5, 20);
+    int choice = Draw_XY(menu, 60, 12, 7, 15);
     int ye;
     Year *year_cur;
     string mess;
 
     switch (choice) // Do the choice
     {
-    case 0:
+    case 0: //? Account
         if (AccountAlteration(accHead, user, pass, role))
             return;
-        Staff_Main(yearHead, accHead, user, pass, role);
-        return;
+        break;
     case 1:
-        //? View course
-        system("cls");
-        ViewCourse(yearHead);
-        Staff_Main(yearHead, accHead, user, pass, role); // Recursion back to the StaffMain function
-        return;
+        //? View
+        // system("cls");
+        // ViewCourse(yearHead);
+        break;
     case 2:
         //? Adding year/semester/course
         New_Stuff(yearHead); // case 2:
-        Staff_Main(yearHead, accHead, user, pass, role);
-        return;
+        break;
     case 3:
         //? Modify year/semester/course
         system("cls");
         initModify(yearHead);
         // Recursion back to the StaffMain function
-        Staff_Main(yearHead, accHead, user, pass, role);
-        return;
+        break;
     case 4:
+        //? Import
+        break;
+    case 5:
+        //? Export
+        break;
+    case 6:
         //? Save changes and quit
-        Output(yearHead);  // write down all the year
-        Outyear(yearHead); // write down each year in4
+        mess = "Do you want to save all the changes?";
+        if (Message_YesNo(mess, "Notice!"))
+        {
+            Output(yearHead);  // write down all the year
+            Outyear(yearHead); // write down each year in4
+            mess = "File save!\nNow clean up and close!";
+            Message_Warning(mess, "Quit");
+        }
 
-        mess = "File save!\nNow clean up and close!";
-        Message_Warning(mess, "Quit");
-        cout << "Cleaning up the system";
+        cout << "Cleaned up the system";
+        Pause();
         return;
     }
+    Staff_Main(yearHead, accHead, user, pass, role);
+    return;
 }
 
 void Teacher_Main()
 {
     system("cls");
-    Render_Menu();
+    Render_Menu(50, 3);
 
     vector<string> menu;
-    menu.push_back("Account options");
+    menu.push_back("Account");
     //? push command here
 
     int choice = Draw_XY(menu, 60, 12, 5, 20);
     int ye;
     Year *year_cur;
     string mess;
-    //todo Teacher co the xem khoa, xem hoc sinh,...
+    // todo Teacher co the xem khoa, xem hoc sinh,...
     switch (choice) // Do the choice
     {
     case 0:
@@ -82,7 +90,7 @@ void Teacher_Main()
         // AccountAlteration();
         break;
     case 1:
-        //? 
+        //?
         // ViewCourse();
         break;
     case 2:
@@ -103,10 +111,10 @@ void Teacher_Main()
 void Student_Main()
 {
     system("cls");
-    Render_Menu();
+    Render_Menu(30, 3);
 
     vector<string> menu;
-    menu.push_back("Account options");
+    menu.push_back("Account");
 }
 
 void Main_Menu(Year *yearHead, Account *accHead, string &user, string &pass, int &role)

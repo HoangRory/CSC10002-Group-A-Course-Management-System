@@ -42,7 +42,7 @@ void Tablize(int x)
 
 Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
 {
-    Render_ViewCourse();
+    Render_ViewCourse(50, 1);
 
     int row = 10;
     char line = char(179);

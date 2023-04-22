@@ -79,7 +79,7 @@ void Interface_New_Year(Year *yearHead)
     string strYear;
     system("cls");
 
-    Render_NewYear();
+    Render_NewYear(50, 1);
     Show_Year_List(yearHead);
 
     goToXY(52, 18);

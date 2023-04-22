@@ -66,7 +66,7 @@ Semester *AddSemester(Year *yearHead)
 
     system("cls");
 
-    Render_NewYear();
+    Render_NewYear(50, 3);
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {
@@ -121,7 +121,7 @@ Semester *AddSemester(Year *yearHead)
 //! Write a course modification function here!!!
 Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
-    Render_NewInfo();
+    Render_NewInfo(50, 3);
 
     TextColor(14);
     goToXY(52, 9);
@@ -238,6 +238,8 @@ void ImportStudentFromFile(Course *courseCurrent)
             i++;
     }
     string studList = "../Data_file/New_Enrolled_Student/" + str + ".txt";
+    string mess = "Put data in the New_Enrolled_Student folder\nName it with format: chữ cái đầu in hoa.txt\nOK to continue when finish";
+    Message_Warning(mess, "Notice");
 
     // Open the file that has been put is the folder
     ifstream ifs(studList);
@@ -355,7 +357,7 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
 void New_Stuff(Year *yearHead)
 {
     system("cls");
-    Render_NewInfo();
+    Render_NewInfo(50, 3);
 
     vector<string> menu;
     menu.push_back("Add a new year");
