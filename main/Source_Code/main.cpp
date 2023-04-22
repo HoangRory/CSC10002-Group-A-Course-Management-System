@@ -14,13 +14,14 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     yearHead = RecoverFile();
     string user = "", pass = "";
     int role;
-    ReadAccount(accHead);
-    SyncInForStudent(yearHead, accHead);
-    SyncFullName(yearHead, accHead);
-    SyncCourse(yearHead); 
+    // ReadAccount(accHead);
+    // SyncInForStudent(yearHead, accHead);
+    // SyncFullName(yearHead, accHead);
+    // SyncCourse(yearHead);
     // if (LoggingMain(accHead, user, pass, role))
     //     return;
-    // MainMenu(yearHead, accHead, user, pass, role);
+    // Main_Menu(yearHead, accHead, user, pass, role);
+    ViewCourse(yearHead);
 }
 
 int main()
@@ -34,28 +35,8 @@ int main()
 
     Merge_year_sem(accHead, yearHead);
 
-    system("mode 1000, 5000");
-    // ViewClass(yearHead);
+    // system("mode 1000, 5000");
 
-    // ViewStudentsClass(yearHead);
-
-    // ViewCourse(yearHead);
-
-    // ViewStudentCourse(yearHead);
-
-    // system("cls");
-
-    // Semester *curSem = chooseSemesterbyOption(yearHead->NoSemester);
-    // viewScoreBoardCourse(curSem->course);
-
-    // Class *Class = yearHead->Class;
-    //task 23
-    // viewScoreboardClass(Class);
-    // exportListStudentCourse(yearHead->NoSemester);
-    // ViewScoreboard(yearHead->Class->StudentClass->accStudent->next, yearHead->NoSemester->course);
-    // ViewCoursesOfAStudent(yearHead->Class->StudentClass->accStudent->next, yearHead->NoSemester->course);
-    UpdateStudentResult(yearHead);
-        
     EradicateLL(accHead, yearHead);
     return 0;
 }

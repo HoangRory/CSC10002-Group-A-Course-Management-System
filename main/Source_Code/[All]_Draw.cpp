@@ -27,30 +27,15 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
         choice[cur] = 1;
         for (int i = 0; i < nOption_eachTime && i + step < menu.size(); i++)
         {
-            if (choice[i + step])
+            int tmp = (choice[i + step] ? color : 7);
+            TextColor(tmp);
+            for (int j = 0; j < 3; j++)
             {
-                TextColor(color);
-                for (int j = 0; j < 3; j++)
-                {
-                    goToXY(xStart, yStart + i * 3 + j);
-                    cout << setw(width) << " ";
-                }
-                goToXY(xStart + 2, yStart + 1 + i * 3);
-                TextColor(color);
-                cout << menu[i + step];
+                goToXY(xStart, yStart + i * 3 + j);
+                cout << setw(width) << " ";
             }
-            else
-            {
-                TextColor(7);
-                for (int j = 0; j < 3; j++)
-                {
-                    goToXY(xStart, yStart + i * 3 + j);
-                    cout << setw(width) << " ";
-                }
-                goToXY(xStart + 2, yStart + 1 + i * 3);
-                TextColor(7);
-                cout << menu[i + step];
-            }
+            goToXY(xStart + 2, yStart + 1 + i * 3);
+            cout << menu[i + step];
         }
         TextColor(07);
         int tmp;
@@ -250,24 +235,12 @@ int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (choice[i])
-                {
-                    TextColor(color);
-                    goToXY(x + 3 * i, y + j);
-                    cout << "   ";
-                    goToXY(x + 1 + 3 * i, y + 1);
-                    TextColor(color);
-                    cout << menu[i];
-                }
-                else
-                {
-                    TextColor(7);
-                    goToXY(x + 3 * i, y + j);
-                    cout << "   ";
-                    goToXY(x + 1 + 3 * i, y + 1);
-                    TextColor(7);
-                    cout << menu[i];
-                }
+                int tmp = (choice[i] ? color : 7);
+                TextColor(tmp);
+                goToXY(x + 3 * i, y + j);
+                cout << "   ";
+                goToXY(x + 1 + 3 * i, y + 1);
+                cout << menu[i];
             }
         }
         TextColor(07);
@@ -303,24 +276,13 @@ int Draw_ShortVer(vector<string> menu, int x, int y, int color)
         choice[cur] = 1;
         for (int i = 0; i < choice.size(); i++)
         {
-            if (choice[i])
-            {
-                TextColor(color);
-                goToXY(x, y + i);
-                cout << "                         ";
-                goToXY(x + 2, y + i);
-                TextColor(color);
-                cout << menu[i];
-            }
-            else
-            {
-                TextColor(7);
-                goToXY(x, y + i);
-                cout << "                         ";
-                goToXY(x + 2, y + i);
-                TextColor(7);
-                cout << menu[i];
-            }
+            int tmp = (choice[i] ? color : 7);
+            
+            TextColor(tmp);
+            goToXY(x, y + i);
+            cout << "                         ";
+            goToXY(x + 2, y + i);
+            cout << menu[i];
         }
         TextColor(07);
         int tmp;
@@ -373,44 +335,43 @@ void Render_Login()
     TextColor(7);
 }
 
-void Render_Menu()
+void Render_Menu(int x, int y)
 {
-    goToXY(58, 2);
+    goToXY(x, y++);
     TextColor(0x0A);
     cout << "___  ___ _____  _   _  _   _";
-    goToXY(58, 3);
+    goToXY(x, y++);
     TextColor(0x0B);
     cout << "|  \\/  ||  ___|| \\ | || | | |";
-    goToXY(58, 4);
+    goToXY(x, y++);
     TextColor(0x0C);
     cout << "| .  . || |__  |  \\| || | | |";
-    goToXY(58, 5);
+    goToXY(x, y++);
     TextColor(0x0D);
     cout << "| |\\/| ||  __| | . ` || | | |";
-    goToXY(58, 6);
+    goToXY(x, y++);
     TextColor(0x0E);
     cout << "| |  | || |___ | |\\  || |_| |";
-    goToXY(58, 7);
+    goToXY(x, y++);
     TextColor(0x0F);
     cout << "\\_|  |_/\\____/ \\_| \\_/ \\___/";
     TextColor(7);
 }
 
-void Render_NewInfo()
+void Render_NewInfo(int x, int y)
 {
-    goToXY(50, 2);
+    goToXY(x, y++);
     cout << " _  _ ___ _      _   ___  _  _ ____  ___";
-    goToXY(50, 3);
+    goToXY(x, y++);
     cout << "| \\| | __\\ \\    / / |_ _|| \\| | |_  / _ \\  ";
-    goToXY(50, 4);
+    goToXY(x, y++);
     cout << "| .` | _| \\ \\/\\/ /   | | | .` | __|| (_) |";
-    goToXY(50, 5);
+    goToXY(x, y++);
     cout << "|_|\\_|___| \\_/\\_/   |___||_|\\_|_|   \\___/";
 }
 
-void Render_ViewCourse()
+void Render_ViewCourse(int x, int y)
 {
-    int x = 50, y = 1;
     goToXY(x, y++);
     TextColor(0x0A);
     cout << "   _____  _____  _   _ ______  _____  _____";
@@ -426,70 +387,47 @@ void Render_ViewCourse()
     goToXY(x, y++);
     TextColor(0x0B);
     cout << "   \\____/ \\___/  \\___/ \\_| \\_|\\____/ \\____/";
-    TextColor(6);
+    TextColor(7);
 }
 
-void Print_Update()
+void Render_Account(int x, int y)
 {
-    int i = 1;
-    goToXY(54, i++);
-    TextColor(0x0A);
-    cout << " _   _  _____ ______   ___   _____  _____ ";
-    goToXY(54, i++);
-    TextColor(0x0A);
-    cout << "| | | || ___ \\|  _  \\ / _ \\ |_   _||  ___|";
-    goToXY(54, i++);
-    TextColor(0x0A);
-    cout << "| | | || |_/ /| | | |/ /_\\ \\  | |  | |__";
-    goToXY(54, i++);
-    TextColor(0x0A);
-    cout << "| | | ||  __/ | | | ||  _  |  | |  |  __|";
-    goToXY(54, i++);
-    TextColor(0x0A);
-    cout << "| |_| || |    | |/ / | | | |  | |  | |___ ";
-    goToXY(54, i++);
-    TextColor(0x0A);
-    cout << "\\___/ \\_|    |___/  \\_| |_/  \\_/  \\____/ ";
-}
-
-void Render_Account()
-{
-    goToXY(52, 3);
+    goToXY(x, y++);
     TextColor(0x0A);
     cout << "     ___  ______________  __  ___  ________";
-    goToXY(52, 4);
+    goToXY(x, y++);
     TextColor(0x0D);
     cout << "    / _ |/ ___/ ___/ __ \\/ / / / |/ /_  __/";
-    goToXY(52, 5);
+    goToXY(x, y++);
     TextColor(0x09);
     cout << "   / __ / /__/ /__/ /_/ / /_/ /    / / /";
-    goToXY(52, 6);
+    goToXY(x, y++);
     TextColor(0x0C);
     cout << "  /_/ |_\\___/\\___/\\____/\\____/_/|_/ /_/";
     TextColor(7);
 }
 
-void Render_NewYear()
+void Render_NewYear(int x, int y)
 {
-    goToXY(50, 3);
+    goToXY(x, y++);
     cout << "   _____ _____ _ _ _    __ __ _____ _____ _____";
-    goToXY(50, 4);
+    goToXY(x, y++);
     cout << "  |   | |   __| | | |  |  |  |   __|  _  | __  |";
-    goToXY(50, 5);
+    goToXY(x, y++);
     cout << "  | | | |   __| | | |  |_   _|   __|     |    -|";
-    goToXY(50, 6);
+    goToXY(x, y++);
     cout << "  |_|___|_____|_____|    |_| |_____|__|__|__|__|";
 }
 
-void Render_Semester()
+void Render_Semester(int x, int y)
 {
-    goToXY(55, 3);
+    goToXY(x, y++);
     cout << " ___ ___ __  __ ___ ___ _____ ___ ___";
-    goToXY(55, 4);
+    goToXY(x, y++);
     cout << "/ __| __|  \\/  | __/ __|_   _| __| _ \\";
-    goToXY(55, 5);
+    goToXY(x, y++);
     cout << "\\__ \\ _|| |\\/| | _|\\__ \\ | | | _||   /";
-    goToXY(55, 6);
+    goToXY(x, y++);
     cout << "|___/___|_|  |_|___|___/ |_| |___|_|_\\";
 }
 
