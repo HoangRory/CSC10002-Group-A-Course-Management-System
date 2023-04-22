@@ -8,7 +8,6 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
     int cur = 0;
     int step = 0;
     bool stop = false;
-    ShowConsoleCursor(0);
     while (!stop)
     {
         if (step < (cur / nOption_eachTime) * nOption_eachTime)
@@ -44,7 +43,6 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
             switch (tmp)
             {
             case ENTER:
-                ShowConsoleCursor(1);
                 stop = true;
                 break;
             case UP:
@@ -90,7 +88,6 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
     int x_prev = x_cur, y_prev = y_cur;
     int x_step;
     int y_step;
-    ShowConsoleCursor(0);
     bool stop = false;
 
     x_step = (x_cur / Col_eachTime) * Col_eachTime;
@@ -195,7 +192,6 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
                 stop = true;
                 break;
             case ENTER:
-                ShowConsoleCursor(1);
                 if (edit_Col[x_cur] == false)
                     Message_Warning("This cell is not editable", "Error!");
                 else
@@ -227,7 +223,6 @@ void Draw_table(string **table, int num_row, int num_col, int *width, int height
 int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
 {
     vector<int> choice(menu.size(), 0);
-    ShowConsoleCursor(0);
     while (1)
     {
         choice[cur] = 1;
@@ -251,7 +246,6 @@ int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
             {
             case ENTER:
                 system("cls");
-                ShowConsoleCursor(1);
                 return cur;
             case LEFT:
                 choice[cur] = 0;
@@ -270,7 +264,6 @@ int Draw_ShortVer(vector<string> menu, int x, int y, int color)
 {
     vector<int> choice(menu.size(), 0);
     int cur = 0;
-    ShowConsoleCursor(0);
     while (1)
     {
         choice[cur] = 1;
@@ -292,7 +285,6 @@ int Draw_ShortVer(vector<string> menu, int x, int y, int color)
             {
             case ENTER:
                 system("cls");
-                ShowConsoleCursor(1);
                 return cur;
             case UP:
                 choice[cur] = 0;

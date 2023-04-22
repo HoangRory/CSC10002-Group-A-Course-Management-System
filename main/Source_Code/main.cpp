@@ -14,20 +14,21 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     yearHead = RecoverFile();
     string user = "", pass = "";
     int role;
-    // ReadAccount(accHead);
-    // SyncInForStudent(yearHead, accHead);
-    // SyncFullName(yearHead, accHead);
-    // SyncCourse(yearHead);
-    // if (LoggingMain(accHead, user, pass, role))
-    //     return;
-    // Main_Menu(yearHead, accHead, user, pass, role);
-    ViewCourse(yearHead);
+    ReadAccount(accHead);
+    SyncInForStudent(yearHead, accHead);
+    SyncFullName(yearHead, accHead);
+    SyncCourse(yearHead);
+    if (LoggingMain(accHead, user, pass, role))
+        return;
+    Main_Menu(yearHead, accHead, user, pass, role);
+    // ViewCourse(yearHead);
 }
 
 int main()
 {
     Account *accHead = nullptr;
     Year *yearHead = nullptr;
+    ShowConsoleCursor(false);
 
     initWindow(1200, 600);
     // SetWindowSize(1500,1000);

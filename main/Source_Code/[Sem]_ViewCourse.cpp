@@ -115,7 +115,6 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
 //? View all the course in the school
 void ViewCourse(Year *yearHead)
 {
-    ShowConsoleCursor(0);
     // string arrow = "<<-->>";
     Semester *sem_cur = yearHead->NoSemester;
     Course *curCourse = sem_cur->course;
@@ -197,10 +196,8 @@ void ViewCourse(Year *yearHead)
             break;
 
         case ENTER:
-            ShowConsoleCursor(1);
             return;
         case ESC:
-            ShowConsoleCursor(1);
             return;
         }
     }
