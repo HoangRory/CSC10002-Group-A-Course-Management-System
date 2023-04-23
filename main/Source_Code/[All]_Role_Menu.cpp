@@ -7,7 +7,7 @@
 void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
-    Render_Menu(50, 3);
+    Render_Menu(59, 3);
 
     vector<string> menu;
     menu.push_back("Account");
@@ -18,7 +18,7 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
     menu.push_back("Export");
     menu.push_back("Quit");
 
-    int choice = Draw_XY(menu, 60, 12, 7, 15);
+    int choice = Draw_XY(menu, 66, 12, 7, 15);
     int ye;
     Year *year_cur;
     string mess;
@@ -72,13 +72,13 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
 void Teacher_Main()
 {
     system("cls");
-    Render_Menu(50, 3);
+    Render_Menu(59, 3);
 
     vector<string> menu;
     menu.push_back("Account");
     //? push command here
 
-    int choice = Draw_XY(menu, 60, 12, 5, 20);
+    int choice = Draw_XY(menu, 66, 12, 5, 20);
     int ye;
     Year *year_cur;
     string mess;
@@ -111,7 +111,7 @@ void Teacher_Main()
 void Student_Main()
 {
     system("cls");
-    Render_Menu(30, 3);
+    Render_Menu(59, 3);
 
     vector<string> menu;
     menu.push_back("Account");
@@ -120,6 +120,7 @@ void Student_Main()
 void Main_Menu(Year *yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
+    if (role == 2) role = 3;
     //! Read year
     //! In add the semester in each read year
     // SyncFullName(yearHead, accHead);

@@ -155,6 +155,62 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     return;
 }
 
+void Profiling(Account *accHead, string user, string pass, int role)
+{
+    // Name, birth, gender, social ID, username, password = ********, role
+    system("cls");
+    Render_Account(50, 1);
+    Account *cur = accHead;
+    while (cur && (cur->username != user || cur->password != pass))
+        cur = cur->next;
+
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 9 + i);
+        cout << "                                                    "; // username
+        goToXY(50, 13 + i);
+        cout << "                                 "; // password
+        goToXY(85, 13 + i);
+        cout << "                 "; // Role
+        goToXY(50, 17 + i);
+        cout << "                                                    "; // Full name
+        goToXY(50, 21 + i);
+        cout << "                                 "; // Birthday
+        goToXY(85, 21 + i);
+        cout << "                 "; // Gender
+        goToXY(50, 25 + i);
+        cout << "                                                    "; // Social ID
+    }
+    goToXY(52, 10);
+    cout << "Username: " << cur->username;
+
+    goToXY(52, 14);
+    cout << "Password: " << cur->password.substr(0, 2);
+    for (int i = 2; i < cur->password.length(); i++)
+        cout << '*';
+    goToXY(88, 14);
+    cout << "Role: ";
+    if (cur->role == 1)
+        cout << "Student";
+    else
+        cout << "Staff";
+
+    goToXY(52, 18);
+    cout << "Full name: " << cur->lastName << ' ' << cur->firstName;
+
+    goToXY(52, 22);
+    cout << "Birthday: " << cur->birth;
+
+    goToXY(88, 22);
+    cout << "Gender: " << (cur->Gender == "M" ? "Male" : "Female");
+    goToXY(52, 26);
+    cout << "Social ID: " << cur->SocialID;
+
+    TextColor(7);
+    Pause();
+}
+
 //? Account Alteration
 bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
 {
@@ -163,11 +219,12 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
 
     vector<string> menu;
     menu.push_back("Main Menu");
+    menu.push_back("Profile");
     menu.push_back("Change password");
     menu.push_back("Logout");
     menu.push_back("Quit");
 
-    int opt = Draw_XY(menu, 60, 12, 4, 20, 63);
+    int opt = Draw_XY(menu, 60, 12, 5, 20, 63);
 
     switch (opt)
     {
@@ -175,10 +232,14 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
         return false;
 
     case 1:
-        ChangePass(accHead, user, pass);
+        Profiling(accHead, user, pass, role);
         return AccountAlteration(accHead, user, pass, role);
 
     case 2:
+        ChangePass(accHead, user, pass);
+        return AccountAlteration(accHead, user, pass, role);
+
+    case 3:
         goToXY(50, 28);
         cout << "Returning to login page";
         for (int i = 0; i < 8; i++)
@@ -189,7 +250,7 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
         // system("cls");
         LoggingIn(accHead, user, pass, role);
         return AccountAlteration(accHead, user, pass, role);
-    case 3:
+    case 4:
         goToXY(50, 28);
         cout << "Thanks for ur usage!";
         Pause();

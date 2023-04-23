@@ -97,7 +97,10 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
                 return cour;
             }
             // goToXY(25, row++);
-            Tablize(1);
+            if (!cour->next && !sem_cur->next)
+                Tablize(2);
+            else
+                Tablize(1);
 
             prev = cour;
             cour = cour->next;

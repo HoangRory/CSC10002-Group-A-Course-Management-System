@@ -74,17 +74,18 @@ struct Course
     StudentCourse *studentCourse = nullptr;
     Course *next = nullptr, *prev = nullptr;
 };
+
 // student của toàn trường, được lưu trong từng lớp
 struct CourseStudent
 {
     Course *course = nullptr;
     CourseStudent *next = nullptr;
 };
+
 struct Student
 {
     Account *accStudent = nullptr;
     string ID = "";
-    string ClassName = "";
     CourseStudent *course = nullptr;
     Student *next = nullptr, *prev = nullptr;
 };
@@ -96,10 +97,9 @@ struct Class
     Class *next = nullptr, *prev = nullptr;
 };
 
-// hết -1 một môn, -2 kì, -3 năm
 struct Semester
 {
-    int No;   // eg semester 1 thì No = 1
+    int No;   // eg semester 1 then No = 1
     int Year; // only the start year, when cout put the end year in by adding 1
     string startDate, endDate;
     Course *course = nullptr;

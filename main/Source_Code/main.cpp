@@ -20,7 +20,8 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     SyncCourse(yearHead);
     // if (LoggingMain(accHead, user, pass, role))
     //     return;
-    // Main_Menu(yearHead, accHead, user, pass, role);
+    LoggingIn(accHead, user, pass, role);
+    Main_Menu(yearHead, accHead, user, pass, role);
     // ViewCourse(yearHead);
 }
 
