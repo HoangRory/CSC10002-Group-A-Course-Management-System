@@ -49,5 +49,6 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur);
 // void ViewCourseInYear(Semester *semHead);
 
 //? Main
+void Student_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
 void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
 void Main_Menu(Year *yearHead, Account *accHead, string &user, string &pass, int &role);

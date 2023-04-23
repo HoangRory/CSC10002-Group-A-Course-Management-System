@@ -246,13 +246,13 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
             TextColor(7);
             goToXY(x + 1 + pos[x_prev % Col_eachTime], y + (y_prev % Row_eachTime) * (height + 1));
             cout << setw(width[x_prev % Col_eachTime] - 1) << " ";
-            goToXY(x + 3 + pos[x_prev % Col_eachTime], y + (y_prev % Row_eachTime) * (height + 1));
+            goToXY(x + 2 + pos[x_prev % Col_eachTime], y + (y_prev % Row_eachTime) * (height + 1));
             cout << table[y_prev % Row_eachTime + y_step][x_prev % Col_eachTime + x_step];
 
             TextColor(0xF3);
             goToXY(x + 1 + pos[x_cur % Col_eachTime], y + (y_cur % Row_eachTime) * (height + 1));
             cout << setw(width[x_cur % Col_eachTime] - 1) << " ";
-            goToXY(x + 3 + pos[x_cur % Col_eachTime], y + (y_cur % Row_eachTime) * (height + 1));
+            goToXY(x + 2 + pos[x_cur % Col_eachTime], y + (y_cur % Row_eachTime) * (height + 1));
             cout << table[y_cur % Row_eachTime + y_step][x_cur % Col_eachTime + x_step];
         }
 

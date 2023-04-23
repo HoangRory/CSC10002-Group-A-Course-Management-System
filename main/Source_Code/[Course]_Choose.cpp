@@ -55,7 +55,6 @@ Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption
     }
     return semHead;
 }
-
 Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_eachTime)
 {
     vector<string> menu;
@@ -72,4 +71,50 @@ Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_ea
     while (courseHead && option--)
         courseHead = courseHead->next;
     return courseHead;
+}
+
+Student *chooseStudentOfClass(Class *ChooseClass, int x, int y)
+{
+    Student *student_cur = ChooseClass->StudentClass;
+    goToXY(x, y++);
+    cout << "List of students in " << ChooseClass->Name;
+    int width[7];
+    width[0] = 5;  // chiều rộng cột NO
+    width[1] = 12; // chiều rộng cột ID
+    width[2] = 30; // chiểu rộng Student Name;
+
+    string *title = new string[3];
+    title[0] = "No";
+    title[1] = "ID";
+    title[2] = "Student Name";
+
+    int num_row = amountClass(ChooseClass);
+    int num_col = 3;
+
+    string **table = new string *[num_row];
+    for (int i = 0; i < num_row; i++)
+        table[i] = new string[num_col];
+
+    int height = 1, Row_eachTime = 8, Col_eachTime = 8;
+    bool edit_Col[3] = {true, true, true};
+
+    for (int i = 0; i < num_row; i++)
+    {
+        int j = 0;
+        table[i][j++] = to_string(i + 1);
+        table[i][j++] = student_cur->ID;
+        table[i][j++] = student_cur->accStudent->lastName + " " + student_cur->accStudent->firstName;
+        student_cur = student_cur->next;
+    }
+    int x_cur = 0, y_cur = 0;
+
+    Draw_table(table, title, num_row, num_col, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
+
+    Student *ChooseStudent = nullptr;
+    if (y_cur == -1)
+        return ChooseStudent;
+    ChooseStudent = ChooseClass->StudentClass;
+    while (y_cur--)
+        ChooseStudent = ChooseStudent->next;
+    return ChooseStudent;
 }

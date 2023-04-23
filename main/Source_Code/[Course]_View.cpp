@@ -119,7 +119,6 @@ void ViewCoursesOfAStudent(Account *accHead, Year *yearHead) // courseHead in a 
 // task 15: view all classes which are existed
 void ViewClass(Year *yearHead)
 {
-    system("cls");
     int x = 40, y = 2;
     Render_Class(x, y);
     Year *ChooseYear = chooseYearbyOption_XY(yearHead, 60, 15, 5);
@@ -159,14 +158,11 @@ void ViewClass(Year *yearHead)
 void Interface_ViewStudentClass(Year *yearHead)
 {
     system("cls");
-    // Render_View();
     int x = 60, y = 16;
     Render_StudentClass();
 
     Year *ChooseYear = nullptr;
     Class *ChooseClass = nullptr;
-    // x = 60, y = 15;
-    // gọi lại hàm mainmenu
     do
     {
         ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
@@ -235,66 +231,7 @@ void ViewStudentClass(Class *ChooseClass, int x, int y)
 
     Draw_table(table, title, num_row, num_col, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
 }
-// task 17: view the list of courses in a semester of a school year, different with view course in task 9
-// void ViewCourse(Year *yearHead)
-// {
-// // mới viết
-//     Year *ChooseYear = nullptr;
-//     Semester *ChooseSem = nullptr;
-//     Course *ChooseCourse = nullptr;
-//     if(yearHead == nullptr){
-//         Message_Warning("There are no school year.", "Error not exist");
-//         // gọi lại hàm mainmenu
-//         return;
-//     }
-//     do {
-//         ChooseYear = chooseYearbyOption(yearHead);
-//         if(ChooseYear == nullptr){
-//             //quay lại main menu
-//             return;
-//         }
-//         system("cls");
-//         do {
-//             if(ChooseYear->NoSemester == nullptr) {
-//                 Message_Warning("There are no semester in this school year.", "Error not exist");
-//                 break;
-//             }
-//             ChooseSem = chooseSemesterbyOption(ChooseYear->NoSemester);
-//             system("cls");
-
-//             if(ChooseSem){
-//                 if(ChooseSem->course == nullptr) {
-//                     Message_Warning("There are no course in this semester","Error not exist");
-//                 } else{
-//                     ChooseCourse = chooseCoursebyOption(ChooseSem->course);
-//                 }
-//                 system("cls");
-//             } else
-//                 break;
-//         }while(ChooseCourse == nullptr);
-
-//     } while (ChooseSem == nullptr);
-// // phía trên là để chọn được course
-//     cout << "\nList of courses in the semester " << ChooseSem->No << " of the " << ChooseSem->Year << "-" << ChooseSem->Year + 1 << " school year:" << endl;
-//     for (int i = 1; i <= 70; ++i)
-//         cout << "=";
-//     cout << "\n";
-//     cout << "|    ID" << setw(18) << "|         Name" << setw(33) << "|       Teacher" << setw(13) << "|\n";
-//     for (int i = 1; i <= 70; ++i)
-//         cout << "=";
-//     cout << "\n";
-//     while (ChooseCourse)
-//     {
-//         cout << "| " << ChooseCourse->CourseID << " | ";
-//         cout << ChooseCourse->Name << setw(32 - ChooseCourse->Name.length()) << "| ";
-//         cout << ChooseCourse->TeacherName << setw(26 - ChooseCourse->TeacherName.length()) << "|\n";
-//         for (int i = 1; i <= 70; ++i)
-//             cout << "=";
-//         cout << "\n";
-//         ChooseCourse = ChooseCourse->next;
-//     }
-// }
-// //task 18: view students in a course
+// task 18: view students in a course
 void Interface_ViewStudentCourse(Year *yearHead)
 {
     system("cls");
@@ -324,6 +261,11 @@ void Interface_ViewStudentCourse(Year *yearHead)
             break;
         }
         ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+        if (ChooseSem == nullptr)
+        {
+            Interface_ViewStudentCourse(yearHead);
+            return;
+        }
         do
         {
             if (ChooseSem->course == nullptr)
@@ -344,6 +286,7 @@ void Interface_ViewStudentCourse(Year *yearHead)
         } while (ChooseCourse == nullptr);
     } while (ChooseSem == nullptr);
 }
+
 void ViewStudentCourse(Course *ChooseCourse, int x, int y)
 {
     int width[7];
@@ -388,52 +331,105 @@ void ViewStudentCourse(Course *ChooseCourse, int x, int y)
     }
 }
 // này của task 21
-void viewScoreBoardCourse(Course *courseHead)
+void Interface_ViewScoreBoardCourse(Year *yearHead)
 {
     system("cls");
-    Render_ScoreBoardCourse();
-    Course *curCourse = chooseCoursebyOption_XY(courseHead, 65, 20, 5);
-    if (!curCourse)
+    // in ra chư studentcourse
+    Year *ChooseYear = nullptr;
+    Semester *ChooseSem = nullptr;
+    Course *ChooseCourse = nullptr;
+    Render_StudentCourse();
+    int x = 60, y = 20;
+    if (yearHead == nullptr)
     {
-        Message_Warning("There aren't any courses for the curent semester.", "Error not exist");
-        // quay lại menu chính
+        Message_Warning("There are no school year.", "Error not exist");
+        // gọi lại hàm mainmenu
         return;
     }
-    //? đem cái đống trên ra ngoài
-    Render_ScoreBoardCourse();
-    StudentCourse *stuHead = curCourse->studentCourse;
-    int x = 25, y = 18;
-    goToXY(x, y++);
-    cout << "ScoreBoard of students in " << curCourse->Name;
-    goToXY(x, y++);
-    for (int i = 0; i < 110; i++)
-        cout << "=";
-    goToXY(x, y++);
-    cout << "| " << setw(12) << left << "ID";
-    cout << "| " << setw(25) << left << "Full Name";
-    cout << "| " << setw(15) << left << "Mid Mark";
-    cout << "| " << setw(15) << left << "Final Mark";
-    cout << "| " << setw(15) << left << "Total Mark";
-    cout << "| " << setw(15) << left << "Other Mark";
-    cout << "| ";
-    while (stuHead)
+    do
     {
-        goToXY(x, y++);
-        for (int i = 0; i < 110; i++)
-            cout << "=";
-        goToXY(x, y++);
-        cout << "| " << setw(12) << left << stuHead->ID;
-        cout << "| " << setw(25) << left << stuHead->FullName;
-        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.midMark;
-        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.finalMark;
-        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.totalMark;
-        cout << "| " << setw(15) << left << stuHead->ScoreBoardCourse.otherMark << right << "|";
-        stuHead = stuHead->next;
+        ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
+        if (ChooseYear == nullptr)
+        {
+            // quay lại main menu
+            return;
+        }
+        if (ChooseYear->NoSemester == nullptr)
+        {
+            Message_Warning("There are no semester in this school year.", "Error not exist");
+            Interface_ViewCourseOfAStudent(yearHead);
+            return;
+        }
+        ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+        if (ChooseSem == nullptr)
+        {
+            Interface_ViewStudentCourse(yearHead);
+            return;
+        }
+        do
+        {
+            if (ChooseSem->course == nullptr)
+            {
+                Message_Warning("There are no course in this semester", "Error not Exist");
+                break;
+            }
+            ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
+            if (ChooseCourse->studentCourse == nullptr)
+                Message_Warning(" There is no student in course " + ChooseCourse->Name, "Error not exist");
+            else
+            {
+                x = 20, y = 15; // sửa vị trí cái bảng ở đây nha mấy má
+                ViewScoreBoardCourse(ChooseCourse, x, y);
+                system("cls");
+                Render_ScoreBoardCourse();
+            }
+            ChooseCourse = nullptr;
+        } while (ChooseCourse == nullptr);
+    } while (ChooseSem == nullptr);
+}
+void ViewScoreBoardCourse(Course *ChooseCourse, int x, int y)
+{
+    int width[7];
+    width[0] = 5;  // chiều rộng cột NO
+    width[1] = 12; // chiều rộng cột ID
+    width[2] = 30; // chiểu rộng Name Course;
+    width[3] = 10; // chiều rộng Credits
+    width[4] = 10; // chiểu rộng Days
+    width[5] = 10; // chiểu rộng Session
+    width[6] = 10; // chiểu rộng Room
+
+    string *title = new string[8];
+    title[0] = "No";
+    title[1] = "ID";
+    title[2] = "Name Student";
+    title[3] = "Mid Mark";
+    title[4] = "Final Mark";
+    title[5] = "Other Mark";
+    title[6] = "Total Mark";
+
+    StudentCourse *student_cur = ChooseCourse->studentCourse;
+    int num_row = amountStudentOfCourse(student_cur);
+    int num_col = 7;
+    string **table = new string *[num_row];
+    for (int i = 0; i < num_row; i++)
+        table[i] = new string[num_col];
+
+    int height = 1, Row_eachTime = 8, Col_eachTime = 7;
+    bool edit_Col[8] = {false, false, false, false, false, false, false};
+    for (int i = 0; i < num_row; i++)
+    {
+        int j = 0;
+        table[i][j++] = to_string(i + 1);
+        table[i][j++] = student_cur->ID;
+        table[i][j++] = student_cur->FullName;
+        table[i][j++] = to_string(student_cur->ScoreBoardCourse.midMark);
+        table[i][j++] = to_string(student_cur->ScoreBoardCourse.finalMark);
+        table[i][j++] = to_string(student_cur->ScoreBoardCourse.otherMark);
+        table[i][j++] = to_string(student_cur->ScoreBoardCourse.totalMark);
+        student_cur = student_cur->next;
     }
-    goToXY(x, y++);
-    for (int i = 0; i < 110; i++)
-        cout << "=";
-    Pause();
+    int x_cur = 0, y_cur = 0;
+    Draw_table(table, title, num_row, num_col, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
 }
 // task 23
 //  mảng này sẽ có dạng | môn A | môn B |....| môn Z | GPA |
@@ -447,6 +443,7 @@ void viewAllFinalMark_ofStudent(double *SBC, int Col, int Col_cur)
             cout << "| " << setw(30) << left << setprecision(1) << fixed << SBC[i + Col_cur];
     }
 }
+
 void viewScoreboardClass(Class *Class)
 {
     Student *student_cur = Class->StudentClass;
