@@ -324,6 +324,11 @@ void Interface_ViewStudentCourse(Year *yearHead)
             break;
         }
         ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+        if (ChooseSem == nullptr)
+        {
+            Interface_ViewStudentCourse(yearHead);
+            return;
+        }
         do
         {
             if (ChooseSem->course == nullptr)
