@@ -12,19 +12,20 @@ string Limit_Input(int x, int y, int limit, int color);
 
 //? Pause the program
 void Pause();
+
 //? Popup message box
 void Message_Warning(string message, string title);
 bool Message_YesNo(string message, string title);
 
 //? Draw Word Art
 void Render_Login();
-void Render_Menu();
-void Render_NewInfo();
-void Render_ViewCourse();
-void Render_Account();
-void Render_NewYear();
-void Render_Semester();
-void Render_View();
+void Render_Menu(int x, int y);
+void Render_NewInfo(int x, int y);
+void Render_ViewCourse(int x, int y);
+void Render_Account(int x, int y);
+void Render_NewYear(int x, int y);
+void Render_Semester(int x, int y);
+void Render_View(int x, int y);
 void Render_Class(int x, int y);
 void Render_Course(int x, int y);
 void Render_Student(int x, int y);

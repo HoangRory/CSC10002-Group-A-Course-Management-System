@@ -74,7 +74,7 @@ void modifySemester(Year *yearHead, int year, int sem)
 void modifyCourse(Year *yearHead, int year)
 {
     system("cls");
-    Render_ViewCourse();
+    Render_ViewCourse(50, 1);
     Year *year_cur = yearHead;
     while (year_cur && year_cur->yearStart != year) // move to the exact year
         year_cur = year_cur->next;
@@ -113,7 +113,7 @@ void modifyCourse(Year *yearHead, int year)
 void ChangeCourseInfo(Course *cour_cur)
 {
     system("cls");
-    Render_ViewCourse();
+    Render_ViewCourse(50, 1);
 
     vector<string> menu;
     menu.push_back("Course ID: " + cour_cur->CourseID);
@@ -264,8 +264,7 @@ void removeCourse(Year *yearHead, int year)
     }
 
     Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
-    int i = 8;
-    Render_ViewCourse();
+    Render_ViewCourse(50, 1);
     // ViewCourseInYear(sem_cur);
     ViewCourse(year_cur);
     string course_id;

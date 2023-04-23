@@ -11,33 +11,27 @@ void ShowConsoleCursor(bool visible)
 }
 void Pause()
 {
-    ShowConsoleCursor(false);
     while (1)
         if (_kbhit())
         {
             int tmp = _getch();
             break;
         }
-    ShowConsoleCursor(true);
     return;
 }
 //? Popup message box
 void Message_Warning(string message, string title)
 {
-    ShowConsoleCursor(false);
     EnableWindow(GetConsoleWindow(), false);
     MessageBoxA(NULL, message.c_str(), title.c_str(), MB_OK | MB_ICONINFORMATION);
     EnableWindow(GetConsoleWindow(), true);
-    ShowConsoleCursor(true);
 }
 
 bool Message_YesNo(string message, string title)
 {
-    ShowConsoleCursor(false);
     EnableWindow(GetConsoleWindow(), false);
     int result = MessageBoxA(NULL, message.c_str(), title.c_str(), MB_YESNO | MB_ICONQUESTION);
     EnableWindow(GetConsoleWindow(), true);
-    ShowConsoleCursor(true);
     return (result == IDYES ? true : false);
 }
 
@@ -59,6 +53,7 @@ void goToXY(int x, int y)
 
 string Limit_Input(int x, int y, int limit, int color)
 {
+    ShowConsoleCursor(true);
     goToXY(x, y);
     TextColor(color);
     string input;
@@ -88,6 +83,7 @@ string Limit_Input(int x, int y, int limit, int color)
         }
     }
     TextColor(7);
+    ShowConsoleCursor(false);
     return input;
 }
 

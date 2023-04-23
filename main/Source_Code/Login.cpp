@@ -78,7 +78,7 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
 void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
     system("cls");
-    Render_Account();
+    Render_Account(50, 1);
     TextColor(0x0B);
     goToXY(50, 18);
     TextColor(0x0E);
@@ -159,7 +159,7 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
 bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     system("cls");
-    Render_Account();
+    Render_Account(50, 1);
 
     vector<string> menu;
     menu.push_back("Main Menu");

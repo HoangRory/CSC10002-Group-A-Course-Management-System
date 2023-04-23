@@ -20,13 +20,15 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     SyncCourse(yearHead);
     // if (LoggingMain(accHead, user, pass, role))
     //     return;
-    // MainMenu(yearHead, accHead, user, pass, role);
+    // Main_Menu(yearHead, accHead, user, pass, role);
+    // ViewCourse(yearHead);
 }
 
 int main()
 {
     Account *accHead = nullptr;
     Year *yearHead = nullptr;
+    ShowConsoleCursor(false);
 
     initWindow(1200, 600);
     // SetWindowSize(1500,1000);
