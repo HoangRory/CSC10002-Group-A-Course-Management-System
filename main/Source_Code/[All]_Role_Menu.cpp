@@ -31,6 +31,7 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
         break;
     case 1:
         //? View
+        Staff_View(yearHead);
         // system("cls");
         // ViewCourse(yearHead);
         break;
