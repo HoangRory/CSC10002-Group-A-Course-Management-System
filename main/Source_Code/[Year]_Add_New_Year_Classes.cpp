@@ -4,7 +4,7 @@
 
 //? 1. Create a school year (2020-2021, for example)
 //* lần đầu gọi hàm thì cho cin yearStart trong hàm main
-void createSchoolYear(Year *&headYear, int yearStart)
+void createSchoolYear(Year *&headYear, int yearStart, Account* accHead)
 {
     Year *curYear = headYear;
     if (checkYear(headYear, yearStart))
@@ -12,7 +12,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
         string message = "Year " + to_string(yearStart) + "-" + to_string(yearStart + 1) + " already exists.\nDo you want to retry?";
         string title = "Error";
         if (Message_YesNo(message, title))
-            Interface_New_Year(headYear); // Loop again
+            Interface_New_Year(headYear, accHead); // Loop again
         return;
     }
 
@@ -42,11 +42,11 @@ void createSchoolYear(Year *&headYear, int yearStart)
     string title = "Success";
     if (Message_YesNo(message, title))
     {
-        Create_New_Classes(newYear);
+        Create_New_Classes(newYear,accHead);
 
         message = "Add student to class?";
         if (Message_YesNo(message, title))
-            ChooseClassToAdd(newYear);
+            ChooseClassToAdd(newYear,accHead);
         return;
     }
     return;
@@ -55,7 +55,7 @@ void createSchoolYear(Year *&headYear, int yearStart)
 //? 2. Create several classes for 1st-year students.
 //* For example: class 20APCS1, class 20APCS2, class 20CLC1..., class 20CLC11, class 20VP...
 //* check if that class already exists.
-void Create_New_Classes(Year *newYear)
+void Create_New_Classes(Year *newYear, Account* accHead)
 {
     system("cls");
     int y = 3;
@@ -117,10 +117,12 @@ void Create_New_Classes(Year *newYear)
 }
 
 //? Choose the class to add Student
-void ChooseClassToAdd(Year *curYear)
+void ChooseClassToAdd(Year *curYear, Account* accHead)
 {
     TextColor(63);
     system("cls");
+
+    Render_Class(50, 1);    
     vector<string> listClass;
     Class *class_cur = curYear->Class;
     while (class_cur)
@@ -141,45 +143,50 @@ void ChooseClassToAdd(Year *curYear)
             break;
         class_cur = class_cur->next;
     }
-    Method(class_cur);
+    Method(accHead, class_cur);
     string mess = "Do you want to add student to another class?";
     if (Message_YesNo(mess, "Another student?"))
     {
-        ChooseClassToAdd(curYear);
+        ChooseClassToAdd(curYear, accHead);
         return;
     }
     return;
 }
 
 //? Choose the method to add student
-void Method(Class *curClass)
+void Method(Account* accHead, Class *curClass)
 {
     system("cls");
-    int y = 3;
-    Render_Student(50, y);
+    Render_Student(50, 3);
     vector<string> menu;
     menu.push_back("Adding by hand");
     menu.push_back("Importing from file");
     menu.push_back("Return");
 
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(58, 11 + i);
+        cout << "                                ";
+    }
     goToXY(60, 12);
     cout << "Choose method to add student";
 
-    int opt = Draw_ShortVer(menu, 60, 12);
+    int opt = Draw_ShortVer(menu, 60, 15);
     switch (opt)
     {
     case 0:
-        inputStudent(curClass);
+        inputStudent(accHead, curClass);
         return;
     case 1:
-        importStudent(curClass);
+        importStudent(accHead, curClass);
         return;
     }
     return;
 }
 
 //? Input student by hand one the cmd
-void inputStudent(Class *curClass)
+void inputStudent(Account* accHead, Class *curClass)
 {
     system("cls");
     int y = 3;
@@ -193,25 +200,25 @@ void inputStudent(Class *curClass)
     {
         string message = "Student has already been added!!!\nDo you want to re-enter?";
         if (Message_YesNo(message, "Conitnue"))
-            inputStudent(curClass);
+            inputStudent(accHead, curClass);
         return;
     }
     //? Add here
-    add1stYearStudents(curClass, ID, first, last, gen, birth, socialID); // add to class
+    add1stYearStudents(accHead, curClass, ID, first, last, gen, birth, socialID); // add to class
     string message = "Student " + last + " " + first + " has been added to class " + curClass->Name + ".";
     message += "\nDo you want to add another to this class?";
 
     string title = "Student added";
     if (Message_YesNo(message, title))
     {
-        inputStudent(curClass);
+        inputStudent(accHead, curClass);
         return;
     }
     return;
 }
 
 //? Import student from file
-void importStudent(Class *curClass)
+void importStudent(Account* accHead, Class *curClass)
 {
     system("cls");
     int y = 3;
@@ -219,7 +226,7 @@ void importStudent(Class *curClass)
     goToXY(50, 12);
     cout << "Please import the CSV file to folder New_Enrolled_Student.\n";
     goToXY(50, 13);
-    cout << "Please enter file name(default: studentlist.csv, enter 0 to choose the default): ";
+    cout << "Please enter file name(default: studentlist.csv, 0: to choose default): ";
 
     string fileName = "studentlist.csv";
     string tmp;
@@ -240,7 +247,7 @@ void importStudent(Class *curClass)
     {
         string message = "File not found!!!\nDo you want to retry?";
         if (Message_YesNo(message, "Conitnue"))
-            importStudent(curClass);
+            importStudent(accHead, curClass);
         return;
     }
 
@@ -289,14 +296,14 @@ void importStudent(Class *curClass)
             continue;
         }
         else
-            add1stYearStudents(curClass, studentID, firstName, lastName, gender, dateofBirth, socialID);
+            add1stYearStudents(accHead, curClass, studentID, firstName, lastName, gender, dateofBirth, socialID);
     }
     string mess = "Imported " + to_string(lineCount) + " students to class " + curClass->Name + ".";
     Message_Warning(mess, "Success");
 }
 
 //? Add student one by one
-void add1stYearStudents(Class *curClass, string ID, string first, string last, string gen, string birth, string socialID)
+void add1stYearStudents(Account* accHead, Class *curClass, string ID, string first, string last, string gen, string birth, string socialID)
 {
     Student *headStudent = curClass->StudentClass;
     Student *newStud = new Student;
@@ -322,6 +329,8 @@ void add1stYearStudents(Class *curClass, string ID, string first, string last, s
         headStudent->next = newStud;
         newStud->prev = headStudent;
     }
+    NewAccount(accHead, ID, accTmp);
+    return;
 
     // string message = "Student " + accTmp->firstName + " " + accTmp->lastName + " has been added to class " + curClass->Name + ".";
     // string title = "Success";
@@ -332,8 +341,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
 {
     system("cls");
     TextColor(3);
-    int y = 3;
-    Render_Student(45, y);
+    Render_Student(45, 1);
 
     vector<string> menu;
     menu.push_back("Student ID:          ");
@@ -341,7 +349,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
     menu.push_back("Student gender(M/F): ");
     menu.push_back("Student birth:       ");
     menu.push_back("Student socialID:    ");
-    string space = "                                           ";
+    string space = "                                                 ";
 
     TextColor(7);
     int i;
@@ -363,14 +371,15 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
         }
         goToXY(62, 10 + 4 * i);
         cout << menu[i];
-        line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 30, 63);
 
-        if (i == 0)
+        if (i == 0) // ID
         {
+            line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 8, 63);
             while (!isValidStudentID(line, ye))
             {
                 string mess = "Invalid student ID. Please enter again.";
                 Message_Warning(mess, "Warning");
+                TextColor(63);
                 goToXY(60, 9 + 4 * i + 1);
                 cout << space;
                 goToXY(62, 10 + 4 * i);
@@ -379,12 +388,17 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             }
             ID = line;
         }
-        else if (i == 1)
-            full = line;
-        else if (i == 2)
+        else if (i == 1) // fullname
         {
+            line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 25, 63);
+            full = line;
+        }
+        else if (i == 2) // Gender
+        {
+            line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 1, 63);
             while (!isValidGender(line))
             {
+                TextColor(63);
                 string mess = "Invalid gender format (M: male, F:female).\n Please enter again.";
                 Message_Warning(mess, "Warning");
                 goToXY(60, 9 + 4 * i + 1);
@@ -396,10 +410,12 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             gen = line;
         }
 
-        else if (i == 3)
+        else if (i == 3) // birth
         {
+            line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 10, 63);
             while (!isValidDate(line))
             {
+                TextColor(63);
                 string mess = "Invalid date format (dd/mm/yyyy).\n Please enter again.";
                 Message_Warning(mess, "Warning");
                 goToXY(60, 9 + 4 * i + 1);
@@ -410,9 +426,11 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             }
             birth = line;
         }
-        else if (i == 4)
+        else if (i == 4) // social ID
+        {
+            line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 12, 63);
             socialID = line;
-
+        }
         TextColor(7);
         for (int j = 0; j < 3; j++)
         {

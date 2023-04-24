@@ -121,6 +121,7 @@ Semester *AddSemester(Year *yearHead)
 //! Write a course modification function here!!!
 Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
+    system("cls");
     Render_NewInfo(50, 3);
 
     TextColor(14);
@@ -195,8 +196,8 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 
     courseCurrent->CourseID = id;
 
-    courseCurrent->Name = Limit_Input(52, 17, 30, 63);
-    courseCurrent->TeacherName = Limit_Input(52, 22, 30, 63);
+    courseCurrent->Name = Limit_Input(52, 16, 30, 63);
+    courseCurrent->TeacherName = Limit_Input(52, 21, 30, 63);
     courseCurrent->Credits = stoi(Limit_Input(64, 25, 1, 63));
     courseCurrent->maxStudents = stoi(Limit_Input(89, 25, 3, 63));
     courseCurrent->Room = Limit_Input(59, 29, 3, 63);
@@ -327,6 +328,8 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
 
     vector<string> menu;
+    system("cls");
+    Render_Class(50, 2);
     //! add a title
     menu.push_back("Import student from file");
     menu.push_back("Add student by hand");
@@ -354,7 +357,7 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     return;
 }
 
-void New_Stuff(Year *yearHead)
+void New_Stuff(Year *yearHead, Account* accHead)
 {
     system("cls");
     Render_NewInfo(50, 3);
@@ -373,7 +376,7 @@ void New_Stuff(Year *yearHead)
     {
     case 0:
         //? Add a new year
-        Interface_New_Year(yearHead);
+        Interface_New_Year(yearHead, accHead);
         return;
     case 1:
         //? Add a new semester

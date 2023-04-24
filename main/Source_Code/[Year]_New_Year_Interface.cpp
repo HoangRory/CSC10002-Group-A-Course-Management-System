@@ -73,7 +73,7 @@ Year *RecoverFile()
     return headYear;
 }
 
-void Interface_New_Year(Year *yearHead)
+void Interface_New_Year(Year *yearHead, Account* accHead)
 {
     Year *year_cur = yearHead;
     string strYear;
@@ -112,6 +112,6 @@ void Interface_New_Year(Year *yearHead)
     TextColor(7);
     int start = stoi(strYear.substr(0, 4));
 
-    createSchoolYear(yearHead, start);
+    createSchoolYear(yearHead, start, accHead);
     return;
 }

@@ -88,7 +88,7 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
             cout << setw(len + 2) << cour->Name << setw(36 - len - 2) << line;
 
             len = cour->TeacherName.length();
-            cout << setw(len + 3) << cour->TeacherName << setw(25 - len - 3) << line;
+            cout << setw(len + 5) << cour->TeacherName << setw(25 - len - 5) << line;
 
             goToXY(25, row++);
             if (row >= 8 + 19)

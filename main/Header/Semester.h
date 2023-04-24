@@ -2,7 +2,7 @@
 #include "proto.h"
 
 //? Add new semester, new course and import student
-void New_Stuff(Year *yearHead);
+void New_Stuff(Year *yearHead, Account* accHead);
 
 Semester *AddSemester(Year *yearHead);
 
