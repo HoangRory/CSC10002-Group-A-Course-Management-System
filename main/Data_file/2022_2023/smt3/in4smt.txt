@@ -32,7 +32,7 @@ S3
 Tieng anh 3
 ANH00003 2 100 5 HTI
 GV X
-SUN 
+SUN
 S1
 Tieng nhat 3
 NHA00003 2 100 5 HTI

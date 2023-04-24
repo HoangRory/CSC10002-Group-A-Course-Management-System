@@ -136,6 +136,8 @@ void ViewCourse(Year *yearHead)
                 cour = cour->prev;
                 if (!cour)
                 {
+                    if (!sem_cur->prev)
+                        break;
                     sem_cur = sem_cur->prev;
                     cour = sem_cur->course;
                     while (cour->next)
