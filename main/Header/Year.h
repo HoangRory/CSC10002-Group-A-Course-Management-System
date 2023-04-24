@@ -3,7 +3,6 @@
 
 // #include <filesystem> //doc folder
 
-
 #ifdef _WIN32
 #define PATH_SEPARATOR '\\'
 #else
@@ -26,16 +25,16 @@ void NewAccount(Account *accHead, string ID, Account *accTmp);
 void DeleteYear(Year *&yearHead);
 
 //* New year
-void createSchoolYear(Year *&headYear, int yearStart);
-void Create_New_Classes(Year *newYear);
+void createSchoolYear(Year *&headYear, int yearStart, Account *accHead);
+void Create_New_Classes(Year *newYear, Account *accHead);
 
-void ChooseClassToAdd(Year *curYear);
-void Method(Class *curClass);
+void ChooseClassToAdd(Year *curYear, Account *accHead);
+void Method(Account *accHead, Class *curClass);
 
-void inputStudent(Class *curClass);
-void importStudent(Class *curClass);
+void inputStudent(Account *accHead, Class *curClass);
+void importStudent(Account *accHead, Class *curClass);
 
-void add1stYearStudents(Class *curClass, string ID, string first, string last, string gen, string birth, string socialID);
+void add1stYearStudents(Account *accHead, Class *curClass, string ID, string first, string last, string gen, string birth, string socialID);
 
 //* Validate the input
 void CapitalClassName(string &name);

@@ -121,6 +121,7 @@ Semester *AddSemester(Year *yearHead)
 //! Write a course modification function here!!!
 Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
+    system("cls");
     Render_NewInfo(50, 3);
 
     TextColor(14);
@@ -327,6 +328,8 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
 
     vector<string> menu;
+    system("cls");
+    Render_Class(50, 2);
     //! add a title
     menu.push_back("Import student from file");
     menu.push_back("Add student by hand");
