@@ -10,7 +10,7 @@ Van Chi Nam
 TUE
 S3
 Toan roi rac
-MTH00009 3 75 5 C22
+MTH00009 3 75 40 C22
 Nguyen Viet Dong
 THU
 S1
@@ -22,7 +22,7 @@ S1
 Nhap mon cong nghe thong tin
 CSC00004 4 50 5 I91
 Huynh Thuy Bao Tran
-MON 
+MON
 S1
 Tin hoc co so 1
 TIN00001 3 50 5 I62
@@ -32,7 +32,7 @@ S2
 Tieng anh 1
 ANH00001 2 100 5 HTI
 GV X
-SUN 
+SUN
 S1
 Tieng nhat 1
 NHA00001 2 100 5 HTI

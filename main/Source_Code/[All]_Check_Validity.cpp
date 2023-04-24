@@ -117,6 +117,8 @@ bool isValidYear(string year)
         return false;
     int y1 = stoi(year.substr(0, 4));
     int y2 = stoi(year.substr(5, 4));
+    if (y1 < 0 || y2 < 0) 
+        return false;
     return (y2 - y1 == 1);
 }
 

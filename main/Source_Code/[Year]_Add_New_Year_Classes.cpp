@@ -12,7 +12,7 @@ void createSchoolYear(Year *&headYear, int yearStart, Account* accHead)
         string message = "Year " + to_string(yearStart) + "-" + to_string(yearStart + 1) + " already exists.\nDo you want to retry?";
         string title = "Error";
         if (Message_YesNo(message, title))
-            Interface_New_Year(headYear); // Loop again
+            Interface_New_Year(headYear, accHead); // Loop again
         return;
     }
 
@@ -121,6 +121,8 @@ void ChooseClassToAdd(Year *curYear, Account* accHead)
 {
     TextColor(63);
     system("cls");
+
+    Render_Class(50, 1);    
     vector<string> listClass;
     Class *class_cur = curYear->Class;
     while (class_cur)
@@ -396,6 +398,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 1, 63);
             while (!isValidGender(line))
             {
+                TextColor(63);
                 string mess = "Invalid gender format (M: male, F:female).\n Please enter again.";
                 Message_Warning(mess, "Warning");
                 goToXY(60, 9 + 4 * i + 1);
@@ -412,6 +415,7 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 10, 63);
             while (!isValidDate(line))
             {
+                TextColor(63);
                 string mess = "Invalid date format (dd/mm/yyyy).\n Please enter again.";
                 Message_Warning(mess, "Warning");
                 goToXY(60, 9 + 4 * i + 1);
