@@ -132,7 +132,9 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     {
         string message = "The new password and the confirm password are not the same!!!\nPlease try again!!!";
         string title = "Change Password Failed";
-        Message_Warning(message, title);
+        if (!Message_YesNo(message, title))
+            return;
+        TextColor(63);
         goToXY(50, 25);
         cout << "                                              ";
         goToXY(50, 30);
@@ -144,7 +146,7 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     Account *cur = accHead;
     while (cur && cur->username != user) // Find the account
         cur = cur->next;
-    cur->password = p1;
+    pass = cur->password = p1;
     WriteAccount(accHead);
 
     string message = "Change password successfully!!!";

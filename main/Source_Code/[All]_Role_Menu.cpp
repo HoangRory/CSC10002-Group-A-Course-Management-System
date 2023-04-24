@@ -37,7 +37,7 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
         break;
     case 2:
         //? Adding year/semester/course
-        New_Stuff(yearHead); // case 2:
+        New_Stuff(yearHead, accHead); // case 2:
         break;
     case 3:
         //? Modify year/semester/course

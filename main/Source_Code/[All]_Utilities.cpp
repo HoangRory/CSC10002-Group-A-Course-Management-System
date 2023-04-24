@@ -75,7 +75,7 @@ string Limit_Input(int x, int y, int limit, int color)
                 goToXY(x + i, y);
             }
         }
-        else if (i < limit)
+        else if (i < limit && c != 13)
         {
             input.push_back(c);
             cout << c;
