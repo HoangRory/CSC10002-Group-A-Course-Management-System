@@ -21,20 +21,20 @@ void Staff_View(Year *yearHead)
     case 0:
         //?
         ScoreBoard_View(yearHead);
-        return;
+        break;
     case 1:
         //?
         ListStudent_View(yearHead);
         // Recursion back to the StaffMain function
-        return;
+        break;
     case 2:
         //?
         ViewClass(yearHead);
         // Recursion back to the StaffMain function
-        return;
+        break;
     case 3:
         ListCourse_View(yearHead);
-        return;
+        break;
     case 4:
         return;
     }
@@ -43,26 +43,27 @@ void Staff_View(Year *yearHead)
 void ScoreBoard_View(Year *yearHead)
 {
     system("cls");
-    Render_ScoreBoard(30, 3);
+    Render_ScoreBoard(20, 3);
 
     vector<string> menu;
     menu.push_back("ScoreBoard Of Class");
     menu.push_back("ScoreBoard Of Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 50, 12, 4, 24);
+    int opt = Draw_XY(menu, 60, 12, 4, 24);
     system("cls");
     switch (opt)
     {
     case 0:
         //?
-        // Interface_ViewScoreBoardClass(yearHead);
-        return;
+        Interface_ViewScoreBoardClass(yearHead);
+        break;
+        ;
     case 1:
         //?
         Interface_ViewScoreBoardCourse(yearHead);
         // Recursion back to the Staff_View function
-        return;
+        break;
     case 2:
         return;
     }
@@ -85,12 +86,13 @@ void ListStudent_View(Year *yearHead)
     case 0:
         //? Add a new year
         Interface_ViewStudentClass(yearHead);
-        return;
+        break;
     case 1:
         //? Add a new semester
         Interface_ViewStudentCourse(yearHead);
         // Recursion back to the StaffMain function
-        return;
+        break;
+        ;
     case 2:
         return;
     }
@@ -99,14 +101,14 @@ void ListStudent_View(Year *yearHead)
 void ListCourse_View(Year *yearHead)
 {
     system("cls");
-    Render_Course(50, 3);
+    Render_Course(40, 3);
 
     vector<string> menu;
     menu.push_back("All Course");
     menu.push_back("Student's Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 50, 12, 4, 20);
+    int opt = Draw_XY(menu, 60, 12, 4, 20);
     system("cls");
     switch (opt)
     {
@@ -142,7 +144,7 @@ void Student_Main(Year *yearHead, Account *accHead, string &user, string &pass, 
     case 0:
         //?
         if (AccountAlteration(accHead, user, pass, role))
-            return;
+            break;
         break;
     case 1:
         //? Add a new semester
@@ -196,7 +198,7 @@ void Interface_ViewCourseOfAStudent(Year *yearHead)
         else
             do
             {
-                ChooseStudent = chooseStudentOfClass(ChooseClass, x, y);
+                ChooseStudent = chooseStudentOfClass(ChooseClass, 45, y);
                 if (ChooseStudent != nullptr)
                     ViewCoursesOfAStudent(ChooseStudent->accStudent, yearHead);
                 system("cls");

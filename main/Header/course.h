@@ -78,8 +78,8 @@ void ViewStudentCourse(Course *ChooseCourse, int x, int y); //? task 18
 //? scoreboard
 void Interface_ViewScoreBoardCourse(Year *ChooseCourse);       //? task 21
 void ViewScoreBoardCourse(Course *ChooseCourse, int x, int y); //? task 21
-// void Interface_ViewScoreBoardClass(Year *yearHead);            //? task 23
-void viewScoreboardClass(Class *Class); //? task 23
+void Interface_ViewScoreBoardClass(Year *yearHead);            //? task 23
+void ViewScoreboardClass(Class *Class, int x, int y);          //? task 23
 //? view all class
 void ViewClass(Year *yearHead); //? task 15
 

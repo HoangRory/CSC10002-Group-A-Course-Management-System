@@ -271,7 +271,7 @@ void Render_ScoreBoardCourse()
 
 void Render_ScoreBoardClass()
 {
-    int x = 25, y = 1;
+    int x = 20, y = 1;
     Render_ScoreBoard(x, y);
     x = 45;
     y = 7;

@@ -79,14 +79,14 @@ Student *chooseStudentOfClass(Class *ChooseClass, int x, int y)
     goToXY(x, y++);
     cout << "List of students in " << ChooseClass->Name;
     int width[7];
-    width[0] = 5;  // chiều rộng cột NO
-    width[1] = 12; // chiều rộng cột ID
+    width[0] = 10; // chiều rộng cột NO
+    width[1] = 15; // chiều rộng cột ID
     width[2] = 30; // chiểu rộng Student Name;
 
     string *title = new string[3];
-    title[0] = "No";
-    title[1] = "ID";
-    title[2] = "Student Name";
+    title[0] = "   No";
+    title[1] = " ID";
+    title[2] = "   Student Name";
 
     int num_row = amountClass(ChooseClass);
     int num_col = 3;
@@ -101,9 +101,9 @@ Student *chooseStudentOfClass(Class *ChooseClass, int x, int y)
     for (int i = 0; i < num_row; i++)
     {
         int j = 0;
-        table[i][j++] = to_string(i + 1);
-        table[i][j++] = student_cur->ID;
-        table[i][j++] = student_cur->accStudent->lastName + " " + student_cur->accStudent->firstName;
+        table[i][j++] = "   " + to_string(i + 1);
+        table[i][j++] = " " + student_cur->ID;
+        table[i][j++] = "   " + student_cur->accStudent->lastName + " " + student_cur->accStudent->firstName;
         student_cur = student_cur->next;
     }
     int x_cur = 0, y_cur = 0;
