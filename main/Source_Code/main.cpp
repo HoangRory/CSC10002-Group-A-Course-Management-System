@@ -22,6 +22,7 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     //     return;
     LoggingIn(accHead, user, pass, role);
     Main_Menu(yearHead, accHead, user, pass, role);
+    ViewCourse(yearHead);
 }
 
 int main()

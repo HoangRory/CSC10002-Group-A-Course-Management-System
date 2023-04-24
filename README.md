@@ -34,7 +34,7 @@ $ .\main.exe
 ___
 
 ## Usage
-For more details, please take time to read [Documentation]
+For more details, please take time to read [Documentation] <br>
 Or watch the video demo [here]
 ___
 
