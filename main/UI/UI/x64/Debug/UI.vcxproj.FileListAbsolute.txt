@@ -1,0 +1,4 @@
+C:\Users\belan\OneDrive\Documents\GitHub\UI\UI\x64\Debug\UI.vcxproj.AssemblyReference.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UI\UI\x64\Debug\UI.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\belan\OneDrive\Documents\GitHub\UI\UI\x64\Debug\UI.MyForm.resources
+C:\Users\belan\OneDrive\Documents\GitHub\UI\UI\x64\Debug\UI.vcxproj.GenerateResource.cache
