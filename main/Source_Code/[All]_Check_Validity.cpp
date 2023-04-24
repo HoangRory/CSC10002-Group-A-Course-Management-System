@@ -7,6 +7,19 @@ void CapitalClassName(string &name)
         name[i] = toupper(name[i]);
 }
 
+//? Return true if the studentID is valid
+bool isValidStudentID(string studentID, string year)
+{
+    if (studentID.length() != 8)
+        return false;
+    for (int i = 0; i < 8; i++)
+        if (!isdigit(studentID[i]))
+            return false;
+    if (studentID.substr(0, 2) != year)
+        return false;
+    return true;
+}
+
 //? Return true if the year existed
 bool checkYear(Year *curYear, int year)
 {
@@ -75,6 +88,18 @@ bool isValidDate(const string &dateOfBirth)
         return false;
 
     return true;
+}
+
+//? return true if the Day format is correct
+bool isDay(string day)
+{
+    return (day == "MON" || day == "TUE" || day == "WED" || day == "THU" || day == "FRI" || day == "SAT" || day == "SUN");
+}
+
+//? return true if the session format is correct
+bool isSession(string ss)
+{
+    return (ss == "S1" || ss == "S2" || ss == "S3" || ss == "S4");
 }
 
 //? true if it is in the correct format

@@ -1,5 +1,6 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
+#include "../Header/course.h"
 #include "../Header/Utility.h"
 const string separator = "\\";
 
@@ -38,8 +39,7 @@ int Get_CheckFormat_Existed_Year(Year *yearHead)
         cout << "                                       ";
     }
 
-    goToXY(61, 20);
-    cin >> strYear;
+    strYear = Limit_Input(61, 20, 9, 63);
     strYear[4] = '_';
 
     while (!isValidYear(strYear) || !checkYear(yearHead, stoi(strYear.substr(0, 4))))
@@ -49,8 +49,7 @@ int Get_CheckFormat_Existed_Year(Year *yearHead)
         Message_Warning(message, title);
         goToXY(59, 20);
         cout << "                                       ";
-        goToXY(61, 20);
-        cin >> strYear;
+        strYear = Limit_Input(61, 20, 9, 63);
         strYear[4] = '_';
     }
     TextColor(7);
@@ -68,6 +67,7 @@ Year *RecoverFile()
     while (yearTMP)
     {
         yearTMP->NoSemester = Read_All_Semester(yearTMP->yearStart); // read the semesters in years
+        readAllFileCourses(yearTMP->NoSemester);
         yearTMP = yearTMP->next;
     }
     return headYear;
@@ -79,21 +79,23 @@ void Interface_New_Year(Year *yearHead)
     string strYear;
     system("cls");
 
-    Render_NewYear();
+    Render_NewYear(50, 1);
     Show_Year_List(yearHead);
 
-    goToXY(50, 18);
+    goToXY(52, 18);
     TextColor(0x0E);
-    cout << "Choose year";
+    cout << "Choose year (Enter -1 to back)";
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {
         goToXY(50, 19 + i);
-        cout << "               ";
+        cout << "                                                  ";
     }
 
-    goToXY(52, 20);
-    cin >> strYear;
+    strYear = Limit_Input(52, 20, 9, 63);
+    TextColor(7);
+    if (strYear == "-1")
+        return;
     strYear[4] = '_';
 
     while (!isValidYear(strYear))
@@ -101,10 +103,10 @@ void Interface_New_Year(Year *yearHead)
         string message = "Invalid year format or already has!\nPlease retry.";
         string title = "Error";
         Message_Warning(message, title);
+        TextColor(63);
         goToXY(50, 20);
-        cout << "               ";
-        goToXY(52, 20);
-        cin >> strYear;
+        cout << "                                                  ";
+        strYear = Limit_Input(52, 20, 9, 63);
         strYear[4] = '_';
     }
     TextColor(7);

@@ -11,33 +11,27 @@ void ShowConsoleCursor(bool visible)
 }
 void Pause()
 {
-    ShowConsoleCursor(false);
     while (1)
         if (_kbhit())
         {
             int tmp = _getch();
             break;
         }
-    ShowConsoleCursor(true);
     return;
 }
 //? Popup message box
 void Message_Warning(string message, string title)
 {
-    ShowConsoleCursor(false);
     EnableWindow(GetConsoleWindow(), false);
     MessageBoxA(NULL, message.c_str(), title.c_str(), MB_OK | MB_ICONINFORMATION);
     EnableWindow(GetConsoleWindow(), true);
-    ShowConsoleCursor(true);
 }
 
 bool Message_YesNo(string message, string title)
 {
-    ShowConsoleCursor(false);
     EnableWindow(GetConsoleWindow(), false);
     int result = MessageBoxA(NULL, message.c_str(), title.c_str(), MB_YESNO | MB_ICONQUESTION);
     EnableWindow(GetConsoleWindow(), true);
-    ShowConsoleCursor(true);
     return (result == IDYES ? true : false);
 }
 
@@ -55,6 +49,42 @@ void goToXY(int x, int y)
     cursorPosition.X = x;
     cursorPosition.Y = y;
     SetConsoleCursorPosition(console, cursorPosition);
+}
+
+string Limit_Input(int x, int y, int limit, int color)
+{
+    ShowConsoleCursor(true);
+    goToXY(x, y);
+    TextColor(color);
+    string input;
+    char c;
+    int i = 0;
+    while (true)
+    {
+        c = _getch();
+        if (c == 13 && i > 0)
+            break;
+        else if (c == 8)
+        {
+            if (i > 0)
+            {
+                i--;
+                input.pop_back();
+                goToXY(x + i, y);
+                cout << " ";
+                goToXY(x + i, y);
+            }
+        }
+        else if (i < limit)
+        {
+            input.push_back(c);
+            cout << c;
+            i++;
+        }
+    }
+    TextColor(7);
+    ShowConsoleCursor(false);
+    return input;
 }
 
 void resizeWindow(int x, int y)

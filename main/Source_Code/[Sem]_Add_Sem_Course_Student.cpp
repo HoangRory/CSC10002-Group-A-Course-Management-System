@@ -1,6 +1,6 @@
+#include "../Header/Utility.h"
 #include "../Header/Semester.h"
 #include "../Header/Year.h"
-#include "../Header/Utility.h"
 
 // todo Alternate to add more semesters at once
 //! Adding semester 1 include in adding a year
@@ -18,24 +18,24 @@ Semester *AddSemester(Year *yearHead)
     while (year_cur && year_cur->yearStart != Y) // Move the current to the exact year
         year_cur = year_cur->next;
 
-    cout << "No. semester (1,2,3): "; // get the semester
-    cin >> N;
+    vector<string> small_menu;
+    small_menu.push_back("1st semester");
+    small_menu.push_back("2nd semester");
+    small_menu.push_back("3rd semester");
+    small_menu.push_back("Back");
+
+    N = Draw_XY(small_menu, 60, 12, 20, 63) + 1;
+    if (N == 4)
+        return nullptr;
+
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
     while (sem_cur)
     {
         if (sem_cur->No == N) // If already had, ask to modify
         {
-            cout << "*** Already has this semester, modify it? (Y/N) ***\n==> ";
-            char check;
-            cin >> check;
-
-            while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
-            {
-                cout << "Invalid input! Enter again: ";
-                cin >> check;
-            }
-            if (check == 'Y' || check == 'y')
+            string mess = "This semester already exists, do you want to modify it?";
+            if (Message_YesNo(mess, "Notice"))
             {
                 // To modify the semester
                 modifySemester(yearHead, Y, N);
@@ -63,20 +63,46 @@ Semester *AddSemester(Year *yearHead)
 
     sem_cur->No = N;
     sem_cur->Year = Y;
-    //! Check validity
+
+    system("cls");
+
+    Render_NewYear(50, 3);
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 13 + i);
+        cout << "                                              ";
+    }
+    goToXY(52, 14);
     cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
-    cin >> sem_cur->startDate;
+    sem_cur->startDate = Limit_Input(80, 14, 10, 63);
+
     while (!isValidDate(sem_cur->startDate))
     {
-        cout << "Invalid date format, please retry: ";
-        cin >> sem_cur->startDate;
+        Message_Warning("Invalid date format!\nEnter again!", "Error");
+        goToXY(50, 14);
+        cout << "                                              ";
+        goToXY(52, 14);
+        cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
+        sem_cur->startDate = Limit_Input(80, 14, 10, 63);
     }
+    for (int i = 0; i < 3; i++)
+    {
+        goToXY(50, 17 + i);
+        cout << "                                              ";
+    }
+    goToXY(52, 18);
     cout << "Ending date (dd/mm/yyyy): ";
-    cin >> sem_cur->endDate;
+    sem_cur->endDate = Limit_Input(78, 18, 10, 63);
+
     while (!isValidDate(sem_cur->endDate))
     {
-        cout << "Invalid date format, please retry: ";
-        cin >> sem_cur->endDate;
+        Message_Warning("Invalid date format!\nEnter again!", "Error");
+        goToXY(50, 18);
+        cout << "                                              ";
+        goToXY(52, 18);
+        cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
+        sem_cur->endDate = Limit_Input(78, 18, 10, 63);
     }
 
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
@@ -84,18 +110,60 @@ Semester *AddSemester(Year *yearHead)
     string tmp_sys = "mkdir " + outPath;
     // Create a folder to store its information
     const char *cstr_path = tmp_sys.c_str();
+    TextColor(7);
+    goToXY(30, 25);
     system(cstr_path);
-    system("cls");
-
+    goToXY(30, 25);
+    cout << "                                                                    ";
     return sem_cur;
 }
 
 //! Write a course modification function here!!!
 Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
-    cout << "\nEnter the course ID: "; // Get the in4
-    string id;
-    cin >> id;
+    Render_NewInfo(50, 3);
+
+    TextColor(14);
+    goToXY(52, 9);
+    cout << "Course ID";
+    goToXY(52, 14);
+    cout << "Course name";
+    goToXY(52, 19);
+    cout << "Teacher name";
+
+    goToXY(51, 25);
+    cout << "Credit";
+    goToXY(73, 25);
+    cout << "Max student";
+    goToXY(51, 29);
+    cout << "Room";
+    goToXY(66, 29);
+    cout << "Day";
+    goToXY(80, 29);
+    cout << "Session";
+
+    TextColor(63);
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            goToXY(50, 10 + 5 * i + j);
+            cout << "                                              ";
+        }
+        goToXY(59, 24 + i);
+        cout << "          "; // Credit
+        goToXY(86, 24 + i);
+        cout << "          "; // Max stud
+
+        goToXY(57, 28 + i);
+        cout << "       "; // Room
+        goToXY(71, 28 + i);
+        cout << "       "; // Day
+        goToXY(89, 28 + i);
+        cout << "       "; // Session
+    }
+
+    string id = Limit_Input(52, 11, 10, 63);
     Course *courseCurrent, *prev = nullptr;
     if (!semCurrent->course) // Generate the head if there is not
     {
@@ -110,15 +178,8 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
             if (courseCurrent->CourseID == id)
             {
                 // ask if they want to change its in4
-                cout << "*** Already has this course, modify it? (Y/N) ***\n==> ";
-                char check;
-                cin >> check;
-                while (check != 'Y' && check != 'y' && check != 'N' && check != 'n')
-                {
-                    cout << "Please enter Y or N: ";
-                    cin >> check;
-                }
-                if (check == 'Y' || check == 'y')
+                string mess = "This course already exists, do you want to modify it?";
+                if (Message_YesNo(mess, "Notice"))
                     // Modify the semester
                     modifyCourse(yearHead, semCurrent->Year);
                 return nullptr;
@@ -134,31 +195,28 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 
     courseCurrent->CourseID = id;
 
-    // Get all the necessary in4
-    cout << "\nCourse name: ";
-    cin.ignore();
-    getline(cin, courseCurrent->Name);
+    courseCurrent->Name = Limit_Input(52, 17, 30, 63);
+    courseCurrent->TeacherName = Limit_Input(52, 22, 30, 63);
+    courseCurrent->Credits = stoi(Limit_Input(64, 25, 1, 63));
+    courseCurrent->maxStudents = stoi(Limit_Input(89, 25, 3, 63));
+    courseCurrent->Room = Limit_Input(59, 29, 3, 63);
+    courseCurrent->Day = Limit_Input(73, 29, 3, 63);
+    while (!isDay(courseCurrent->Day))
+    {
+        Message_Warning("Invalid day format!\n(MON/TUE/WED/THU/FRI/SAT/SUN)", "Error");
+        goToXY(71, 29);
+        cout << "       ";
+        courseCurrent->Day = Limit_Input(73, 29, 3, 63);
+    }
 
-    //! Class name?????
-    cout << "\nEnter the teacher name: ";
-    // cin.ignore();
-    getline(cin, courseCurrent->TeacherName);
-    cout << "\nEnter the number of credits: ";
-    cin >> courseCurrent->Credits;
-
-    cout << "\nEnter the maximum of students: ";
-    cin >> courseCurrent->maxStudents;
-
-    cout << "\nChoose the room of the course: ";
-    cin >> courseCurrent->Room;
-
-    cout << "\nNote: The course will be taught only one session per week!!!\n";
-    cout << "Choose the day of week the course will be taught\n(MON/TUE/WED/THU/FRI/SAT): ";
-    cin >> courseCurrent->Day;
-
-    cout << "\nChoose the the session time of the course\nS1-(07:30)\tS2-(09:30)\nS3-(13:30)\tS4-(15:30) : ";
-    cin >> courseCurrent->Session;
-
+    courseCurrent->Session = Limit_Input(91, 29, 2, 63);
+    while (!isSession(courseCurrent->Session))
+    {
+        Message_Warning("Invalid session format!\n(S1/S2/S3/S4)", "Error");
+        goToXY(89, 29);
+        cout << "       ";
+        courseCurrent->Session = Limit_Input(91, 29, 2, 63);
+    }
     return courseCurrent;
 }
 
@@ -180,6 +238,8 @@ void ImportStudentFromFile(Course *courseCurrent)
             i++;
     }
     string studList = "../Data_file/New_Enrolled_Student/" + str + ".txt";
+    string mess = "Put data in the New_Enrolled_Student folder\nName it with format: chữ cái đầu in hoa.txt\nOK to continue when finish";
+    Message_Warning(mess, "Notice");
 
     // Open the file that has been put is the folder
     ifstream ifs(studList);
@@ -214,36 +274,50 @@ void ImportStudentFromFile(Course *courseCurrent)
 //? Add student by hand inputing one by one
 void AddStudentByHand(Course *courseCurrent)
 {
-    cout << "Enter the student ID one by one! (Enter -1 to stop)\n\n";
+    // cout << "Enter the student ID one by one! (Enter -1 to stop)\n\n";
 
-    string id;
-    StudentCourse *studCourse;
-    int cnt = 0;
-    if (cin >> id)
+    StudentCourse *studCourse = courseCurrent->studentCourse;
+    goToXY(60, 17);
+    cout << "Enter student ID (-1 to stop)";
+    int cnt = 0, i = 0;
+    string line;
+    while (1)
     {
-        if (id == "-1")
-            return; // end the process
-        courseCurrent->studentCourse = new StudentCourse;
-        studCourse = courseCurrent->studentCourse;
-        studCourse->ID = id;
-        cnt++;
-        while (cin >> id)
+        TextColor(63);
+        goToXY(58, 19 + i);
+        cout << "                             ";
+        goToXY(65, 19 + i);
+        line = Limit_Input(65, 19 + i, 8, 63);
+
+        if (line == "-1")
+            break;
+        if (line.size() != 8)
         {
-            if (id == "-1")
+            if (Message_YesNo("Invalid ID format!", "Error"))
+                continue;
+            else
                 break;
-            studCourse->next = new StudentCourse;
-            StudentCourse *tmpStud = studCourse;
-
-            studCourse = studCourse->next;
-            studCourse->prev = tmpStud;
-
-            studCourse->ID = id;
-            cnt++;
         }
+        i++;
+        if (!studCourse)
+        {
+            studCourse = new StudentCourse;
+            courseCurrent->studentCourse = studCourse;
+        }
+        else
+        {
+            studCourse->next = new StudentCourse;
+            studCourse->next->prev = studCourse;
+            studCourse = studCourse->next;
+        }
+        studCourse->ID = line;
+        cnt++;
     }
     courseCurrent->numStudents = cnt;
 
     cout << "\nDone adding new student!\n";
+    Message_Warning("Done adding new student to course!", "Success");
+    return;
 }
 //? Generate the option to add student
 void AddingCourse(Semester *semCurrent, Year *yearHead)
@@ -252,123 +326,87 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
         return;
     Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
 
-    int choice = 1, prev = choice;
-    bool stop = false;
-    string menu[3]; // All allow actions
-    menu[0] = "\nMethod to import student to the course:\n";
-    menu[1] = "- Import student from file\n";
-    menu[2] = "- Add student by hand     \n";
-    system("cls");
-    for (int i = 0; i < 3; i++)
-    {
-        if (i == choice) // Change color according to the current cursor
-        {
-            TextColor(LIGHT_YELLOW);
-            cout << menu[i];
-            TextColor(WHITE);
-        }
-        else
-            cout << menu[i];
-    }
+    vector<string> menu;
+    //! add a title
+    menu.push_back("Import student from file");
+    menu.push_back("Add student by hand");
+    menu.push_back("Back");
 
-    TextColor(LIGHT_GREEN);
-    cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-    TextColor(WHITE);
-
-    ShowConsoleCursor(false); // Disable the cursor
-    while (!stop)
-    {
-        if (_kbhit()) // get the input from arrow buttons
-        {
-            switch (_getch())
-            {
-            case UP:
-                if (choice > 1)
-                    prev = choice--;
-                break;
-            case DOWN:
-                if (choice < 2)
-                    prev = choice++;
-                break;
-            case ENTER:
-                stop = true;
-                break;
-            }
-
-            if (stop)
-                break;
-            if (prev != choice)
-            {
-                system("cls");
-
-                for (int i = 0; i < 3; i++)
-                {
-                    if (i == choice)
-                    {
-                        TextColor(LIGHT_YELLOW);
-                        cout << menu[i];
-                        TextColor(WHITE);
-                    }
-                    else
-                        cout << menu[i];
-                }
-                TextColor(LIGHT_GREEN);
-                cout << "\n\nUsing your arrow on the keyboard to move the choice and enter to select!\n\n";
-                TextColor(WHITE);
-            }
-        }
-    }
-    ShowConsoleCursor(true);
+    int choice = Draw_XY(menu, 55, 12, 3, 30, 63);
 
     switch (choice) // Access according to the choice
     {
-    case 1:
-        cout << "==> You chose to import student from a file!\n";
+    case 0:
+        Message_Warning("Importing student from file!", "Notice");
         ImportStudentFromFile(courseCurrent);
         break;
-    case 2:
-        cout << "==> You're adding student by hand!\n";
+    case 1:
+        Message_Warning("Adding student by hand!", "Notice");
         AddStudentByHand(courseCurrent);
         break;
+    case 2:
+        return;
     }
 
-    cout << "\nDo you want to add another course to this semester? (Y/N) ";
-    char ch;
-    cin >> ch;
-    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
-    {
-        cout << "Invalid respond, enter again: ";
-        cin >> ch;
-    }
-
-    if (ch == 'Y' || ch == 'y')
+    string mess = "Do you want to add another course to this semester?";
+    if (Message_YesNo(mess, "Notice"))
         AddingCourse(semCurrent, yearHead);
     return;
 }
 
+void New_Stuff(Year *yearHead)
+{
+    system("cls");
+    Render_NewInfo(50, 3);
+
+    vector<string> menu;
+    menu.push_back("Add a new year");
+    menu.push_back("Add a new semester");
+    menu.push_back("Add a new course");
+    menu.push_back("Back to main menu");
+
+    int ye;
+    Year *year_cur = nullptr;
+
+    int opt = Draw_XY(menu, 50, 12, 4, 24, 63);
+    switch (opt)
+    {
+    case 0:
+        //? Add a new year
+        Interface_New_Year(yearHead);
+        return;
+    case 1:
+        //? Add a new semester
+        system("cls");
+        Interface_New_Sem(yearHead);
+        // Recursion back to the StaffMain function
+        return;
+    case 2:
+        //? Add a new course
+        ye = Get_CheckFormat_Existed_Year(yearHead);
+        year_cur = yearHead;
+        while (year_cur && year_cur->yearStart != ye)
+            year_cur = year_cur->next;
+        AddingCourse(year_cur->NoSemester, yearHead);
+        // Recursion back to the StaffMain function
+        return;
+    case 3:
+        return;
+    }
+}
+
 //? Run to begin the new semester
-void Interface_New_Sem(Year *yearHead)
+Semester *Interface_New_Sem(Year *yearHead)
 {
     Semester *semCurrent = AddSemester(yearHead); // New semester and return the default for next actions
-    cout << "Do you want to add a course to this semester? (Y/N) ";
-    char ch;
-    cin >> ch;
-    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
-    {
-        cout << "Invalid respond, enter again: ";
-        cin >> ch;
-    }
-    if (ch == 'Y' || ch == 'y')
+    string mess;
+    mess = "Do you want to add a course to this semester?";
+    if (Message_YesNo(mess, "Notice"))
         AddingCourse(semCurrent, yearHead);
 
-    cout << "\nDo you want to add another semester? (Y/N) ";
-    cin >> ch;
-    while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n')
-    {
-        cout << "Invalid respond, enter again: ";
-        cin >> ch;
-    }
-    if (ch == 'Y' || ch == 'y')
+    system("cls");
+    mess = "Do you want to add another semester?";
+    if (Message_YesNo(mess, "Notice"))
         Interface_New_Sem(yearHead);
-    return;
+    return semCurrent;
 }

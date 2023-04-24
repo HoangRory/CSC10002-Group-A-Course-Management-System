@@ -1,6 +1,8 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
 #include "../Header/Login.h"
+#include "../Header/course.h"
+#include "../Header/Utility.h"
 
 //? Account
 void ReadAccount(Account *&accHead)
@@ -9,7 +11,7 @@ void ReadAccount(Account *&accHead)
     if (!ifs)
         return;
 
-    Account *cur;
+    Account *cur = nullptr;
     string str;
     getline(ifs, str, '\n'); // get the first title line in csv file
     while (!ifs.eof())
@@ -71,7 +73,7 @@ void importYear(Year *&yearHead, int &numofYear)
         return;
     }
 
-    Year *curYear;
+    Year *curYear = nullptr;
     while (!ifs.eof()) // Create the year linked list according to the saved years
     {
         if (!yearHead)
@@ -83,6 +85,7 @@ void importYear(Year *&yearHead, int &numofYear)
         {
             Year *tmp = new Year;
             curYear->next = tmp;
+            tmp->prev = curYear;
             curYear = tmp;
         }
 
@@ -272,4 +275,88 @@ Semester *Read_All_Semester(int year)
         newSem->prev = tmp;
     }
     return semHead;
+}
+
+
+void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in) {
+    string s_totalMark, s_finalMark, s_midMark, s_otherMark;
+    getline(in,s_totalMark,',');
+    getline(in,s_finalMark,',');
+    getline(in,s_midMark,',');
+    getline(in,s_otherMark,'\n');
+    
+    SBC.totalMark = SBC.finalMark = SBC.midMark = SBC.otherMark = -1;
+                                                                                                                                                                          if(s_totalMark != "X") SBC.totalMark = stod(s_totalMark);
+    if(s_finalMark != "X") SBC.finalMark = stod(s_totalMark);
+    if(s_midMark != "X")   SBC.midMark = stod(s_midMark);
+    if(s_otherMark != "X") SBC.otherMark = stod(s_otherMark); 
+}
+
+void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
+    StudentCourse *cur = studentHead;
+    string del = "";
+    if(!in.eof()) getline(in,del,'\n');
+    while (!in.eof()) {
+        if (!cur) cur = studentHead = new StudentCourse;
+        else {
+            cur -> next = new StudentCourse;
+            cur -> next -> prev = cur;
+            cur = cur -> next;
+        }
+        getline(in,del,',');
+        getline(in,cur->ID,',');
+        getline(in,cur->FullName,',');
+        readScoreStudentCourse(cur->ScoreBoardCourse, in);    
+    }
+}
+
+// import data course
+void readAllFileCourses(Semester *HeadSmt) {
+    ifstream in;
+    Semester *curSmt = HeadSmt;
+    Course *curCourse;
+    while (curSmt)
+    {
+        curCourse = curSmt->course;
+        while(curCourse) {
+            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv"); 
+            in.open(path);
+            if(!in.is_open())
+                Message_Warning(path + " is not exist.", "Error");
+            else 
+                readStudentCourse(curCourse->studentCourse, in); 
+            in.close();
+            curCourse = curCourse->next;
+        }  
+        curSmt = curSmt->next;      
+    }
+
+}
+
+void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead) 
+{
+    system("cls");
+
+    // cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
+    // cout << "Using arrow keys to move and press enter to select your option." << endl;
+    // system("pause");
+    // system("cls");
+    // Course *curCourse = chooseCoursebyOption(curSmt->course);
+    // if(!curCourse) {
+    //     //quay lại menu
+    //     return;
+    // }
+    int x = 45, y = 1; 
+    Render_Import(x, y);
+    // string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
+    // if (!checkFile(path)) 
+    // {
+    //     cout << "The scoreboard of this course does not exist." << endl
+    //          << "Please contact the teacher to get scoreboard and to try again.";
+    //     return;
+    // }
+    // ifstream in;
+    // in.open (path);
+    // readStudentCourse(curCourse->studentCourse, in);
+    // in.close();
 }

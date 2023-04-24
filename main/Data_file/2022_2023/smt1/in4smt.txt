@@ -1,10 +1,10 @@
 22/10/2022 03/01/2023
-Ki nang mem
+Ki Nang Mem
 CSC10121 3 50 2 I44
 Do Thi Thanh Ha
 WED
 S3
-Nhap mon lap trinh
+Nhap Mon Lap Trinh
 CSC10001 4 70 3 I35
 Van Chi Nam
 TUE
@@ -21,7 +21,7 @@ SAT
 S1
 Nhap mon cong nghe thong tin
 CSC00004 4 50 5 I91
-Nguyen Thuy Bao Tran
+Huynh Thuy Bao Tran
 MON 
 S1
 Tin hoc co so 1
