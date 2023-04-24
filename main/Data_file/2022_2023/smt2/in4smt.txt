@@ -27,7 +27,7 @@ S3
 Tieng anh 2
 ANH00002 2 100 5 HTI
 GV X
-SUN 
+SUN
 S1
 Tieng nhat 2
 NHA00002 2 100 5 HTI
