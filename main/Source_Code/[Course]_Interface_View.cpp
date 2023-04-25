@@ -14,7 +14,6 @@ void Staff_View(Year *yearHead)
     menu.push_back("List Course");
     menu.push_back("Back to Main Menu");
 
-    system("cls");
     int opt = Draw_XY(menu, 60, 12, 5, 25);
     switch (opt)
     {

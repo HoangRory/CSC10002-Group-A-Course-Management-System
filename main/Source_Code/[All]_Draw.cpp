@@ -4,6 +4,8 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
 {
     if (nOption_eachTime > menu.size())
         nOption_eachTime = menu.size();
+    int amount_page = ceil(menu.size() * 1.0 / nOption_eachTime), num_page = 1, tmp;
+    char arrow;
     vector<int> choice(menu.size(), 0);
     int cur = 0;
     int step = 0;
@@ -38,7 +40,18 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
             cout << menu[i + step];
         }
         TextColor(07);
-        int tmp;
+        goToXY(xStart, yStart + nOption_eachTime * 3 + 1);
+        cout << setw(20) << " ";
+        tmp = min((int)(menu.size() - step), nOption_eachTime);
+
+        num_page = ceil((cur + 1) * 1.0 / nOption_eachTime);
+        goToXY(xStart, yStart + tmp * 3 + 1);
+        if (amount_page > 1)
+        {
+            cout << "  " << (num_page > 1 ? char(30) : char(32))
+                 << " " << num_page << "/" << amount_page
+                 << " " << (num_page < amount_page ? char(31) : char(32));
+        }
         if (tmp = _getch())
         {
             switch (tmp)
@@ -274,45 +287,45 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
     delete[] choice;
     delete[] pos;
 }
-int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
-{
-    vector<int> choice(menu.size(), 0);
-    while (1)
-    {
-        choice[cur] = 1;
-        for (int i = 0; i < choice.size(); i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                int tmp = (choice[i] ? color : 7);
-                TextColor(tmp);
-                goToXY(x + 3 * i, y + j);
-                cout << "   ";
-                goToXY(x + 1 + 3 * i, y + 1);
-                cout << menu[i];
-            }
-        }
-        TextColor(07);
-        int tmp;
-        if (tmp = _getch())
-        {
-            switch (tmp)
-            {
-            case ENTER:
-                system("cls");
-                return cur;
-            case LEFT:
-                choice[cur] = 0;
-                cur = (cur > 0 ? cur - 1 : menu.size() - 1);
-                break;
-            case RIGHT:
-                choice[cur] = 0;
-                cur = (cur < menu.size() - 1 ? cur + 1 : 0);
-                break;
-            }
-        }
-    }
-}
+// int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
+// {
+//     vector<int> choice(menu.size(), 0);
+//     while (1)
+//     {
+//         choice[cur] = 1;
+//         for (int i = 0; i < choice.size(); i++)
+//         {
+//             for (int j = 0; j < 3; j++)
+//             {
+//                 int tmp = (choice[i] ? color : 7);
+//                 TextColor(tmp);
+//                 goToXY(x + 3 * i, y + j);
+//                 cout << "   ";
+//                 goToXY(x + 1 + 3 * i, y + 1);
+//                 cout << menu[i];
+//             }
+//         }
+//         TextColor(07);
+//         int tmp;
+//         if (tmp = _getch())
+//         {
+//             switch (tmp)
+//             {
+//             case ENTER:
+//                 system("cls");
+//                 return cur;
+//             case LEFT:
+//                 choice[cur] = 0;
+//                 cur = (cur > 0 ? cur - 1 : menu.size() - 1);
+//                 break;
+//             case RIGHT:
+//                 choice[cur] = 0;
+//                 cur = (cur < menu.size() - 1 ? cur + 1 : 0);
+//                 break;
+//             }
+//         }
+//     }
+// }
 
 int Draw_ShortVer(vector<string> menu, int x, int y, int color)
 {
