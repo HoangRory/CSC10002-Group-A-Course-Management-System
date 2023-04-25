@@ -142,6 +142,8 @@ void ViewCourse(Year *yearHead)
     cout << "  Page " << ind << "/" << cnt << " ";
     if (ind != cnt)
         cout << char(31);
+    goToXY(90, 33);
+    cout << "Enter or ESC to exit";
     Course *tmp = nullptr;
     Semester *semtmp = nullptr;
 
@@ -201,6 +203,8 @@ void ViewCourse(Year *yearHead)
                     cout << "  Page " << ind << "/" << cnt << " " << char(31);
                 else
                     cout << char(30) << " Page " << ind << "/" << cnt << " " << char(31);
+                goToXY(90, 33);
+                cout << "Enter or ESC to exit";
                 cour = Part_Of_Course(curCourse, sem_cur);
             }
             break;
@@ -227,7 +231,7 @@ void ViewCourse(Year *yearHead)
             }
             break;
         case LEFT:
-            if (!yearHead->prev)
+            if (!yearHead->prev || !yearHead->prev->NoSemester)
                 break;
 
             ind = 1, cnt = 0;
@@ -249,6 +253,8 @@ void ViewCourse(Year *yearHead)
             cout << "  Page " << ind << "/" << cnt << " ";
             if (ind != cnt)
                 cout << char(31);
+            goToXY(90, 33);
+            cout << "Enter or ESC to exit";
 
             sem_cur = yearHead->NoSemester;
             curCourse = sem_cur->course;
@@ -256,7 +262,7 @@ void ViewCourse(Year *yearHead)
             break;
 
         case RIGHT:
-            if (!yearHead->next)
+            if (!yearHead->next || !yearHead->next->NoSemester)
                 break;
 
             ind = 1, cnt = 0;
@@ -278,6 +284,8 @@ void ViewCourse(Year *yearHead)
             cout << "  Page " << ind << "/" << cnt << " ";
             if (ind != cnt)
                 cout << char(31);
+            goToXY(90, 33);
+            cout << "Enter or ESC to exit";
 
             sem_cur = yearHead->NoSemester;
             curCourse = sem_cur->course;

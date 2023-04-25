@@ -360,7 +360,7 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
 void New_Stuff(Year *yearHead, Account* accHead)
 {
     system("cls");
-    Render_NewInfo(50, 3);
+    Render_NewInfo(55, 3);
 
     vector<string> menu;
     menu.push_back("Add a new year");
@@ -371,7 +371,7 @@ void New_Stuff(Year *yearHead, Account* accHead)
     int ye;
     Year *year_cur = nullptr;
 
-    int opt = Draw_XY(menu, 50, 12, 4, 24, 63);
+    int opt = Draw_XY(menu, 60, 12, 4, 24, 63);
     switch (opt)
     {
     case 0:
