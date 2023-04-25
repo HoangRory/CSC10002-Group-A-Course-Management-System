@@ -3,7 +3,7 @@
 #include "../Header/Login.h"
 #include "../Header/course.h"
 #include "../Header/Utility.h"
-
+using namespace std;
 //? Account
 void ReadAccount(Account *&accHead)
 {
@@ -277,86 +277,137 @@ Semester *Read_All_Semester(int year)
     return semHead;
 }
 
-
-void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in) {
+void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in)
+{
     string s_totalMark, s_finalMark, s_midMark, s_otherMark;
-    getline(in,s_totalMark,',');
-    getline(in,s_finalMark,',');
-    getline(in,s_midMark,',');
-    getline(in,s_otherMark,'\n');
-    
+    getline(in, s_totalMark, ',');
+    getline(in, s_finalMark, ',');
+    getline(in, s_midMark, ',');
+    getline(in, s_otherMark, '\n');
+
     SBC.totalMark = SBC.finalMark = SBC.midMark = SBC.otherMark = -1;
-                                                                                                                                                                          if(s_totalMark != "X") SBC.totalMark = stod(s_totalMark);
-    if(s_finalMark != "X") SBC.finalMark = stod(s_totalMark);
-    if(s_midMark != "X")   SBC.midMark = stod(s_midMark);
-    if(s_otherMark != "X") SBC.otherMark = stod(s_otherMark); 
+    if (s_totalMark != "X")
+        SBC.totalMark = stod(s_totalMark);
+    if (s_finalMark != "X")
+        SBC.finalMark = stod(s_totalMark);
+    if (s_midMark != "X")
+        SBC.midMark = stod(s_midMark);
+    if (s_otherMark != "X")
+        SBC.otherMark = stod(s_otherMark);
 }
 
-void readStudentCourse(StudentCourse *&studentHead, ifstream &in){
+void readStudentCourse(StudentCourse *&studentHead, ifstream &in)
+{
     StudentCourse *cur = studentHead;
     string del = "";
-    if(!in.eof()) getline(in,del,'\n');
-    while (!in.eof()) {
-        if (!cur) cur = studentHead = new StudentCourse;
-        else {
-            cur -> next = new StudentCourse;
-            cur -> next -> prev = cur;
-            cur = cur -> next;
+    if (!in.eof())
+        getline(in, del, '\n');
+    while (!in.eof())
+    {
+        if (!cur)
+            cur = studentHead = new StudentCourse;
+        else
+        {
+            cur->next = new StudentCourse;
+            cur->next->prev = cur;
+            cur = cur->next;
         }
-        getline(in,del,',');
-        getline(in,cur->ID,',');
-        getline(in,cur->FullName,',');
-        readScoreStudentCourse(cur->ScoreBoardCourse, in);    
+        getline(in, del, ',');
+        getline(in, cur->ID, ',');
+        getline(in, cur->FullName, ',');
+        readScoreStudentCourse(cur->ScoreBoardCourse, in);
     }
 }
 
 // import data course
-void readAllFileCourses(Semester *HeadSmt) {
+void readAllFileCourses(Semester *HeadSmt)
+{
     ifstream in;
     Semester *curSmt = HeadSmt;
     Course *curCourse;
     while (curSmt)
     {
         curCourse = curSmt->course;
-        while(curCourse) {
-            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv"); 
+        while (curCourse)
+        {
+            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
             in.open(path);
-            if(!in.is_open())
+            if (!in.is_open())
                 Message_Warning(path + " is not exist.", "Error");
-            else 
-                readStudentCourse(curCourse->studentCourse, in); 
+            else
+                readStudentCourse(curCourse->studentCourse, in);
             in.close();
             curCourse = curCourse->next;
-        }  
-        curSmt = curSmt->next;      
+        }
+        curSmt = curSmt->next;
     }
-
 }
 
-void importScoreBoardCourse(Semester * curSmt, StudentCourse *stuHead) 
+void importScoreBoardCourse(Year *yearHead)
 {
+    Year *ChooseYear = nullptr;
+    Semester *ChooseSem = nullptr;
+    Course *ChooseCourse = nullptr;
     system("cls");
-
-    // cout << "Please select course for which you want to show scoreboard. Or select close <- to come back Main Menu" << endl;
-    // cout << "Using arrow keys to move and press enter to select your option." << endl;
-    // system("pause");
-    // system("cls");
-    // Course *curCourse = chooseCoursebyOption(curSmt->course);
-    // if(!curCourse) {
-    //     //quay lại menu
-    //     return;
-    // }
-    int x = 45, y = 1; 
+    int x = 40, y = 2;
     Render_Import(x, y);
-    // string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
-    // if (!checkFile(path)) 
-    // {
-    //     cout << "The scoreboard of this course does not exist." << endl
-    //          << "Please contact the teacher to get scoreboard and to try again.";
-    //     return;
-    // }
-    // ifstream in;
-    // in.open (path);
-    // readStudentCourse(curCourse->studentCourse, in);
-    // in.close();
+    x = 60, y = 15;
+    if (yearHead == nullptr)
+    {
+        Message_Warning("There are no school year.", "Error not exist");
+        // gọi lại hàm mainmenu
+        return;
+    }
+    goToXY(40, 13);
+    cout << "Select the year that contains the course you want to import";
+    ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
+    cout << setw(70) << " ";
+    if (ChooseYear == nullptr)
+    {
+        // quay lại main menu
+        return;
+    }
+    if (ChooseYear->NoSemester == nullptr)
+    {
+        Message_Warning("There are no semester in this school year.", "Error not exist");
+    }
+    goToXY(40, 13);
+    cout << "Select the semester that contains the course you want to import";
+    ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+    cout << setw(70) << " ";
+    while (ChooseSem)
+    {
+        if (ChooseSem->course == nullptr)
+            Message_Warning("There are no course in this semester", "Error not Exist");
+        else
+        {
+            goToXY(40, 13);
+            cout << "Select the course you want to import the scoreboard";
+            ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
+            cout << setw(70) << " ";
+            while (ChooseCourse)
+            {
+                string mess = "Put data in the  folder\nName it with format eg. Ky Nang Men : KNM.txt\nOK to continue when finish";
+                Message_Warning(mess, "Notice");
+                string path = createNameFile(ChooseSem->Year, ChooseSem->No, ChooseCourse->Name, "score", "csv");
+                if (!checkFile(path))
+                {
+                    Message_Warning("The scoreboard of this course does not exist./n Please contact the teacher to get scoreboard and to try again.", " Error!");
+                    break;
+                }
+                else
+                {
+                    ifstream in;
+                    in.open(path);
+                    readStudentCourse(ChooseCourse->studentCourse, in);
+                    in.close();
+                    if (!Message_YesNo("Successful import \n Would you like to continue?", "Notification"))
+                        return;
+                    ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
+                }
+            }
+        }
+        ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+    }
+    importScoreBoardCourse(yearHead);
 }

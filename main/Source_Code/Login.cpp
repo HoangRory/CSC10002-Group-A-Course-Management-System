@@ -1,6 +1,7 @@
 #include "../Header/Login.h"
 #include "../Header/Utility.h"
-
+#include "../Header/Year.h"
+#include "../Header/Semester.h"
 void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role)
 {
     system("cls");
@@ -214,7 +215,7 @@ void Profiling(Account *accHead, string user, string pass, int role)
 }
 
 //? Account Alteration
-bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, int &role)
+bool AccountAlteration(Year *yearHead, Account *accHead, std::string &user, std::string &pass, int &role)
 {
     system("cls");
     Render_Account(50, 1);
@@ -235,11 +236,11 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
 
     case 1:
         Profiling(accHead, user, pass, role);
-        return AccountAlteration(accHead, user, pass, role);
+        return AccountAlteration(yearHead, accHead, user, pass, role);
 
     case 2:
         ChangePass(accHead, user, pass);
-        return AccountAlteration(accHead, user, pass, role);
+        return AccountAlteration(yearHead, accHead, user, pass, role);
 
     case 3:
         goToXY(50, 28);
@@ -250,8 +251,15 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
             Sleep(200);
         }
         // system("cls");
+        if (Message_YesNo("Do you want to save all the changes?", "Notice!"))
+        {
+            Output(yearHead);  // write down all the year
+            Outyear(yearHead); // write down each year in4
+            Message_Warning("File save!\nNow clean up and close!", "Quit");
+        }
         LoggingIn(accHead, user, pass, role);
-        return AccountAlteration(accHead, user, pass, role);
+        return false;
+        // return AccountAlteration(accHead, user, pass, role);
     case 4:
         goToXY(50, 28);
         cout << "Thanks for ur usage!";
@@ -261,11 +269,11 @@ bool AccountAlteration(Account *accHead, std::string &user, std::string &pass, i
     return false;
 }
 
-bool LoggingMain(Account *&accHead, string &user, string &pass, int &role)
+bool LoggingMain(Year *yearHead, Account *&accHead, string &user, string &pass, int &role)
 {
     // ReadAccount(accHead);
     LoggingIn(accHead, user, pass, role);
-    if (AccountAlteration(accHead, user, pass, role))
+    if (AccountAlteration(yearHead, accHead, user, pass, role))
         return true;
     return false;
 }

@@ -4,7 +4,7 @@
 
 //? 1. Create a school year (2020-2021, for example)
 //* lần đầu gọi hàm thì cho cin yearStart trong hàm main
-void createSchoolYear(Year *&headYear, int yearStart, Account* accHead)
+void createSchoolYear(Year *&headYear, int yearStart, Account *accHead)
 {
     Year *curYear = headYear;
     if (checkYear(headYear, yearStart))
@@ -18,17 +18,12 @@ void createSchoolYear(Year *&headYear, int yearStart, Account* accHead)
 
     Year *newYear = new Year;
     newYear->yearStart = yearStart;
+    newYear->next = headYear;
 
     if (!headYear)
         headYear = newYear;
     else
-    {
-        curYear = headYear;
-        while (curYear->next)
-            curYear = curYear->next;
-        curYear->next = newYear;
-        newYear->prev = curYear;
-    }
+        headYear->prev = newYear;
 
     string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
     path = "mkdir " + path;
@@ -42,11 +37,11 @@ void createSchoolYear(Year *&headYear, int yearStart, Account* accHead)
     string title = "Success";
     if (Message_YesNo(message, title))
     {
-        Create_New_Classes(newYear,accHead);
+        Create_New_Classes(newYear, accHead);
 
         message = "Add student to class?";
         if (Message_YesNo(message, title))
-            ChooseClassToAdd(newYear,accHead);
+            ChooseClassToAdd(newYear, accHead);
         return;
     }
     return;
@@ -55,7 +50,7 @@ void createSchoolYear(Year *&headYear, int yearStart, Account* accHead)
 //? 2. Create several classes for 1st-year students.
 //* For example: class 20APCS1, class 20APCS2, class 20CLC1..., class 20CLC11, class 20VP...
 //* check if that class already exists.
-void Create_New_Classes(Year *newYear, Account* accHead)
+void Create_New_Classes(Year *newYear, Account *accHead)
 {
     system("cls");
     int y = 3;
@@ -117,12 +112,12 @@ void Create_New_Classes(Year *newYear, Account* accHead)
 }
 
 //? Choose the class to add Student
-void ChooseClassToAdd(Year *curYear, Account* accHead)
+void ChooseClassToAdd(Year *curYear, Account *accHead)
 {
     TextColor(63);
     system("cls");
 
-    Render_Class(50, 1);    
+    Render_Class(50, 1);
     vector<string> listClass;
     Class *class_cur = curYear->Class;
     while (class_cur)
@@ -154,7 +149,7 @@ void ChooseClassToAdd(Year *curYear, Account* accHead)
 }
 
 //? Choose the method to add student
-void Method(Account* accHead, Class *curClass)
+void Method(Account *accHead, Class *curClass)
 {
     system("cls");
     Render_Student(50, 3);
@@ -186,7 +181,7 @@ void Method(Account* accHead, Class *curClass)
 }
 
 //? Input student by hand one the cmd
-void inputStudent(Account* accHead, Class *curClass)
+void inputStudent(Account *accHead, Class *curClass)
 {
     system("cls");
     int y = 3;
@@ -218,7 +213,7 @@ void inputStudent(Account* accHead, Class *curClass)
 }
 
 //? Import student from file
-void importStudent(Account* accHead, Class *curClass)
+void importStudent(Account *accHead, Class *curClass)
 {
     system("cls");
     int y = 3;
@@ -303,7 +298,7 @@ void importStudent(Account* accHead, Class *curClass)
 }
 
 //? Add student one by one
-void add1stYearStudents(Account* accHead, Class *curClass, string ID, string first, string last, string gen, string birth, string socialID)
+void add1stYearStudents(Account *accHead, Class *curClass, string ID, string first, string last, string gen, string birth, string socialID)
 {
     Student *headStudent = curClass->StudentClass;
     Student *newStud = new Student;
