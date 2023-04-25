@@ -88,10 +88,10 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
             cout << setw(len + 2) << cour->Name << setw(36 - len - 2) << line;
 
             len = cour->TeacherName.length();
-            cout << setw(len + 5) << cour->TeacherName << setw(25 - len - 5) << line;
+            cout << setw(len + 1) << cour->TeacherName << setw(25 - len - 1) << line;
 
             goToXY(25, row++);
-            if (row >= 8 + 19)
+            if (row >= 10 + 19)
             {
                 Tablize(2);
                 return cour;
@@ -120,8 +120,30 @@ void ViewCourse(Year *yearHead)
 {
     // string arrow = "<<-->>";
     Semester *sem_cur = yearHead->NoSemester;
-    Course *curCourse = sem_cur->course;
+    Course *curCourse = nullptr;
+    int cnt = 0;
+    while (sem_cur)
+    {
+        curCourse = sem_cur->course;
+        while (curCourse)
+        {
+            cnt++;
+            curCourse = curCourse->next;
+        }
+        sem_cur = sem_cur->next;
+    }
+
+    sem_cur = yearHead->NoSemester;
+    curCourse = sem_cur->course;
     Course *cour = Part_Of_Course(curCourse, sem_cur);
+    int ind = 1;
+    cnt = cnt / 7 + (cnt % 7 == 0 ? 0 : 1);
+    goToXY(90, 32);
+    cout << "  Page " << ind << "/" << cnt << " ";
+    if (ind != cnt)
+        cout << char(31);
+    Course *tmp = nullptr;
+    Semester *semtmp = nullptr;
 
     while (1)
     {
@@ -131,6 +153,8 @@ void ViewCourse(Year *yearHead)
         case UP:
             if (!cour)
                 break;
+            tmp = cour;
+            semtmp = sem_cur;
             while (cour != curCourse)
             {
                 cour = cour->prev;
@@ -144,6 +168,12 @@ void ViewCourse(Year *yearHead)
                         cour = cour->next;
                 }
             }
+            if (!curCourse->prev && !sem_cur->prev)
+            {
+                cour = tmp;
+                sem_cur = semtmp;
+                break;
+            }
             if (curCourse->prev || sem_cur->prev)
             {
                 for (int i = 0; i < 7; i++)
@@ -152,6 +182,12 @@ void ViewCourse(Year *yearHead)
                     curCourse = curCourse->prev;
                     if (!curCourse)
                     {
+                        if (!sem_cur->prev)
+                        {
+                            cour = tmp;
+                            sem_cur = semtmp;
+                            break;
+                        }
                         sem_cur = sem_cur->prev;
                         curCourse = sem_cur->course;
                         while (curCourse->next)
@@ -159,6 +195,12 @@ void ViewCourse(Year *yearHead)
                     }
                 }
                 system("cls");
+                ind--;
+                goToXY(90, 32);
+                if (ind == 1)
+                    cout << "  Page " << ind << "/" << cnt << " " << char(31);
+                else
+                    cout << char(30) << " Page " << ind << "/" << cnt << " " << char(31);
                 cour = Part_Of_Course(curCourse, sem_cur);
             }
             break;
@@ -175,29 +217,71 @@ void ViewCourse(Year *yearHead)
                 else
                     curCourse = cour->next;
                 system("cls");
+                ind++;
+                goToXY(90, 32);
+                if (ind == cnt)
+                    cout << char(30) << " Page " << ind << "/" << cnt;
+                else
+                    cout << char(30) << " Page " << ind << "/" << cnt << " " << char(31);
                 cour = Part_Of_Course(curCourse, sem_cur);
             }
             break;
         case LEFT:
-            if (yearHead->prev)
+            if (!yearHead->prev)
+                break;
+
+            ind = 1, cnt = 0;
+            yearHead = yearHead->prev;
+            semtmp = yearHead->NoSemester;
+            while (semtmp)
             {
-                yearHead = yearHead->prev;
-                system("cls");
-                sem_cur = yearHead->NoSemester;
-                curCourse = sem_cur->course;
-                cour = Part_Of_Course(curCourse, sem_cur);
+                curCourse = semtmp->course;
+                while (curCourse)
+                {
+                    cnt++;
+                    curCourse = curCourse->next;
+                }
+                semtmp = semtmp->next;
             }
+            cnt = cnt / 7 + (cnt % 7 == 0 ? 0 : 1);
+            system("cls");
+            goToXY(90, 32);
+            cout << "  Page " << ind << "/" << cnt << " ";
+            if (ind != cnt)
+                cout << char(31);
+
+            sem_cur = yearHead->NoSemester;
+            curCourse = sem_cur->course;
+            cour = Part_Of_Course(curCourse, sem_cur);
             break;
 
         case RIGHT:
-            if (yearHead->next)
+            if (!yearHead->next)
+                break;
+
+            ind = 1, cnt = 0;
+            yearHead = yearHead->next;
+            semtmp = yearHead->NoSemester;
+            while (semtmp)
             {
-                yearHead = yearHead->next;
-                system("cls");
-                sem_cur = yearHead->NoSemester;
-                curCourse = sem_cur->course;
-                cour = Part_Of_Course(curCourse, sem_cur);
+                curCourse = semtmp->course;
+                while (curCourse)
+                {
+                    cnt++;
+                    curCourse = curCourse->next;
+                }
+                semtmp = semtmp->next;
             }
+            cnt = cnt / 7 + (cnt % 7 == 0 ? 0 : 1);
+            system("cls");
+            goToXY(90, 32);
+            cout << "  Page " << ind << "/" << cnt << " ";
+            if (ind != cnt)
+                cout << char(31);
+
+            sem_cur = yearHead->NoSemester;
+            curCourse = sem_cur->course;
+            cour = Part_Of_Course(curCourse, sem_cur);
             break;
 
         case ENTER:

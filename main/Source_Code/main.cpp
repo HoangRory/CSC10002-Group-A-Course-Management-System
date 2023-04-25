@@ -18,7 +18,6 @@ void Merge_year_sem(Account *&accHead, Year *&yearHead)
     SyncInForStudent(yearHead, accHead);
     SyncFullName(yearHead, accHead);
     SyncCourse(yearHead);
-
     LoggingIn(accHead, user, pass, role);
     Main_Menu(yearHead, accHead, user, pass, role);
 }
