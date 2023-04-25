@@ -31,6 +31,7 @@ int main()
     initWindow(1200, 600);
     system("title Course Management System");
     Merge_year_sem(accHead, yearHead);
+    // ViewScoreboardClass(yearHead->next->Class->next->next->next, yearHead->next->NoSemester, 10, 10);
     system("mode 1000, 5000");
     EradicateLL(accHead, yearHead);
     return 0;

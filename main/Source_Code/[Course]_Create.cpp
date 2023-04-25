@@ -33,19 +33,28 @@ string createNameFile(int year, int no_smt, string course, string file, string t
     string path = "../Data_file/" + s_year + s_smt + getFirstChar(course) + file + "." + type;
     return path;
 }
-
-CourseStudent *CourseOfAClass(Student *studentHead)
+CourseStudent *CourseOfAClass_InChooseSem(Student *studentHead, Semester *ChooseSem)
 {
     CourseStudent *CourHead = nullptr, *tmp = nullptr;
     CourseStudent *courseCheck;
+    CourseStudent *Course_in_Sem = nullptr;
+    Course *course_cur = ChooseSem->course;
+    while (course_cur)
+    {
+        tmp = new CourseStudent;
+        tmp->course = course_cur;
+        tmp->next = Course_in_Sem;
+        Course_in_Sem = tmp;
+        course_cur = course_cur->next;
+    }
     while (studentHead)
     {
         courseCheck = studentHead->course;
         while (courseCheck)
         {
-            if (!checkExistence_OfCourse(courseCheck, CourHead))
+            if (!checkExistence_OfCourse(courseCheck, CourHead) && checkExistence_OfCourse(courseCheck, Course_in_Sem))
             {
-                CourseStudent *tmp = new CourseStudent;
+                tmp = new CourseStudent;
                 tmp->course = courseCheck->course;
                 tmp->next = CourHead;
                 CourHead = tmp;
@@ -77,7 +86,7 @@ void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student
 }
 void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studentHead, int Col, int Row)
 {
-    SBC = new double *[Col + 1];
+    SBC = new double *[Row];
     for (int i = 0; i < Row; i++)
     {
         SBC[i] = new double[Col + 1]; // +1 là + 1 cột cuối để lưu GPA của học sinh đó trong kì này
