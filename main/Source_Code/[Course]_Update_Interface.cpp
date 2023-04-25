@@ -125,6 +125,7 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
 
 void UpdateStudentResult(Year *Yhead)
 {
+    system("cls");
     Semester *ChooseSem = nullptr;
     Course *ChooseCourse = nullptr;
     if (Yhead == nullptr)

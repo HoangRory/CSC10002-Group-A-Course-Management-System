@@ -7,6 +7,7 @@ const string separator = "\\";
 void Show_Year_List(Year *yearHead)
 {
     Year *year_cur = yearHead;
+    system("cls");
     TextColor(0xF1);
     int i = 0;
 

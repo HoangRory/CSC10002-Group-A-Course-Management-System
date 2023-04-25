@@ -114,8 +114,8 @@ void Create_New_Classes(Year *newYear, Account *accHead)
 //? Choose the class to add Student
 void ChooseClassToAdd(Year *curYear, Account *accHead)
 {
-    TextColor(63);
     system("cls");
+    TextColor(7);
 
     Render_Class(50, 1);
     vector<string> listClass;
@@ -128,7 +128,7 @@ void ChooseClassToAdd(Year *curYear, Account *accHead)
     goToXY(60, 12);
     cout << "Classes in " << curYear->yearStart << "-" << curYear->yearStart + 1;
 
-    int opt = Draw_ShortVer(listClass, 60, 12);
+    int opt = Draw_ShortVer(listClass, 60, 12, 63);
     string className = listClass[opt];
 
     class_cur = curYear->Class;
@@ -152,7 +152,7 @@ void ChooseClassToAdd(Year *curYear, Account *accHead)
 void Method(Account *accHead, Class *curClass)
 {
     system("cls");
-    Render_Student(50, 3);
+    Render_Student(35, 3);
     vector<string> menu;
     menu.push_back("Adding by hand");
     menu.push_back("Importing from file");

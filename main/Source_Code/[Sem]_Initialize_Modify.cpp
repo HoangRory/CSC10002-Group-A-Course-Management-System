@@ -24,6 +24,8 @@ void initModify(Year *yearHead)
 
 void RunModify(Year *yearHead, int opt)
 {
+    system("cls");
+    Render_Menu(59, 3);
     string id, strYear;
     int sem, year;
     vector<string> small_menu;
@@ -35,25 +37,25 @@ void RunModify(Year *yearHead, int opt)
         small_menu.push_back("2nd semester");
         small_menu.push_back("3rd semester");
         small_menu.push_back("Back");
+        system("cls");
+        Render_Semester(59, 3);
 
         sem = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
 
         modifySemester(yearHead, year, sem);
         break;
     case 1: // View all the course and modify a course in the school year
-        ViewCourse(yearHead);
+        // ViewCourse(yearHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
         modifyCourse(yearHead, year);
         break;
     case 2: // Remove out the course
-        // viewCourse(semHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
         removeCourse(yearHead, year);
         break;
     case 3: // add or remove a student from a course
-        ViewCourse(yearHead);
+        // ViewCourse(yearHead);
         year = Get_CheckFormat_Existed_Year(yearHead);
-        //! Showing the list of students
         addRemoveStudent(yearHead, year);
         break;
     case 4:
