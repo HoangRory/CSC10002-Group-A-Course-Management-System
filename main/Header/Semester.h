@@ -2,7 +2,7 @@
 #include "proto.h"
 
 //? Add new semester, new course and import student
-void New_Stuff(Year *yearHead, Account* accHead);
+void New_Stuff(Year *yearHead, Account *accHead);
 
 Semester *AddSemester(Year *yearHead);
 
@@ -49,6 +49,6 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur);
 // void ViewCourseInYear(Semester *semHead);
 
 //? Main
-void Student_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
+void Student_Main(Year *yearHead, Account *accHead, Student *student_cur, string &user, string &pass, int &role);
 void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role);
 void Main_Menu(Year *yearHead, Account *accHead, string &user, string &pass, int &role);

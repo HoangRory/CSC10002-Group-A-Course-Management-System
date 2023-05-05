@@ -43,13 +43,14 @@ void Output(Year *yearHead)
         OutCourse(sem_cur->course, ofs);
         ofs.close();
         Course *courseHead = sem_cur->course;
-        while(courseHead) {
-            string path = createNameFile(sem_cur->Year, sem_cur->No,courseHead->Name,"score","csv");
-            if (!checkFile(path)) 
+        while (courseHead)
+        {
+            string path = createNameFile(sem_cur->Year, sem_cur->No, courseHead->Name, "score", "csv");
+            if (!checkFile(path))
                 system(("mkdir " + path).c_str());
             ofs.open(path);
-            outStudentCourse(courseHead->studentCourse,ofs);
-            ofs.close(); 
+            outStudentCourse(courseHead->studentCourse, ofs);
+            ofs.close();
             courseHead = courseHead->next;
         }
         sem_cur = sem_cur->next;
@@ -135,48 +136,100 @@ void Outyear(Year *yearHead)
     outyear.close();
 }
 
-void outScoreboard_StudentCourse (ofstream &ofs, ScoreBoardCourse SBC) 
+void outScoreboard_StudentCourse(ofstream &ofs, ScoreBoardCourse SBC)
 {
-    if(SBC.totalMark < 0) ofs << "X" << ",";
-    else ofs << SBC.totalMark << ",";
-    if(SBC.finalMark < 0) ofs << "X" << ",";
-    else ofs << SBC.finalMark << ",";
-    if(SBC.midMark < 0) ofs << "X" << ",";
-    else ofs << SBC.midMark << ",";
-    if(SBC.otherMark < 0) ofs << "X";
-    else ofs << SBC.otherMark;
+    if (SBC.totalMark < 0)
+        ofs << "X"
+            << ",";
+    else
+        ofs << SBC.totalMark << ",";
+    if (SBC.finalMark < 0)
+        ofs << "X"
+            << ",";
+    else
+        ofs << SBC.finalMark << ",";
+    if (SBC.midMark < 0)
+        ofs << "X"
+            << ",";
+    else
+        ofs << SBC.midMark << ",";
+    if (SBC.otherMark < 0)
+        ofs << "X";
+    else
+        ofs << SBC.otherMark;
 }
-void outStudentCourse(StudentCourse *stuHead, ofstream &ofs) 
+void outStudentCourse(StudentCourse *stuHead, ofstream &ofs)
 {
     int No = 1;
-    ofs << "No,Student ID,Fullname,Total Mark,Final Mark,Mid Mark,Other Mark" ;
-    while (stuHead) 
+    ofs << "No,Student ID,Fullname,Total Mark,Final Mark,Mid Mark,Other Mark";
+    while (stuHead)
     {
         ofs << "\n"
             << No++ << ","
             << stuHead->ID << ","
             << stuHead->FullName << ",";
-        outScoreboard_StudentCourse(ofs,stuHead->ScoreBoardCourse);
-        stuHead = stuHead -> next;
+        outScoreboard_StudentCourse(ofs, stuHead->ScoreBoardCourse);
+        stuHead = stuHead->next;
     }
 }
 //?task 19
-void exportListStudentCourse(Semester *curSmt)
- {
+void exportListStudentCourse(Year *yearHead)
+{
+    Year *ChooseYear = nullptr;
+    Semester *ChooseSem = nullptr;
+    Course *ChooseCourse = nullptr;
     system("cls");
-    Course *curCourse = chooseCoursebyOption_XY(curSmt->course, 55, 10, 5);
-    if(!curCourse) {
-        //quay lại menu
+    int x = 40, y = 2;
+    Render_Export(x, y);
+    x = 60, y = 15;
+    if (yearHead == nullptr)
+    {
+        Message_Warning("There are no school year.", "Error not exist");
+        // gọi lại hàm mainmenu
         return;
     }
-    string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "CSV");
-    if (!checkFile(path)) 
-        system(("mkdir " + path).c_str());
-    ofstream out;
-    out.open(path);
-    outStudentCourse(curCourse->studentCourse, out);
-    out.close();   
-    if(Message_YesNo("File export successful.\n Would you like to continue?", "Success")) 
-        exportListStudentCourse(curSmt);
+    goToXY(40, 13);
+    cout << "Select the year that contains the course you want to Export";
+    ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
+    cout << setw(70) << " ";
+    if (ChooseYear == nullptr)
+    {
+        // quay lại main menu
+        return;
+    }
+    if (ChooseYear->NoSemester == nullptr)
+    {
+        Message_Warning("There are no semester in this school year.", "Error not exist");
+    }
+    goToXY(40, 13);
+    cout << "Select the semester that contains the course you want to Export";
+    ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+    cout << setw(70) << " ";
+    while (ChooseSem)
+    {
+        if (ChooseSem->course == nullptr)
+            Message_Warning("There are no course in this semester", "Error not Exist");
+        else
+        {
+            goToXY(40, 13);
+            cout << "Select the course you want to Export the scoreboard";
+            ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
+            cout << setw(70) << " ";
+            while (ChooseCourse)
+            {
+                string path = createNameFile(ChooseSem->Year, ChooseSem->No, ChooseCourse->Name, "score", "csv");
+                if (!checkFile(path))
+                    system(("mkdir " + path).c_str());
+                ofstream out;
+                out.open(path);
+                outStudentCourse(ChooseCourse->studentCourse, out);
+                out.close();
+                if (!Message_YesNo("File export successful.\n Would you like to continue?", "Success"))
+                    return;
+                ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
+            }
+        }
+        ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+    }
+    exportListStudentCourse(yearHead);
 }
-

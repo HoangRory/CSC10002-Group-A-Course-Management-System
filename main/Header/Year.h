@@ -55,6 +55,10 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
 
 //* Interface
 Year *RecoverFile();
-void Interface_New_Year(Year *yearHead, Account* accHead);
+void Interface_New_Year(Year *yearHead, Account *accHead);
 void Show_Year_List(Year *yearHead);
 int Get_CheckFormat_Existed_Year(Year *yearHead);
+
+//*Sort
+Year *SortYear_Descending(Year *yearHead);
+void SwapYear(Year *year1, Year *year2);

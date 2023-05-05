@@ -62,8 +62,7 @@ Year *RecoverFile()
     int numofYear = 0;
     // import existing years and classes
     loadingFile(headYear, numofYear);
-
-    Year *yearTMP = headYear;
+    Year *yearTMP = headYear = SortYear_Descending(headYear);
     while (yearTMP)
     {
         yearTMP->NoSemester = Read_All_Semester(yearTMP->yearStart); // read the semesters in years
@@ -73,7 +72,7 @@ Year *RecoverFile()
     return headYear;
 }
 
-void Interface_New_Year(Year *yearHead, Account* accHead)
+void Interface_New_Year(Year *yearHead, Account *accHead)
 {
     Year *year_cur = yearHead;
     string strYear;

@@ -6,14 +6,14 @@
 void readScoreStudentCourse(ScoreBoardCourse &SBC, ifstream &in);
 void readStudentCourse(StudentCourse *&studentHead, ifstream &in);
 void readAllFileCourses(Semester *HeadSmt);
-void importScoreBoardCourse(Semester *curSmt, StudentCourse *stuHead);
+void importScoreBoardCourse(Year *yearHead);
 
 ///////////////////////////////////////////////////////////
 //                     OUT                               //
 ///////////////////////////////////////////////////////////
 void outScoreboard_StudentCourse(ofstream &ofs, ScoreBoardCourse SBC);
 void outStudentCourse(StudentCourse *stuHead, ofstream &ofs);
-void exportListStudentCourse(Semester *curSmt);
+void exportListStudentCourse(Year *yearHead);
 
 //////////////////////////////////////////////////////////
 //                 Update                               //
@@ -83,10 +83,15 @@ void ViewScoreboardClass(Class *Class, int x, int y);          //? task 23
 //? view all class
 void ViewClass(Year *yearHead); //? task 15
 
+//?
+void Interface_Import_Export(Year *yearHead);
 void Interface_ViewCourseOfAStudent(Year *yearHead);
 //? for student
-void ViewCoursesOfAStudent(Account *accHead, Year *yearHead); //? task 14
-void ViewScoreboard(Account *accHead, Course *courseHead);    //? task 24
+void ViewCoursesOfAStudent(Account *accHead, Year *yearHead);
+void Interface_ViewCoursesOfUser(Student *student_cur, Year *yearHead); // task 14
+void ViewCoursesOfUser(Student *student_cur, Course *courseHead);       //? task 14
+void Interface_ViewScoreBoardOfUser(Student *student_cur, Year *yearHead);
+void ViewScoreboard(Account *accHead, Course *courseHead); //? task 24
 
 //? View Menu
 void Staff_View(Year *yearHead);

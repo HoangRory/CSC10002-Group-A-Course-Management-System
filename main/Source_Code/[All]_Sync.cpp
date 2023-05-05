@@ -41,10 +41,11 @@ void SyncInForStudent(Year *yearHead, Account *accHead)
 
 void SyncCourse(Year *yearHead)
 {
-    Year *year_cur = yearHead;
-    while (year_cur)
+    Year *year_cur1 = yearHead;
+    Year *year_cur2;
+    while (year_cur1)
     {
-        Semester *sem_cur = year_cur->NoSemester;
+        Semester *sem_cur = year_cur1->NoSemester;
         while (sem_cur)
         {
             Course *cse = sem_cur->course;
@@ -53,25 +54,31 @@ void SyncCourse(Year *yearHead)
                 StudentCourse *stcse = cse->studentCourse;
                 while (stcse)
                 {
-                    Class *class_cur = yearHead->Class;
-                    while (class_cur)
+                    year_cur2 = yearHead;
+                    while (year_cur2)
                     {
-                        Student *stclass = class_cur->StudentClass;
-                        while (stclass && stclass->ID != stcse->ID)
-                            stclass = stclass->next;
-                        if (stclass != nullptr)
+                        Class *class_cur = year_cur2->Class;
+                        while (class_cur)
                         {
-                            if(stclass->course == nullptr)
-                                stclass->course = new CourseStudent;
-                            else{
-                                CourseStudent *tmp = new CourseStudent;
-                                tmp->next = stclass->course;
-                                stclass->course = tmp;
+                            Student *stclass = class_cur->StudentClass;
+                            while (stclass && stclass->ID != stcse->ID)
+                                stclass = stclass->next;
+                            if (stclass != nullptr)
+                            {
+                                if (stclass->course == nullptr)
+                                    stclass->course = new CourseStudent;
+                                else
+                                {
+                                    CourseStudent *tmp = new CourseStudent;
+                                    tmp->next = stclass->course;
+                                    stclass->course = tmp;
+                                }
+                                stclass->course->course = cse;
+                                break;
                             }
-                            stclass->course->course = cse;
-                            break;
+                            class_cur = class_cur->next;
                         }
-                        class_cur = class_cur->next;
+                        year_cur2 = year_cur2->next;
                     }
                     stcse = stcse->next;
                 }
@@ -79,7 +86,7 @@ void SyncCourse(Year *yearHead)
             }
             sem_cur = sem_cur->next;
         }
-        year_cur = year_cur->next;
+        year_cur1 = year_cur1->next;
     }
 }
 

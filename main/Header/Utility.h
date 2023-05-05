@@ -36,14 +36,13 @@ void Render_Update(int x, int y);
 void Render_StudentClass();
 void Render_StudentCourse();
 void Render_ScoreBoardCourse();
-void Render_ScoreBoardClass(); 
+void Render_ScoreBoardClass();
 
 //? Draw the option
 int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, int width, int color = 0xF3);
 int Draw_ShortVer(vector<string> menu, int x, int y, int color = 0xF3);
-int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur, int color = 0xF3);
+// int Draw_Horizontal_XY(vector<string> menu, int x , int y, int &cur, int color = 0xF3);
 void Draw_table(
     string **table, string *title, int num_row, int num_col, int *width, int height,
     int x, int y, int Row_eachTime, int Col_eachTime,
-    bool *edit_Col, int &x_cur, int &y_cur
-);
+    bool *edit_Col, int &x_cur, int &y_cur);

@@ -4,6 +4,8 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
 {
     if (nOption_eachTime > menu.size())
         nOption_eachTime = menu.size();
+    int amount_page = ceil(menu.size() * 1.0 / nOption_eachTime), num_page = 1, tmp;
+    char arrow;
     vector<int> choice(menu.size(), 0);
     int cur = 0;
     int step = 0;
@@ -38,7 +40,18 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
             cout << menu[i + step];
         }
         TextColor(07);
-        int tmp;
+        goToXY(xStart, yStart + nOption_eachTime * 3 + 1);
+        cout << setw(20) << " ";
+        tmp = min((int)(menu.size() - step), nOption_eachTime);
+
+        num_page = ceil((cur + 1) * 1.0 / nOption_eachTime);
+        goToXY(xStart, yStart + tmp * 3 + 1);
+        if (amount_page > 1)
+        {
+            cout << "  " << (num_page > 1 ? char(30) : char(32))
+                 << " " << num_page << "/" << amount_page
+                 << " " << (num_page < amount_page ? char(31) : char(32));
+        }
         if (tmp = _getch())
         {
             switch (tmp)
@@ -102,89 +115,6 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
     x_step = (x_cur / Col_eachTime) * Col_eachTime;
     y_step = (y_cur / Row_eachTime) * Row_eachTime;
     choice[y_cur][x_cur] = 1;
-    // goToXY(x, y - 1);
-    // cout << char(218); // 218 is top left
-    // goToXY(x, y);
-    // cout << char(179);
-    // goToXY(x, y + 1);
-    // cout << char(195);
-    // for (int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
-    // {
-    //     for (int t = 0; t < width[j + x_step] - 1; t++)
-    //     {
-    //         goToXY(x + pos[j + x_step] + t + 1, y - 1);
-    //         cout << char(196);
-    //         goToXY(x + pos[j + x_step] + t + 1, y + 1);
-    //         cout << char(196);
-    //     }
-    //     goToXY(x + pos[j + x_step] + 2, y);
-    //     cout << title[j + x_step];
-    //     if (j == Col_eachTime - 1 || j == num_col - x_step - 1)
-    //     {
-    //         goToXY(x + pos[j + x_step] + width[j + x_step], y - 1);
-    //         cout << char(191);
-    //         goToXY(x + pos[j + x_step] + width[j + x_step], y + 1);
-    //         cout << char(180);
-    //     }
-    //     else
-    //     {
-    //         goToXY(x + pos[j + x_step] + width[j + x_step], y + -1);
-    //         cout << char(194);
-    //         goToXY(x + pos[j + x_step] + width[j + x_step], y + 1);
-    //         cout << char(197);
-    //     }
-    //     goToXY(x + pos[j + x_step] + width[j + x_step], y);
-    //     cout << char(179);
-    // }
-    // y += 2;
-    // for (int i = 0; i < Row_eachTime && i + y_step < num_row; i++)
-    // {
-    //     for (int j = 0; j < Col_eachTime && j + x_step < num_col; j++)
-    //     {
-    //         goToXY(x + pos[j + x_step] + 1, y + i * (height + 1) + 1);
-    //         for (int t = 0; t < width[j + x_step] - 1; t++)
-    //             cout << char(196);
-    //         goToXY(x + pos[j + x_step], y + i * (height + 1) + 1);
-    //         if (i != Row_eachTime - 1 && i != num_row - y_step - 1)
-    //         {
-    //     if (j == 0)
-    //         cout << char(195); // 195  is|-
-    //     else
-    //         cout << char(197); // 197 is +
-    // }
-    // else
-    // {
-    //     if (j == 0)
-    //     {
-    //         cout << char(192); // 192  is|_
-    //         goToXY(x, y + i * (height + 1) + 2);
-    //         cout << "Page horizontal " << ceil(x_cur / Col_eachTime) << "/" << ceil(num_col / Col_eachTime);
-    //     }
-    //     else if (j != Col_eachTime - 1 && j != num_col - x_step - 1)
-    //         cout << char(193); // 193 is _|_
-    // }
-
-    // goToXY(x + pos[j + x_step], y + i * (height + 1));
-    // cout << char(179);                                     // 179 is |
-    //         goToXY(x + 1 + pos[j + x_step], y + i * (height + 1)); // +1 để in background không bị đè
-
-    //         int tmp = (choice[i + y_step][j + x_step] ? 0xF3 : 7);
-    //         TextColor(tmp);
-    //         cout << setw(width[j + x_step] - 1) << " ";
-    //         goToXY(x + 2 + pos[j + x_step], y + i * (height + 1)); //+2 là để lùi vào trong một ít cho đẹp
-    //         cout << table[i + y_step][j + x_step];
-
-    //         TextColor(7);
-    //         goToXY(x + pos[j + x_step] + width[j + x_step], y + i * (height + 1));
-    //         cout << char(179); // 179 is |
-    //         goToXY(x + pos[j + x_step] + width[j + x_step], y + i * (height + 1) + 1);
-    //         if (i == Row_eachTime - 1 || i == num_row - 1 - y_step)
-    //             cout << char(217); // 217 is _|
-    //         else
-    //             cout << char(180); // 180 -|
-    //     }
-    // }
-    // y -= 2;
     while (stop != true)
     {
         if (y_prev / Row_eachTime != y_cur / Row_eachTime || x_prev / Col_eachTime != x_cur / Col_eachTime)
@@ -357,45 +287,45 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
     delete[] choice;
     delete[] pos;
 }
-int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
-{
-    vector<int> choice(menu.size(), 0);
-    while (1)
-    {
-        choice[cur] = 1;
-        for (int i = 0; i < choice.size(); i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                int tmp = (choice[i] ? color : 7);
-                TextColor(tmp);
-                goToXY(x + 3 * i, y + j);
-                cout << "   ";
-                goToXY(x + 1 + 3 * i, y + 1);
-                cout << menu[i];
-            }
-        }
-        TextColor(07);
-        int tmp;
-        if (tmp = _getch())
-        {
-            switch (tmp)
-            {
-            case ENTER:
-                system("cls");
-                return cur;
-            case LEFT:
-                choice[cur] = 0;
-                cur = (cur > 0 ? cur - 1 : menu.size() - 1);
-                break;
-            case RIGHT:
-                choice[cur] = 0;
-                cur = (cur < menu.size() - 1 ? cur + 1 : 0);
-                break;
-            }
-        }
-    }
-}
+// int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
+// {
+//     vector<int> choice(menu.size(), 0);
+//     while (1)
+//     {
+//         choice[cur] = 1;
+//         for (int i = 0; i < choice.size(); i++)
+//         {
+//             for (int j = 0; j < 3; j++)
+//             {
+//                 int tmp = (choice[i] ? color : 7);
+//                 TextColor(tmp);
+//                 goToXY(x + 3 * i, y + j);
+//                 cout << "   ";
+//                 goToXY(x + 1 + 3 * i, y + 1);
+//                 cout << menu[i];
+//             }
+//         }
+//         TextColor(07);
+//         int tmp;
+//         if (tmp = _getch())
+//         {
+//             switch (tmp)
+//             {
+//             case ENTER:
+//                 system("cls");
+//                 return cur;
+//             case LEFT:
+//                 choice[cur] = 0;
+//                 cur = (cur > 0 ? cur - 1 : menu.size() - 1);
+//                 break;
+//             case RIGHT:
+//                 choice[cur] = 0;
+//                 cur = (cur < menu.size() - 1 ? cur + 1 : 0);
+//                 break;
+//             }
+//         }
+//     }
+// }
 
 int Draw_ShortVer(vector<string> menu, int x, int y, int color)
 {
