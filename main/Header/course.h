@@ -26,7 +26,7 @@ void UpdateStudentResult(Year *Yhead);
 //////////////////////////////////////////////////////////
 string getFirstChar(string name);
 string createNameFile(int year, int no_smt, string course, string file, string type);
-CourseStudent *CourseOfAClass(Student *studentHead);
+CourseStudent *CourseOfAClass_InChooseSem(Student *studentHead, Semester *ChooseSem);
 void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student *studentHead);
 void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studentHead, int Col, int Row);
 
@@ -76,10 +76,10 @@ void ViewStudentClass(Class *ChooseClass, int x, int y);    //? task 16
 void Interface_ViewStudentCourse(Year *yearHead);           //? task 18
 void ViewStudentCourse(Course *ChooseCourse, int x, int y); //? task 18
 //? scoreboard
-void Interface_ViewScoreBoardCourse(Year *ChooseCourse);       //? task 21
-void ViewScoreBoardCourse(Course *ChooseCourse, int x, int y); //? task 21
-void Interface_ViewScoreBoardClass(Year *yearHead);            //? task 23
-void ViewScoreboardClass(Class *Class, int x, int y);          //? task 23
+void Interface_ViewScoreBoardCourse(Year *ChooseCourse);                   //? task 21
+void ViewScoreBoardCourse(Course *ChooseCourse, int x, int y);             //? task 21
+void Interface_ViewScoreBoardClass(Year *yearHead);                        //? task 23
+void ViewScoreboardClass(Class *Class, Semester *ChooseSem, int x, int y); //? task 23
 //? view all class
 void ViewClass(Year *yearHead); //? task 15
 

@@ -79,6 +79,9 @@ int Draw_XY(vector<string> menu, int xStart, int yStart, int nOption_eachTime, i
             cout << setw(width) << " ";
         }
     }
+    goToXY(xStart, yStart + nOption_eachTime * 3 + 1);
+    cout << setw(20) << " ";
+    tmp = min((int)(menu.size() - step), nOption_eachTime);
     return cur;
 }
 
@@ -107,9 +110,10 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
             pos[i] = pos[i - 1] + width[i - 1];
     }
 
-    int x_prev = num_col, y_prev = num_row;
-    int x_step;
-    int y_step;
+    int x_prev = num_col, y_prev = num_row,
+        x_step, y_step,
+        num_page_hor, num_page_ver,
+        amount_page_hor = ceil(num_col * 1.0 / Col_eachTime), amount_page_ver = ceil(num_row * 1.0 / Row_eachTime);
     bool stop = false;
 
     x_step = (x_cur / Col_eachTime) * Col_eachTime;
@@ -199,8 +203,23 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
                         if (j == 0)
                         {
                             cout << char(192); // 192  is|_
+
+                            // đếm số trang cho bảng
                             goToXY(x, y + i * (height + 1) + 2);
-                            cout << "Horizontal " << ceil((x_cur + 1) * 1.0 / Col_eachTime) << "/" << ceil(num_col * 1.0 / Col_eachTime);
+                            if (amount_page_hor > 1)
+                            {
+                                num_page_hor = ceil((x_cur + 1) * 1.0 / Col_eachTime);
+                                cout << "  " << (num_page_hor > 1 ? char(17) : char(32))
+                                     << " " << num_page_hor << "/" << amount_page_hor
+                                     << " " << (num_page_hor < amount_page_hor ? char(16) : char(32));
+                            }
+                            if (amount_page_ver > 1)
+                            {
+                                num_page_ver = ceil((y_cur + 1) * 1.0 / Row_eachTime);
+                                cout << "  " << (num_page_ver > 1 ? char(30) : char(32))
+                                     << " " << num_page_ver << "/" << amount_page_ver
+                                     << " " << (num_page_ver < amount_page_ver ? char(31) : char(32));
+                            }
                         }
                         else if (j != Col_eachTime - 1 && j != num_col - x_step - 1)
                             cout << char(193); // 193 is _|_

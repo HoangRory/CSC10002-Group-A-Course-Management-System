@@ -294,7 +294,6 @@ void removeCourse(Year *yearHead, int year)
 
                 system("cls");
                 goToXY(0, 0);
-                cout << "After deleting the course"; // Review the course after deleted
                 ViewCourse(year_cur);
                 return;
             }
