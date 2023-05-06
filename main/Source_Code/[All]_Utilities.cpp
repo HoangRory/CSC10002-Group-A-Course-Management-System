@@ -42,6 +42,7 @@ void TextColor(int x) // X là mã màu
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), x);
 }
 
+//? Move the cursor to the position (x, y) in terminal
 void goToXY(int x, int y)
 {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -51,6 +52,7 @@ void goToXY(int x, int y)
     SetConsoleCursorPosition(console, cursorPosition);
 }
 
+//? Limit the input string to a certain length and without some special characters and arrow keys
 string Limit_Input(int x, int y, int limit, int color)
 {
     ShowConsoleCursor(true);
@@ -75,7 +77,27 @@ string Limit_Input(int x, int y, int limit, int color)
                 goToXY(x + i, y);
             }
         }
-        else if (i < limit && c != 13)
+        else if (c == 23)
+            while (i > 0)
+            {
+                i--;
+                input.pop_back();
+                goToXY(x + i, y);
+                cout << " ";
+                goToXY(x + i, y);
+            }
+        else if (c == -32)
+        {
+            c = _getch();
+            continue;
+        }
+        //? 63 <= c <= 90: ? @ A -> Z
+        //? 97 <= c <= 122: a -> z
+        //? 48 <= c <= 57: 0 -> 9
+        //? 33 <= c <= 39: ! " # $ % & '
+        //? 42: *
+        //? 94: ^
+        else if (i < limit && ((c >= 63 && c <= 90) || (c >= 97 && c <= 122) || (c >= 48 && c <= 57) || (c >= 33 && c <= 39) || c == 42 || c == 94))
         {
             input.push_back(c);
             cout << c;
