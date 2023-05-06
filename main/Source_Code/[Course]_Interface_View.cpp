@@ -78,7 +78,7 @@ void ListStudent_View(Year *yearHead)
     menu.push_back("All Student Of Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 50, 12, 4, 30);
+    int opt = Draw_XY(menu, 60, 12, 4, 25);
     system("cls");
     switch (opt)
     {
@@ -229,44 +229,43 @@ void Interface_ViewCourseOfAStudent(Year *yearHead)
     Render_Course(40, 1);
     Render_Student(35, 7);
     int x = 60, y = 16;
-
-    Year *ChooseYear = nullptr;
+    Year *year_cur = yearHead;
     Class *ChooseClass = nullptr;
     Student *ChooseStudent = nullptr;
-    ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
-    if (ChooseYear == nullptr)
-        return;
-    do
+    while (year_cur)
     {
-        if (ChooseYear->Class == nullptr)
+        if (year_cur->Class)
+            break;
+        year_cur = year_cur->next;
+    }
+    if (!year_cur)
+    {
+        Message_Warning("There is no class in all school year ", "Error");
+        return;
+    }
+
+    goToXY(45, y - 2);
+    cout << "Select the student's class for which you want to show the course list.";
+    ChooseClass = chooseClass_inAllYear_byOption_XY(yearHead, x, y, 5);
+    goToXY(45, y - 2);
+    cout << setw(100) << " ";
+    if (ChooseClass == nullptr)
+        return;
+    if (!ChooseClass->StudentClass)
+        Message_Warning("There is no student in " + ChooseClass->Name, "Error");
+    else
+        do
         {
-            Message_Warning("There is no student in year " + to_string(ChooseYear->yearStart) + " " + to_string(ChooseYear->yearStart + 1), "Error");
-            Interface_ViewCourseOfAStudent(yearHead);
-            return;
-        }
-        ChooseClass = chooseClassbyOption_XY(ChooseYear->Class, x, y, 5);
-        if (ChooseClass == nullptr)
-        {
-            Interface_ViewCourseOfAStudent(yearHead);
-            return;
-        }
-        Student *student_cur = ChooseClass->StudentClass;
-        if (!student_cur)
-        {
-            Message_Warning("There is no student in " + ChooseClass->Name, "Error");
-        }
-        else
-            do
-            {
-                ChooseStudent = chooseStudentOfClass(ChooseClass, 45, y);
-                if (ChooseStudent != nullptr)
-                    ViewCoursesOfAStudent(ChooseStudent->accStudent, yearHead);
-                system("cls");
-                Render_Course(40, 1);
-                Render_Student(35, 7);
-            } while (ChooseStudent != nullptr);
-        system("cls");
-        Render_Course(40, 1);
-        Render_Student(35, 7);
-    } while (ChooseClass != nullptr);
+            goToXY(45, y - 2);
+            cout << "Select the student for whom you want to show the course list.";
+            ChooseStudent = chooseStudentOfClass(ChooseClass, 45, y);
+            goToXY(45, y - 2);
+            cout << setw(100) << " ";
+            if (ChooseStudent != nullptr)
+                ViewCoursesOfAStudent(ChooseStudent->accStudent, yearHead);
+            system("cls");
+            Render_Course(40, 1);
+            Render_Student(35, 7);
+        } while (ChooseStudent != nullptr);
+    Interface_ViewCourseOfAStudent(yearHead);
 }

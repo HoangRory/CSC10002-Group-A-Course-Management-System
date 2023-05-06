@@ -196,7 +196,7 @@ void Render_StudentCourse()
     int x = 30, y = 1;
     Render_Student(x, y);
     y = 7;
-    x = 35;
+    x = 40;
     Render_Course(x, y);
 }
 
@@ -282,7 +282,7 @@ void Render_StudentClass()
 {
     int x = 30, y = 1;
     Render_Student(x, y);
-    x = 40;
+    x = 42;
     y = 7;
     Render_Class(x, y);
 }

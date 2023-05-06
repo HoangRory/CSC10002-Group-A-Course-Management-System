@@ -61,6 +61,7 @@ int amountCourseOf_aStudent(CourseStudent *courseHead);
 /////////////////////////////////////////////////////////////
 Year *chooseYearbyOption_XY(Year *yearHead, int x, int y, int nOption_eachTime);
 Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTime);
+Class *chooseClass_inAllYear_byOption_XY(Year *yearHead, int x, int y, int nOption_eachTime);
 Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption_eachTime);
 Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_eachTime);
 Student *chooseStudentOfClass(Class *ChooseClass, int x, int y);

@@ -25,16 +25,51 @@ Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTi
     Class *class_cur = classHead;
     while (class_cur)
     {
-        menu.push_back(class_cur->Name);
+        menu.push_back("   " + class_cur->Name);
         class_cur = class_cur->next;
     }
     int width = 20;
-    menu.push_back("BACK");
+    menu.push_back("   BACK");
     int option = Draw_XY(menu, x, y, nOption_eachTime, width);
 
     while (classHead && option--)
         classHead = classHead->next;
     return classHead;
+}
+Class *chooseClass_inAllYear_byOption_XY(Year *yearHead, int x, int y, int nOption_eachTime)
+{
+    vector<string> menu;
+    Class *class_cur = nullptr;
+    Year *year_cur = yearHead;
+    while (year_cur)
+    {
+        class_cur = year_cur->Class;
+        while (class_cur)
+        {
+            menu.push_back("   " + class_cur->Name);
+            class_cur = class_cur->next;
+        }
+        year_cur = year_cur->next;
+    }
+    int width = 20;
+    menu.push_back("   BACK");
+    if (menu.size() == 0)
+        return nullptr;
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    year_cur = yearHead;
+    while (year_cur)
+    {
+        class_cur = year_cur->Class;
+        while (class_cur)
+        {
+            if (option == 0)
+                return class_cur;
+            class_cur = class_cur->next;
+            option--;
+        }
+        year_cur = year_cur->next;
+    }
+    return class_cur;
 }
 Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption_eachTime)
 {
