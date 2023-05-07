@@ -16,13 +16,10 @@ void Interface_Import_Export(Year *yearHead)
     switch (opt)
     {
     case 0:
-        //?
         importScoreBoardCourse(yearHead);
         break;
     case 1:
-        //?
         exportListStudentCourse(yearHead);
-        // Recursion back to the StaffMain function
         break;
     case 2:
         return;

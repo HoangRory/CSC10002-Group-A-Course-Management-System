@@ -123,14 +123,14 @@ Student *chooseStudentOfClass(Class *ChooseClass, int x, int y)
     title[1] = " ID";
     title[2] = "   Student Name";
 
-    int num_row = amountClass(ChooseClass);
+    int num_row = amountStudentOfClass(ChooseClass->StudentClass);
     int num_col = 3;
 
     string **table = new string *[num_row];
     for (int i = 0; i < num_row; i++)
         table[i] = new string[num_col];
 
-    int height = 1, Row_eachTime = 8, Col_eachTime = 8;
+    int height = 1, Row_eachTime = 7, Col_eachTime = 8;
     bool edit_Col[3] = {true, true, true};
 
     for (int i = 0; i < num_row; i++)
