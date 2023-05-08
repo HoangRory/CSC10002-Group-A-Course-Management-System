@@ -53,8 +53,7 @@ void createSchoolYear(Year *&headYear, int yearStart, Account *accHead)
 void Create_New_Classes(Year *newYear, Account *accHead)
 {
     system("cls");
-    int y = 3;
-    Render_Class(50, y);
+    Render_Class(50, 3);
     goToXY(63, 15);
     TextColor(0x0E);
     cout << "YEAR: " << newYear->yearStart << "_" << newYear->yearStart + 1;
@@ -65,6 +64,24 @@ void Create_New_Classes(Year *newYear, Account *accHead)
     int i = 0;
     while (1)
     {
+        if (i == 10) // 10 classes per page when input
+        {
+            i = 0;
+            system("cls");
+            Render_Class(50, 3);
+            goToXY(63, 15);
+            TextColor(0x0E);
+            cout << "YEAR: " << newYear->yearStart << "_" << newYear->yearStart + 1;
+            goToXY(60, 17);
+            cout << "New Class (-1 to stop)";
+            TextColor(63);
+            goToXY(58, 19 + i);
+            cout << "                             ";
+            goToXY(65, 19 + i);
+            cout << line;
+            i++;
+        }
+
         TextColor(63);
         goToXY(58, 19 + i);
         cout << "                             ";
@@ -128,7 +145,8 @@ void ChooseClassToAdd(Year *curYear, Account *accHead)
     goToXY(60, 12);
     cout << "Classes in " << curYear->yearStart << "-" << curYear->yearStart + 1;
 
-    int opt = Draw_ShortVer(listClass, 60, 12, 63);
+    // int opt = Draw_ShortVer(listClass, 60, 12, 63);
+    int opt = Draw_XY(listClass, 60, 12, 4, 22, 63);
     string className = listClass[opt];
 
     class_cur = curYear->Class;
@@ -184,8 +202,7 @@ void Method(Account *accHead, Class *curClass)
 void inputStudent(Account *accHead, Class *curClass)
 {
     system("cls");
-    int y = 3;
-    Render_Student(45, y);
+    Render_Student(45, 3);
     string ID, first, last, gen, birth, socialID;
     string yr = curClass->Name.substr(0, 2);
 

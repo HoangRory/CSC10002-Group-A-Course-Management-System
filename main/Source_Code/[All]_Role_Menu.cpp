@@ -38,8 +38,6 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
     case 1:
         //? View
         Staff_View(yearHead);
-        // system("cls");
-        // ViewCourse(yearHead);
         break;
     case 2:
         //? Adding year/semester/course
@@ -171,7 +169,6 @@ void Main_Menu(Year *yearHead, Account *accHead, string &user, string &pass, int
         //? StudentMain
         student_cur = findStudentbyID(user, yearHead);
         Student_Main(yearHead, accHead, student_cur, user, pass, role);
-        // cout << "You've entered the student main menu\n";
         break;
     case 3:
         //? StaffMain

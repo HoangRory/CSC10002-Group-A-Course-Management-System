@@ -1,8 +1,16 @@
 #include "../Header/course.h"
-#include <cctype>
 #pragma warning(suppress : 4996)
-// lấy kí
-
+string FormatMark(double Mark)
+{
+    string Format = "";
+    if (Mark == 10)
+        Format = to_string(Mark).substr(0, 5);
+    else if (Mark < 0 || Mark > 10)
+        Format = " X";
+    else
+        Format = " " + to_string(Mark).substr(0, 4);
+    return Format;
+}
 string getFirstChar(string name)
 {
     // char* c_name = new char[name.length()];

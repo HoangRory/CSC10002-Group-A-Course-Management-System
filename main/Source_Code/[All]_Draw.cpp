@@ -221,7 +221,7 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
                                      << " " << (num_page_ver < amount_page_ver ? char(31) : char(32));
                             }
                         }
-                        else if (j != Col_eachTime - 1 && j != num_col - x_step - 1)
+                        else
                             cout << char(193); // 193 is _|_
                         // in số trang ở cuối bảng
                     }

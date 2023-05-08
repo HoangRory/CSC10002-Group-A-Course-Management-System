@@ -25,16 +25,51 @@ Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTi
     Class *class_cur = classHead;
     while (class_cur)
     {
-        menu.push_back(class_cur->Name);
+        menu.push_back("   " + class_cur->Name);
         class_cur = class_cur->next;
     }
     int width = 20;
-    menu.push_back("BACK");
+    menu.push_back("   BACK");
     int option = Draw_XY(menu, x, y, nOption_eachTime, width);
 
     while (classHead && option--)
         classHead = classHead->next;
     return classHead;
+}
+Class *chooseClass_inAllYear_byOption_XY(Year *yearHead, int x, int y, int nOption_eachTime)
+{
+    vector<string> menu;
+    Class *class_cur = nullptr;
+    Year *year_cur = yearHead;
+    while (year_cur)
+    {
+        class_cur = year_cur->Class;
+        while (class_cur)
+        {
+            menu.push_back("   " + class_cur->Name);
+            class_cur = class_cur->next;
+        }
+        year_cur = year_cur->next;
+    }
+    int width = 20;
+    menu.push_back("   BACK");
+    if (menu.size() == 0)
+        return nullptr;
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    year_cur = yearHead;
+    while (year_cur)
+    {
+        class_cur = year_cur->Class;
+        while (class_cur)
+        {
+            if (option == 0)
+                return class_cur;
+            class_cur = class_cur->next;
+            option--;
+        }
+        year_cur = year_cur->next;
+    }
+    return class_cur;
 }
 Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption_eachTime)
 {
@@ -88,14 +123,14 @@ Student *chooseStudentOfClass(Class *ChooseClass, int x, int y)
     title[1] = " ID";
     title[2] = "   Student Name";
 
-    int num_row = amountClass(ChooseClass);
+    int num_row = amountStudentOfClass(ChooseClass->StudentClass);
     int num_col = 3;
 
     string **table = new string *[num_row];
     for (int i = 0; i < num_row; i++)
         table[i] = new string[num_col];
 
-    int height = 1, Row_eachTime = 8, Col_eachTime = 8;
+    int height = 1, Row_eachTime = 7, Col_eachTime = 8;
     bool edit_Col[3] = {true, true, true};
 
     for (int i = 0; i < num_row; i++)

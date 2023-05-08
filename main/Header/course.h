@@ -24,6 +24,7 @@ void UpdateStudentResult(Year *Yhead);
 //////////////////////////////////////////////////////////
 //                  CREATE                              //
 //////////////////////////////////////////////////////////
+string FormatMark(double Mark);
 string getFirstChar(string name);
 string createNameFile(int year, int no_smt, string course, string file, string type);
 CourseStudent *CourseOfAClass_InChooseSem(Student *studentHead, Semester *ChooseSem);
@@ -61,14 +62,14 @@ int amountCourseOf_aStudent(CourseStudent *courseHead);
 /////////////////////////////////////////////////////////////
 Year *chooseYearbyOption_XY(Year *yearHead, int x, int y, int nOption_eachTime);
 Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTime);
+Class *chooseClass_inAllYear_byOption_XY(Year *yearHead, int x, int y, int nOption_eachTime);
 Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption_eachTime);
 Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_eachTime);
 Student *chooseStudentOfClass(Class *ChooseClass, int x, int y);
 
 ///////////////////////////////////////////////////////////
-//                      VIEW                             //
+//                INTERFACE - VIEW                       //
 ///////////////////////////////////////////////////////////
-int view_chooseOption(string *arrOption, int nOption, string title);
 //? for staff view
 //? student
 void Interface_ViewStudentClass(Year *yearHead);            //? task 16
