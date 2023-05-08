@@ -1,4 +1,4 @@
-#include "../Header/course.h"
+#include "../Header/Course.h"
 
 double CaculateGPA_1_Student(double *&SBC, int n) // n là số môn, tức là số cột của bảng SBC. n là số đã trừ cột cuối ra
 {
@@ -16,16 +16,6 @@ double CaculateGPA_1_Student(double *&SBC, int n) // n là số môn, tức là 
         GPA /= count;
     return GPA;
 }
-int amountYear(Year *yearHead)
-{
-    int n = 0;
-    while (yearHead)
-    {
-        n++;
-        yearHead = yearHead->next;
-    }
-    return n;
-}
 int amountClass(Class *classHead)
 {
     int n = 0;
@@ -36,17 +26,7 @@ int amountClass(Class *classHead)
     }
     return n;
 }
-int amountCourse(Course *courseHead)
-{
-    int n = 0;
-    while (courseHead)
-    {
-        courseHead = courseHead->next;
-        n++;
-    }
-    return n;
-}
-int amountCourseOf_aStudent(CourseStudent *courseHead)
+int amountCourseOfStudent(CourseStudent *courseHead)
 {
     int n = 0;
     while (courseHead)
@@ -73,16 +53,6 @@ int amountStudentOfClass(Student *studentHead)
     while (studentHead)
     {
         studentHead = studentHead->next;
-        count++;
-    }
-    return count;
-}
-int amountCourseOfClass(CourseStudent *courseHead)
-{
-    int count = 0;
-    while (courseHead)
-    {
-        courseHead = courseHead->next;
         count++;
     }
     return count;

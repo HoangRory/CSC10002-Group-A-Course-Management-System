@@ -1,5 +1,4 @@
-#include "../Header/course.h"
-#include "../Header/Utility.h"
+#include "../Header/Course.h"
 // task 22
 void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
 {

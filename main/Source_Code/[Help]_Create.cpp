@@ -1,4 +1,4 @@
-#include "../Header/course.h"
+#include "../Header/Course.h"
 #pragma warning(suppress : 4996)
 string FormatMark(double Mark)
 {
@@ -84,7 +84,7 @@ void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student
         courseCheck = checkExistence_OfCourse(courseHead, studentHead->course);
         if (courseCheck)
         {
-            tmp = find_SBC_ofStudent(studentHead->ID, courseHead->course->studentCourse);
+            tmp = find_StudentOfCourse(studentHead->ID, courseHead->course->studentCourse);
             SBC[i++] = tmp->ScoreBoardCourse.finalMark;
         }
         else

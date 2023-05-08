@@ -1,7 +1,6 @@
-#include "../Header/course.h"
+#include "../Header/Course.h"
 #include "../Header/Utility.h"
 
-//! xóa hết cái trên
 Year *chooseYearbyOption_XY(Year *yearHead, int x, int y, int nOption_eachTime)
 {
     Year *year_cur = yearHead;
@@ -107,7 +106,6 @@ Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_ea
         courseHead = courseHead->next;
     return courseHead;
 }
-
 Student *chooseStudentOfClass(Class *ChooseClass, int x, int y)
 {
     Student *student_cur = ChooseClass->StudentClass;
