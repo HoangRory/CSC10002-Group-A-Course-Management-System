@@ -3,7 +3,7 @@
 #include "../Header/Login.h"
 #include "../Header/course.h"
 #include "../Header/Utility.h"
-
+#include "../Header/Student.h"
 void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, int &role)
 {
     system("cls");
@@ -37,9 +37,7 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
         break;
     case 1:
         //? View
-        Staff_View(yearHead);
-        // system("cls");
-        // ViewCourse(yearHead);
+        Menu_Staff_View(yearHead);
         break;
     case 2:
         //? Adding year/semester/course
@@ -55,7 +53,7 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
         break;
     case 4:
         //? Import/ Export
-        Interface_Import_Export(yearHead);
+        Menu_Import_Export(yearHead);
         break;
     case 5:
         //? Save changes and quit
@@ -171,7 +169,6 @@ void Main_Menu(Year *yearHead, Account *accHead, string &user, string &pass, int
         //? StudentMain
         student_cur = findStudentbyID(user, yearHead);
         Student_Main(yearHead, accHead, student_cur, user, pass, role);
-        // cout << "You've entered the student main menu\n";
         break;
     case 3:
         //? StaffMain

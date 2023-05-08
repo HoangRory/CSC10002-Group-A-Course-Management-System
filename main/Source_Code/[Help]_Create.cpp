@@ -1,8 +1,16 @@
-#include "../Header/course.h"
-#include <cctype>
+#include "../Header/Course.h"
 #pragma warning(suppress : 4996)
-// lấy kí
-
+string FormatMark(double Mark)
+{
+    string Format = "";
+    if (Mark == 10)
+        Format = to_string(Mark).substr(0, 5);
+    else if (Mark < 0 || Mark > 10)
+        Format = " X";
+    else
+        Format = " " + to_string(Mark).substr(0, 4);
+    return Format;
+}
 string getFirstChar(string name)
 {
     // char* c_name = new char[name.length()];
@@ -76,7 +84,7 @@ void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student
         courseCheck = checkExistence_OfCourse(courseHead, studentHead->course);
         if (courseCheck)
         {
-            tmp = find_SBC_ofStudent(studentHead->ID, courseHead->course->studentCourse);
+            tmp = find_StudentOfCourse(studentHead->ID, courseHead->course->studentCourse);
             SBC[i++] = tmp->ScoreBoardCourse.finalMark;
         }
         else

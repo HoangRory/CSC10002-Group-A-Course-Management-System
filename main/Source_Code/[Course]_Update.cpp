@@ -1,5 +1,4 @@
-#include "../Header/course.h"
-#include "../Header/Utility.h"
+#include "../Header/Course.h"
 // task 22
 void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
 {
@@ -31,7 +30,7 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
     for (int i = 0; i <= num_row; i++)
         table[i] = new string[7];
 
-    int height = 1, Row_eachTime = 8, Col_eachTime = 7;
+    int height = 1, Row_eachTime = 7, Col_eachTime = 7;
     bool edit_Col[7] = {false, false, false, true, true, true, true};
     int t = 0;
     string *title = new string[7];
@@ -50,23 +49,10 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
         table[i][j++] = to_string(i + 1);
         table[i][j++] = studentHead->ID;
         table[i][j++] = studentHead->FullName;
-        if (studentHead->ScoreBoardCourse.midMark == 10)
-            table[i][j++] = to_string(studentHead->ScoreBoardCourse.midMark).substr(0, 5);
-        else
-            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.midMark).substr(0, 4);
-        if (studentHead->ScoreBoardCourse.finalMark == 10)
-            table[i][j++] = to_string(studentHead->ScoreBoardCourse.finalMark).substr(0, 5);
-        else
-            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.finalMark).substr(0, 4);
-        if (studentHead->ScoreBoardCourse.otherMark == 10)
-            table[i][j++] = to_string(studentHead->ScoreBoardCourse.otherMark).substr(0, 5);
-        else
-            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.otherMark).substr(0, 4);
-        if (studentHead->ScoreBoardCourse.midMark == 10)
-            table[i][j++] = to_string(studentHead->ScoreBoardCourse.totalMark).substr(0, 5);
-        else
-            table[i][j++] = " " + to_string(studentHead->ScoreBoardCourse.totalMark).substr(0, 4);
-
+        table[i][j++] = FormatMark(studentHead->ScoreBoardCourse.midMark);
+        table[i][j++] = FormatMark(studentHead->ScoreBoardCourse.finalMark);
+        table[i][j++] = FormatMark(studentHead->ScoreBoardCourse.otherMark);
+        table[i][j++] = FormatMark(studentHead->ScoreBoardCourse.totalMark);
         studentHead = studentHead->next;
     }
     Draw_table(table, title, num_row, 7, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
@@ -119,13 +105,12 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
         else
             stop = !Message_YesNo("Please re-enter your score. 0 <= mark <= 10\n Press yes to re-enter or no to stop.", "Errol!");
     } while (!stop);
-
     updateSBC(ChooseCourse, x, y, x_cur, y_cur);
 }
-
 void UpdateStudentResult(Year *Yhead)
 {
     system("cls");
+    Render_Update(40, 3);
     Semester *ChooseSem = nullptr;
     Course *ChooseCourse = nullptr;
     if (Yhead == nullptr)
@@ -148,12 +133,16 @@ void UpdateStudentResult(Year *Yhead)
         Message_Warning("There are no course in current semester.", "Error not exist!");
         return;
     }
-
-    ChooseCourse = chooseCoursebyOption_XY(sem_cur->course, 60, 15, 5);
+    goToXY(45, 15);
+    cout << "Select the student's course, in which you want to update scoreboard.";
+    ChooseCourse = chooseCoursebyOption_XY(sem_cur->course, 60, 17, 5);
+    goToXY(45, 15);
+    cout << setw(100) << " ";
     if (!ChooseCourse)
         return;
-
-    int x = 20, y = 15, x_cur = 0, y_cur = 0;
+    int x = 20, y = 17, x_cur = 0, y_cur = 0;
+    goToXY(20, 14);
+    cout << "Select the student for whom you want to update scoreboard.";
     updateSBC(ChooseCourse, x, y, x_cur, y_cur);
     UpdateStudentResult(Yhead);
 }
