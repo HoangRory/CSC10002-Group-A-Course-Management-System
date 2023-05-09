@@ -23,6 +23,9 @@ void modifySemester(Year *yearHead)
     int sem = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
     system("cls");
 
+    if (sem == 4)
+        return;
+
     Semester *sem_cur = year_cur->NoSemester;
 
     while (sem_cur)
@@ -53,28 +56,41 @@ void modifySemester(Year *yearHead)
             goToXY(52, 18);
             cout << "Semester's new end date:   ";
 
-            sem_cur->startDate = Limit_Input(80, 14, 10, 63);
+            string tmp;
+            tmp = Limit_Input(80, 14, 10, 63);
+            if (tmp == "-1")
+                return;
 
-            while (!isValidDate(sem_cur->startDate))
+            while (!isValidDate(tmp))
             {
+                if (tmp == "-1")
+                    return;
                 if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
                     return;
                 TextColor(63);
                 goToXY(50, 14);
                 cout << "                                             ";
-                sem_cur->startDate = Limit_Input(80, 14, 10, 63);
+                goToXY(52, 14);
+                cout << "Semester's new start date: ";
+                tmp = Limit_Input(80, 14, 10, 63);
             }
+            sem_cur->startDate = tmp;
 
-            sem_cur->endDate = Limit_Input(80, 18, 10, 63);
-            while (!isValidDate(sem_cur->endDate))
+            tmp = Limit_Input(80, 18, 10, 63);
+            while (!isValidDate(tmp))
             {
+                if (tmp == "-1")
+                    return;
                 if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
                     return;
                 TextColor(63);
                 goToXY(50, 18);
                 cout << "                                             ";
-                sem_cur->endDate = Limit_Input(80, 18, 10, 63);
+                goToXY(52, 18);
+                cout << "Semester's new end date:   ";
+                tmp = Limit_Input(80, 18, 10, 63);
             }
+            sem_cur->endDate = tmp;
 
             Message_Warning("Semester has been updated", "Sucess!");
             return;
@@ -83,6 +99,7 @@ void modifySemester(Year *yearHead)
     }
 
     Message_Warning("Semester not found!", "Notice");
+    modifySemester(yearHead);
     return;
 }
 
@@ -100,8 +117,8 @@ void modifyCourse(Year *yearHead)
 
     string course_id;
     TextColor(7);
-    goToXY(52, 7);
-    cout << "Course ID";
+    goToXY(51, 7);
+    cout << "Enter the course ID";
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {
@@ -109,6 +126,8 @@ void modifyCourse(Year *yearHead)
         cout << "                   ";
     }
     course_id = Limit_Input(54, 9, 10, 63);
+    if (course_id == "-1")
+        return;
 
     while (cour_cur)
     {
@@ -205,49 +224,73 @@ void ChangeCourseInfo(Course *cour_cur)
     switch (cur)
     {
     case 0:
-        cour_cur->CourseID = Limit_Input(50 + 4, 9 + cur * 3 + 1, 10, 71);
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 10, 71);
+        if (tmp =="-1")
+            return;
+        cour_cur->CourseID = tmp;
         menu[0] = "Course ID: " + cour_cur->CourseID;
         break;
     case 1:
-        cour_cur->Name = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
+        if (tmp == "-1")
+            return;
+        cour_cur->Name = tmp; 
         menu[1] = "Course Name: " + cour_cur->Name;
         break;
     case 2:
-        cour_cur->TeacherName = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
+        if (tmp == "-1")
+            return;
+        cour_cur->TeacherName = tmp;
         menu[2] = "Teacher Name: " + cour_cur->TeacherName;
         break;
     case 3:
-        cour_cur->Credits = stoi(Limit_Input(50 + 4, 9 + cur * 3 + 1, 1, 71));
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 1, 71);
+        if (tmp == "-1")
+            return;
+        cour_cur->Credits = stoi(tmp);
         menu[3] = "Number of credits: " + to_string(cour_cur->Credits);
         break;
     case 4:
-        cour_cur->maxStudents = stoi(Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71));
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        if (tmp == "-1")
+            return;
+        cour_cur->maxStudents = stoi(tmp);
         menu[4] = "Maximum of students: " + to_string(cour_cur->maxStudents);
         break;
     case 5:
-        cour_cur->Room = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        if (tmp == "-1")
+            return;
+        cour_cur->Room = tmp;
         menu[5] = "Room: " + cour_cur->Room;
         break;
     case 6:
-        cour_cur->Day = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
-        while (!isDay(cour_cur->Day))
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        while (!isDay(tmp))
         {
+            if (tmp == "-1")
+                return;
             Message_Warning("Invalid day!\n(MON/TUE/WED/THU/FRI/SAT/SUN)", "Notice");
             goToXY(50, 9 + cur * 3 + 1);
             cout << "                                                  ";
-            cour_cur->Day = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
         }
+        cour_cur->Day = tmp;
         menu[6] = "Teaching day: " + cour_cur->Day;
         break;
     case 7:
-        cour_cur->Session = Limit_Input(50 + 4, 9 + cur * 3 + 1, 2, 71);
-        while (!isSession(cour_cur->Session))
+        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 2, 71);
+        while (!isSession(tmp))
         {
+            if (tmp == "-1")
+                return;
             Message_Warning("Invalid session!\n(S1/S2/S3/S4)", "Notice");
             goToXY(50, 9 + cur * 3 + 1);
             cout << "                                                  ";
-            cour_cur->Session = Limit_Input(50 + 4, 9 + cur * 3 + 1, 2, 71);
+            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 2, 71);
         }
+        cour_cur->Session = tmp;
         menu[7] = "Course section: " + cour_cur->Session;
         break;
     }
@@ -289,6 +332,8 @@ void removeCourse(Year *yearHead)
     goToXY(54, 9);
     cout << "Enter the Course ID to be deleted";
     course_id = Limit_Input(54, 10, 10, 71);
+    if (course_id == "-1")
+        return;
 
     Semester *tmp = sem_cur;
     while (sem_cur)
@@ -397,6 +442,8 @@ void removeStudent(Course *courCurrent, string course_id)
         cout << "                                     ";
     }
     ID = Limit_Input(54, 10, 10, 71);
+    if (ID == "-1")
+        return;
 
     while (stud_cur)
     {
@@ -454,8 +501,11 @@ void addRemoveStudent(Year *yearHead)
         goToXY(50, 23 + i);
         cout << "                                                 ";
     }
-    cout << "Input the course id that you want to add/remove student(s): ";
+    goToXY(48, 22);
+    cout << "Input the course id that you want to add/remove student(s)";
     course_id = Limit_Input(52, 24, 10, 63);
+    if (course_id == "-1")
+        return;
 
     while (cour_cur) // Find the course
     {

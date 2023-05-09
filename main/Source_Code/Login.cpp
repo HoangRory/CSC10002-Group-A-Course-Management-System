@@ -29,7 +29,18 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
     }
 
     user = Limit_Input(52, 20, 30, 63);
+    if (user == "-1")
+    {
+        LoggingIn(accHead, user, pass, role);
+        return;
+    }
+
     pass = Limit_Input(52, 25, 30, 63);
+    if (pass == "-1")
+    {
+        LoggingIn(accHead, user, pass, role);
+        return;
+    }
     TextColor(WHITE);
 
     Account *cur = accHead;
@@ -79,6 +90,7 @@ void LoggingIn(Account *accHead, std::string &user, std::string &pass, int &role
 void ChangePass(Account *accHead, std::string &user, std::string &pass)
 {
     system("cls");
+
     Render_Account(50, 1);
     TextColor(0x0B);
     goToXY(50, 18);
@@ -114,6 +126,9 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
 
     while (tmp != pass) // If the password is wrong
     {
+        if (tmp == "-1")
+            return;
+
         TextColor(0x3C);
         goToXY(80, 20);
         cout << "Wrong Password";
@@ -129,12 +144,22 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     p1 = Limit_Input(52, 25, 30, 63);
     p2 = Limit_Input(52, 30, 30, 63);
 
-    while (p1 != p2)
+    while (p1 != p2 || p1.size() < 6)
     {
-        string message = "The new password and the confirm password are not the same!!!\nPlease try again!!!";
-        string title = "Change Password Failed";
-        if (!Message_YesNo(message, title))
+        if (p1.size() < 6)
+        {
+            string message = "Password must be longer than 6 characters!!!\nPlease try again!!!";
+            Message_Warning(message, "Change Password Failed");
+        }
+        else if (p1 == "-1" || p2 == "-1")
             return;
+        else if (p1 != p2)
+        {
+            string message = "The new password and the confirm password are not the same!!!\nPlease try again!!!";
+            string title = "Change Password Failed";
+            if (!Message_YesNo(message, title))
+                return;
+        }
         TextColor(63);
         goToXY(50, 25);
         cout << "                                              ";
