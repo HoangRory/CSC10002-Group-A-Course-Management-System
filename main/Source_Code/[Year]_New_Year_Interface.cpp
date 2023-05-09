@@ -73,7 +73,7 @@ Year *RecoverFile()
     return headYear;
 }
 
-void Interface_New_Year(Year *yearHead, Account *accHead)
+void Interface_New_Year(Year *&yearHead, Account *accHead)
 {
     Year *year_cur = yearHead;
     string strYear;
@@ -84,7 +84,7 @@ void Interface_New_Year(Year *yearHead, Account *accHead)
 
     goToXY(52, 18);
     TextColor(0x0E);
-    cout << "Choose year (Enter -1 to back)";
+    cout << "Choose year (ESC to back)";
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {

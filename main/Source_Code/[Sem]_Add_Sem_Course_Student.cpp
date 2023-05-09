@@ -3,8 +3,42 @@
 #include "../Header/Year.h"
 #include "../Header/Help.h"
 
-// todo Alternate to add more semesters at once
-//! Adding semester 1 include in adding a year
+//? Return -1 if date1 < date2, 1 if date1 > date2, 0 if date1 = date2
+int compareDate(string date1, string date2)
+{
+    // Extract day, month, and year from date1
+    int day1 = std::stoi(date1.substr(0, 2));
+    int month1 = std::stoi(date1.substr(3, 2));
+    int year1 = std::stoi(date1.substr(6, 4));
+
+    // Extract day, month, and year from date2
+    int day2 = std::stoi(date2.substr(0, 2));
+    int month2 = std::stoi(date2.substr(3, 2));
+    int year2 = std::stoi(date2.substr(6, 4));
+
+    // Compare the years
+    if (year1 < year2)
+        return -1;
+    else if (year1 > year2)
+        return 1;
+
+    // Compare the months
+    if (month1 < month2)
+        return -1;
+    else if (month1 > month2)
+        return 1;
+
+    // Compare the days
+    if (day1 < day2)
+        return -1;
+    else if (day1 > day2)
+        return 1;
+
+    // The dates are equal
+    return 0;
+}
+
+//? Adding a semester and return its pointer
 Semester *AddSemester(Year *yearHead)
 {
     system("cls");
@@ -22,7 +56,7 @@ Semester *AddSemester(Year *yearHead)
     small_menu.push_back("3rd semester");
     small_menu.push_back("Back");
     int N = 0;
-    N = Draw_XY(small_menu, 60, 12, 20, 63) + 1;
+    N = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
     if (N == 4)
     {
         AddSemester(yearHead);
@@ -35,13 +69,8 @@ Semester *AddSemester(Year *yearHead)
     {
         if (sem_cur->No == N) // If already had, ask to modify
         {
-            string mess = "This semester already exists, do you want to modify it?";
-            if (Message_YesNo(mess, "Notice"))
-            {
-                // To modify the semester
-                modifySemester(yearHead);
-                return nullptr;
-            }
+            string mess = "This semester already exists!";
+            Message_Warning(mess, "Notice");
             return AddSemester(yearHead);
         }
         prev = sem_cur;
@@ -66,8 +95,9 @@ Semester *AddSemester(Year *yearHead)
     sem_cur->Year = year_cur->yearStart;
 
     system("cls");
+    string date1, date2;
 
-    Render_NewYear(50, 3);
+    Render_Semester(50, 3);
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {
@@ -82,7 +112,14 @@ Semester *AddSemester(Year *yearHead)
     while (!isValidDate(tmp))
     {
         if (tmp == "-1")
+        {
+            if (sem_cur->prev)
+                sem_cur->prev->next = nullptr;
+            else
+                year_cur->NoSemester = nullptr;
+            delete sem_cur;
             return nullptr;
+        }
         Message_Warning("Invalid date format!\nEnter again!", "Error");
         goToXY(50, 14);
         TextColor(63);
@@ -91,7 +128,8 @@ Semester *AddSemester(Year *yearHead)
         cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
         tmp = Limit_Input(80, 14, 10, 63);
     }
-    sem_cur->startDate = tmp;
+    // sem_cur->startDate = tmp;
+    date1 = tmp;
 
     TextColor(63);
     for (int i = 0; i < 3; i++)
@@ -101,21 +139,40 @@ Semester *AddSemester(Year *yearHead)
     }
     goToXY(52, 18);
     cout << "Ending date (dd/mm/yyyy): ";
-    tmp = Limit_Input(78, 18, 10, 63);
+    tmp = Limit_Input(80, 18, 10, 63);
 
-    while (!isValidDate(sem_cur->endDate))
+    while (!isValidDate(tmp) || compareDate(date1, tmp) != -1)
     {
         if (tmp == "-1")
+        {
+            if (sem_cur->prev)
+                sem_cur->prev->next = nullptr;
+            else
+                year_cur->NoSemester = nullptr;
+            delete sem_cur;
             return nullptr;
-        Message_Warning("Invalid date format!\nEnter again!", "Error");
+        }
+
+        if (compareDate(date1, tmp) != -1)
+            Message_Warning("Invalid date!\nEnding date must be after starting date!", "Error");
+        else
+            Message_Warning("Invalid date format!\nEnter again!", "Error");
         goToXY(50, 18);
         TextColor(63);
         cout << "                                              ";
         goToXY(52, 18);
-        cout << "Starting date (dd/mm/yyyy): "; // Get the date and ensure its format
-        tmp = Limit_Input(78, 18, 10, 63);
+        cout << "Ending date (dd/mm/yyyy): "; // Get the date and ensure its format
+        tmp = Limit_Input(80, 18, 10, 63);
     }
-    sem_cur->endDate = tmp;
+    // sem_cur->endDate = tmp;
+    date2 = tmp;
+    sem_cur->startDate = date1;
+    sem_cur->endDate = date2;
+    // if (compareDate(date1, date2) == 1)
+    // {
+    //     Message_Warning("Invalid date!\nEnding date must be after starting date!", "Error");
+    //     return AddSemester(yearHead);
+    // }
 
     int Y = year_cur->yearStart;
     string out_year = to_string(Y) + '_' + to_string(Y + 1);
@@ -131,7 +188,15 @@ Semester *AddSemester(Year *yearHead)
     return sem_cur;
 }
 
-//! Write a course modification function here!!!
+bool isStringDigits(string str)
+{
+    for (char ch : str)
+        if (!std::isdigit(ch))
+            return false;
+    return true;
+}
+
+//? Adding a course
 Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
     system("cls");
@@ -215,19 +280,40 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 
     tmp = Limit_Input(52, 16, 30, 63);
     if (tmp == "-1")
+    {
+        if (courseCurrent->prev)
+            courseCurrent->prev->next = nullptr;
+        else
+            semCurrent->course = nullptr;
+        delete courseCurrent;
         return nullptr;
+    }
     courseCurrent->Name = tmp;
 
     tmp = Limit_Input(52, 21, 30, 63);
     if (tmp == "-1")
+    {
+        if (courseCurrent->prev)
+            courseCurrent->prev->next = nullptr;
+        else
+            semCurrent->course = nullptr;
+        delete courseCurrent;
         return nullptr;
+    }
     courseCurrent->TeacherName = tmp;
 
     string c = Limit_Input(64, 25, 1, 63);
     while (c[0] < '0' || c[0] > '4')
     {
         if (c == "-1")
+        {
+            if (courseCurrent->prev)
+                courseCurrent->prev->next = nullptr;
+            else
+                semCurrent->course = nullptr;
+            delete courseCurrent;
             return nullptr;
+        }
         Message_Warning("Invalid credit format or exceed the credits limit (0-4)!", "Error");
         TextColor(63);
         goToXY(59, 25);
@@ -238,19 +324,57 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 
     tmp = Limit_Input(86, 25, 3, 63);
     if (tmp == "-1")
+    {
+        if (courseCurrent->prev)
+            courseCurrent->prev->next = nullptr;
+        else
+            semCurrent->course = nullptr;
+        delete courseCurrent;
         return nullptr;
+    }
+    while (!isStringDigits(tmp))
+    {
+        Message_Warning("Invalid max student format!", "Error");
+        TextColor(63);
+        goToXY(86, 25);
+        cout << "          "; // Max stud
+        tmp = Limit_Input(86, 25, 3, 63);
+        if (tmp == "-1")
+        {
+            if (courseCurrent->prev)
+                courseCurrent->prev->next = nullptr;
+            else
+                semCurrent->course = nullptr;
+            delete courseCurrent;
+            return nullptr;
+        }
+    }
     courseCurrent->maxStudents = stoi(tmp);
 
     tmp = Limit_Input(59, 29, 3, 63);
     if (tmp == "-1")
+    {
+        if (courseCurrent->prev)
+            courseCurrent->prev->next = nullptr;
+        else
+            semCurrent->course = nullptr;
+        delete courseCurrent;
         return nullptr;
+    }
     courseCurrent->Room = tmp;
 
     tmp = Limit_Input(73, 29, 3, 63);
     while (!isDay(tmp))
     {
         if (tmp == "-1")
+        {
+            if (courseCurrent->prev)
+                courseCurrent->prev->next = nullptr;
+            else
+                semCurrent->course = nullptr;
+            delete courseCurrent;
             return nullptr;
+        }
         Message_Warning("Invalid day format!\n(MON/TUE/WED/THU/FRI/SAT/SUN)", "Error");
         goToXY(71, 29);
         TextColor(63);
@@ -263,7 +387,14 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
     while (!isSession(tmp))
     {
         if (tmp == "-1")
+        {
+            if (courseCurrent->prev)
+                courseCurrent->prev->next = nullptr;
+            else
+                semCurrent->course = nullptr;
+            delete courseCurrent;
             return nullptr;
+        }
         Message_Warning("Invalid session format!\n(S1/S2/S3/S4)", "Error");
         goToXY(89, 29);
         TextColor(63);
@@ -333,7 +464,7 @@ void AddStudentByHand(Course *courseCurrent)
 
     StudentCourse *studCourse = courseCurrent->studentCourse;
     goToXY(60, 17);
-    cout << "Enter student ID (-1 to stop)";
+    cout << "Enter student ID (ESC to stop)";
     int cnt = 0, i = 0;
     string line;
     while (1)
@@ -412,7 +543,7 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     return;
 }
 
-void New_Stuff(Year *yearHead, Account *accHead)
+void New_Stuff(Year *&yearHead, Account *accHead)
 {
     system("cls");
     Render_NewInfo(55, 3);
@@ -433,7 +564,6 @@ void New_Stuff(Year *yearHead, Account *accHead)
         //? Add a new year
         Interface_New_Year(yearHead, accHead);
         break;
-        ;
     case 1:
         //? Add a new semester
         system("cls");
