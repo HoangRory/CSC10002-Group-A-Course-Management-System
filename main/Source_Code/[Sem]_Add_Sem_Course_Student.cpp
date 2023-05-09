@@ -568,7 +568,8 @@ void New_Stuff(Year *yearHead, Account *accHead)
         Interface_New_Year(yearHead, accHead);
         break;
     case 1:
-        //! New Class
+        //? Add class
+        AddClass(yearHead, accHead);
         break;
     case 2:
         //? Add a new semester

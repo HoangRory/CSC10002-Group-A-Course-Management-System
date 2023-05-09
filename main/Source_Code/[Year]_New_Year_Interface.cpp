@@ -126,6 +126,7 @@ void AddClass(Year *yearHead, Account *accHead)
     if (!year_cur)
         return;
     system("cls");
+    
     if (!Create_New_Classes(year_cur, accHead))
         return;
 
