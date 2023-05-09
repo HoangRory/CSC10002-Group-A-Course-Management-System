@@ -118,7 +118,14 @@ Course *Part_Of_Course(Course *&curCourse, Semester *&sem_cur)
 //? View all the course in the school
 void ViewCourse(Year *yearHead)
 {
-    // string arrow = "<<-->>";
+    if (!yearHead)
+        return;
+    if (!yearHead->NoSemester)
+    {
+        Message_Warning("No course to view", "Fail");
+        return;
+    }
+
     Semester *sem_cur = yearHead->NoSemester;
     Course *curCourse = nullptr;
     int cnt = 0;
@@ -231,8 +238,13 @@ void ViewCourse(Year *yearHead)
             }
             break;
         case LEFT:
-            if (!yearHead->prev || !yearHead->prev->NoSemester)
+            if (!yearHead->prev)
                 break;
+            if (!yearHead->prev->NoSemester)
+            {
+                Message_Warning("No course in this year", "Fail");
+                break;
+            }
 
             ind = 1, cnt = 0;
             yearHead = yearHead->prev;
@@ -262,8 +274,13 @@ void ViewCourse(Year *yearHead)
             break;
 
         case RIGHT:
-            if (!yearHead->next || !yearHead->next->NoSemester)
+            if (!yearHead->next)
                 break;
+            if (!yearHead->next->NoSemester)
+            {
+                Message_Warning("No course in this year", "Fail");
+                break;
+            }
 
             ind = 1, cnt = 0;
             yearHead = yearHead->next;

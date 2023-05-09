@@ -25,6 +25,8 @@ void NewAccount(Account *accHead, string ID, Account *accTmp);
 void DeleteYear(Year *&yearHead);
 
 //* New year
+void AddClass(Year *yearHead, Account *accHead);
+
 void createSchoolYear(Year *&headYear, int yearStart, Account *accHead);
 bool Create_New_Classes(Year *newYear, Account *accHead);
 

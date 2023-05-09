@@ -65,7 +65,7 @@ void modifySemester(Year *yearHead)
             {
                 if (tmp == "-1")
                     return;
-                if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
+                if (!Message_YesNo("Invalid date, enter again\n(dd/mm/yyyy)", "Error!"))
                     return;
                 TextColor(63);
                 goToXY(50, 14);
@@ -77,12 +77,18 @@ void modifySemester(Year *yearHead)
             date = tmp;
 
             tmp = Limit_Input(80, 18, 10, 63);
-            while (!isValidDate(tmp))
+            while (!isValidDate(tmp) || compareDate(date, tmp) != -1)
             {
                 if (tmp == "-1")
                     return;
-                if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
-                    return;
+
+                if (isValidDate(tmp) && compareDate(date, tmp) != -1)
+                    Message_Warning("End date must be after start date", "Error!");
+                else
+                {
+                    if (!Message_YesNo("Invalid date, enter again\n(dd/mm/yyyy)", "Error!"))
+                        return;
+                }
                 TextColor(63);
                 goToXY(50, 18);
                 cout << "                                             ";

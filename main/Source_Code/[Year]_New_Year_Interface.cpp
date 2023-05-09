@@ -2,6 +2,7 @@
 #include "../Header/Semester.h"
 #include "../Header/course.h"
 #include "../Header/Utility.h"
+#include "../Header/Help.h"
 const string separator = "\\";
 
 void Show_Year_List(Year *yearHead)
@@ -115,5 +116,21 @@ void Interface_New_Year(Year *yearHead, Account *accHead)
     int start = stoi(strYear.substr(0, 4));
 
     createSchoolYear(yearHead, start, accHead);
+    return;
+}
+
+void AddClass(Year *yearHead, Account *accHead)
+{
+    system("cls");
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
+    if (!year_cur)
+        return;
+    system("cls");
+    if (!Create_New_Classes(year_cur, accHead))
+        return;
+
+    string message = "Add student to class?";
+    if (Message_YesNo(message, "Success"))
+        ChooseClassToAdd(year_cur, accHead);
     return;
 }
