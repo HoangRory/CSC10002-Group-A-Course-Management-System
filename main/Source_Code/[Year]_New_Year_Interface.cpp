@@ -108,6 +108,8 @@ void Interface_New_Year(Year *yearHead, Account *accHead)
         cout << "                                                  ";
         strYear = Limit_Input(52, 20, 9, 63);
         strYear[4] = '_';
+        if (strYear == "-1")
+            return;
     }
     TextColor(7);
     int start = stoi(strYear.substr(0, 4));

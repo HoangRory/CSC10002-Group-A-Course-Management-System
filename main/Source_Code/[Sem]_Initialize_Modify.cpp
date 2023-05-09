@@ -2,6 +2,7 @@
 #include "../Header/Year.h"
 #include "../Header/Utility.h"
 #include "../Header/course.h"
+#include "../Header/Help.h"
 
 void initModify(Year *yearHead)
 {
@@ -26,37 +27,21 @@ void RunModify(Year *yearHead, int opt)
 {
     system("cls");
     Render_Menu(59, 3);
-    string id, strYear;
-    int sem, year;
-    vector<string> small_menu;
     switch (opt)
     {
     case 0: // Modify the semester follow year and no_sem
-        year = Get_CheckFormat_Existed_Year(yearHead);
-        small_menu.push_back("1st semester");
-        small_menu.push_back("2nd semester");
-        small_menu.push_back("3rd semester");
-        small_menu.push_back("Back");
-        system("cls");
-        Render_Semester(59, 3);
-
-        sem = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
-
-        modifySemester(yearHead, year, sem);
+        modifySemester(yearHead);
         break;
     case 1: // View all the course and modify a course in the school year
         // ViewCourse(yearHead);
-        year = Get_CheckFormat_Existed_Year(yearHead);
-        modifyCourse(yearHead, year);
+        modifyCourse(yearHead);
         break;
     case 2: // Remove out the course
-        year = Get_CheckFormat_Existed_Year(yearHead);
-        removeCourse(yearHead, year);
+        removeCourse(yearHead);
         break;
     case 3: // add or remove a student from a course
         // ViewCourse(yearHead);
-        year = Get_CheckFormat_Existed_Year(yearHead);
-        addRemoveStudent(yearHead, year);
+        addRemoveStudent(yearHead);
         break;
     case 4:
         UpdateStudentResult(yearHead);
