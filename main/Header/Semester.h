@@ -1,6 +1,9 @@
 #pragma once
 #include "proto.h"
 
+int compareDate(string date1, string date2);
+bool isStringDigits(string str);
+
 //? Add new semester, new course and import student
 void New_Stuff(Year *yearHead, Account *accHead);
 

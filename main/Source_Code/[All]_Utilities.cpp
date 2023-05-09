@@ -97,7 +97,7 @@ string Limit_Input(int x, int y, int limit, int color)
             c = _getch();
             continue;
         }
-        //? 33 <= c <= 39: ! " # $ % & '
+        //? 32 <= c <= 39: space ! " # $ % & '
         //// 42 <= c <= 59:* + , - . / 0 -> 9 : ;
         //// 58 <= c <= 62: : ; < = >
         //// 63 <= c <= 90: ? @ A -> Z
@@ -105,7 +105,7 @@ string Limit_Input(int x, int y, int limit, int color)
         //? 92
         //? 94 <= c <= 122: ^ _ ` a -> z
         //? 126: ~
-        else if (i < limit && (33 <= c && c <= 39) || (42 <= c && c <= 90) || (c == 92) || (94 <= c && c <= 122) || (c == 126))
+        else if (i < limit && ((32 <= c && c <= 39) || (42 <= c && c <= 90) || (c == 92) || (94 <= c && c <= 122) || (c == 126)))
         {
             input.push_back(c);
             cout << c;

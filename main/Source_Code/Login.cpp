@@ -144,15 +144,16 @@ void ChangePass(Account *accHead, std::string &user, std::string &pass)
     p1 = Limit_Input(52, 25, 30, 63);
     p2 = Limit_Input(52, 30, 30, 63);
 
-    while (p1 != p2 || p1.size() < 6)
+    while (p1 != p2 || p1.size() < 5)
     {
-        if (p1.size() < 6)
+        if (p1 == "-1" || p2 == "-1")
+            return;
+            
+        if (p1.size() < 5)
         {
-            string message = "Password must be longer than 6 characters!!!\nPlease try again!!!";
+            string message = "Password must be 5 or more characters!!!\nPlease try again!!!";
             Message_Warning(message, "Change Password Failed");
         }
-        else if (p1 == "-1" || p2 == "-1")
-            return;
         else if (p1 != p2)
         {
             string message = "The new password and the confirm password are not the same!!!\nPlease try again!!!";

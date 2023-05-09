@@ -26,7 +26,7 @@ void DeleteYear(Year *&yearHead);
 
 //* New year
 void createSchoolYear(Year *&headYear, int yearStart, Account *accHead);
-void Create_New_Classes(Year *newYear, Account *accHead);
+bool Create_New_Classes(Year *newYear, Account *accHead);
 
 void ChooseClassToAdd(Year *curYear, Account *accHead);
 void Method(Account *accHead, Class *curClass);
@@ -51,7 +51,7 @@ bool isValidGender(const string &gender);
 bool isValidYear(string year);
 
 void SeparateName(string full, string &first, string &last);
-void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &birth, string &socialID, string yr);
+bool Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &birth, string &socialID, string yr);
 
 //* Interface
 Year *RecoverFile();

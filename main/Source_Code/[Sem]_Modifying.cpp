@@ -56,7 +56,7 @@ void modifySemester(Year *yearHead)
             goToXY(52, 18);
             cout << "Semester's new end date:   ";
 
-            string tmp;
+            string tmp, date;
             tmp = Limit_Input(80, 14, 10, 63);
             if (tmp == "-1")
                 return;
@@ -74,7 +74,7 @@ void modifySemester(Year *yearHead)
                 cout << "Semester's new start date: ";
                 tmp = Limit_Input(80, 14, 10, 63);
             }
-            sem_cur->startDate = tmp;
+            date = tmp;
 
             tmp = Limit_Input(80, 18, 10, 63);
             while (!isValidDate(tmp))
@@ -90,6 +90,7 @@ void modifySemester(Year *yearHead)
                 cout << "Semester's new end date:   ";
                 tmp = Limit_Input(80, 18, 10, 63);
             }
+            sem_cur->startDate = date;
             sem_cur->endDate = tmp;
 
             Message_Warning("Semester has been updated", "Sucess!");
@@ -225,7 +226,7 @@ void ChangeCourseInfo(Course *cour_cur)
     {
     case 0:
         tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 10, 71);
-        if (tmp =="-1")
+        if (tmp == "-1")
             return;
         cour_cur->CourseID = tmp;
         menu[0] = "Course ID: " + cour_cur->CourseID;
@@ -234,7 +235,7 @@ void ChangeCourseInfo(Course *cour_cur)
         tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
         if (tmp == "-1")
             return;
-        cour_cur->Name = tmp; 
+        cour_cur->Name = tmp;
         menu[1] = "Course Name: " + cour_cur->Name;
         break;
     case 2:
@@ -246,8 +247,16 @@ void ChangeCourseInfo(Course *cour_cur)
         break;
     case 3:
         tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 1, 71);
-        if (tmp == "-1")
-            return;
+        while (tmp[0] < '0' || tmp[0] > '4')
+        {
+            if (tmp == "-1")
+                return;
+            Message_Warning("Invalid credit format or exceed the credits limit (0-4)!", "Error");
+            TextColor(63);
+            goToXY(50 + 4, 9 + cur * 3 + 1);
+            cout << " ";
+            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 1, 71);
+        }
         cour_cur->Credits = stoi(tmp);
         menu[3] = "Number of credits: " + to_string(cour_cur->Credits);
         break;
@@ -255,6 +264,16 @@ void ChangeCourseInfo(Course *cour_cur)
         tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
         if (tmp == "-1")
             return;
+        while (!isStringDigits(tmp))
+        {
+            Message_Warning("Invalid max student format!", "Error");
+            TextColor(63);
+            goToXY(50 + 4, 9 + cur * 3 + 1);
+            cout << "   ";
+            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+            if (tmp == "-1")
+                return;
+        }
         cour_cur->maxStudents = stoi(tmp);
         menu[4] = "Maximum of students: " + to_string(cour_cur->maxStudents);
         break;
@@ -381,7 +400,7 @@ void addStudent(Course *courCurrent, string course_id)
 
     TextColor(14);
     goToXY(60, 17);
-    cout << "Student ID (-1 to stop)";
+    cout << "Student ID (ESC to stop)";
     string line;
     int i = 0;
 
