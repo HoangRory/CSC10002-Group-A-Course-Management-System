@@ -18,14 +18,14 @@ void initModify(Year *yearHead);
 void RunModify(Year *yearHead, int opt);
 
 //? Modifying
-void modifySemester(Year *yearHead, int year, int sem);
-void modifyCourse(Year *yearHead, int year);
+void modifySemester(Year *yearHead);
+void modifyCourse(Year *yearHead);
 void ChangeCourseInfo(Course *cour_cur);
-void removeCourse(Year *yearHead, int year);
+void removeCourse(Year *yearHead);
 
 void addStudent(Course *courCurrent, string course_id);
 void removeStudent(Course *courCurrent, string course_id);
-void addRemoveStudent(Year *yearHead, int year);
+void addRemoveStudent(Year *yearHead);
 
 //? Read Semester from file
 Semester *Read_Sem(int year, int smt);

@@ -1,14 +1,27 @@
 #include "../Header/Semester.h"
 #include "../Header/Year.h"
 #include "../Header/Utility.h"
+#include "../Header/Help.h"
 
 //! Merge: change to yearHead
-void modifySemester(Year *yearHead, int year, int sem)
+void modifySemester(Year *yearHead)
 {
     system("cls");
-    Year *year_cur = yearHead;
-    while (year_cur && year_cur->yearStart != year)
-        year_cur = year_cur->next;
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
+    system("cls");
+    if (!year_cur)
+        return;
+
+    vector<string> small_menu;
+    small_menu.push_back("1st semester");
+    small_menu.push_back("2nd semester");
+    small_menu.push_back("3rd semester");
+    small_menu.push_back("Back");
+    system("cls");
+    Render_Semester(59, 3);
+
+    int sem = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
+    system("cls");
 
     Semester *sem_cur = year_cur->NoSemester;
 
@@ -46,6 +59,7 @@ void modifySemester(Year *yearHead, int year, int sem)
             {
                 if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
                     return;
+                TextColor(63);
                 goToXY(50, 14);
                 cout << "                                             ";
                 sem_cur->startDate = Limit_Input(80, 14, 10, 63);
@@ -56,6 +70,7 @@ void modifySemester(Year *yearHead, int year, int sem)
             {
                 if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
                     return;
+                TextColor(63);
                 goToXY(50, 18);
                 cout << "                                             ";
                 sem_cur->endDate = Limit_Input(80, 18, 10, 63);
@@ -71,13 +86,14 @@ void modifySemester(Year *yearHead, int year, int sem)
     return;
 }
 
-void modifyCourse(Year *yearHead, int year)
+void modifyCourse(Year *yearHead)
 {
     system("cls");
     Render_ViewCourse(50, 1);
-    Year *year_cur = yearHead;
-    while (year_cur && year_cur->yearStart != year) // move to the exact year
-        year_cur = year_cur->next;
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
+    system("cls");
+    if (!year_cur)
+        return;
 
     Semester *sem_cur = year_cur->NoSemester;
     Course *cour_cur = sem_cur->course;
@@ -106,7 +122,7 @@ void modifyCourse(Year *yearHead, int year)
     }
 
     if (Message_YesNo("Course not found!\nRetry?", "Notice"))
-        modifyCourse(yearHead, year); // Loop again
+        modifyCourse(yearHead); // Loop again
     return;
 }
 
@@ -242,17 +258,14 @@ void ChangeCourseInfo(Course *cour_cur)
 }
 
 //? Remove a course in semester
-void removeCourse(Year *yearHead, int year)
+void removeCourse(Year *yearHead)
 {
     system("cls");
-    Year *year_cur = yearHead;
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 50, 12, 5);
+    system("cls");
 
-    while (year_cur) // Find the year
-    {
-        if (year_cur->yearStart == year)
-            break;
-        year_cur = year_cur->next;
-    }
+    if (!year_cur)
+        return;
 
     Semester *sem_cur = year_cur->NoSemester;
 
@@ -264,7 +277,6 @@ void removeCourse(Year *yearHead, int year)
     }
 
     Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
-    Render_ViewCourse(50, 1);
     // ViewCourseInYear(sem_cur);
     ViewCourse(year_cur);
     string course_id;
@@ -274,6 +286,8 @@ void removeCourse(Year *yearHead, int year)
         goToXY(52, 9 + i);
         cout << "                                     ";
     }
+    goToXY(54, 9);
+    cout << "Enter the Course ID to be deleted";
     course_id = Limit_Input(54, 10, 10, 71);
 
     Semester *tmp = sem_cur;
@@ -305,7 +319,7 @@ void removeCourse(Year *yearHead, int year)
     }
 
     if (Message_YesNo("Course not found, do you want to rety?", "Notice"))
-        removeCourse(yearHead, year); // Loop again
+        removeCourse(yearHead); // Loop again
     return;
 }
 
@@ -406,12 +420,13 @@ void removeStudent(Course *courCurrent, string course_id)
 }
 
 //? Option to choose to add or remove student
-void addRemoveStudent(Year *yearHead, int year)
+void addRemoveStudent(Year *yearHead)
 {
     system("cls");
-    Year *year_cur = yearHead;
-    while (year_cur && year_cur->yearStart != year)
-        year_cur = year_cur->next;
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 50, 12, 5);
+    system("cls");
+    if (!year_cur)
+        return;
 
     Semester *sem_cur = year_cur->NoSemester;
     if (!sem_cur)
@@ -462,6 +477,6 @@ void addRemoveStudent(Year *yearHead, int year)
     }
 
     if (Message_YesNo("Course not found!\nRetry?", "Notice"))
-        addRemoveStudent(yearHead, year); // Loop again
+        addRemoveStudent(yearHead); // Loop again
     return;
 }

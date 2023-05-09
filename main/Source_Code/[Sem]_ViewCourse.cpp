@@ -293,8 +293,10 @@ void ViewCourse(Year *yearHead)
             break;
 
         case ENTER:
+            system("cls");
             return;
         case ESC:
+            system("cls");
             return;
         }
     }
