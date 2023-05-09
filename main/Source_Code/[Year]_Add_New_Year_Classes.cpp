@@ -246,6 +246,8 @@ void importStudent(Account *accHead, Class *curClass)
     goToXY(60, 14);
     cout << "File name: ";
     tmp = Limit_Input(60 + 11, 14, 25, 7);
+    if (tmp == "-1")
+        return;
     if (tmp != "0")
         fileName = tmp;
     // Get the file name in4 and access the file
@@ -389,6 +391,9 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 8, 63);
             while (!isValidStudentID(line, ye))
             {
+                if (line == "-1")
+                    return;
+
                 string mess = "Invalid student ID. Please enter again.";
                 Message_Warning(mess, "Warning");
                 TextColor(63);
@@ -403,6 +408,9 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
         else if (i == 1) // fullname
         {
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 25, 63);
+            if (line == "-1")
+                return;
+
             full = line;
         }
         else if (i == 2) // Gender
@@ -410,6 +418,8 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 1, 63);
             while (!isValidGender(line))
             {
+                if (line == "-1")
+                    return;
                 TextColor(63);
                 string mess = "Invalid gender format (M: male, F:female).\n Please enter again.";
                 Message_Warning(mess, "Warning");
@@ -427,6 +437,9 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 10, 63);
             while (!isValidDate(line))
             {
+                if (line == "-1")
+                    return;
+
                 TextColor(63);
                 string mess = "Invalid date format (dd/mm/yyyy).\n Please enter again.";
                 Message_Warning(mess, "Warning");
@@ -441,8 +454,12 @@ void Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
         else if (i == 4) // social ID
         {
             line = Limit_Input(62 + menu[i].length() - 1, 10 + 4 * i, 12, 63);
+            if (line == "-1")
+                return;
+
             socialID = line;
         }
+        
         TextColor(7);
         for (int j = 0; j < 3; j++)
         {
