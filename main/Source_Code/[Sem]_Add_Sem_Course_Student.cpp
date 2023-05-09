@@ -24,7 +24,10 @@ Semester *AddSemester(Year *yearHead)
     int N = 0;
     N = Draw_XY(small_menu, 60, 12, 20, 63) + 1;
     if (N == 4)
+    {
+        AddSemester(yearHead);
         return nullptr;
+    }
 
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
@@ -269,7 +272,6 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
     }
     courseCurrent->Session = tmp;
 
-
     return courseCurrent;
 }
 
@@ -430,25 +432,26 @@ void New_Stuff(Year *yearHead, Account *accHead)
     case 0:
         //? Add a new year
         Interface_New_Year(yearHead, accHead);
-        return;
+        break;
+        ;
     case 1:
         //? Add a new semester
         system("cls");
         Interface_New_Sem(yearHead);
         // Recursion back to the StaffMain function
-        return;
+        break;
     case 2:
         //? Add a new course
         year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
         if (!year_cur)
-            return;
-
+            break;
         AddingCourse(year_cur->NoSemester, yearHead);
         // Recursion back to the StaffMain function
-        return;
+        break;
     case 3:
         return;
     }
+    New_Stuff(yearHead, accHead);
 }
 
 //? Run to begin the new semester
@@ -457,7 +460,7 @@ Semester *Interface_New_Sem(Year *yearHead)
     Semester *semCurrent = AddSemester(yearHead); // New semester and return the default for next actions
     string mess;
     if (!semCurrent)
-        return Interface_New_Sem(yearHead);
+        return nullptr;
 
     mess = "Do you want to add a course to this semester?";
     if (Message_YesNo(mess, "Notice"))
