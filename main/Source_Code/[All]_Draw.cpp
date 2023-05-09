@@ -143,7 +143,7 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
                 }
             }
             goToXY(x, y + 2 + min(Row_eachTime, num_row - y_step) * (height + 1));
-            cout << setw(20) << " ";
+            cout << setw(150) << " ";
             x_step = (x_cur / Col_eachTime) * Col_eachTime;
             y_step = (y_cur / Row_eachTime) * Row_eachTime;
             goToXY(x, y - 1);
@@ -168,17 +168,17 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
                     goToXY(x + pos[j + x_step] + width[j + x_step], y - 1);
                     cout << char(191);
                     goToXY(x + pos[j + x_step] + width[j + x_step], y + 1);
-                    cout << char(180);
+                    cout << char(180); // is -|
                 }
                 else
                 {
                     goToXY(x + pos[j + x_step] + width[j + x_step], y + -1);
-                    cout << char(194);
+                    cout << char(194); // is T
                     goToXY(x + pos[j + x_step] + width[j + x_step], y + 1);
-                    cout << char(197);
+                    cout << char(197); // +
                 }
                 goToXY(x + pos[j + x_step] + width[j + x_step], y);
-                cout << char(179);
+                cout << char(179); // is |
             }
 
             y += 2;
@@ -206,6 +206,7 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
 
                             // đếm số trang cho bảng
                             goToXY(x, y + i * (height + 1) + 2);
+                            // in số trang ở cuối bảng
                             if (amount_page_hor > 1)
                             {
                                 num_page_hor = ceil((x_cur + 1) * 1.0 / Col_eachTime);
@@ -223,7 +224,18 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
                         }
                         else
                             cout << char(193); // 193 is _|_
-                        // in số trang ở cuối bảng
+                        if (j == Col_eachTime - 1 || j == num_col - x_step - 1)
+                        {
+                            goToXY(x + pos[j + x_step] + width[j + x_step], y + i * (height + 1) + 1);
+                            if ((i == Row_eachTime - 1 || i == num_row - 1 - y_step))
+                            {
+                                cout << char(217); // 217 is _|
+                                goToXY(x + pos[j + x_step] + width[j + x_step] - 20, y + i * (height + 1) + 2);
+                                cout << "Press ESC to return";
+                            }
+                            else
+                                cout << char(180); // 180 -|
+                        }
                     }
 
                     goToXY(x + pos[j + x_step], y + i * (height + 1));
@@ -240,10 +252,15 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
                     goToXY(x + pos[j + x_step] + width[j + x_step], y + i * (height + 1));
                     cout << char(179); // 179 is |
                     goToXY(x + pos[j + x_step] + width[j + x_step], y + i * (height + 1) + 1);
-                    if (i == Row_eachTime - 1 || i == num_row - 1 - y_step)
-                        cout << char(217); // 217 is _|
-                    else
-                        cout << char(180); // 180 -|
+                    if (j == Col_eachTime - 1 || j == num_col - x_step - 1)
+                        if ((i == Row_eachTime - 1 || i == num_row - 1 - y_step))
+                        {
+                            cout << char(217); // 217 is _|
+                            goToXY(x + pos[j + x_step] + width[j + x_step] - 20, y + i * (height + 1) + 2);
+                            cout << "Press ESC to return";
+                        }
+                        else
+                            cout << char(180); // 180 -|
                 }
             }
         }
@@ -306,45 +323,6 @@ void Draw_table(string **table, string *title, int num_row, int num_col, int *wi
     delete[] choice;
     delete[] pos;
 }
-// int Draw_Horizontal_XY(vector<string> menu, int x, int y, int &cur, int color)
-// {
-//     vector<int> choice(menu.size(), 0);
-//     while (1)
-//     {
-//         choice[cur] = 1;
-//         for (int i = 0; i < choice.size(); i++)
-//         {
-//             for (int j = 0; j < 3; j++)
-//             {
-//                 int tmp = (choice[i] ? color : 7);
-//                 TextColor(tmp);
-//                 goToXY(x + 3 * i, y + j);
-//                 cout << "   ";
-//                 goToXY(x + 1 + 3 * i, y + 1);
-//                 cout << menu[i];
-//             }
-//         }
-//         TextColor(07);
-//         int tmp;
-//         if (tmp = _getch())
-//         {
-//             switch (tmp)
-//             {
-//             case ENTER:
-//                 system("cls");
-//                 return cur;
-//             case LEFT:
-//                 choice[cur] = 0;
-//                 cur = (cur > 0 ? cur - 1 : menu.size() - 1);
-//                 break;
-//             case RIGHT:
-//                 choice[cur] = 0;
-//                 cur = (cur < menu.size() - 1 ? cur + 1 : 0);
-//                 break;
-//             }
-//         }
-//     }
-// }
 
 int Draw_ShortVer(vector<string> menu, int x, int y, int color)
 {
