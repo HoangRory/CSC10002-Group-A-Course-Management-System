@@ -18,7 +18,7 @@ void createSchoolYear(Year *&headYear, int yearStart, Account *accHead)
 
     Year *newYear = new Year;
     newYear->yearStart = yearStart;
-    newYear->next = headYear;
+    newYear->prev = headYear;
 
     // if (!headYear)
     headYear = newYear;

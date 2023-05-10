@@ -60,14 +60,47 @@ void modifySemester(Year *yearHead)
         {
             if (tmp == "-1")
                 return;
-            if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
-                return;
-            TextColor(63);
-            goToXY(50, 14);
-            cout << "                                             ";
-            goToXY(52, 14);
-            cout << "Semester's new start date: ";
-            tmp = Limit_Input(80, 14, 10, 63);
+
+            while (!isValidDate(tmp))
+            {
+                if (tmp == "-1")
+                    return;
+                if (!Message_YesNo("Invalid date, enter again\n(dd/mm/yyyy)", "Error!"))
+                    return;
+                TextColor(63);
+                goToXY(50, 14);
+                cout << "                                             ";
+                goToXY(52, 14);
+                cout << "Semester's new start date: ";
+                tmp = Limit_Input(80, 14, 10, 63);
+            }
+            date = tmp;
+
+            tmp = Limit_Input(80, 18, 10, 63);
+            while (!isValidDate(tmp) || compareDate(date, tmp) != -1)
+            {
+                if (tmp == "-1")
+                    return;
+
+                if (isValidDate(tmp) && compareDate(date, tmp) != -1)
+                    Message_Warning("End date must be after start date", "Error!");
+                else
+                {
+                    if (!Message_YesNo("Invalid date, enter again\n(dd/mm/yyyy)", "Error!"))
+                        return;
+                }
+                TextColor(63);
+                goToXY(50, 18);
+                cout << "                                             ";
+                goToXY(52, 18);
+                cout << "Semester's new end date:   ";
+                tmp = Limit_Input(80, 18, 10, 63);
+            }
+            sem_cur->startDate = date;
+            sem_cur->endDate = tmp;
+
+            Message_Warning("Semester has been updated", "Sucess!");
+            return;
         }
         date = tmp;
 

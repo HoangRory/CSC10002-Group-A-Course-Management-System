@@ -153,7 +153,7 @@ Semester *AddSemester(Year *yearHead)
             return nullptr;
         }
 
-        if (compareDate(date1, tmp) != -1)
+        if (isValidDate(tmp) && compareDate(date1, tmp) != -1)
             Message_Warning("Invalid date!\nEnding date must be after starting date!", "Error");
         else
             Message_Warning("Invalid date format!\nEnter again!", "Error");
@@ -550,6 +550,7 @@ void New_Stuff(Year *&yearHead, Account *accHead)
 
     vector<string> menu;
     menu.push_back("Add a new year");
+    menu.push_back("Add class");
     menu.push_back("Add a new semester");
     menu.push_back("Add a new course");
     menu.push_back("Back to main menu");
@@ -557,7 +558,7 @@ void New_Stuff(Year *&yearHead, Account *accHead)
     int ye;
     Year *year_cur = nullptr;
 
-    int opt = Draw_XY(menu, 60, 12, 4, 24, 63);
+    int opt = Draw_XY(menu, 60, 12, 5, 24, 63);
     switch (opt)
     {
     case 0:
@@ -565,12 +566,16 @@ void New_Stuff(Year *&yearHead, Account *accHead)
         Interface_New_Year(yearHead, accHead);
         break;
     case 1:
+        //! New Class
+        AddClass(yearHead, accHead);
+        break;
+    case 2:
         //? Add a new semester
         system("cls");
         Interface_New_Sem(yearHead);
         // Recursion back to the StaffMain function
         break;
-    case 2:
+    case 3:
         //? Add a new course
         year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
         if (!year_cur)
@@ -578,7 +583,7 @@ void New_Stuff(Year *&yearHead, Account *accHead)
         AddingCourse(year_cur->NoSemester, yearHead);
         // Recursion back to the StaffMain function
         break;
-    case 3:
+    case 4:
         return;
     }
     New_Stuff(yearHead, accHead);
