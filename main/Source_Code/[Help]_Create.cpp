@@ -33,12 +33,12 @@ string getFirstChar(string name)
     return tmp;
 }
 
-string createNameFile(int year, int no_smt, string course, string file, string type)
+string createNameFile(int year, int no_smt)
 {
 
-    string s_year = to_string(year) + "_" + to_string(year + 1) + "/";
-    string s_smt = "smt" + to_string(no_smt) + "/";
-    string path = "../Data_file/" + s_year + s_smt + getFirstChar(course) + file + "." + type;
+    string s_year = to_string(year) + "_" + to_string(year + 1) + "\\";
+    string s_smt = "smt" + to_string(no_smt) + "\\";
+    string path = s_year + s_smt;
     return path;
 }
 CourseStudent *CourseOfAClass_InChooseSem(Student *studentHead, Semester *ChooseSem)

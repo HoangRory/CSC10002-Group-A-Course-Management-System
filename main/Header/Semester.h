@@ -26,9 +26,10 @@ void modifyCourse(Year *yearHead);
 void ChangeCourseInfo(Course *cour_cur);
 void removeCourse(Year *yearHead);
 
-void addStudent(Course *courCurrent, string course_id);
-void removeStudent(Course *courCurrent, string course_id);
+void addStudent(Course *courCurrent);
+void removeStudent(Course *courCurrent);
 void addRemoveStudent(Year *yearHead);
+void AddNewStudent(Year *yearHead, Account *accHead);
 
 //? Read Semester from file
 Semester *Read_Sem(int year, int smt);

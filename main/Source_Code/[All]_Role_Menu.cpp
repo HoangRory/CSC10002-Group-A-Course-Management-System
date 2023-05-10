@@ -17,7 +17,7 @@ void Staff_Main(Year *yearHead, Account *accHead, string &user, string &pass, in
     menu.push_back("Import / Export");
     menu.push_back("Quit");
 
-    int choice = Draw_XY(menu, 60, 12, 7, 25);
+    int choice = Draw_XY(menu, 60, 12, 7, 25, 63);
     int ye;
     Year *year_cur;
     string mess;
@@ -83,7 +83,7 @@ void Teacher_Main()
     menu.push_back("Account");
     //? push command here
 
-    int choice = Draw_XY(menu, 66, 12, 5, 20);
+    int choice = Draw_XY(menu, 66, 12, 5, 20, 63);
     int ye;
     Year *year_cur;
     string mess;
@@ -124,7 +124,7 @@ void Student_Main(Year *yearHead, Account *accHead, Student *student_cur, string
     menu.push_back("Your ScoreBoard");
     menu.push_back("Quit");
 
-    int opt = Draw_XY(menu, 60, 12, 4, 24);
+    int opt = Draw_XY(menu, 60, 12, 4, 24, 63);
     switch (opt)
     {
     case 0:

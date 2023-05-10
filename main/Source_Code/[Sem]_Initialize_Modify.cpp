@@ -51,17 +51,17 @@ void RunModify(Year *yearHead, int opt)
         Message_Warning(mess, "Notice");
         return;
     }
+    initModify(yearHead);
 
-    string mess = "Do you want to continue modifying?";
-    if (Message_YesNo(mess, "Confirm"))
-    {
-        initModify(yearHead);
-        return;
-    }
-    else
-    {
-        string mess = "Modification completed!\nRemember to SAVE changes.";
-        Message_Warning(mess, "Notice");
-        return;
-    }
+    // string mess = "Do you want to continue modifying?";
+    // if (Message_YesNo(mess, "Confirm"))
+    // {
+    //     return;
+    // }
+    // else
+    // {
+    // string mess = "Modification completed!\nRemember to SAVE changes.";
+    // Message_Warning(mess, "Notice");
+    // return;
+    // }
 }

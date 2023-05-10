@@ -32,15 +32,23 @@ void ViewStudentCourse(Course *ChooseCourse, int x, int y)
     }
     int x_cur = 0, y_cur = 0;
     Draw_table(table, title, num_row, num_col, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
-    // này là để chọn được course
-
-    StudentCourse *curStudent = ChooseCourse->studentCourse;
-    if (!curStudent)
+    if (x_cur == -1)
     {
-        Message_Warning(" There is no student in course " + ChooseCourse->Name, "Error not exist");
-        system("cls");
+        for (int i = 0; i < num_row; i++)
+            delete[] table[i];
+        delete[] table;
         return;
     }
+
+    // này là để chọn được course
+
+    // StudentCourse *curStudent = ChooseCourse->studentCourse;
+    // if (!curStudent)
+    // {
+    //     Message_Warning(" There is no student in course " + ChooseCourse->Name, "Error not exist");
+    //     system("cls");
+    //     return;
+    // }
 }
 void ViewScoreBoardCourse(Course *ChooseCourse, int x, int y)
 {

@@ -36,7 +36,7 @@ Student *chooseStudentOfClass(Class *ChooseClass, int x, int y);
 //////////////////////////////////////////////////////////
 string FormatMark(double Mark);
 string getFirstChar(string name);
-string createNameFile(int year, int no_smt, string course, string file, string type);
+string createNameFile(int year, int no_smt);
 CourseStudent *CourseOfAClass_InChooseSem(Student *studentHead, Semester *ChooseSem);
 void CreateSB_ofStudent_inClass(double *&SBC, CourseStudent *courseHead, Student *studentHead);
 void createSBC_ofClass(double **&SBC, CourseStudent *courseHead, Student *studentHead, int Col, int Row);

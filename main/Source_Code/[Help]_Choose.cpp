@@ -12,7 +12,7 @@ Year *chooseYearbyOption_XY(Year *yearHead, int x, int y, int nOption_eachTime)
     }
     int width = 20;
     menu.push_back("BACK");
-    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width, 63);
 
     while (yearHead && option--)
         yearHead = yearHead->next;
@@ -29,7 +29,7 @@ Class *chooseClassbyOption_XY(Class *classHead, int x, int y, int nOption_eachTi
     }
     int width = 20;
     menu.push_back("   BACK");
-    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width, 63);
 
     while (classHead && option--)
         classHead = classHead->next;
@@ -54,7 +54,7 @@ Class *chooseClass_inAllYear_byOption_XY(Year *yearHead, int x, int y, int nOpti
     menu.push_back("   BACK");
     if (menu.size() == 0)
         return nullptr;
-    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width, 63);
     year_cur = yearHead;
     while (year_cur)
     {
@@ -81,7 +81,7 @@ Semester *chooseSemesterbyOption_XY(Semester *semHead, int x, int y, int nOption
     }
     int width = 15;
     menu.push_back("BACK");
-    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width, 63);
 
     while (semHead && option--)
     {
@@ -100,7 +100,7 @@ Course *chooseCoursebyOption_XY(Course *courseHead, int x, int y, int nOption_ea
     }
     int width = 35;
     menu.push_back("BACK");
-    int option = Draw_XY(menu, x, y, nOption_eachTime, width);
+    int option = Draw_XY(menu, x, y, nOption_eachTime, width, 63);
 
     while (courseHead && option--)
         courseHead = courseHead->next;

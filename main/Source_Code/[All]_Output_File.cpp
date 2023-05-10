@@ -45,9 +45,10 @@ void Output(Year *yearHead)
         Course *courseHead = sem_cur->course;
         while (courseHead)
         {
-            string path = createNameFile(sem_cur->Year, sem_cur->No, courseHead->Name, "score", "csv");
+            string path = "..\\Data_file\\" + createNameFile(sem_cur->Year, sem_cur->No);
             if (!checkFile(path))
                 system(("mkdir " + path).c_str());
+            path += getFirstChar(courseHead->Name) + "score.csv";
             ofs.open(path);
             outStudentCourse(courseHead->studentCourse, ofs);
             ofs.close();
@@ -217,15 +218,19 @@ void exportListStudentCourse(Year *yearHead)
             cout << setw(70) << " ";
             while (ChooseCourse)
             {
-                string path = createNameFile(ChooseSem->Year, ChooseSem->No, ChooseCourse->Name, "score", "csv");
+                // string path = "..\\Data_file\\Import_ScoreBoard\\" + createNameFile(ChooseSem->Year, ChooseSem->No);
+                // system(("mkdir " + path).c_str());
+                string path = "..\\Data_file\\Export_Student\\" + createNameFile(ChooseSem->Year, ChooseSem->No);
                 if (!checkFile(path))
                     system(("mkdir " + path).c_str());
                 ofstream out;
+                path += getFirstChar(ChooseCourse->Name) + "score.csv";
                 out.open(path);
                 outStudentCourse(ChooseCourse->studentCourse, out);
                 out.close();
-                if (!Message_YesNo("File export successful.\n Would you like to continue?", "Success"))
+                if (!Message_YesNo("File export successful with path :" + path + " \n Would you like to continue?", "Success"))
                     return;
+
                 ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
             }
         }

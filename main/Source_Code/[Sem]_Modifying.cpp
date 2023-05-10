@@ -7,28 +7,15 @@
 void modifySemester(Year *yearHead)
 {
     system("cls");
+    Render_Semester(59, 3);
     Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
     if (!year_cur)
         return;
-
-    // vector<string> small_menu;
-    // small_menu.push_back("1st semester");
-    // small_menu.push_back("2nd semester");
-    // small_menu.push_back("3rd semester");
-    // small_menu.push_back("Back");
-    system("cls");
-    Render_Semester(59, 3);
-
-    // int sem = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
-    // system("cls");
 
     Semester *sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
     string tmp, date;
     while (sem_cur)
     {
-        // if (sem_cur->No == sem)
-        // {
-        // Show the current
         TextColor(63);
         for (int i = 0; i < 4; i++)
         {
@@ -126,27 +113,6 @@ void modifySemester(Year *yearHead)
         Render_Semester(59, 3);
         sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
     }
-    // sem_cur->startDate = tmp;
-
-    // tmp = Limit_Input(80, 18, 10, 63);
-    // while (!isValidDate(tmp))
-    // {
-    //     if (tmp == "-1")
-    //         return;
-    //     if (!Message_YesNo("Invalid date, enter again: ", "Error!"))
-    //         return;
-    //     TextColor(63);
-    //     goToXY(50, 18);
-    //     cout << "                                             ";
-    //     goToXY(52, 18);
-    //     cout << "Semester's new end date:   ";
-    //     tmp = Limit_Input(80, 18, 10, 63);
-    // }
-    // sem_cur->endDate = tmp;
-
-    // Message_Warning("Semester has been updated", "Sucess!");
-    // return;
-    // }
     modifySemester(yearHead);
 }
 
@@ -155,40 +121,25 @@ void modifyCourse(Year *yearHead)
     system("cls");
     Render_ViewCourse(50, 1);
     Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
-    system("cls");
     if (!year_cur)
         return;
 
-    Semester *sem_cur = year_cur->NoSemester;
-    Course *cour_cur = sem_cur->course;
-
-    string course_id;
-    TextColor(7);
-    goToXY(51, 7);
-    cout << "Enter the course ID";
-    TextColor(63);
-    for (int i = 0; i < 3; i++)
+    Semester *sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
+    Course *cour_cur;
+    while (sem_cur && sem_cur->course != nullptr)
     {
-        goToXY(50, 8 + i);
-        cout << "                   ";
-    }
-    course_id = Limit_Input(54, 9, 10, 63);
-    if (course_id == "-1")
-        return;
-
-    while (cour_cur)
-    {
-        if (cour_cur->CourseID == course_id)
+        cour_cur = chooseCoursebyOption_XY(sem_cur->course, 60, 12, 5);
+        while (cour_cur)
         {
             ChangeCourseInfo(cour_cur); // Change the course in4
-            Message_Warning("Course has been updated", "Sucess!");
-            return;
+            // Message_Warning("Course has been updated", "Sucess!");
+            system("cls");
+            Render_ViewCourse(50, 1);
+            cour_cur = chooseCoursebyOption_XY(sem_cur->course, 60, 12, 5);
         }
-        cour_cur = cour_cur->next;
+        sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
     }
-
-    if (Message_YesNo("Course not found!\nRetry?", "Notice"))
-        modifyCourse(yearHead); // Loop again
+    modifyCourse(yearHead); // Loop again
     return;
 }
 
@@ -206,6 +157,7 @@ void ChangeCourseInfo(Course *cour_cur)
     menu.push_back("Room: " + cour_cur->Room);
     menu.push_back("Teaching day: " + cour_cur->Day);
     menu.push_back("Course section: " + cour_cur->Session);
+    menu.push_back("Back");
 
     //! Line 9
     vector<int> choice(menu.size(), 0);
@@ -221,10 +173,10 @@ void ChangeCourseInfo(Course *cour_cur)
             TextColor(tmp_color);
             for (int j = 0; j < 3; j++)
             {
-                goToXY(50, 9 + i * 3 + j);
+                goToXY(50, 6 + i * 3 + j);
                 cout << "                                                  ";
             }
-            goToXY(50 + 2, 9 + i * 3 + 1);
+            goToXY(50 + 2, 6 + i * 3 + 1);
             cout << menu[i];
         }
         int tmp;
@@ -253,70 +205,71 @@ void ChangeCourseInfo(Course *cour_cur)
             TextColor(0x9F);
             for (int j = 0; j < 3; j++)
             {
-                goToXY(50, 9 + i * 3 + j);
+                goToXY(50, 6 + i * 3 + j);
                 for (int k = 0; k < 50; k++)
                     cout << " ";
             }
-            goToXY(50 + 2, 9 + i * 3);
+            goToXY(50 + 2, 6 + i * 3);
             cout << menu[i].substr(0, 14);
         }
         else
         {
             TextColor(7);
-            goToXY(50 + 2, 9 + i * 3 + 1);
+            goToXY(50 + 2, 6 + i * 3 + 1);
             cout << menu[i];
         }
     }
+    TextColor(7);
     string tmp;
     switch (cur)
     {
     case 0:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 10, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 10, 63);
         if (tmp == "-1")
             return;
         cour_cur->CourseID = tmp;
         menu[0] = "Course ID: " + cour_cur->CourseID;
         break;
     case 1:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 35, 63);
         if (tmp == "-1")
             return;
         cour_cur->Name = tmp;
         menu[1] = "Course Name: " + cour_cur->Name;
         break;
     case 2:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 35, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 35, 63);
         if (tmp == "-1")
             return;
         cour_cur->TeacherName = tmp;
         menu[2] = "Teacher Name: " + cour_cur->TeacherName;
         break;
     case 3:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 1, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 1, 63);
         while (tmp[0] < '0' || tmp[0] > '4')
         {
             if (tmp == "-1")
                 return;
             Message_Warning("Invalid credit format or exceed the credits limit (0-4)!", "Error");
             TextColor(63);
-            goToXY(50 + 4, 9 + cur * 3 + 1);
+            goToXY(50 + 4, 6 + cur * 3 + 1);
             cout << " ";
-            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 1, 71);
+            tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 1, 63);
         }
         cour_cur->Credits = stoi(tmp);
         menu[3] = "Number of credits: " + to_string(cour_cur->Credits);
         break;
     case 4:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 3, 63);
         if (tmp == "-1")
             return;
         while (!isStringDigits(tmp))
         {
             Message_Warning("Invalid max student format!", "Error");
             TextColor(63);
-            goToXY(50 + 4, 9 + cur * 3 + 1);
+            goToXY(50 + 4, 6 + cur * 3 + 1);
             cout << "   ";
-            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+            tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 3, 63);
             if (tmp == "-1")
                 return;
         }
@@ -324,40 +277,42 @@ void ChangeCourseInfo(Course *cour_cur)
         menu[4] = "Maximum of students: " + to_string(cour_cur->maxStudents);
         break;
     case 5:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 3, 63);
         if (tmp == "-1")
             return;
         cour_cur->Room = tmp;
         menu[5] = "Room: " + cour_cur->Room;
         break;
     case 6:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 3, 63);
         while (!isDay(tmp))
         {
             if (tmp == "-1")
                 return;
             Message_Warning("Invalid day!\n(MON/TUE/WED/THU/FRI/SAT/SUN)", "Notice");
-            goToXY(50, 9 + cur * 3 + 1);
+            goToXY(50, 6 + cur * 3 + 1);
             cout << "                                                  ";
-            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 3, 71);
+            tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 3, 63);
         }
         cour_cur->Day = tmp;
         menu[6] = "Teaching day: " + cour_cur->Day;
         break;
     case 7:
-        tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 2, 71);
+        tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 2, 63);
         while (!isSession(tmp))
         {
             if (tmp == "-1")
                 return;
             Message_Warning("Invalid session!\n(S1/S2/S3/S4)", "Notice");
-            goToXY(50, 9 + cur * 3 + 1);
+            goToXY(50, 6 + cur * 3 + 1);
             cout << "                                                  ";
-            tmp = Limit_Input(50 + 4, 9 + cur * 3 + 1, 2, 71);
+            tmp = Limit_Input(50 + 4, 6 + cur * 3 + 1, 2, 63);
         }
         cour_cur->Session = tmp;
         menu[7] = "Course section: " + cour_cur->Session;
         break;
+    case 8:
+        return;
     }
 
     if (Message_YesNo("Do you want to change another information?", "Notice"))
@@ -368,73 +323,102 @@ void ChangeCourseInfo(Course *cour_cur)
 //? Remove a course in semester
 void removeCourse(Year *yearHead)
 {
-    system("cls");
-    Year *year_cur = chooseYearbyOption_XY(yearHead, 50, 12, 5);
-    system("cls");
 
+    // system("cls");
+    // Year *year_cur = chooseYearbyOption_XY(yearHead, 50, 12, 5);
+    // system("cls");
+
+    // if (!year_cur)
+    //     return;
+
+    // Semester *sem_cur = year_cur->NoSemester;
+
+    // if (!sem_cur) // Check if the year has any semester
+    // {
+    //     string mess = "There is no semester in this year";
+    //     Message_Warning(mess, "Notice");
+    //     return;
+    // }
+
+    // Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
+    system("cls");
+    Render_ViewCourse(50, 1);
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
     if (!year_cur)
         return;
 
-    Semester *sem_cur = year_cur->NoSemester;
-
-    if (!sem_cur) // Check if the year has any semester
+    Semester *sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
+    Course *cour_cur;
+    while (sem_cur && sem_cur->course != nullptr)
     {
-        string mess = "There is no semester in this year";
-        Message_Warning(mess, "Notice");
-        return;
-    }
-
-    Course *cour_cur = sem_cur->course, *cour_prev = nullptr;
-    // ViewCourseInYear(sem_cur);
-    ViewCourse(year_cur);
-    string course_id;
-    TextColor(71);
-    for (int i = 0; i < 3; i++)
-    {
-        goToXY(52, 9 + i);
-        cout << "                                     ";
-    }
-    goToXY(54, 9);
-    cout << "Enter the Course ID to be deleted";
-    course_id = Limit_Input(54, 10, 10, 71);
-    if (course_id == "-1")
-        return;
-
-    Semester *tmp = sem_cur;
-    while (sem_cur)
-    {
+        cour_cur = chooseCoursebyOption_XY(sem_cur->course, 60, 12, 5);
         while (cour_cur)
         {
-            if (cour_cur->CourseID == course_id)
-            {
-                string mess = cour_cur->Name + " has been deleted";
-                Message_Warning(mess, "Success");
-
-                if (cour_cur == sem_cur->course)
-                    sem_cur->course = cour_cur->next;
-                else
-                    cour_prev->next = cour_cur->next;
-                delete cour_cur;
-
-                system("cls");
-                goToXY(0, 0);
-                ViewCourse(year_cur);
-                return;
-            }
-            cour_prev = cour_cur;
-            cour_cur = cour_cur->next;
+            string mess = cour_cur->Name + " has been deleted";
+            Message_Warning(mess, "Success");
+            if (cour_cur->prev)
+                cour_cur->prev->next = cour_cur->next;
+            if (cour_cur->next)
+                cour_cur->next->prev = cour_cur->prev;
+            if (cour_cur = sem_cur->course)
+                sem_cur->course = cour_cur->next;
+            delete cour_cur;
+            system("cls");
+            Render_ViewCourse(50, 1);
+            cour_cur = chooseCoursebyOption_XY(sem_cur->course, 60, 12, 5);
         }
-        sem_cur = sem_cur->next;
-        cour_cur = sem_cur->course;
+        sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
     }
+    // ViewCourseInYear(sem_cur);
+    // ViewCourse(year_cur);
+    // string course_id;
+    // TextColor(71);
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     goToXY(52, 9 + i);
+    //     cout << "                                     ";
+    // }
+    // goToXY(54, 9);
+    // cout << "Enter the Course ID to be deleted";
+    // course_id = Limit_Input(54, 10, 10, 71);
+    // if (course_id == "-1")
+    //     return;
 
-    if (Message_YesNo("Course not found, do you want to rety?", "Notice"))
-        removeCourse(yearHead); // Loop again
-    return;
+    // Semester *tmp = sem_cur;
+    // while (sem_cur)
+    // {
+    //     while (cour_cur)
+    //     {
+    //         if (cour_cur->CourseID == course_id)
+    //         {
+    //             string mess = cour_cur->Name + " has been deleted";
+    //             Message_Warning(mess, "Success");
+
+    //             if (cour_cur == sem_cur->course)
+    //                 sem_cur->course = cour_cur->next;
+    //             else
+    //                 cour_prev->next = cour_cur->next;
+    //             delete cour_cur;
+
+    //             system("cls");
+    //             goToXY(0, 0);
+    //             ViewCourse(year_cur);
+    //             return;
+    //         }
+    //         cour_prev = cour_cur;
+    //         cour_cur = cour_cur->next;
+    //     }
+    //     sem_cur = sem_cur->next;
+    //     cour_cur = sem_cur->course;
+    // }
+
+    // if (Message_YesNo("Course not found, do you want to rety?", "Notice"))
+    removeCourse(yearHead); // Loop again
+    // return;
 }
 
 //? Add a student to a course
-void addStudent(Course *courCurrent, string course_id)
+void addStudent(Course *courCurrent)
 {
     StudentCourse *stud_cur;
 
@@ -487,111 +471,141 @@ void addStudent(Course *courCurrent, string course_id)
 }
 
 //? Remove a student from a course
-void removeStudent(Course *courCurrent, string course_id)
+void removeStudent(Course *courCurrent)
 {
-    //! Show the current student in the course
-    StudentCourse *stud_cur, *stud_prev;
-    stud_cur = courCurrent->studentCourse;
-    if (!stud_cur)
-    {
-        Message_Warning("There is no student in this course", "Notice");
-        return;
-    }
-    stud_prev = stud_cur;
+    int width[7];
+    width[0] = 10; // chiều rộng cột NO
+    width[1] = 15; // chiều rộng cột ID
+    width[2] = 35; // chiểu rộng Student Name;
 
-    string ID;
-    TextColor(71);
-    for (int i = 0; i < 3; i++)
-    {
-        goToXY(52, 9 + i);
-        cout << "                                     ";
-    }
-    ID = Limit_Input(54, 10, 10, 71);
-    if (ID == "-1")
-        return;
+    string *title = new string[3];
+    title[0] = "No";
+    title[1] = "ID";
+    title[2] = "Student's Name";
 
-    while (stud_cur)
+    int num_row = amountStudentOfCourse(courCurrent->studentCourse);
+    int num_col = 3;
+
+    string **table = new string *[num_row];
+    for (int i = 0; i < num_row; i++)
+        table[i] = new string[num_col];
+
+    int height = 1, Row_eachTime = 7, Col_eachTime = 8, x = 45, y = 12;
+    bool edit_Col[3] = {true, true, true};
+    StudentCourse *student_cur = courCurrent->studentCourse;
+    for (int i = 0; i < num_row; i++)
     {
-        if (stud_cur->ID == ID)
-        {
-            if (stud_cur == courCurrent->studentCourse)
-                courCurrent->studentCourse = stud_cur->next;
-            else
-                stud_prev->next = stud_cur->next;
-            delete stud_cur;
-            courCurrent->numStudents--; // Decline down the number
-            if (Message_YesNo("Student id " + ID + " has been removed", "Notice"))
-                removeStudent(courCurrent, course_id);
-            return;
-        }
-        stud_prev = stud_cur;
-        stud_cur = stud_cur->next;
+        int j = 0;
+        table[i][j++] = to_string(i + 1);
+        table[i][j++] = student_cur->ID;
+        table[i][j++] = student_cur->FullName;
+        student_cur = student_cur->next;
     }
-    Message_Warning("Student not found, try again.", "Notice");
-    return;
+    int x_cur = 0, y_cur = 0;
+    goToXY(x, y - 2);
+    cout << "Press Enter to choose student";
+    Draw_table(table, title, num_row, num_col, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
+
+    // search and del student
+    for (int i = 0; i < num_row; i++)
+        delete[] table[i];
+    delete[] table;
+    if (x_cur == -1)
+        return;
+    StudentCourse *curStudent = courCurrent->studentCourse;
+    for (int i = 0; i < y_cur; i++)
+        curStudent = curStudent->next;
+    string ID = curStudent->ID;
+    if (curStudent->next)
+        curStudent->next->prev = curStudent->prev;
+    if (curStudent->prev)
+        curStudent->prev->next = curStudent->next;
+    if (curStudent == courCurrent->studentCourse)
+        courCurrent->studentCourse = curStudent->next;
+    delete curStudent;
+    courCurrent->numStudents--; // Decline down the number
+    if (Message_YesNo("Student id " + ID + " has been removed", "Notice"))
+        removeStudent(courCurrent);
 }
 
 //? Option to choose to add or remove student
 void addRemoveStudent(Year *yearHead)
 {
+    // Message_Warning("You chose to " + string(choice == 0 ? "ADD" : "REMOVE") + " student from a course", "Notice");
+    // string course_id;
+    // TextColor(63);
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     goToXY(50, 23 + i);
+    //     cout << "                                                 ";
+    // }
     system("cls");
-    Year *year_cur = chooseYearbyOption_XY(yearHead, 50, 12, 5);
-    system("cls");
+    Render_ViewCourse(50, 1);
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
     if (!year_cur)
         return;
-
-    Semester *sem_cur = year_cur->NoSemester;
-    if (!sem_cur)
+    Semester *sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
+    Course *cour_cur;
+    // while (year_cur)
+    // {
+    while (sem_cur && sem_cur->course != nullptr)
     {
-        Message_Warning("No semester in this year yet!", "Notice");
-        return;
-    }
-
-    vector<string> menu;
-    menu.push_back("Add student to a course");
-    menu.push_back("Remove student from a course");
-    menu.push_back("Back to menu");
-
-    int choice = Draw_XY(menu, 50, 10, 3, 30, 63);
-    if (choice == 2)
-        return;
-    Message_Warning("You chose to " + string(choice == 0 ? "ADD" : "REMOVE") + " student from a course", "Notice");
-
-    Course *cour_cur = sem_cur->course;
-
-    string course_id;
-    TextColor(63);
-    for (int i = 0; i < 3; i++)
-    {
-        goToXY(50, 23 + i);
-        cout << "                                                 ";
-    }
-    goToXY(48, 22);
-    cout << "Input the course id that you want to add/remove student(s)";
-    course_id = Limit_Input(52, 24, 10, 63);
-    if (course_id == "-1")
-        return;
-
-    while (cour_cur) // Find the course
-    {
-        if (cour_cur->CourseID == course_id)
+        cour_cur = chooseCoursebyOption_XY(sem_cur->course, 60, 12, 5);
+        while (cour_cur)
         {
-            system("cls");
-            switch (choice) // Run the chosen option
+            int choice = -1;
+            while (choice != 2)
             {
-            case 1:
-                addStudent(cour_cur, course_id);
-                break;
-            case 2:
-                removeStudent(cour_cur, course_id);
-                break;
-            }
-            return;
-        }
-        cour_cur = cour_cur->next;
-    }
+                vector<string> menu;
+                menu.push_back("Add student to a course");
+                menu.push_back("Remove student from a course");
+                menu.push_back("Back");
 
-    if (Message_YesNo("Course not found!\nRetry?", "Notice"))
-        addRemoveStudent(yearHead); // Loop again
-    return;
+                choice = Draw_XY(menu, 50, 10, 3, 30, 63);
+                switch (choice) // Run the chosen option
+                {
+                case 0:
+                    addStudent(cour_cur);
+                    break;
+                case 1:
+                    removeStudent(cour_cur);
+                    break;
+                }
+                system("cls");
+                Render_ViewCourse(50, 1);
+            }
+            cour_cur = chooseCoursebyOption_XY(sem_cur->course, 60, 12, 5);
+        }
+        sem_cur = chooseSemesterbyOption_XY(year_cur->NoSemester, 60, 12, 4);
+    }
+    //     year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
+    // }
+    // goToXY(48, 22);
+    // cout << "Input the course id that you want to add/remove student(s)";
+    // course_id = Limit_Input(52, 24, 10, 63);
+    // if (course_id == "-1")
+    // return;
+
+    // while (cour_cur) // Find the course
+    // {
+    //     if (cour_cur->CourseID == course_id)
+    //     {
+    //         system("cls");
+    //         switch (choice) // Run the chosen option
+    //         {
+    //         case 1:
+    //             addStudent(cour_cur, course_id);
+    //             break;
+    //         case 2:
+    //             removeStudent(cour_cur, course_id);
+    //             break;
+    //         }
+    //         return;
+    //     }
+    //     cour_cur = cour_cur->next;
+    // }
+
+    // if (Message_YesNo("Course not found!\nRetry?", "Notice"))
+    addRemoveStudent(yearHead); // Loop again
+    // return;
 }
