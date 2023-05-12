@@ -1,6 +1,7 @@
 #include "../Header/Year.h"
 #include "../Header/Semester.h"
 #include "../Header/Utility.h"
+#include "../Header/Help.h"
 
 //? 1. Create a school year (2020-2021, for example)
 //* lần đầu gọi hàm thì cho cin yearStart trong hàm main
@@ -18,16 +19,10 @@ void createSchoolYear(Year *&headYear, int yearStart, Account *accHead)
 
     Year *newYear = new Year;
     newYear->yearStart = yearStart;
-    newYear->prev = headYear;
-
-    if (!headYear)
-        headYear = newYear;
-    else
-    {
-        while (curYear->next)
-            curYear = curYear->next;
-        curYear->next = newYear;
-    }
+    newYear->next = headYear;
+    if (headYear)
+        headYear->prev = newYear;
+    headYear = newYear;
 
     string path = "..\\Data_file\\" + to_string(yearStart) + "_" + to_string(yearStart + 1);
     path = "mkdir " + path;
@@ -43,13 +38,7 @@ void createSchoolYear(Year *&headYear, int yearStart, Account *accHead)
     {
         if (!Create_New_Classes(newYear, accHead))
             return;
-
-        message = "Add student to class?";
-        if (Message_YesNo(message, title))
-            ChooseClassToAdd(newYear, accHead);
-        return;
     }
-    return;
 }
 
 //? 2. Create several classes for 1st-year students.
@@ -63,8 +52,10 @@ bool Create_New_Classes(Year *newYear, Account *accHead)
     TextColor(0x0E);
     cout << "YEAR: " << newYear->yearStart << "_" << newYear->yearStart + 1;
     goToXY(60, 17);
-    cout << "New Class (0 to stop)";
+    cout << "New Class (0 to go back)";
     Class *ClassTMP = newYear->Class;
+    while (ClassTMP && ClassTMP->next != nullptr)
+        ClassTMP = ClassTMP->next;
     string line;
     int i = 0;
     while (1)
@@ -117,7 +108,7 @@ bool Create_New_Classes(Year *newYear, Account *accHead)
                 break;
         }
         i++;
-        if (!ClassTMP)
+        if (!newYear->Class)
         {
             ClassTMP = new Class;
             newYear->Class = ClassTMP;
@@ -131,6 +122,13 @@ bool Create_New_Classes(Year *newYear, Account *accHead)
         ClassTMP->Name = line;
         string message = "Added class " + line + " successfully.";
         Message_Warning(message, "Success");
+        message = "Add student to class?";
+        if (Message_YesNo(message, "Success"))
+        {
+            Method(accHead, ClassTMP);
+            Create_New_Classes(newYear, accHead);
+            break;
+        }
     }
     return true;
 }
@@ -142,27 +140,12 @@ void ChooseClassToAdd(Year *curYear, Account *accHead)
     TextColor(7);
 
     Render_Class(50, 1);
-    vector<string> listClass;
-    Class *class_cur = curYear->Class;
-    while (class_cur)
-    {
-        listClass.push_back(class_cur->Name);
-        class_cur = class_cur->next;
-    }
     goToXY(60, 12);
     cout << "Classes in " << curYear->yearStart << "-" << curYear->yearStart + 1;
 
-    // int opt = Draw_ShortVer(listClass, 60, 12, 63);
-    int opt = Draw_XY(listClass, 60, 12, 4, 22, 63);
-    string className = listClass[opt];
-
-    class_cur = curYear->Class;
-    while (class_cur)
-    {
-        if (class_cur->Name == className)
-            break;
-        class_cur = class_cur->next;
-    }
+    Class *class_cur = chooseClassbyOption_XY(curYear->Class, 60, 12, 4);
+    if (class_cur == nullptr)
+        return;
     Method(accHead, class_cur);
     string mess = "Do you want to add student to another class?";
     if (Message_YesNo(mess, "Another student?"))
@@ -170,7 +153,6 @@ void ChooseClassToAdd(Year *curYear, Account *accHead)
         ChooseClassToAdd(curYear, accHead);
         return;
     }
-    return;
 }
 
 //? Choose the method to add student
@@ -197,12 +179,14 @@ void Method(Account *accHead, Class *curClass)
     {
     case 0:
         inputStudent(accHead, curClass);
-        return;
+        break;
     case 1:
         importStudent(accHead, curClass);
+        break;
+    case 2:
         return;
     }
-    return;
+    Method(accHead, curClass);
 }
 
 //? Input student by hand one the cmd
@@ -226,7 +210,7 @@ void inputStudent(Account *accHead, Class *curClass)
     //? Add here
     add1stYearStudents(accHead, curClass, ID, first, last, gen, birth, socialID); // add to class
     string message = "Student " + last + " " + first + " has been added to class " + curClass->Name + ".";
-    message += "\nDo you want to add another to this class?";
+    message += "\nDo you want to add another one to this class?";
 
     string title = "Student added";
     if (Message_YesNo(message, title))
@@ -467,7 +451,7 @@ bool Draw_In_Stud(string &ID, string &first, string &last, string &gen, string &
 
             socialID = line;
         }
-        
+
         TextColor(7);
         for (int j = 0; j < 3; j++)
         {

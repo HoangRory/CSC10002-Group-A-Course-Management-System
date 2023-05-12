@@ -12,7 +12,7 @@ void Menu_Staff_View(Year *yearHead)
     menu.push_back("List Course");
     menu.push_back("Back to Main Menu");
 
-    int opt = Draw_XY(menu, 60, 12, 5, 25);
+    int opt = Draw_XY(menu, 60, 12, 5, 25, 63);
     switch (opt)
     {
     case 0:
@@ -42,7 +42,7 @@ void Menu_ScoreBoard_View(Year *yearHead)
     menu.push_back("ScoreBoard Of Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 60, 12, 4, 24);
+    int opt = Draw_XY(menu, 60, 12, 4, 24, 63);
     system("cls");
     switch (opt)
     {
@@ -67,7 +67,7 @@ void Menu_ListStudent_View(Year *yearHead)
     menu.push_back("All Student Of Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 60, 12, 4, 25);
+    int opt = Draw_XY(menu, 60, 12, 4, 25, 63);
     system("cls");
     switch (opt)
     {
@@ -93,7 +93,7 @@ void Menu_ListCourse_View(Year *yearHead)
     menu.push_back("Student's Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 60, 12, 4, 20);
+    int opt = Draw_XY(menu, 60, 12, 4, 20, 63);
     system("cls");
     switch (opt)
     {
@@ -120,7 +120,7 @@ void Menu_Import_Export(Year *yearHead)
     menu.push_back("Export The List Of Students In A Course");
     menu.push_back("Back to View Menu");
 
-    int opt = Draw_XY(menu, 55, 15, 4, 42);
+    int opt = Draw_XY(menu, 55, 15, 4, 42,63);
     system("cls");
     switch (opt)
     {

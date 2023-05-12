@@ -29,13 +29,3 @@ TIN00001 3 50 5 I62
 Nguyen Thanh Quan
 FRI
 S2
-Tieng anh 1
-ANH00001 2 100 5 HTI
-GV X
-SUN
-S1
-Tieng nhat 1
-NHA00001 2 100 5 HTI
-GV Y
-SUN
-S3

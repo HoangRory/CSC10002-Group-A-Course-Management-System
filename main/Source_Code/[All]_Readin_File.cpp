@@ -330,7 +330,7 @@ void readAllFileCourses(Semester *HeadSmt)
         curCourse = curSmt->course;
         while (curCourse)
         {
-            string path = createNameFile(curSmt->Year, curSmt->No, curCourse->Name, "score", "csv");
+            string path = "..\\Data_file\\" + createNameFile(curSmt->Year, curSmt->No) + getFirstChar(curCourse->Name) + "score.csv";
             in.open(path);
             if (!in.is_open())
                 Message_Warning(path + " is not exist.", "Error");
@@ -381,19 +381,37 @@ void importScoreBoardCourse(Year *yearHead)
             Message_Warning("There are no course in this semester", "Error not Exist");
         else
         {
+            goToXY(40, 10);
+            cout << "You should save the file to folder ";
+            goToXY(40, 11);
+            cout << "../Data_file/ImportScoreBoard/"
+                 << ChooseYear->yearStart << "_" << ChooseYear->yearStart + 1
+                 << "/smt" << ChooseSem->No << "/<File Name> for easy implementation";
+            goToXY(40, 12);
+            cout << "Eg: Course's Name is Ky Nang Mem, File Name: KNMscore.csv";
             goToXY(40, 13);
             cout << "Select the course you want to import the scoreboard";
             ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
-            cout << setw(70) << " ";
             while (ChooseCourse)
             {
-                string mess = "Put data in the  folder\nName it with format eg. Ky Nang Men : KNM.txt\nOK to continue when finish";
-                Message_Warning(mess, "Notice");
-                string path = createNameFile(ChooseSem->Year, ChooseSem->No, ChooseCourse->Name, "score", "csv");
+                string path = "..\\Data_file\\Import_ScoreBoard\\" + createNameFile(ChooseSem->Year, ChooseSem->No) + getFirstChar(ChooseCourse->Name) + "score.csv";
+                string mess = "Put data in the default path :\n" + path + "\n Would you like enter another path?";
+                if (Message_YesNo(mess, "Notice"))
+                {
+                    goToXY(60, 14);
+                    cout << "File name: ";
+                    string tmp = Limit_Input(60 + 11, 14, 50, 7);
+                    if (tmp == "0")
+                        break;
+                    path = tmp;
+                    system("cls");
+                    Render_Import(40, 2);
+                }
                 if (!checkFile(path))
                 {
-                    Message_Warning("The scoreboard of this course does not exist./n Please contact the teacher to get scoreboard and to try again.", " Error!");
-                    break;
+                    Message_Warning("The scoreboard file of this course does not exist.\n Please contact the teacher to get scoreboard and to try again.", " Error!");
+                    if (!Message_YesNo("Would you like to retry?", "Notice"))
+                        break;
                 }
                 else
                 {
@@ -403,11 +421,28 @@ void importScoreBoardCourse(Year *yearHead)
                     in.close();
                     if (!Message_YesNo("Successful import \n Would you like to continue?", "Notification"))
                         return;
+                    // goToXY(40, 11);
+                    // cout << "Please import the CSV file to folder ../Data_file/"
+                    //     << ChooseYear->yearStart << "_" << ChooseYear->yearStart + 1
+                    //     << "/smt" << ChooseSem->No << "/<File Name>";
+                    // goToXY(40, 12);
+                    // cout << "Eg: Course's Name is Ky Nang Mem, File Name: KNMscore.csv";
+                    // goToXY(40, 13);
+                    // cout << "Select the course you want to import the scoreboard";
                     ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
                 }
             }
+            goToXY(40, 11);
+            cout << setw(150) << " ";
+            goToXY(40, 12);
+            cout << setw(150) << " ";
+            goToXY(40, 13);
+            cout << setw(100) << " ";
         }
+        goToXY(40, 13);
+        cout << "Select the semester that contains the course you want to import";
         ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+        cout << setw(70) << " ";
     }
     importScoreBoardCourse(yearHead);
 }

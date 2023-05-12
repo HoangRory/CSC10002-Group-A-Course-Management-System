@@ -3,7 +3,7 @@
 #include "../Header/Year.h"
 #include "../Header/Help.h"
 
-void New_Stuff(Year *yearHead, Account *accHead)
+void New_Stuff(Year *&yearHead, Account *accHead)
 {
     system("cls");
     Render_NewInfo(55, 3);
