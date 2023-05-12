@@ -35,7 +35,7 @@ ___
 
 ## Usage
 Watching video demo [here](https://youtu.be/BdjD0U1igQs).<br>
-For more details, please take time to view our [report](https://github.com/HoangRory/CSC10002-Group-A-Course-Management-System/blob/main/Report/FinalReport.pdf).
+For more details, please take time to view our [report](https://github.com/HoangRory/CSC10002-Group-A-Course-Management-System/blob/main/Report/Final_Report.pdf).
 ___
 
 ## Contributors
@@ -45,3 +45,4 @@ Special thanks to team 3:
 - 22127275 - Trần Anh Minh ([@MinhTran](https://github.com/Melios22))
 - 22127402 - Bế Lã Anh Thư ([@ankthuw](https://github.com/ankthuw))
 ___
+Thank you for all your time!!!
