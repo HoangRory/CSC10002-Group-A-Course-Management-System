@@ -10,10 +10,10 @@ ___
 ## About the project
 This is a minimal application with the idea of managing courses 
 - Written totally in [C++]
-- Depends on the each device's console, the terminal size may vary
+- Depends on device's console, the terminal size may vary
 - Privilege for each role:
   - Staff (including teachers): can view the current course, make additions to year, semester, course, students in course, ...
-  - Student: can view their courses, and their scores for each courses
+  - Student: can view their courses, and their scores for each course
 - Thanks for all your support
 ___
 
@@ -34,12 +34,12 @@ $ .\main.exe
 ___
 
 ## Usage
-For more details, please take time to read [Documentation] <br>
-Or watch the video demo [here]
+Watching video demo [here](https://youtu.be/BdjD0U1igQs).<br>
+For more details, please take time to view our [report](https://github.com/HoangRory/CSC10002-Group-A-Course-Management-System/blob/main/Report/FinalReport.pdf).
 ___
 
 ## Contributors
-Special thanks to:
+Special thanks to team 3:
 - 22127026 - Ôn Gia Bảo ([@ongiabao2207](https://github.com/ongiabao2207))
 - 22127123 - Lê Hồ Phi Hoàng ([@HoangRory](https://github.com/HoangRory))
 - 22127275 - Trần Anh Minh ([@MinhTran](https://github.com/Melios22))
