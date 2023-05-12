@@ -38,10 +38,6 @@ void createSchoolYear(Year *&headYear, int yearStart, Account *accHead)
     {
         if (!Create_New_Classes(newYear, accHead))
             return;
-        // message = "Add student to class?";
-        // if (Message_YesNo(message, title))
-        //     ChooseClassToAdd(newYear, accHead);
-        // return;
     }
 }
 
@@ -214,7 +210,7 @@ void inputStudent(Account *accHead, Class *curClass)
     //? Add here
     add1stYearStudents(accHead, curClass, ID, first, last, gen, birth, socialID); // add to class
     string message = "Student " + last + " " + first + " has been added to class " + curClass->Name + ".";
-    message += "\nDo you want to add another to this class?";
+    message += "\nDo you want to add another one to this class?";
 
     string title = "Student added";
     if (Message_YesNo(message, title))

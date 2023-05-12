@@ -411,20 +411,22 @@ void ImportStudentFromFile(Course *courseCurrent)
 {
     string str = courseCurrent->Name;
     int i = 0;
-    while (i < str.size()) // Shortten the name for the path in system file
-    {
-        if (i == 0 && str[i] > 90)
-            str[i] -= 32;
-        if (str[i] == ' ')
-            if (str[i + 1] > 90)
-                str[i + 1] -= 32;
-        if (str[i] >= 97 || str[i] == ' ')
-            str.erase(str.begin() + i);
-        else
-            i++;
-    }
+    // while (i < str.size()) // Shortten the name for the path in system file
+    // {
+    //     if (i == 0 && str[i] > 90)
+    //         str[i] -= 32;
+    //     if (str[i] == ' ')
+    //         if (str[i + 1] > 90)
+    //             str[i + 1] -= 32;
+    //     if (str[i] >= 97 || str[i] == ' ')
+    //         str.erase(str.begin() + i);
+    //     else
+    //         i++;
+    // }
+    str = getFirstChar(courseCurrent->Name);
+    // str = NMLT
     string studList = "../Data_file/New_Enrolled_Student/" + str + ".txt";
-    string mess = "Put data in the New_Enrolled_Student folder\nEg: Ky Nang Men: KNM.txt\nOK to continue when finish";
+    string mess = "Put data in the New_Enrolled_Student folder\nEg:" + courseCurrent->Name + ": " + str + ".txt" + "\nOK to continue when finish";
     Message_Warning(mess, "Notice");
 
     // Open the file that has been put is the folder
@@ -580,7 +582,33 @@ void AddNewStudent(Year *yearHead, Account *accHead)
                     cout << setw(100) << " ";
                     if (ChooseCourse != nullptr)
                     {
-                        addStudent(ChooseCourse);
+                        vector<string> menu;
+                        bool stop = false;
+                        while (!stop)
+                        {
+                            system("cls");
+                            Render_StudentCourse();
+                            //! add a title
+                            menu.push_back("Import student from file");
+                            menu.push_back("Add student by hand");
+                            menu.push_back("Back");
+
+                            int choice = Draw_XY(menu, 55, 12, 3, 30, 63);
+                            switch (choice) // Access according to the choice
+                            {
+                            case 0:
+                                // Message_Warning("Importing student from file!", "Notice");
+                                ImportStudentFromFile(ChooseCourse);
+                                break;
+                            case 1:
+                                // Message_Warning("Adding student by hand!", "Notice");
+                                AddStudentByHand(ChooseCourse);
+                                break;
+                            case 2:
+                                stop = true;
+                                break;
+                            }
+                        }
                         system("cls");
                         Render_StudentCourse();
                     }
@@ -607,8 +635,7 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     if (!courseCurrent)
         return;
     if (!Message_YesNo("Would you like add the student to current course?", "Notice"))
-        ;
-    return;
+        return;
     vector<string> menu;
     system("cls");
     Render_ViewCourse(50, 2);
@@ -647,9 +674,9 @@ void New_Stuff(Year *&yearHead, Account *accHead)
     vector<string> menu;
     menu.push_back("Add a new year");
     menu.push_back("Add a new class");
-    menu.push_back("Add a new student");
     menu.push_back("Add a new semester");
     menu.push_back("Add a new course");
+    menu.push_back("Add a new student");
     menu.push_back("Back to main menu");
 
     int ye;
@@ -667,14 +694,11 @@ void New_Stuff(Year *&yearHead, Account *accHead)
         AddClass(yearHead, accHead);
         break;
     case 2:
-        AddNewStudent(yearHead, accHead);
-        break;
-    case 3:
         //? Add a new semester
         Interface_New_Sem(yearHead);
         // Recursion back to the StaffMain function
         break;
-    case 4:
+    case 3:
         system("cls");
         Render_ViewCourse(50, 2);
         year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
@@ -691,6 +715,9 @@ void New_Stuff(Year *&yearHead, Account *accHead)
             year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
         }
         // Recursion back to the StaffMain function
+        break;
+    case 4:
+        AddNewStudent(yearHead, accHead);
         break;
     case 5:
         return;

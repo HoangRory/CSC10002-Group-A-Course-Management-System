@@ -1,5 +1,5 @@
 Username,PassWord,Role,LastName,FirstName,Gender,SocialID,Birthday
-admin,admin,3,Admin,HCMUS,M,123456789123,01/01/2023
+admin,ADMINDEPTRAI,3,Admin,HCMUS,M,123456789123,01/01/2023
 22127123,phihoang,1,Le Ho Phi,Hoang,M,079204123456,02/02/2004
 22127124,giabao,1,Nguyen Van,A,M,079204111222,03/03/2004
 22127275,m2i0n0h4,1,Tran Anh,Minh,M,079204111333,04/04/2004
@@ -66,3 +66,4 @@ nttnhung,nttnhung,2,Nguyen Thi Tuyet,Nhung,F,079075121224,05/05/1988
 ntttrang,ntttrang,2,Nguyen Thi Thu,Trang,F,079075121225,05/05/1989
 gvx,gvx,2,GV,X,M,079075121226,05/05/1990
 gvy,gvy,2,GV,Y,M,079075121227,05/05/1991
+22127026,JAJNSC,1,On Gia,Bao,M,079075121225,05/05/1989

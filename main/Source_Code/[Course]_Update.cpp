@@ -26,6 +26,11 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
         num_row++;
         studentHead = studentHead->next;
     }
+    if (num_row == 0)
+    {
+        Message_Warning("There are no student in course", "Notice");
+        return;
+    }
     string **table = new string *[num_row];
     for (int i = 0; i <= num_row; i++)
         table[i] = new string[7];
