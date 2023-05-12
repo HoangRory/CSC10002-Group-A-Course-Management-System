@@ -8,7 +8,6 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
 {
     system("cls");
     Render_NewInfo(50, 3);
-
     TextColor(14);
     goToXY(52, 9);
     cout << "Course ID";
@@ -129,7 +128,7 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
     }
     courseCurrent->Credits = stoi(c);
 
-    tmp = Limit_Input(86, 25, 3, 63);
+    tmp = Limit_Input(90, 25, 3, 63);
     if (tmp == "-1")
     {
         if (courseCurrent->prev)
@@ -145,7 +144,7 @@ Course *AddNewCourse(Semester *semCurrent, Year *yearHead)
         TextColor(63);
         goToXY(86, 25);
         cout << "          "; // Max stud
-        tmp = Limit_Input(86, 25, 3, 63);
+        tmp = Limit_Input(90, 25, 3, 63);
         if (tmp == "-1")
         {
             if (courseCurrent->prev)
@@ -218,20 +217,22 @@ void ImportStudentFromFile(Course *courseCurrent)
 {
     string str = courseCurrent->Name;
     int i = 0;
-    while (i < str.size()) // Shortten the name for the path in system file
-    {
-        if (i == 0 && str[i] > 90)
-            str[i] -= 32;
-        if (str[i] == ' ')
-            if (str[i + 1] > 90)
-                str[i + 1] -= 32;
-        if (str[i] >= 97 || str[i] == ' ')
-            str.erase(str.begin() + i);
-        else
-            i++;
-    }
+    // while (i < str.size()) // Shortten the name for the path in system file
+    // {
+    //     if (i == 0 && str[i] > 90)
+    //         str[i] -= 32;
+    //     if (str[i] == ' ')
+    //         if (str[i + 1] > 90)
+    //             str[i + 1] -= 32;
+    //     if (str[i] >= 97 || str[i] == ' ')
+    //         str.erase(str.begin() + i);
+    //     else
+    //         i++;
+    // }
+    str = getFirstChar(courseCurrent->Name);
+    // str = NMLT
     string studList = "../Data_file/New_Enrolled_Student/" + str + ".txt";
-    string mess = "Put data in the New_Enrolled_Student folder\nName it with format: chữ cái đầu in hoa.txt\nOK to continue when finish";
+    string mess = "Put data in the New_Enrolled_Student folder\nEg:" + courseCurrent->Name + ": " + str + ".txt" + "\nOK to continue when finish";
     Message_Warning(mess, "Notice");
 
     // Open the file that has been put is the folder
@@ -311,8 +312,127 @@ void AddStudentByHand(Course *courseCurrent)
     Message_Warning("Done adding new student to course!", "Success");
     return;
 }
-//? Generate the option to add student
+void AddNewStudent(Year *yearHead, Account *accHead)
+{
+    system("cls");
+    Render_NewInfo(55, 2);
+    vector<string> menu;
+    menu.push_back("Add Student to a Class");
+    menu.push_back("Add Student to a Course");
+    menu.push_back("Back");
 
+    int opt = Draw_XY(menu, 60, 12, 4, 30, 63);
+    system("cls");
+    int x = 60, y = 17;
+    Year *ChooseYear = nullptr;
+    Semester *ChooseSem = nullptr;
+    Course *ChooseCourse = nullptr;
+    switch (opt)
+    {
+    case 0:
+        while (1)
+        {
+            system("cls");
+            int x = 60, y = 17;
+            Render_StudentClass();
+            Class *ChooseClass = nullptr;
+            goToXY(42, y - 2);
+            cout << "Select the Class, in which you want to add the student.";
+            ChooseClass = chooseClass_inAllYear_byOption_XY(yearHead, x, y, 5);
+            goToXY(42, y - 2);
+            cout << setw(100) << " ";
+            if (!ChooseClass)
+                break;
+            Method(accHead, ChooseClass);
+        }
+        break;
+    case 1:
+        Render_ViewCourse(50, 2);
+        if (yearHead == nullptr)
+        {
+            Message_Warning("There are no school year.", "Error not exist");
+            break;
+        }
+        goToXY(30, y - 2);
+        cout << "Select the year that contains the course, in which you want to add list student";
+        ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
+        goToXY(30, y - 2);
+        cout << setw(100) << " ";
+        while (ChooseYear)
+        {
+            do
+            {
+                if (ChooseYear->NoSemester == nullptr)
+                {
+                    Message_Warning("There are no semester in this school year.", "Error not exist");
+                    break;
+                }
+                goToXY(30, y - 2);
+                cout << "Select the semester that contains the course, in which you want to add list student";
+                ChooseSem = chooseSemesterbyOption_XY(ChooseYear->NoSemester, x, y, 5);
+                goToXY(30, y - 2);
+                cout << setw(100) << " ";
+                if (ChooseSem == nullptr)
+                    break;
+                do
+                {
+                    if (ChooseSem->course == nullptr)
+                    {
+                        Message_Warning("There are no course in this semester", "Error not Exist");
+                        break;
+                    }
+                    goToXY(30, y - 2);
+                    cout << "Select the course for which you want to add list student";
+                    ChooseCourse = chooseCoursebyOption_XY(ChooseSem->course, x, y, 5);
+                    goToXY(30, y - 2);
+                    cout << setw(100) << " ";
+                    if (ChooseCourse != nullptr)
+                    {
+                        vector<string> menu;
+                        bool stop = false;
+                        while (!stop)
+                        {
+                            system("cls");
+                            Render_ViewCourse(50, 2);
+                            //! add a title
+                            menu.push_back("Import student from file");
+                            menu.push_back("Add student by hand");
+                            menu.push_back("Back");
+
+                            int choice = Draw_XY(menu, 55, 12, 3, 30, 63);
+                            switch (choice) // Access according to the choice
+                            {
+                            case 0:
+                                // Message_Warning("Importing student from file!", "Notice");
+                                ImportStudentFromFile(ChooseCourse);
+                                break;
+                            case 1:
+                                // Message_Warning("Adding student by hand!", "Notice");
+                                AddStudentByHand(ChooseCourse);
+                                break;
+                            case 2:
+                                stop = true;
+                                break;
+                            }
+                        }
+                        system("cls");
+                        Render_StudentCourse();
+                    }
+                } while (ChooseCourse != nullptr);
+            } while (ChooseSem != nullptr);
+            goToXY(30, y - 2);
+            cout << "Select the year that contains the course, in which you want to add list student";
+            ChooseYear = chooseYearbyOption_XY(yearHead, x, y, 5);
+            goToXY(30, y - 2);
+            cout << setw(100) << " ";
+        }
+        break;
+    case 2:
+        return;
+    }
+    AddNewStudent(yearHead, accHead);
+}
+//? Generate the option to add student
 void AddingCourse(Semester *semCurrent, Year *yearHead)
 {
     if (!semCurrent)
@@ -320,31 +440,36 @@ void AddingCourse(Semester *semCurrent, Year *yearHead)
     Course *courseCurrent = AddNewCourse(semCurrent, yearHead);
     if (!courseCurrent)
         return;
+    if (!Message_YesNo("Would you like add the student to current course?", "Notice"))
+        return;
 
     vector<string> menu;
-    system("cls");
-    Render_Class(50, 2);
-    //! add a title
     menu.push_back("Import student from file");
     menu.push_back("Add student by hand");
     menu.push_back("Back");
-
-    int choice = Draw_XY(menu, 55, 12, 3, 30, 63);
-
-    switch (choice) // Access according to the choice
+    bool stop = false;
+    while (!stop)
     {
-    case 0:
-        Message_Warning("Importing student from file!", "Notice");
-        ImportStudentFromFile(courseCurrent);
-        break;
-    case 1:
-        Message_Warning("Adding student by hand!", "Notice");
-        AddStudentByHand(courseCurrent);
-        break;
-    case 2:
-        return;
-    }
+        system("cls");
+        Render_ViewCourse(50, 2);
+        //! add a title
 
+        int choice = Draw_XY(menu, 55, 12, 3, 30, 63);
+        switch (choice) // Access according to the choice
+        {
+        case 0:
+            // Message_Warning("Importing student from file!", "Notice");
+            ImportStudentFromFile(courseCurrent);
+            break;
+        case 1:
+            // Message_Warning("Adding student by hand!", "Notice");
+            AddStudentByHand(courseCurrent);
+            break;
+        case 2:
+            stop = true;
+            break;
+        }
+    }
     string mess = "Do you want to add another course to this semester?";
     if (Message_YesNo(mess, "Notice"))
         AddingCourse(semCurrent, yearHead);

@@ -1,4 +1,4 @@
-# CSC10003 COURSE MANAGEMENT
+# CSC10002 COURSE MANAGEMENT
 
 ### Table of Contents
 1. About the project

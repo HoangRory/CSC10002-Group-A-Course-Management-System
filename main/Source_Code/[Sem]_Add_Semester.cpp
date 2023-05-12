@@ -42,6 +42,7 @@ int compareDate(string date1, string date2)
 Semester *AddSemester(Year *yearHead)
 {
     system("cls");
+    Render_Semester(50, 3);
     // Print the list of year
     Year *year_cur = yearHead;
     // Get the year and semester
@@ -58,7 +59,10 @@ Semester *AddSemester(Year *yearHead)
     int N = 0;
     N = Draw_XY(small_menu, 60, 12, 4, 20, 63) + 1;
     if (N == 4)
+    {
+        AddSemester(yearHead);
         return nullptr;
+    }
 
     Semester *sem_cur = year_cur->NoSemester;
     Semester *prev = sem_cur;
@@ -66,13 +70,8 @@ Semester *AddSemester(Year *yearHead)
     {
         if (sem_cur->No == N) // If already had, ask to modify
         {
-            string mess = "This semester already exists, do you want to modify it?";
-            if (Message_YesNo(mess, "Notice"))
-            {
-                // To modify the semester
-                modifySemester(yearHead);
-                return nullptr;
-            }
+            string mess = "This semester already exists!";
+            Message_Warning(mess, "Notice");
             return AddSemester(yearHead);
         }
         prev = sem_cur;
