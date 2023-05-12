@@ -1,15 +1,4 @@
-#include "../Header/course.h"
-
-Course *findCoursebyIndexOption(Course *courseHead, int index)
-{
-    for (int i = 0; courseHead != nullptr; i++)
-    {
-        if (i == index)
-            break;
-        courseHead = courseHead->next;
-    }
-    return courseHead;
-}
+#include "../Header/Course.h"
 
 // task 22
 Student *findStudentbyID(string IDStudent, Year *Yhead)
@@ -34,24 +23,13 @@ Student *findStudentbyID(string IDStudent, Year *Yhead)
     }
     return nullptr;
 }
-StudentCourse *find_SBC_ofStudent(string ID, StudentCourse *stuCourseHead)
+StudentCourse *find_StudentOfCourse(string ID, StudentCourse *stuCourseHead)
 {
     while (stuCourseHead)
     {
         if (stuCourseHead->ID == ID)
             return stuCourseHead;
         stuCourseHead = stuCourseHead->next;
-    }
-    return nullptr;
-}
-Course *findCourse_ofStudent_byOption(CourseStudent *courseHead, int option)
-{
-    int index = 0;
-    while (courseHead)
-    {
-        if (index == option)
-            return courseHead->course;
-        courseHead = courseHead->next;
     }
     return nullptr;
 }

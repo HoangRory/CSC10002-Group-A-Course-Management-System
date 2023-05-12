@@ -2,12 +2,12 @@
 #include "../Header/Semester.h"
 #include "../Header/course.h"
 #include "../Header/Utility.h"
+#include "../Header/Help.h"
 const string separator = "\\";
 
 void Show_Year_List(Year *yearHead)
 {
     Year *year_cur = yearHead;
-    system("cls");
     TextColor(0xF1);
     int i = 0;
 
@@ -73,7 +73,7 @@ Year *RecoverFile()
     return headYear;
 }
 
-void Interface_New_Year(Year *yearHead, Account *accHead)
+void Interface_New_Year(Year *&yearHead, Account *accHead)
 {
     Year *year_cur = yearHead;
     string strYear;
@@ -84,7 +84,7 @@ void Interface_New_Year(Year *yearHead, Account *accHead)
 
     goToXY(52, 18);
     TextColor(0x0E);
-    cout << "Choose year (Enter -1 to back)";
+    cout << "Choose year (ESC to back)";
     TextColor(63);
     for (int i = 0; i < 3; i++)
     {
@@ -108,10 +108,26 @@ void Interface_New_Year(Year *yearHead, Account *accHead)
         cout << "                                                  ";
         strYear = Limit_Input(52, 20, 9, 63);
         strYear[4] = '_';
+        if (strYear == "-1")
+            return;
     }
     TextColor(7);
     int start = stoi(strYear.substr(0, 4));
 
     createSchoolYear(yearHead, start, accHead);
     return;
+}
+
+void AddClass(Year *yearHead, Account *accHead)
+{
+    system("cls");
+    Render_Class(50, 3);
+    Year *year_cur = chooseYearbyOption_XY(yearHead, 60, 12, 5);
+    if (!year_cur)
+        return;
+
+    if (!Create_New_Classes(year_cur, accHead))
+        return;
+
+    AddClass(yearHead, accHead);
 }

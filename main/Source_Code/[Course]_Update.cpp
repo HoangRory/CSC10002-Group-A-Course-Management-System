@@ -1,5 +1,4 @@
-#include "../Header/course.h"
-#include "../Header/Utility.h"
+#include "../Header/Course.h"
 // task 22
 void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
 {
@@ -26,6 +25,11 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
     {
         num_row++;
         studentHead = studentHead->next;
+    }
+    if (num_row == 0)
+    {
+        Message_Warning("There are no student in course", "Notice");
+        return;
     }
     string **table = new string *[num_row];
     for (int i = 0; i <= num_row; i++)
@@ -56,6 +60,8 @@ void updateSBC(Course *ChooseCourse, int x, int y, int x_cur, int y_cur)
         table[i][j++] = FormatMark(studentHead->ScoreBoardCourse.totalMark);
         studentHead = studentHead->next;
     }
+    goToXY(x, y - 2);
+    cout << "Press Enter to select";
     Draw_table(table, title, num_row, 7, width, height, x, y, Row_eachTime, Col_eachTime, edit_Col, x_cur, y_cur);
     if (x_cur == -1)
     {
@@ -141,7 +147,7 @@ void UpdateStudentResult(Year *Yhead)
     cout << setw(100) << " ";
     if (!ChooseCourse)
         return;
-    int x = 20, y = 17, x_cur = 0, y_cur = 0;
+    int x = 30, y = 17, x_cur = 0, y_cur = 0;
     goToXY(20, 14);
     cout << "Select the student for whom you want to update scoreboard.";
     updateSBC(ChooseCourse, x, y, x_cur, y_cur);

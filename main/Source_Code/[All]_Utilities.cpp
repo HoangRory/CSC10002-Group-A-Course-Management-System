@@ -66,6 +66,12 @@ string Limit_Input(int x, int y, int limit, int color)
         c = _getch();
         if (c == 13 && i > 0)
             break;
+        else if (c == 27) // ESC key
+        {
+            TextColor(7);
+            ShowConsoleCursor(false);
+            return "-1"; // Check for -1 for quit input, same as back button
+        }
         else if (c == 8)
         {
             if (i > 0)
@@ -91,12 +97,15 @@ string Limit_Input(int x, int y, int limit, int color)
             c = _getch();
             continue;
         }
-        //? 33 <= c <= 39: ! " # $ % & '
-        //? 42 <= c <= 57:* + , - . / 0 -> 9
-        //? 63 <= c <= 90: ? @ A -> Z
-        //? 94: ^
-        //? 97 <= c <= 122: a -> z
-        else if (i < limit && ((c >= 63 && c <= 90) || (c >= 97 && c <= 122) || (c >= 42 && c <= 57) || (c >= 33 && c <= 39) || c == 42 || c == 94))
+        //? 32 <= c <= 39: space ! " # $ % & '
+        //// 42 <= c <= 59:* + , - . / 0 -> 9 : ;
+        //// 58 <= c <= 62: : ; < = >
+        //// 63 <= c <= 90: ? @ A -> Z
+        //? 42 -> 90
+        //? 92
+        //? 94 <= c <= 122: ^ _ ` a -> z
+        //? 126: ~
+        else if (i < limit && ((32 <= c && c <= 39) || (42 <= c && c <= 90) || (c == 92) || (94 <= c && c <= 122) || (c == 126)))
         {
             input.push_back(c);
             cout << c;

@@ -1,8 +1,11 @@
 #pragma once
 #include "proto.h"
 
+int compareDate(string date1, string date2);
+bool isStringDigits(string str);
+
 //? Add new semester, new course and import student
-void New_Stuff(Year *yearHead, Account *accHead);
+void New_Stuff(Year *&yearHead, Account *accHead);
 
 Semester *AddSemester(Year *yearHead);
 
@@ -18,14 +21,15 @@ void initModify(Year *yearHead);
 void RunModify(Year *yearHead, int opt);
 
 //? Modifying
-void modifySemester(Year *yearHead, int year, int sem);
-void modifyCourse(Year *yearHead, int year);
+void modifySemester(Year *yearHead);
+void modifyCourse(Year *yearHead);
 void ChangeCourseInfo(Course *cour_cur);
-void removeCourse(Year *yearHead, int year);
+void removeCourse(Year *yearHead);
 
-void addStudent(Course *courCurrent, string course_id);
-void removeStudent(Course *courCurrent, string course_id);
-void addRemoveStudent(Year *yearHead, int year);
+void addStudent(Course *courCurrent);
+void removeStudent(Course *courCurrent);
+void addRemoveStudent(Year *yearHead);
+void AddNewStudent(Year *yearHead, Account *accHead);
 
 //? Read Semester from file
 Semester *Read_Sem(int year, int smt);
